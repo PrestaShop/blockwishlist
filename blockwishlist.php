@@ -37,7 +37,7 @@ class BlockWishList extends Module
 	{
 		$this->name = 'blockwishlist';
 		$this->tab = 'front_office_features';
-		$this->version = '0.9';
+		$this->version = '0.10';
 		$this->author = 'PrestaShop';
 		$this->need_instance = 0;
 
@@ -47,6 +47,7 @@ class BlockWishList extends Module
 		$this->displayName = $this->l('Wishlist block');
 		$this->description = $this->l('Adds a block containing the customer\'s wishlists.');
 		$this->default_wishlist_name = $this->l('My wishlist');
+		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
 	}
 
 	public function install($delete_params = true)
