@@ -28,8 +28,10 @@
         <a href="{$link->getPageLink('my-account', true)|escape:'html'}">{l s='My account' mod='blockwishlist'}</a>
         <span class="navigation-pipe">{$navigationPipe}</span>
         <a href="{$link->getModuleLink('blockwishlist', 'mywishlist')|escape:'html'}">{l s='My wishlists' mod='blockwishlist'}</a>
-        <span class="navigation-pipe">{$navigationPipe}</span>
-        {$current_wishlist.name}
+		{if isset($current_wishlist)}
+	        <span class="navigation-pipe">{$navigationPipe}</span>
+	        {$current_wishlist.name}
+		{/if}
     {/capture}
 
 	<h2>{l s='My wishlists' mod='blockwishlist'}</h2>

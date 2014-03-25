@@ -189,10 +189,14 @@ function WishlistDelete(id, id_wishlist, msg)
 	var res = confirm(msg);
 	if (res == false)
 		return (false);
+
+	if (typeof mywishlist_url == 'undefined')
+		return (false);
+
 	$.ajax({
 		type: 'GET',
 		async: true,
-		url: baseDir + 'modules/blockwishlist/mywishlist.php',
+		url: mywishlist_url + '&rand=' + new Date().getTime(),
 		cache: false,
 		data: 'deleted&id_wishlist=' + id_wishlist,
 		success: function(data)

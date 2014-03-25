@@ -25,4 +25,5 @@
 
 <script type="text/javascript">
 	var isLoggedWishlist = {if $logged}true{else}false{/if};
+	var mywishlist_url="{$link->getModuleLink('blockwishlist', 'mywishlist', array(), true)|addslashes}";
 </script>
