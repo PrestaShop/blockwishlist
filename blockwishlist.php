@@ -119,7 +119,7 @@ class BlockWishList extends Module
 		{
 			$activated = Tools::getValue('activated');
 			if ($activated != 0 && $activated != 1)
-				$this->html .= '<div class="alert error">'.$this->l('Activate module : Invalid choice.').'</div>';
+				$this->html .= '<div class="alert error">'.$this->l('Cannot activate module: Invalid choice.').'</div>';
 			$this->html .= '<div class="conf confirm">'.$this->l('Settings updated').'</div>';
 		}
 
