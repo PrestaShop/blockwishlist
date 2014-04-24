@@ -48,6 +48,7 @@ class BlockWishList extends Module
 		$this->description = $this->l('Adds a block containing the customer\'s wishlists.');
 		$this->default_wishlist_name = $this->l('My wishlist');
 		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
+		$this->html = '';
 	}
 
 	public function install($delete_params = true)
@@ -114,13 +115,19 @@ class BlockWishList extends Module
 
 	public function getContent()
 	{
-		$this->html = '<h2>'.$this->displayName.'</h2>';
-		if (Tools::isSubmit('submitSettings'))
+
+		//$this->context->link->getProductLink($val['id_product']);
+
+		if (Tools::isSubmit('viewblockwishlist') && $id = Tools::getValue('id_product'))
+		{
+			Tools::redirect($this->context->link->getProductLink($id));
+		}
+		elseif (Tools::isSubmit('submitSettings'))
 		{
 			$activated = Tools::getValue('activated');
 			if ($activated != 0 && $activated != 1)
-				$this->html .= '<div class="alert error">'.$this->l('Cannot activate module: Invalid choice.').'</div>';
-			$this->html .= '<div class="conf confirm">'.$this->l('Settings updated').'</div>';
+				$this->html .= '<div class="alert error alert-danger">'.$this->l('Activate module : Invalid choice.').'</div>';
+			$this->html .= '<div class="conf confirm alert alert-success">'.$this->l('Settings updated').'</div>';
 		}
 
 		$this->html .= $this->renderJS();
@@ -438,8 +445,6 @@ class BlockWishList extends Module
 		{
 			$image = Image::getCover($val['id_product']);
 			$products[$key]['image'] = $this->context->link->getImageLink($val['link_rewrite'], $image['id_image'], ImageType::getFormatedName('small'));
-			$products[$key]['front_link'] = $this->context->link->getProductLink($val['id_product']);
-			$products[$key]['back_link'] = $this->context->link->getAdminLink('AdminProducts').'&id_product='.$val['id_product'];
 		}
 
 		$fields_list = array(
@@ -464,25 +469,16 @@ class BlockWishList extends Module
 				'type' => 'priority',
 				'values' => array($this->l('High'), $this->l('Medium'), $this->l('Low')),
 			),
-			'front_link' => array(
-				'title' => $this->l('View'),
-				'type' => 'link',
-				'icon' => 'icon-eye-open'
-			),
-			'back_link' => array(
-				'title' => $this->l('Edit'),
-				'type' => 'link',
-				'icon' => 'icon-pencil'
-			)
 		);
 
 		$helper = new HelperList();
 		$helper->shopLinkType = '';
 		$helper->simple_header = true;
-		$helper->actions = array();
+		$helper->no_link = true;
+		$helper->actions = array('view');
 		$helper->show_toolbar = false;
 		$helper->module = $this;
-		$helper->identifier = 'image';
+		$helper->identifier = 'id_product';
 		$helper->title = $this->l('Product list');
 		$helper->table = $this->name;
 		$helper->token = Tools::getAdminTokenLite('AdminModules');
