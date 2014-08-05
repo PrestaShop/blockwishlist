@@ -17,22 +17,33 @@
 * versions in the future. If you wish to customize PrestaShop for your
 * needs please refer to http://www.prestashop.com for more information.
 *
-*  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2014 PrestaShop SA
-*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*  International Registered Trademark & Property of PrestaShop SA
+* @author PrestaShop SA <contact@prestashop.com>
+* @copyright 2007-2014 PrestaShop SA
+* @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
+* International Registered Trademark & Property of PrestaShop SA
 */
 
 /**
- * Update WishList Cart by adding, deleting, updating objects
- *
- * @return void
- */
+* Update WishList Cart by adding, deleting, updating objects
+*
+* @return void
+*/
+//global variables
+var wishlistProductsIds = [];
+$(document).ready(function(){
+	wishlistRefreshStatus();
+
+	$(document).on('change', 'select[name=wishlists]', function(){
+		WishlistChangeDefault('wishlist_block_list', $(this).val());
+	});
+});
+
 function WishlistCart(id, action, id_product, id_product_attribute, quantity)
 {
 	$.ajax({
 		type: 'GET',
-		url:	baseDir + 'modules/blockwishlist/cart.php',
+		url: baseDir + 'modules/blockwishlist/cart.php?rand=' + new Date().getTime(),
+		headers: { "cache-control": "no-cache" },
 		async: true,
 		cache: false,
 		data: 'action=' + action + '&id_product=' + id_product + '&quantity=' + quantity + '&token=' + static_token + '&id_product_attribute=' + id_product_attribute,
@@ -40,25 +51,49 @@ function WishlistCart(id, action, id_product, id_product_attribute, quantity)
 		{
 			if (action == 'add')
 			{
-				var $element = $('#bigpic');
-				if (!$element.length)
-					var $element = $('#wishlist_button');
-				var $picture = $element.clone();
-				var pictureOffsetOriginal = $element.offset();
-				$picture.css({'position': 'absolute', 'top': pictureOffsetOriginal.top, 'left': pictureOffsetOriginal.left});
-				var pictureOffset = $picture.offset();
-				var wishlistBlockOffset = $('#wishlist_block').offset();
+				if (isLogged == true) {
+					wishlistProductsIdsAdd(id_product);
+					wishlistRefreshStatus();
 
-				$picture.appendTo('body');
-				$picture.css({ 'position': 'absolute', 'top': $picture.css('top'), 'left': $picture.css('left') })
-				.animate({ 'width': $element.attr('width')*0.66, 'height': $element.attr('height')*0.66, 'opacity': 0.2, 'top': wishlistBlockOffset.top + 30, 'left': wishlistBlockOffset.left + 15 }, 1000)
-				.fadeOut(800);
+					if (!!$.prototype.fancybox)
+						$.fancybox.open([
+							{
+								type: 'inline',
+								autoScale: true,
+								minHeight: 30,
+								content: '<p class="fancybox-error">' + added_to_wishlist + '</p>'
+							}
+						], {
+							padding: 0
+						});
+					else
+						alert(added_to_wishlist);
+				}
+				else
+				{
+					if (!!$.prototype.fancybox)
+						$.fancybox.open([
+							{
+								type: 'inline',
+								autoScale: true,
+								minHeight: 30,
+								content: '<p class="fancybox-error">' + loggin_required + '</p>'
+							}
+						], {
+							padding: 0
+						});
+					else
+						alert(loggin_required);
+				}
 			}
-			
+			if (action == 'delete') {
+				wishlistProductsIdsRemove(id_product);
+				wishlistRefreshStatus();
+			}
 			if($('#' + id).length != 0)
 			{
 				$('#' + id).slideUp('normal');
-				$('#' + id).html(data);
+				document.getElementById(id).innerHTML = data;
 				$('#' + id).slideDown('normal');
 			}
 		}
@@ -66,32 +101,33 @@ function WishlistCart(id, action, id_product, id_product_attribute, quantity)
 }
 
 /**
- * Change customer default wishlist
- *
- * @return void
- */
+* Change customer default wishlist
+*
+* @return void
+*/
 function WishlistChangeDefault(id, id_wishlist)
 {
 	$.ajax({
 		type: 'GET',
-		url:	baseDir + 'modules/blockwishlist/cart.php',
+		url: baseDir + 'modules/blockwishlist/cart.php?rand=' + new Date().getTime(),
+		headers: { "cache-control": "no-cache" },
 		async: true,
 		data: 'id_wishlist=' + id_wishlist + '&token=' + static_token,
 		cache: false,
 		success: function(data)
 		{
 			$('#' + id).slideUp('normal');
-			$('#' + id).html(data);
+			document.getElementById(id).innerHTML = data;
 			$('#' + id).slideDown('normal');
 		}
 	});
 }
 
 /**
- * Buy Product
- *
- * @return void
- */
+* Buy Product
+*
+* @return void
+*/
 function WishlistBuyProduct(token, id_product, id_product_attribute, id_quantity, button, ajax)
 {
 	if(ajax)
@@ -100,10 +136,10 @@ function WishlistBuyProduct(token, id_product, id_product_attribute, id_quantity
 	{
 		$('#' + id_quantity).val(0);
 		WishlistAddProductCart(token, id_product, id_product_attribute, id_quantity)
-		document.forms['addtocart' + '_' + id_product  + '_' + id_product_attribute].method='POST';
-		document.forms['addtocart' + '_' + id_product  + '_' + id_product_attribute].action=baseUri + '?controller=cart';
-		document.forms['addtocart' + '_' + id_product  + '_' + id_product_attribute].elements['token'].value = static_token;
-		document.forms['addtocart' + '_' + id_product  + '_' + id_product_attribute].submit();
+		document.forms['addtocart' + '_' + id_product + '_' + id_product_attribute].method='POST';
+		document.forms['addtocart' + '_' + id_product + '_' + id_product_attribute].action=baseUri + '?controller=cart';
+		document.forms['addtocart' + '_' + id_product + '_' + id_product_attribute].elements['token'].value = static_token;
+		document.forms['addtocart' + '_' + id_product + '_' + id_product_attribute].submit();
 	}
 	return (true);
 }
@@ -112,58 +148,75 @@ function WishlistAddProductCart(token, id_product, id_product_attribute, id_quan
 {
 	if ($('#' + id_quantity).val() <= 0)
 		return (false);
+
 	$.ajax({
-		type: 'GET',
-		url: baseDir + 'modules/blockwishlist/buywishlistproduct.php',
-		data: 'token=' + token + '&static_token=' + static_token + '&id_product=' + id_product  + '&id_product_attribute=' + id_product_attribute,
-		async: true,
-		cache: false, 
-		success: function(data)
-		{
-			if (data)
-				alert(data);
-			else
+			type: 'GET',
+			url: baseDir + 'modules/blockwishlist/buywishlistproduct.php?rand=' + new Date().getTime(),
+			headers: { "cache-control": "no-cache" },
+			data: 'token=' + token + '&static_token=' + static_token + '&id_product=' + id_product + '&id_product_attribute=' + id_product_attribute,
+			async: true,
+			cache: false,
+			success: function(data)
 			{
-				$('#' + id_quantity).val($('#' + id_quantity).val() - 1);
+				if (data)
+				{
+					if (!!$.prototype.fancybox)
+						$.fancybox.open([
+							{
+								type: 'inline',
+								autoScale: true,
+								minHeight: 30,
+								content: '<p class="fancybox-error">' + data + '</p>'
+							}
+						], {
+							padding: 0
+						});
+					else
+						alert(data);
+				}
+				else
+					$('#' + id_quantity).val($('#' + id_quantity).val() - 1);
 			}
-		}
 	});
+
 	return (true);
 }
 
 /**
- * Show wishlist managment page
- *
- * @return void
- */
+* Show wishlist managment page
+*
+* @return void
+*/
 function WishlistManage(id, id_wishlist)
 {
 	$.ajax({
 		type: 'GET',
 		async: true,
-		url: baseDir + 'modules/blockwishlist/managewishlist.php',
+		url: baseDir + 'modules/blockwishlist/managewishlist.php?rand=' + new Date().getTime(),
+		headers: { "cache-control": "no-cache" },
 		data: 'id_wishlist=' + id_wishlist + '&refresh=' + false,
 		cache: false,
 		success: function(data)
 		{
 			$('#' + id).hide();
-			$('#' + id).html(data);
+			document.getElementById(id).innerHTML = data;
 			$('#' + id).fadeIn('slow');
 		}
 	});
 }
 
 /**
- * Show wishlist product managment page
- *
- * @return void
- */
+* Show wishlist product managment page
+*
+* @return void
+*/
 function WishlistProductManage(id, action, id_wishlist, id_product, id_product_attribute, quantity, priority)
 {
 	$.ajax({
 		type: 'GET',
 		async: true,
-		url: baseDir + 'modules/blockwishlist/managewishlist.php',
+		url: baseDir + 'modules/blockwishlist/managewishlist.php?rand=' + new Date().getTime(),
+		headers: { "cache-control": "no-cache" },
 		data: 'action=' + action + '&id_wishlist=' + id_wishlist + '&id_product=' + id_product + '&id_product_attribute=' + id_product_attribute + '&quantity=' + quantity + '&priority=' + priority + '&refresh=' + true,
 		cache: false,
 		success: function(data)
@@ -175,15 +228,20 @@ function WishlistProductManage(id, action, id_wishlist, id_product, id_product_a
 				$('#wlp_' + id_product + '_' + id_product_attribute).fadeOut('fast');
 				$('#wlp_' + id_product + '_' + id_product_attribute).fadeIn('fast');
 			}
+			nb_products = 0;
+			$("[id^='quantity']").each(function(index, element){
+				nb_products += parseInt(element.value);
+			});
+			$("#wishlist_"+id_wishlist).children('td').eq(1).html(nb_products);
 		}
 	});
 }
 
 /**
- * Delete wishlist
- *
- * @return boolean succeed
- */
+* Delete wishlist
+*
+* @return boolean succeed
+*/
 function WishlistDelete(id, id_wishlist, msg)
 {
 	var res = confirm(msg);
@@ -202,16 +260,20 @@ function WishlistDelete(id, id_wishlist, msg)
 		data: {rand:new Date().getTime(),deleted:1, id_wishlist:id_wishlist},
 		success: function(data)
 		{
-			$('#' + id).fadeOut('slow');
+			var mywishlist_siblings_count = $('#' + id).siblings().length;
+			$('#' + id).fadeOut('slow').remove();
+			$("#block-order-detail").html('');
+			if (mywishlist_siblings_count == 0)
+				$("#block-history").remove();
 		}
 	});
 }
 
 /**
- * Hide/Show bought product
- *
- * @return void
- */
+* Hide/Show bought product
+*
+* @return void
+*/
 function WishlistVisibility(bought_class, id_button)
 {
 	if ($('#hide' + id_button).is(':hidden'))
@@ -229,30 +291,69 @@ function WishlistVisibility(bought_class, id_button)
 }
 
 /**
- * Send wishlist by email
- *
- * @return void
- */
+* Send wishlist by email
+*
+* @return void
+*/
 function WishlistSend(id, id_wishlist, id_email)
 {
-	$.post(baseDir + 'modules/blockwishlist/sendwishlist.php',
-	{ token: static_token,
-	  id_wishlist: id_wishlist,
-	  email1: $('#' + id_email + '1').val(),
-	  email2: $('#' + id_email + '2').val(),
-	  email3: $('#' + id_email + '3').val(),
-	  email4: $('#' + id_email + '4').val(),
-	  email5: $('#' + id_email + '5').val(),
-	  email6: $('#' + id_email + '6').val(),
-	  email7: $('#' + id_email + '7').val(),
-	  email8: $('#' + id_email + '8').val(),
-	  email9: $('#' + id_email + '9').val(),
-	  email10: $('#' + id_email + '10').val() },
-	function(data)
-	{
-		if (data)
-			alert(data);
+	$.post(
+		baseDir + 'modules/blockwishlist/sendwishlist.php',
+		{
+			token: static_token,
+			id_wishlist: id_wishlist,
+			email1: $('#' + id_email + '1').val(),
+			email2: $('#' + id_email + '2').val(),
+			email3: $('#' + id_email + '3').val(),
+			email4: $('#' + id_email + '4').val(),
+			email5: $('#' + id_email + '5').val(),
+			email6: $('#' + id_email + '6').val(),
+			email7: $('#' + id_email + '7').val(),
+			email8: $('#' + id_email + '8').val(),
+			email9: $('#' + id_email + '9').val(),
+			email10: $('#' + id_email + '10').val()
+		},
+		function(data)
+		{
+			if (data)
+			{
+				if (!!$.prototype.fancybox)
+					$.fancybox.open([
+						{
+							type: 'inline',
+							autoScale: true,
+							minHeight: 30,
+							content: '<p class="fancybox-error">' + data + '</p>'
+						}
+					], {
+						padding: 0
+					});
+				else
+					alert(data);
+			}
+			else
+				WishlistVisibility(id, 'hideSendWishlist');
+		}
+	);
+}
+
+function wishlistProductsIdsAdd(id)
+{
+	if ($.inArray(parseInt(id),wishlistProductsIds) == -1)
+		wishlistProductsIds.push(parseInt(id))
+}
+
+function wishlistProductsIdsRemove(id)
+{
+	wishlistProductsIds.splice($.inArray(parseInt(id),wishlistProductsIds), 1)
+}
+
+function wishlistRefreshStatus()
+{
+	$('.addToWishlist').each(function(){
+		if ($.inArray(parseInt($(this).prop('rel')),wishlistProductsIds)!= -1)
+			$(this).addClass('checked');
 		else
-			WishlistVisibility(id, 'hideSendWishlist');
+			$(this).removeClass('checked');
 	});
 }
