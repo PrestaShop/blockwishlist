@@ -214,7 +214,7 @@ function WishlistDelete(id, id_wishlist, msg)
  */
 function WishlistVisibility(bought_class, id_button)
 {
-	if ($('#hide' + id_button).css('display') == 'none')
+	if ($('#hide' + id_button).is(':hidden'))
 	{
 		$('.' + bought_class).slideDown('fast');
 		$('#show' + id_button).hide();
