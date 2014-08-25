@@ -27,7 +27,6 @@
 	<div id="wishlist_button">
 		<select id="idWishlist">
 			{foreach $wishlists as $wishlist}
-			{$wishlist|var_dump}
 				<option value="{$wishlist.id_wishlist}">{$wishlist.name}</option>
 			{/foreach}
 		</select>
