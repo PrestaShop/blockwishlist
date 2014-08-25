@@ -238,7 +238,11 @@ class BlockWishList extends Module
 
 		$this->smarty->assign(array(
 			'id_product' => (int)(Tools::getValue('id_product')),
-			'wishlists' => WishList::getByIdCustomer($cookie->id_customer),
+		));
+
+		if (isset($cookie->id_customer))
+			$this->smarty->assign(array(
+				'wishlists' => WishList::getByIdCustomer($cookie->id_customer),
 			));
 
 		return ($this->display(__FILE__, 'blockwishlist-extra.tpl'));
