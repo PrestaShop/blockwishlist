@@ -55,7 +55,7 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
 
 			for ($i = 0; $i < $nb_products; ++$i)
 			{
-				$obj = new Product((int)$products[$i]['id_product'], false, $this->context->language->id);
+				$obj = new Product((int)$products[$i]['id_product'], true, $this->context->language->id);
 				if (!Validate::isLoadedObject($obj))
 					continue;
 				else
@@ -64,6 +64,7 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
 					$quantity = Product::getQuantity((int)$products[$i]['id_product'], $products[$i]['id_product_attribute']);
 					$products[$i]['attribute_quantity'] = $quantity;
 					$products[$i]['product_quantity'] = $quantity;
+					$products[$i]['allow_oosp'] = $obj->isAvailableWhenOutOfStock((int)$obj->out_of_stock);
 					if ($products[$i]['id_product_attribute'] != 0)
 					{
 						$combination_imgs = $obj->getCombinationImages($this->context->language->id);
