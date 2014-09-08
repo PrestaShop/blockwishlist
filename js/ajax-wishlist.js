@@ -269,6 +269,25 @@ function WishlistDelete(id, id_wishlist, msg)
 	});
 }
 
+function WishlistDefault(id, id_wishlist)
+{
+	if (typeof mywishlist_url == 'undefined')
+		return (false);
+
+	$.ajax({
+		type: 'GET',
+		async: true,
+		url: mywishlist_url,
+		headers: { "cache-control": "no-cache" },
+		cache: false,
+		data: {rand:new Date().getTime(), default: 1, id_wishlist:id_wishlist},
+		success: function (data)
+		{
+			window.location.href=window.location.href;
+		}
+	});
+}
+
 /**
 * Hide/Show bought product
 *

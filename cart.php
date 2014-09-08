@@ -63,6 +63,7 @@ if ($context->customer->isLogged())
 			$wishlist = new WishList();
 			$wishlist->id_shop = $context->shop->id;
 			$wishlist->id_shop_group = $context->shop->id_shop_group;
+			$wishlist->default = 1;
 
 			$mod_wishlist = new BlockWishList();
 			$wishlist->name = $mod_wishlist->default_wishlist_name;

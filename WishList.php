@@ -26,7 +26,7 @@
 
 if (!defined('_PS_VERSION_'))
 	exit;
-	
+
 class WishList extends ObjectModel
 {
 	/** @var integer Wishlist ID */
@@ -49,9 +49,13 @@ class WishList extends ObjectModel
 
 	/** @var string Object last modification date */
 	public $id_shop;
-	
+
 	/** @var string Object last modification date */
 	public $id_shop_group;
+
+	/** @var integer default */
+	public $default;
+
 	/**
 	 * @see ObjectModel::$definition
 	 */
@@ -66,6 +70,7 @@ class WishList extends ObjectModel
 			'date_upd' =>		array('type' => self::TYPE_DATE, 'validate' => 'isDate'),
 			'id_shop' =>		array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId'),
 			'id_shop_group' =>	array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId'),
+			'default' => array('type' => self::TYPE_BOOL, 'validate' => 'isUnsignedId'),
 		)
 	);
 
@@ -73,9 +78,15 @@ class WishList extends ObjectModel
 	{
 		Db::getInstance()->execute('DELETE FROM `'._DB_PREFIX_.'wishlist_email` WHERE `id_wishlist` = '.(int)($this->id));
 		Db::getInstance()->execute('DELETE FROM `'._DB_PREFIX_.'wishlist_product` WHERE `id_wishlist` = '.(int)($this->id));
+		if ($this->default)
+		{
+			$result = Db::getInstance()->executeS('SELECT * FROM `'._DB_PREFIX_.'wishlist` WHERE `id_customer` = '.(int)$this->id_customer.' AND `id_wishlist` != '.(int)$this->id.' LIMIT 1');
+			foreach ($result as $res)
+				Db::getInstance()->update('wishlist', array('default' => '1'), 'id_wishlist = '.(int)$res['id_wishlist']);
+		}
 		if (isset($this->context->cookie->id_wishlist))
 			unset($this->context->cookie->id_wishlist);
-		
+
 		return (parent::delete());
 	}
 
@@ -103,7 +114,7 @@ class WishList extends ObjectModel
 		);
 	}
 
-	
+
 	public static function isExistsByNameForUser($name)
 	{
 		if (Shop::getContextShopID())
@@ -122,7 +133,7 @@ class WishList extends ObjectModel
 				'.$shop_restriction
 		);
 	}
-	
+
 	/**
 	 * Return true if wishlist exists else false
 	 *
@@ -185,7 +196,7 @@ class WishList extends ObjectModel
 		if (!Cache::isStored($cache_id))
 		{
 			$result = Db::getInstance()->executeS('
-			SELECT w.`id_wishlist`, w.`name`, w.`token`, w.`date_add`, w.`date_upd`, w.`counter`
+			SELECT w.`id_wishlist`, w.`name`, w.`token`, w.`date_add`, w.`date_upd`, w.`counter`, w.`default`
 			FROM `'._DB_PREFIX_.'wishlist` w
 			WHERE `id_customer` = '.(int)($id_customer).'
 			'.$shop_restriction.'
@@ -333,7 +344,7 @@ class WishList extends ObjectModel
 			$shop_restriction = 'AND id_shop_group = '.(int)Shop::getContextShopGroupID();
 		else
 			$shop_restriction = '';
-		
+
 		if (!Validate::isUnsignedId($id_customer))
 			die (Tools::displayError());
 		return (Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
@@ -550,5 +561,33 @@ class WishList extends ObjectModel
 		INNER JOIN `'._DB_PREFIX_.'wishlist` w ON w.`id_wishlist` = we.`id_wishlist`
 		WHERE we.`id_wishlist` = '.(int)($id_wishlist).'
 		AND w.`id_customer` = '.(int)($id_customer)));
+	}
+
+	/**
+	* Return if there is a default already set
+	*
+	* @return boolean
+	*/
+	public static function isDefault($id_customer)
+	{
+		return (Bool)Db::getInstance()->getValue('SELECT * FROM `'._DB_PREFIX_.'wishlist` WHERE `id_customer` = '.$id_customer.' AND `default` = 1');
+	}
+
+	public static function getDefault($id_customer)
+	{
+		return Db::getInstance()->executeS('SELECT * FROM `'._DB_PREFIX_.'wishlist` WHERE `id_customer` = '.$id_customer.' AND `default` = 1');
+	}
+
+	/**
+	* Set current WishList as default
+	*
+	* @return boolean
+	*/
+	public function setDefault()
+	{
+		if ($default = $this->getDefault($this->id_customer))
+			Db::getInstance()->update('wishlist', array('default' => '0'), 'id_wishlist = '.$default[0]['id_wishlist']);
+
+		return Db::getInstance()->update('wishlist', array('default' => '1'), 'id_wishlist = '.$this->id);
 	}
 };

@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_wishlist` (
   `id_shop_group` int(10) unsigned default 1,
   `date_add` datetime NOT NULL,
   `date_upd` datetime NOT NULL,
+  `default` int(10) unsigned default 0,
   PRIMARY KEY  (`id_wishlist`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 

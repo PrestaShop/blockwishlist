@@ -62,6 +62,7 @@
 						<th class="item mywishlist_first">{l s='Viewed' mod='blockwishlist'}</th>
 						<th class="item mywishlist_second">{l s='Created' mod='blockwishlist'}</th>
 						<th class="item mywishlist_second">{l s='Direct Link' mod='blockwishlist'}</th>
+						<th class="item mywishlist_second">{l s='Default' mod='blockwishlist'}</th>
 						<th class="last_item mywishlist_first">{l s='Delete' mod='blockwishlist'}</th>
 					</tr>
 				</thead>
@@ -87,6 +88,15 @@
 						<td>{$wishlists[i].counter|intval}</td>
 						<td>{$wishlists[i].date_add|date_format:"%Y-%m-%d"}</td>
 						<td><a href="javascript:;" onclick="javascript:WishlistManage('block-order-detail', '{$wishlists[i].id_wishlist|intval}');">{l s='View' mod='blockwishlist'}</a></td>
+						<td class="wishlist_default">
+							{if isset($wishlists[i].default) && $wishlists[i].default == 1}
+								<p class="is_wish_list_default">{l s='Is default' mod='blockwishlist'}</p>
+							{else}
+								<a href="#" onclick="javascript:event.preventDefault();(WishlistDefault('wishlist_{$wishlists[i].id_wishlist|intval}', '{$wishlists[i].id_wishlist|intval}'));">
+									{l s='Set as default' mod='blockwishlist'}
+								</a>
+							{/if}
+						</td>
 						<td class="wishlist_delete">
 							<a href="javascript:;"onclick="return (WishlistDelete('wishlist_{$wishlists[i].id_wishlist|intval}', '{$wishlists[i].id_wishlist|intval}', '{l s='Do you really want to delete this wishlist ?' mod='blockwishlist' js=1}'));">{l s='Delete' mod='blockwishlist'}</a>
 						</td>

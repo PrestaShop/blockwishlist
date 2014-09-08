@@ -61,6 +61,8 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 			$add = (empty($add) === false ? 1 : 0);
 			$delete = Tools::getIsset('deleted');
 			$delete = (empty($delete) === false ? 1 : 0);
+			$default = Tools::getIsset('default');
+			$default = (empty($default) === false ? 1 : 0);
 			$id_wishlist = Tools::getValue('id_wishlist');
 			if (Tools::isSubmit('submitWishlist'))
 			{
@@ -81,6 +83,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 						$wishlist->id_shop_group = $this->context->shop->id_shop_group;
 						$wishlist->name = $name;
 						$wishlist->id_customer = (int)$this->context->customer->id;
+						!$wishlist->isDefault($wishlist->id_customer) ? $wishlist->default = 1 : '';
 						list($us, $s) = explode(' ', microtime());
 						srand($s * $us);
 						$wishlist->token = strtoupper(substr(sha1(uniqid(rand(), true)._COOKIE_KEY_.$this->context->customer->id), 0, 16));
@@ -114,6 +117,12 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 					$wishlist->delete();
 				else
 					$errors[] = $this->module->l('Cannot delete this wishlist', 'mywishlist');
+			}
+			elseif ($default)
+			{
+				$wishlist = new WishList((int)$id_wishlist);
+				if (Validate::isLoadedObject($wishlist))
+					$wishlist->setDefault();
 			}
 			$this->context->smarty->assign('wishlists', WishList::getByIdCustomer($this->context->customer->id));
 			$this->context->smarty->assign('nbProducts', WishList::getInfosByIdCustomer($this->context->customer->id));
