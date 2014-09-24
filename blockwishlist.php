@@ -336,16 +336,18 @@ class BlockWishList extends Module
 				$id_wishlist = $wishlists[0]['id_wishlist'];
 
 			$this->html .= '<span>'.$this->l('Wishlist').': </span> <select name="id_wishlist" onchange="$(\'#listing\').submit();">';
-			foreach ($wishlists as $wishlist)
-			{
-				$this->html .= '<option value="'.(int)$wishlist['id_wishlist'].'"';
-				if ($wishlist['id_wishlist'] == $id_wishlist)
+
+			if (is_array($wishlists))
+				foreach ($wishlists as $wishlist)
 				{
-					$this->html .= ' selected="selected"';
-					$counter = $wishlist['counter'];
+					$this->html .= '<option value="'.(int)$wishlist['id_wishlist'].'"';
+					if ($wishlist['id_wishlist'] == $id_wishlist)
+					{
+						$this->html .= ' selected="selected"';
+						$counter = $wishlist['counter'];
+					}
+					$this->html .= '>'.htmlentities($wishlist['name'], ENT_COMPAT, 'UTF-8').'</option>';
 				}
-				$this->html .= '>'.htmlentities($wishlist['name'], ENT_COMPAT, 'UTF-8').'</option>';
-			}
 			$this->html .= '</select>';
 
 			$this->_displayProducts((int)$id_wishlist);
