@@ -37,7 +37,7 @@ class BlockWishList extends Module
 	{
 		$this->name = 'blockwishlist';
 		$this->tab = 'front_office_features';
-		$this->version = '1.1.4';
+		$this->version = '1.1.5';
 		$this->author = 'PrestaShop';
 		$this->need_instance = 0;
 
