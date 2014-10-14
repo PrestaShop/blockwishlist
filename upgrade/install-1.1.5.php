@@ -10,7 +10,7 @@ function upgrade_module_1_1_5()
     if (is_array($list_fields))
         foreach ($list_fields as $k => $field)
             if ($field['Field'] == 'default' && $field['Type'] == 'int(11)')
-                return (bool)Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'wishlist` CHANGE `is_default` `default` INT( 11 ) NOT NULL DEFAULT "0"');
+                return (bool)Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'wishlist` CHANGE `default` `default` INT( 11 ) NOT NULL DEFAULT "0"');
 
     return true;
 }
