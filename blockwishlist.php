@@ -27,6 +27,8 @@
 if (!defined('_PS_VERSION_'))
 	exit;
 
+include_once(dirname(__FILE__).'/WishList.php');
+
 class BlockWishList extends Module
 {
 	const INSTALL_SQL_FILE = 'install.sql';
@@ -75,8 +77,7 @@ class BlockWishList extends Module
 			!$this->registerHook('header') ||
 			!$this->registerHook('adminCustomers') ||
 			!$this->registerHook('displayProductListFunctionalButtons') ||
-			!$this->registerHook('top')
-		)
+			!$this->registerHook('top'))
 			return false;
 		/* This hook is optional */
 		$this->registerHook('displayMyAccountBlock');
@@ -115,13 +116,10 @@ class BlockWishList extends Module
 
 	public function getContent()
 	{
-
 		//$this->context->link->getProductLink($val['id_product']);
 
 		if (Tools::isSubmit('viewblockwishlist') && $id = Tools::getValue('id_product'))
-		{
 			Tools::redirect($this->context->link->getProductLink($id));
-		}
 		elseif (Tools::isSubmit('submitSettings'))
 		{
 			$activated = Tools::getValue('activated');
@@ -142,19 +140,16 @@ class BlockWishList extends Module
 	{
 		//TODO : Add cache
 		$this->smarty->assign('product', $params['product']);
-
 		return $this->display(__FILE__, 'blockwishlist_button.tpl');
 	}
 
 	public function hookTop($params)
 	{
-		require_once(dirname(__FILE__).'/WishList.php');
 		if ($this->context->customer->isLogged())
 		{
 			$wishlists = Wishlist::getByIdCustomer($this->context->customer->id);
 			if (empty($this->context->cookie->id_wishlist) === true ||
-				WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false
-			)
+				WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false)
 			{
 				if (!count($wishlists))
 					$id_wishlist = false;
@@ -171,7 +166,8 @@ class BlockWishList extends Module
 				array(
 					'id_wishlist' => $id_wishlist,
 					'isLogged' => true,
-					'wishlist_products' => ($id_wishlist == false ? false : WishList::getProductByIdCustomer($id_wishlist, $this->context->customer->id, $this->context->language->id, null, true)),
+					'wishlist_products' => ($id_wishlist == false ? false : WishList::getProductByIdCustomer($id_wishlist,
+						$this->context->customer->id, $this->context->language->id, null, true)),
 					'wishlists' => $wishlists,
 					'ptoken' => Tools::getToken(false)
 				)
@@ -193,13 +189,11 @@ class BlockWishList extends Module
 
 	public function hookRightColumn($params)
 	{
-		require_once(dirname(__FILE__).'/WishList.php');
 		if ($this->context->customer->isLogged())
 		{
 			$wishlists = Wishlist::getByIdCustomer($this->context->customer->id);
 			if (empty($this->context->cookie->id_wishlist) === true ||
-				WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false
-			)
+				WishList::exists($this->context->cookie->id_wishlist, $this->context->customer->id) === false)
 			{
 				if (!count($wishlists))
 					$id_wishlist = false;
@@ -215,7 +209,8 @@ class BlockWishList extends Module
 				array(
 					'id_wishlist' => $id_wishlist,
 					'isLogged' => true,
-					'wishlist_products' => ($id_wishlist == false ? false : WishList::getProductByIdCustomer($id_wishlist, $this->context->customer->id, $this->context->language->id, null, true)),
+					'wishlist_products' => ($id_wishlist == false ? false : WishList::getProductByIdCustomer($id_wishlist,
+						$this->context->customer->id, $this->context->language->id, null, true)),
 					'wishlists' => $wishlists,
 					'ptoken' => Tools::getToken(false)
 				)
@@ -237,7 +232,7 @@ class BlockWishList extends Module
 		$cookie = $params['cookie'];
 
 		$this->smarty->assign(array(
-			'id_product' => (int)(Tools::getValue('id_product')),
+			'id_product' => (int)Tools::getValue('id_product'),
 		));
 
 		if (isset($cookie->id_customer))
@@ -301,7 +296,8 @@ class BlockWishList extends Module
 			$this->html .= '
 				<tr>
 					<td class="first_item">
-						<img src="'.$this->context->link->getImageLink($product['link_rewrite'], $product['cover'], ImageType::getFormatedName('small')).'" alt="'.htmlentities($product['name'], ENT_COMPAT, 'UTF-8').'" style="float:left;" />
+						<img src="'.$this->context->link->getImageLink($product['link_rewrite'], $product['cover'],
+							ImageType::getFormatedName('small')).'" alt="'.htmlentities($product['name'], ENT_COMPAT, 'UTF-8').'" style="float:left;" />
 						'.$product['name'];
 			if (isset($product['attributes_small']))
 				$this->html .= '<br /><i>'.htmlentities($product['attributes_small'], ENT_COMPAT, 'UTF-8').'</i>';
@@ -316,8 +312,6 @@ class BlockWishList extends Module
 
 	public function hookAdminCustomers($params)
 	{
-		require_once(dirname(__FILE__).'/WishList.php');
-
 		$customer = new Customer((int)$params['id_customer']);
 		if (!Validate::isLoadedObject($customer))
 			die (Tools::displayError());
@@ -370,13 +364,14 @@ class BlockWishList extends Module
 	public function renderJS()
 	{
 		return "<script>
-			$(document).ready(function () { $('#id_customer, #id_wishlist').change( function () { $('#module_form').submit(); }) });
+			$(document).ready(function () { $('#id_customer, #id_wishlist').change( function () { $('#module_form').submit();}); });
 		</script>";
 	}
 
 	public function renderForm()
 	{
 		$customers = Customer::getCustomers();
+
 		foreach ($customers as $key => $val)
 			$customers[$key]['name'] = $val['firstname'].' '.$val['lastname'];
 
@@ -404,7 +399,6 @@ class BlockWishList extends Module
 
 		if ($id_customer = Tools::getValue('id_customer'))
 		{
-			require_once(dirname(__FILE__).'/WishList.php');
 			$wishlists = WishList::getByIdCustomer($id_customer);
 			$fields_form['form']['input'][] = array(
 				'type' => 'select',
@@ -428,7 +422,8 @@ class BlockWishList extends Module
 
 		$helper->identifier = $this->identifier;
 		$helper->submit_action = 'submitModule';
-		$helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
+		$helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name
+			.'&tab_module='.$this->tab.'&module_name='.$this->name;
 		$helper->token = Tools::getAdminTokenLite('AdminModules');
 		$helper->tpl_vars = array(
 			'fields_value' => $this->getConfigFieldsValues(),
