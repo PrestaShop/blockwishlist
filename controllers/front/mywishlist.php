@@ -45,7 +45,14 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 	public function initContent()
 	{
 		parent::initContent();
-		$this->assign();
+		$action = Tools::getValue('action');
+
+		if (!Tools::isSubmit('myajax'))
+			$this->assign();
+		elseif (!empty($action) && method_exists($this, 'ajaxProcess'.Tools::toCamelCase($action)))
+			$this->{'ajaxProcess'.Tools::toCamelCase($action)}();
+		else
+			die(Tools::jsonEncode(array('error' => 'method doesn\'t exist')));
 	}
 
 	/**
@@ -112,7 +119,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 				WishList::addCardToWishlist($this->context->customer->id, Tools::getValue('id_wishlist'), $this->context->language->id);
 			elseif ($delete && empty($id_wishlist) === false)
 			{
-				$wishlist = new WishList((int)($id_wishlist));
+				$wishlist = new WishList((int)$id_wishlist);
 				if (Validate::isLoadedObject($wishlist))
 					$wishlist->delete();
 				else
@@ -137,5 +144,51 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 		));
 
 		$this->setTemplate('mywishlist.tpl');
+	}
+
+	public function ajaxProcessDeleteList()
+	{
+		$default = Tools::getIsset('default');
+		$default = (empty($default) === false ? 1 : 0);
+		$id_wishlist = Tools::getValue('id_wishlist');
+
+		$wishlist = new WishList((int)$id_wishlist);
+		if (Validate::isLoadedObject($wishlist))
+		{
+			$default_change = $wishlist->default ? true : false;
+			$id_customer = $wishlist->id_customer;
+			$wishlist->delete();
+		}
+		else
+			$errors[] = $this->module->l('Cannot delete this wishlist', 'mywishlist');
+
+		if ($default_change)
+		{
+			$array = WishList::getDefault($id_customer);
+
+			if (count($array))
+				die(Tools::jsonEncode(array(
+					'success' => true,
+					'id_default' => $array[0]['id_wishlist']
+					)));
+		}
+
+		die(Tools::jsonEncode(array('success' => true)));
+	}
+
+	public function ajaxProcessSetDefault()
+	{
+		$default = Tools::getIsset('default');
+		$default = (empty($default) === false ? 1 : 0);
+		$id_wishlist = Tools::getValue('id_wishlist');
+
+		if ($default)
+		{
+			$wishlist = new WishList((int)$id_wishlist);
+			if (Validate::isLoadedObject($wishlist) && $wishlist->setDefault())
+				die(Tools::jsonEncode(array('success' => true)));
+		}
+
+		die(Tools::jsonEncode(array('error' => true)));
 	}
 }
