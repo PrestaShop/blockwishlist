@@ -106,7 +106,8 @@ if ($context->customer->isLogged())
 					'productsBoughts' => $productBoughts,
 					'id_wishlist' => $id_wishlist,
 					'refresh' => $refresh,
-					'token_wish' => $wishlist->token
+					'token_wish' => $wishlist->token,
+					'wishlists' => WishList::getByIdCustomer($cookie->id_customer)
 				));
 
 			// Instance of module class for translations

@@ -65,15 +65,35 @@
 						{/if}
 							<br />{l s='Quantity' mod='blockwishlist'}:<input type="text" id="quantity_{$product.id_product}_{$product.id_product_attribute}" value="{$product.quantity|intval}" size="3"  />
 							<br /><br />
-							{l s='Priority' mod='blockwishlist'}: 
+							{l s='Priority' mod='blockwishlist'}:
 							<select id="priority_{$product.id_product}_{$product.id_product_attribute}">
 								<option value="0"{if $product.priority eq 0} selected="selected"{/if}>{l s='High' mod='blockwishlist'}</option>
 								<option value="1"{if $product.priority eq 1} selected="selected"{/if}>{l s='Medium' mod='blockwishlist'}</option>
 								<option value="2"{if $product.priority eq 2} selected="selected"{/if}>{l s='Low' mod='blockwishlist'}</option>
 							</select>
+							{if $wishlists|count > 1}
+								<br /><br />
+								{l s='Change of wishlist'}:
+								<br />
+                                {foreach name=wl from=$wishlists item=wishlist}
+                                    {if $smarty.foreach.wl.first}
+                                       <select class="wishlist_change_button">
+                                    {/if}
+                                    {if $id_wishlist != {$wishlist.id_wishlist}}
+	                                        <option title="{$wishlist.name}" value="{$wishlist.id_wishlist}" data-id-product="{$product.id_product}" data-id-product-attribute="{$product.id_product_attribute}" data-quantity="{$product.quantity|intval}" data-priority="{$product.priority}" data-id-old-wishlist="{$id_wishlist}" data-id-new-wishlist="{$wishlist.id_wishlist}">
+	                                                {l s='Change to %s'|sprintf:$wishlist.name mod='blockwishlist'}
+	                                        </option>
+                                    {/if}
+                                    {if $smarty.foreach.wl.last}
+                                        </select>
+                                        <br />
+                                    {/if}
+                                {/foreach}
+                            {/if}
 						</span>
 					</div>
 				</div>
+				<br />
 				<div class="btn_action">
 					<a href="javascript:;" class="exclusive lnksave" onclick="WishlistProductManage('wlp_bought_{$product.id_product_attribute}', 'update', '{$id_wishlist}', '{$product.id_product}', '{$product.id_product_attribute}', $('#quantity_{$product.id_product}_{$product.id_product_attribute}').val(), $('#priority_{$product.id_product}_{$product.id_product_attribute}').val());" title="{l s='Save' mod='blockwishlist'}">{l s='Save' mod='blockwishlist'}</a>
 				</div>
@@ -121,7 +141,7 @@
 			{if $bought.quantity > 0}
 				<tr>
 					<td class="first_item">
-						<span style="float:left;"><img src="{$link->getImageLink($product.link_rewrite, $product.cover, 'small')|escape:'html'}" alt="{$product.name|escape:'html':'UTF-8'}" /></span>			
+						<span style="float:left;"><img src="{$link->getImageLink($product.link_rewrite, $product.cover, 'small')|escape:'html'}" alt="{$product.name|escape:'html':'UTF-8'}" /></span>
 						<span style="float:left;">
 							{$product.name|truncate:40:'...'|escape:'html':'UTF-8'}
 						{if isset($product.attributes_small)}
