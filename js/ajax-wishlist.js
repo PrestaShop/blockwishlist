@@ -427,7 +427,7 @@ function wishlistProductChange(id_product, id_product_attribute, id_old_wishlist
 			id_product:id_product,
 			id_product_attribute:id_product_attribute,
 			quantity: quantity,
-			priority: priority: $('#priority_' + id_product + '_' + id_product_attribute).val(),
+			priority: $('#priority_' + id_product + '_' + id_product_attribute).val(),
 			id_old_wishlist:id_old_wishlist,
 			id_new_wishlist:id_new_wishlist,
 			myajax: 1,
