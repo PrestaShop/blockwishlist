@@ -78,6 +78,7 @@
                                 {foreach name=wl from=$wishlists item=wishlist}
                                     {if $smarty.foreach.wl.first}
                                        <select class="wishlist_change_button">
+                                       <option>---</option>
                                     {/if}
                                     {if $id_wishlist != {$wishlist.id_wishlist}}
 	                                        <option title="{$wishlist.name}" value="{$wishlist.id_wishlist}" data-id-product="{$product.id_product}" data-id-product-attribute="{$product.id_product_attribute}" data-quantity="{$product.quantity|intval}" data-priority="{$product.priority}" data-id-old-wishlist="{$id_wishlist}" data-id-new-wishlist="{$wishlist.id_wishlist}">
