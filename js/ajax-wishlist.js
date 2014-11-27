@@ -204,8 +204,7 @@ function WishlistManage(id, id_wishlist)
 
 			$('.wishlist_change_button').each(function(index) {
 				$(this).change(function () {
-					wishlistProductChange($('option:selected', this).attr('data-id-product'), $('option:selected', this).attr('data-id-product-attribute'), $('option:selected', this).attr('data-quantity'),
-						$('option:selected', this).attr('data-priority'), $('option:selected', this).attr('data-id-old-wishlist'), $('option:selected', this).attr('data-id-new-wishlist'));
+					wishlistProductChange($('option:selected', this).attr('data-id-product'), $('option:selected', this).attr('data-id-product-attribute'), $('option:selected', this).attr('data-id-old-wishlist'), $('option:selected', this).attr('data-id-new-wishlist'));
 	 		 	});
 			});
 		}
@@ -410,10 +409,12 @@ function wishlistRefreshStatus()
 	});
 }
 
-function wishlistProductChange(id_product, id_product_attribute, quantity, priority, id_old_wishlist, id_new_wishlist)
+function wishlistProductChange(id_product, id_product_attribute, id_old_wishlist, id_new_wishlist)
 {
 	if (typeof mywishlist_url == 'undefined')
 		return (false);
+
+	var quantity = $('#quantity_' + id_product + '_' + id_product_attribute).val();
 
 	$.ajax({
 		type: 'GET',
@@ -426,7 +427,7 @@ function wishlistProductChange(id_product, id_product_attribute, quantity, prior
 			id_product:id_product,
 			id_product_attribute:id_product_attribute,
 			quantity: quantity,
-			priority: priority,
+			priority: priority: $('#priority_' + id_product + '_' + id_product_attribute).val(),
 			id_old_wishlist:id_old_wishlist,
 			id_new_wishlist:id_new_wishlist,
 			myajax: 1,
