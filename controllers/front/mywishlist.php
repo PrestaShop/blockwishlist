@@ -194,13 +194,16 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
 	public function ajaxProcessProductChangeWishlist()
 	{
+
+		$id_product = (int)Tools::getValue('id_product');
+		$id_product_attribute = (int)Tools::getValue('id_product_attribute');
+		$quantity = (int)Tools::getValue('quantity');
+		$priority = (int)Tools::getValue('priority');
+		$id_old_wishlist = (int)Tools::getValue('id_old_wishlist');
+		$id_new_wishlist = (int)Tools::getValue('id_new_wishlist');
 		//check the data is ok and assign
-		if (!($id_product = (int)Tools::getValue('id_product')) ||
-			!is_int(($id_product_attribute = (int)Tools::getValue('id_product_attribute'))) ||
-			!($quantity = (int)Tools::getValue('quantity')) ||
-			!is_int(($priority = (int)Tools::getValue('priority'))) || ($priority < 0 && $priority > 2) ||
-			!($id_old_wishlist = (int)Tools::getValue('id_old_wishlist')) ||
-			!($id_new_wishlist = (int)Tools::getValue('id_new_wishlist')))
+		if (!$id_product || !is_int($id_product_attribute) || !$quantity ||
+			!is_int($priority) || ($priority < 0 && $priority > 2) || !$id_old_wishlist || !$id_new_wishlist)
 			die(Tools::jsonEncode(array('success' => false, 'error' => $this->module->l('Error while changing product of list'))));
 
 		$res = true;
