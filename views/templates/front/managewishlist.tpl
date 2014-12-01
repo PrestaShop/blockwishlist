@@ -34,8 +34,8 @@
 			</li>
 			{if count($productsBoughts)}
 			<li>
-				<a href="#" id="hideBoughtProductsInfos" class="button_account" onclick="WishlistVisibility('wlp_bought_infos', 'BoughtProductsInfos'); return false;" title="{l s="Hide products" mod='blockwishlist'}">{l s="Hide bought product's info" mod='blockwishlist'}</a>
-				<a href="#" id="showBoughtProductsInfos" class="button_account"  onclick="WishlistVisibility('wlp_bought_infos', 'BoughtProductsInfos'); return false;" title="{l s="Show products" mod='blockwishlist'}">{l s="Show bought product's info" mod='blockwishlist'}</a>
+				<a href="#" id="hideBoughtProductsInfos" class="button_account" onclick="WishlistVisibility('wlp_bought_infos', 'BoughtProductsInfos'); return false;" title="{l s="Hide products" mod='blockwishlist'}">{l s="Hide bought products' info" mod='blockwishlist'}</a>
+				<a href="#" id="showBoughtProductsInfos" class="button_account"  onclick="WishlistVisibility('wlp_bought_infos', 'BoughtProductsInfos'); return false;" title="{l s="Show products" mod='blockwishlist'}">{l s="Show bought products' info" mod='blockwishlist'}</a>
 			</li>
 			{/if}
 		</ul>
@@ -73,7 +73,7 @@
 							</select>
 							{if $wishlists|count > 1}
 								<br /><br />
-								{l s='Change of wishlist'}:
+								{l s='Move'}:
 								<br />
                                 {foreach name=wl from=$wishlists item=wishlist}
                                     {if $smarty.foreach.wl.first}
@@ -82,7 +82,7 @@
                                     {/if}
                                     {if $id_wishlist != {$wishlist.id_wishlist}}
 	                                        <option title="{$wishlist.name}" value="{$wishlist.id_wishlist}" data-id-product="{$product.id_product}" data-id-product-attribute="{$product.id_product_attribute}" data-quantity="{$product.quantity|intval}" data-priority="{$product.priority}" data-id-old-wishlist="{$id_wishlist}" data-id-new-wishlist="{$wishlist.id_wishlist}">
-	                                                {l s='Change to %s'|sprintf:$wishlist.name mod='blockwishlist'}
+	                                                {l s='Move to %s'|sprintf:$wishlist.name mod='blockwishlist'}
 	                                        </option>
                                     {/if}
                                     {if $smarty.foreach.wl.last}
