@@ -204,7 +204,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 		//check the data is ok and assign
 		if (!$id_product || !is_int($id_product_attribute) || !$quantity ||
 			!is_int($priority) || ($priority < 0 && $priority > 2) || !$id_old_wishlist || !$id_new_wishlist)
-			die(Tools::jsonEncode(array('success' => false, 'error' => $this->module->l('Error while changing product of list'))));
+			die(Tools::jsonEncode(array('success' => false, 'error' => $this->module->l('Error while changing product of list', 'mywishlist'))));
 
 		$res = true;
 		$check = (int)Db::getInstance()->getValue('SELECT quantity FROM '._DB_PREFIX_.'wishlist_product
@@ -222,7 +222,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 		}
 
 		if (!$res)
-			die(Tools::jsonEncode(array('success' => false, 'error' => $this->module->l('Error while changing product of list'))));
-		die(Tools::jsonEncode(array('success' => true, 'msg' => $this->module->l('The product has been correctly moved'))));
+			die(Tools::jsonEncode(array('success' => false, 'error' => $this->module->l('Error while changing product of list', 'mywishlist'))));
+		die(Tools::jsonEncode(array('success' => true, 'msg' => $this->module->l('The product has been correctly moved', 'mywishlist'))));
 	}
 }
