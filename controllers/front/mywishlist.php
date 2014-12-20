@@ -38,6 +38,13 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 		$this->context = Context::getContext();
 		include_once($this->module->getLocalPath().'WishList.php');
 	}
+	
+	public function setMedia()
+	{
+		parent::setMedia();
+		$this->addJqueryPlugin('footable');
+		$this->addJqueryPlugin('footable-sort');
+	}
 
 	/**
 	 * @see FrontController::initContent()
