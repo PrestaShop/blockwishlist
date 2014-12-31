@@ -148,19 +148,24 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
 	public function ajaxProcessDeleteList()
 	{
+		if (!$this->context->customer->isLogged())
+			die(Tools::jsonEncode(array('success' => false,
+				'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
+
 		$default = Tools::getIsset('default');
 		$default = (empty($default) === false ? 1 : 0);
 		$id_wishlist = Tools::getValue('id_wishlist');
 
 		$wishlist = new WishList((int)$id_wishlist);
-		if (Validate::isLoadedObject($wishlist))
+		if (Validate::isLoadedObject($wishlist) && $wishlist->id_customer == $this->context->customer->id_customer)
 		{
 			$default_change = $wishlist->default ? true : false;
 			$id_customer = $wishlist->id_customer;
 			$wishlist->delete();
 		}
 		else
-			$errors[] = $this->module->l('Cannot delete this wishlist', 'mywishlist');
+			die(Tools::jsonEncode(array('success' => false,
+				'error' => $this->module->l('Cannot delete this wishlist', 'mywishlist'))));
 
 		if ($default_change)
 		{
@@ -178,6 +183,10 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
 	public function ajaxProcessSetDefault()
 	{
+		if (!$this->context->customer->isLogged())
+			die(Tools::jsonEncode(array('success' => false,
+				'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
+
 		$default = Tools::getIsset('default');
 		$default = (empty($default) === false ? 1 : 0);
 		$id_wishlist = Tools::getValue('id_wishlist');
@@ -185,7 +194,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 		if ($default)
 		{
 			$wishlist = new WishList((int)$id_wishlist);
-			if (Validate::isLoadedObject($wishlist) && $wishlist->setDefault())
+			if (Validate::isLoadedObject($wishlist) && $wishlist->setDefault() && $wishlist->id_customer == $this->context->customer->id_customer)
 				die(Tools::jsonEncode(array('success' => true)));
 		}
 
@@ -194,6 +203,9 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
 	public function ajaxProcessProductChangeWishlist()
 	{
+		if (!$this->context->customer->isLogged())
+			die(Tools::jsonEncode(array('success' => false,
+				'error' => $this->module->l('You aren\'t logged in', 'mywishlist'))));
 
 		$id_product = (int)Tools::getValue('id_product');
 		$id_product_attribute = (int)Tools::getValue('id_product_attribute');
@@ -201,9 +213,14 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 		$priority = (int)Tools::getValue('priority');
 		$id_old_wishlist = (int)Tools::getValue('id_old_wishlist');
 		$id_new_wishlist = (int)Tools::getValue('id_new_wishlist');
-		//check the data is ok and assign
+		$new_wishlist = new WishList((int)$id_new_wishlist);
+		$old_wishlist = new WishList((int)$id_old_wishlist);
+
+		//check the data is ok
 		if (!$id_product || !is_int($id_product_attribute) || !$quantity ||
-			!is_int($priority) || ($priority < 0 && $priority > 2) || !$id_old_wishlist || !$id_new_wishlist)
+			!is_int($priority) || ($priority < 0 && $priority > 2) || !$id_old_wishlist || !$id_new_wishlist ||
+			(Validate::isLoadedObject($new_wishlist) && $new_wishlist->id_customer == $this->context->customer->id_customer) ||
+			(Validate::isLoadedObject($old_wishlist) && $old_wishlist->id_customer == $this->context->customer->id_customer))
 			die(Tools::jsonEncode(array('success' => false, 'error' => $this->module->l('Error while moving product to another list', 'mywishlist'))));
 
 		$res = true;
@@ -212,13 +229,13 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 
 		if ($check)
 		{
-			$res &= WishList::removeProduct($id_old_wishlist, $this->context->customer->id, $id_product, $id_product_attribute);
-			$res &= WishList::updateProduct($id_new_wishlist, $id_product, $id_product_attribute, $priority, $quantity + $check);
+			$res &= $old_wistlist->removeProduct($id_old_wishlist, $this->context->customer->id, $id_product, $id_product_attribute);
+			$res &= $new_wishlist->updateProduct($id_new_wishlist, $id_product, $id_product_attribute, $priority, $quantity + $check);
 		}
 		else
 		{
-			$res &= WishList::removeProduct($id_old_wishlist, $this->context->customer->id, $id_product, $id_product_attribute);
-			$res &= WishList::addProduct($id_new_wishlist, $this->context->customer->id, $id_product, $id_product_attribute, $quantity);
+			$res &= $old_wistlist->::removeProduct($id_old_wishlist, $this->context->customer->id, $id_product, $id_product_attribute);
+			$res &= $new_wishlist->addProduct($id_new_wishlist, $this->context->customer->id, $id_product, $id_product_attribute, $quantity);
 		}
 
 		if (!$res)
