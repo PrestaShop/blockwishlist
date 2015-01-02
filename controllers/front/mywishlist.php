@@ -236,7 +236,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 		}
 		else
 		{
-			$res &= $old_wistlist->::removeProduct($id_old_wishlist, $this->context->customer->id, $id_product, $id_product_attribute);
+			$res &= $old_wistlist->removeProduct($id_old_wishlist, $this->context->customer->id, $id_product, $id_product_attribute);
 			$res &= $new_wishlist->addProduct($id_new_wishlist, $this->context->customer->id, $id_product, $id_product_attribute, $quantity);
 		}
 
