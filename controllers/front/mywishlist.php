@@ -159,7 +159,7 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 		$id_wishlist = Tools::getValue('id_wishlist');
 
 		$wishlist = new WishList((int)$id_wishlist);
-		if (Validate::isLoadedObject($wishlist) && $wishlist->id_customer == $this->context->customer->id_customer)
+		if (Validate::isLoadedObject($wishlist) && $wishlist->id_customer == $this->context->customer->id)
 		{
 			$default_change = $wishlist->default ? true : false;
 			$id_customer = $wishlist->id_customer;
