@@ -221,8 +221,8 @@ class BlockWishListMyWishListModuleFrontController extends ModuleFrontController
 		//check the data is ok
 		if (!$id_product || !is_int($id_product_attribute) || !$quantity ||
 			!is_int($priority) || ($priority < 0 && $priority > 2) || !$id_old_wishlist || !$id_new_wishlist ||
-			(Validate::isLoadedObject($new_wishlist) && $new_wishlist->id_customer == $this->context->customer->id) ||
-			(Validate::isLoadedObject($old_wishlist) && $old_wishlist->id_customer == $this->context->customer->id))
+			(Validate::isLoadedObject($new_wishlist) && $new_wishlist->id_customer != $this->context->customer->id) ||
+			(Validate::isLoadedObject($old_wishlist) && $old_wishlist->id_customer != $this->context->customer->id))
 			die(Tools::jsonEncode(array('success' => false, 'error' => $this->module->l('Error while moving product to another list', 'mywishlist'))));
 
 		$res = true;
