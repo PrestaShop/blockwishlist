@@ -43,6 +43,8 @@ class BlockWishList extends Module
 		$this->author = 'PrestaShop';
 		$this->need_instance = 0;
 
+		$this->controllers = array('mywishlist', 'view');
+
 		$this->bootstrap = true;
 		parent::__construct();
 
