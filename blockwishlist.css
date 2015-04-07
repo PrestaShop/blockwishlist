@@ -246,3 +246,15 @@ ul.wlp_bought_list li .lnkdel {
 	text-indent:-5000px;
 	background: url(img/icon/delete.gif) no-repeat 0 0
 }
+
+ul.product_list.grid > li .product-container .functional-buttons .wishlist .popover {
+  padding: 0;
+  min-width: 160px; }
+  ul.product_list.grid > li .product-container .functional-buttons .wishlist .popover .popover-content {
+    padding: 0;
+    min-width: 158px; }
+  ul.product_list.grid > li .product-container .functional-buttons .wishlist .popover table {
+    margin-bottom: 2px; }
+    ul.product_list.grid > li .product-container .functional-buttons .wishlist .popover table td:hover {
+      background-color: #cccccc;
+      cursor: pointer; }
