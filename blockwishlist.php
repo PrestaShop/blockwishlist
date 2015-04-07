@@ -141,6 +141,9 @@ class BlockWishList extends Module
 	public function hookDisplayProductListFunctionalButtons($params)
 	{
 		//TODO : Add cache
+		if ($this->context->customer->isLogged())
+			$this->smarty->assign('wishlists', Wishlist::getByIdCustomer($this->context->customer->id));
+
 		$this->smarty->assign('product', $params['product']);
 		return $this->display(__FILE__, 'blockwishlist_button.tpl');
 	}
