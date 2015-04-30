@@ -24,7 +24,7 @@
 *}
 
 {if isset($wishlists) && count($wishlists) > 1}
-<div class="buttons_bottom_block">
+<div class="buttons_bottom_block no-print">
 	<div id="wishlist_button">
 		<select id="idWishlist">
 			{foreach $wishlists as $wishlist}
