@@ -375,10 +375,13 @@ class BlockWishList extends Module
 
 	public function renderForm()
 	{
-		$customers = Customer::getCustomers();
+		$_customers = WishList::getCustomers();
 
-		foreach ($customers as $key => $val)
-			$customers[$key]['name'] = $val['firstname'].' '.$val['lastname'];
+        	foreach ($_customers as $c)
+        	{
+            		$customers[$c['id_customer']]['id_customer'] = $c['id_customer'];
+            		$customers[$c['id_customer']]['name'] = $c['firstname'].' '.$c['lastname'];
+        	}
 
 		$fields_form = array(
 			'form' => array(
