@@ -1,6 +1,6 @@
 <?php
 /*
-* 2007-2014 PrestaShop
+* 2007-2015 PrestaShop
 *
 * NOTICE OF LICENSE
 *
@@ -19,7 +19,7 @@
 * needs please refer to http://www.prestashop.com for more information.
 *
 *  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2014 PrestaShop SA
+*  @copyright  2007-2015 PrestaShop SA
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
@@ -375,10 +375,13 @@ class BlockWishList extends Module
 
 	public function renderForm()
 	{
-		$customers = Customer::getCustomers();
+		$_customers = WishList::getCustomers();
 
-		foreach ($customers as $key => $val)
-			$customers[$key]['name'] = $val['firstname'].' '.$val['lastname'];
+        	foreach ($_customers as $c)
+        	{
+            		$customers[$c['id_customer']]['id_customer'] = $c['id_customer'];
+            		$customers[$c['id_customer']]['name'] = $c['firstname'].' '.$c['lastname'];
+        	}
 
 		$fields_form = array(
 			'form' => array(

@@ -1,6 +1,6 @@
 <?php
 /*
-* 2007-2014 PrestaShop
+* 2007-2015 PrestaShop
 *
 * NOTICE OF LICENSE
 *
@@ -19,7 +19,7 @@
 * needs please refer to http://www.prestashop.com for more information.
 *
 *  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2014 PrestaShop SA
+*  @copyright  2007-2015 PrestaShop SA
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
@@ -159,6 +159,27 @@ class WishList extends ObjectModel
 		}
 		return (false);
 	}
+
+	/**
+	* Get Customers having a wishlist
+     	*
+     	* @return array Results
+     	*/
+    	public static function getCustomers()
+    	{
+        	$cache_id = 'WhishList::getCustomers';
+        	if (!Cache::isStored($cache_id))
+        	{
+            		$result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+                		SELECT c.`id_customer`, c.`firstname`, c.`lastname`
+                		  FROM `'._DB_PREFIX_.'wishlist` w
+                		INNER JOIN `'._DB_PREFIX_.'customer` c ON c.`id_customer` = w.`id_customer`
+                		ORDER BY c.`firstname` ASC'
+            		);
+            		Cache::store($cache_id, $result);
+               	}
+               	return Cache::retrieve($cache_id);
+    	}
 
 	/**
 	 * Get ID wishlist by Token
