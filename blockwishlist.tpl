@@ -59,7 +59,7 @@
 			{/foreach}
 			</select>
 		{/if}
-			<a href="{$link->getModuleLink('blockwishlist', 'mywishlist', array(), true)|addslashes}" title="{l s='My wishlists' mod='blockwishlist'}">&raquo; {l s='My wishlists' mod='blockwishlist'}</a>
+			<a href="{$link->getModuleLink('blockwishlist', 'mywishlist', array(), true)|addslashes}" title="{l s='My wishlists' mod='blockwishlist'}" rel="nofollow">&raquo; {l s='My wishlists' mod='blockwishlist'}</a>
 		</p>
 	</div>
 </div>
