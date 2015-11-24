@@ -258,7 +258,7 @@ class BlockWishList extends Module
 		return $this->hookCustomerAccount($params);
 	}
 
-	private function _displayProducts($id_wishlist)
+	protected function _displayProducts($id_wishlist)
 	{
 		include_once(dirname(__FILE__).'/WishList.php');
 
