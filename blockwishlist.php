@@ -51,7 +51,7 @@ class BlockWishList extends Module
 		$this->displayName = $this->l('Wishlist block');
 		$this->description = $this->l('Adds a block containing the customer\'s wishlists.');
 		$this->default_wishlist_name = $this->l('My wishlist');
-		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
+		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.99.99');
 		$this->html = '';
 	}
 
