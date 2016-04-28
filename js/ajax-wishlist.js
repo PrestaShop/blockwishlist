@@ -413,7 +413,7 @@ function wishlistProductsIdsRemove(id)
 function wishlistRefreshStatus()
 {
 	$('.addToWishlist').each(function(){
-		if ($.inArray(parseInt($(this).attr('data-productId')),wishlistProductsIds)!= -1)
+		if ($.inArray(parseInt($(this).attr('data-product-id')),wishlistProductsIds)!= -1)
 			$(this).addClass('checked');
 		else
 			$(this).removeClass('checked');
