@@ -30,7 +30,7 @@
     {l s='Other wishlists of %1s %2s:' sprintf=[$current_wishlist.firstname, $current_wishlist.lastname] mod='blockwishlist'}
 	{foreach from=$wishlists item=wishlist name=i}
 		{if $wishlist.id_wishlist != $current_wishlist.id_wishlist}
-			<a href="{$link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist.token])|escape:'html':'UTF-8'}" title="{$wishlist.name}" rel="nofollow">{$wishlist.name}</a>
+			<a href="{$link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist.token])|escape:'html':'UTF-8'}" title="{$wishlist.name|escape:'html':'UTF-8'}" rel="nofollow">{$wishlist.name|escape:'htmlall':'UTF-8'}</a>
 			{if !$smarty.foreach.i.last}
 				/
 			{/if}

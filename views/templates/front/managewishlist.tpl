@@ -81,8 +81,8 @@
                                        <option>---</option>
                                     {/if}
                                     {if $id_wishlist != {$wishlist.id_wishlist}}
-	                                        <option title="{$wishlist.name}" value="{$wishlist.id_wishlist}" data-id-product="{$product.id_product}" data-id-product-attribute="{$product.id_product_attribute}" data-quantity="{$product.quantity|intval}" data-priority="{$product.priority}" data-id-old-wishlist="{$id_wishlist}" data-id-new-wishlist="{$wishlist.id_wishlist}">
-	                                                {l s='Move to %s'|sprintf:$wishlist.name mod='blockwishlist'}
+	                                        <option title="{$wishlist.name|escape:'html':'UTF-8'}" value="{$wishlist.id_wishlist}" data-id-product="{$product.id_product}" data-id-product-attribute="{$product.id_product_attribute}" data-quantity="{$product.quantity|intval}" data-priority="{$product.priority}" data-id-old-wishlist="{$id_wishlist}" data-id-new-wishlist="{$wishlist.id_wishlist}">
+	                                                {l s='Move to %s' sprintf=[$wishlist.name] mod='blockwishlist'}
 	                                        </option>
                                     {/if}
                                     {if $smarty.foreach.wl.last}

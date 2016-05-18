@@ -30,7 +30,7 @@
         <a href="{$link->getModuleLink('blockwishlist', 'mywishlist')|escape:'html'}">{l s='My wishlists' mod='blockwishlist'}</a>
 		{if isset($current_wishlist)}
 	        <span class="navigation-pipe">{$navigationPipe}</span>
-	        {$current_wishlist.name}
+	        {$current_wishlist.name|escape:'htmlall':'UTF-8'}
 		{/if}
     {/capture}
 

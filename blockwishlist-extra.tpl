@@ -28,7 +28,7 @@
 	<div id="wishlist_button">
 		<select id="idWishlist">
 			{foreach $wishlists as $wishlist}
-				<option value="{$wishlist.id_wishlist}">{$wishlist.name}</option>
+				<option value="{$wishlist.id_wishlist}">{$wishlist.name|escape:'htmlall':'UTF-8'}</option>
 			{/foreach}
 		</select>
 		<button class="" onclick="WishlistCart('wishlist_block_list', 'add', '{$id_product|intval}', $('#idCombination').val(), document.getElementById('quantity_wanted').value, $('#idWishlist').val()); return false;"  title="{l s='Add to wishlist' mod='blockwishlist'}">
