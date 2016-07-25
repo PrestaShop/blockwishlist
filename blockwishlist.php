@@ -375,12 +375,11 @@ class BlockWishList extends Module
 
 	public function renderForm()
 	{
-		$_customers = WishList::getCustomers();
-
-        	foreach ($_customers as $c)
+		$customers = array();
+        	foreach (WishList::getCustomers() as $c)
         	{
-            		$_customers[$c['id_customer']]['id_customer'] = $c['id_customer'];
-            		$_customers[$c['id_customer']]['name'] = $c['firstname'].' '.$c['lastname'];
+            		$customers[$c['id_customer']]['id_customer'] = $c['id_customer'];
+            		$customers[$c['id_customer']]['name'] = $c['firstname'].' '.$c['lastname'];
         	}
 
 		$fields_form = array(
@@ -396,7 +395,7 @@ class BlockWishList extends Module
 						'name' => 'id_customer',
 						'options' => array(
 							'default' => array('value' => 0, 'label' => $this->l('Choose customer')),
-							'query' => $_customers,
+							'query' => $customers,
 							'id' => 'id_customer',
 							'name' => 'name'
 						),
