@@ -22,15 +22,21 @@
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
 *}
-
-{extends file="helpers/list/list_content.tpl"}
-
-{block name="td_content"}
-  {if isset($params.type) && $params.type == 'priority'}
-    <span class="label label-default">{$priority[$tr.$key]}</span>
-  {elseif isset($params.type) && $params.type == 'image'}
-    <img src="{$tr.$key}"/>
-  {else}
-    {$smarty.block.parent}
-  {/if}
-{/block}
+<script type="text/javascript">
+  window.BlockWishlistModule = window.BlockWishlistModule || {ldelim}{rdelim};
+  window.BlockWishlistModule.config = {
+    idProducts: {$wishlist_products|json_encode},
+    isLogged: {if Context::getContext()->customer->isLogged()}true{else}false{/if},
+    token: '{Tools::getToken()}',
+    urls: {
+      cart: '{url entity='module' name='blockwishlist' controller='cart'}',
+      managewishlist: '{url entity='module' name='blockwishlist' controller='managewishlist'}',
+      sendwishlist: '{url entity='module' name='blockwishlist' controller='sendwishlist'}',
+      view: '{url entity='module' name='blockwishlist' controller='view'}'
+    }
+  };
+  window.BlockWishlistModule.translations = {
+    loginRequired: '{l s='You must be logged in to manage your wishlist.' d='Modules.BlockWishlist.Top' js=1}',
+    addedToWishlist: '{l s='The product was successfully added to your wishlist.' d='Modules.BlockWishlist.Top' js=1}',
+  };
+</script>

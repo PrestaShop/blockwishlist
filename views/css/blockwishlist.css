@@ -120,26 +120,6 @@
 	background: none repeat scroll 0 0 #ccc;
 }
 
-
-/* form add ****************************************** */
-#form_wishlist {}
-#form_wishlist fieldset { padding: 20px }
-#form_wishlist label {
-    display:inline-block;
-    padding:6px 15px;
-    width:150px;
-    font-size:12px;
-    text-align:right;
-}
-#form_wishlist input.inputTxt {
-    padding:0 5px;
-    height:26px;
-    width:260px;
-    font-size:12px;
-    color:#666;
-    border:1px solid #ccc;
-}
-
 /* block-order-detail ********************************** */
 #module-blockwishlist-mywishlist #block-order-detail {margin-top:20px}
 

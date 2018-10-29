@@ -15,5 +15,8 @@
   "config": {
     "preferred-install": "dist"
   },
+  "autoload": {
+    "classmap": ["classes/"]
+  },
   "type": "prestashop-module"
 }
