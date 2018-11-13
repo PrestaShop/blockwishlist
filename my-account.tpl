@@ -23,11 +23,12 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 
-<!-- MODULE WishList -->
-<li class="lnk_wishlist">
-	<a href="{$link->getModuleLink('blockwishlist', 'mywishlist', array(), true)|escape:'html':'UTF-8'}" title="{l s='My wishlists' mod='blockwishlist'}">
-		<img src="{$module_template_dir}img/gift.gif" alt="{l s='My wishlists' mod='blockwishlist'}" class="icon" />
-		{l s='My wishlists' mod='blockwishlist'}
-	</a>
-</li>
-<!-- END : MODULE WishList -->
+<a class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
+   id="wishlist-link"
+   href="{url entity='module' name='blockwishlist' controller='mywishlist'}"
+>
+    <span class="link-item">
+      <i class="material-icons">list</i>
+      {l s='My wishlists' mod='blockwishlist'}
+    </span>
+</a>
