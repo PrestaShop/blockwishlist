@@ -35,8 +35,8 @@ module.exports = {
     jquery: 'jQuery'
   },
   entry: {
-    list: './_dev/front/js/pages/list',
-    theme: ['./_dev/front/scss/common.scss']
+    list: './_dev/js/pages/list',
+    wishlist: ['./_dev/scss/common.scss']
   },
   output: {
     path: path.resolve(__dirname, '../public'),
@@ -50,10 +50,10 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      '@js': path.resolve(__dirname, '../_dev/front/js'),
-      '@pages': path.resolve(__dirname, '../_dev/front/js/pages'),
-      '@components': path.resolve(__dirname, '../_dev/front/js/components'),
-      '@scss': path.resolve(__dirname, '../_dev/front/scss'),
+      '@js': path.resolve(__dirname, '../_dev/js'),
+      '@pages': path.resolve(__dirname, '../_dev/js/pages'),
+      '@components': path.resolve(__dirname, '../_dev/js/components'),
+      '@scss': path.resolve(__dirname, '../_dev/scss'),
       '@node_modules': path.resolve(__dirname, '../node_modules')
     }
   },
