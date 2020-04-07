@@ -32,11 +32,15 @@ const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 
 module.exports = {
   externals: {
-    jquery: 'jQuery'
+    jquery: 'jQuery',
+    prestashop: 'prestashop'
   },
   entry: {
-    list: './_dev/js/pages/list',
-    wishlist: ['./_dev/scss/common.scss']
+    list: './_dev/front/js/pages/list',
+    button: './_dev/front/js/components/Button',
+    create: './_dev/front/js/components/Create',
+    addtowishlist: './_dev/front/js/components/AddToWishlist',
+    wishlist: ['./_dev/front/scss/common.scss']
   },
   output: {
     path: path.resolve(__dirname, '../public'),
@@ -48,17 +52,24 @@ module.exports = {
     chunkFilename: '[id].[hash:8].js'
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.json', '.mjs'],
     alias: {
-      '@js': path.resolve(__dirname, '../_dev/js'),
-      '@pages': path.resolve(__dirname, '../_dev/js/pages'),
-      '@components': path.resolve(__dirname, '../_dev/js/components'),
-      '@scss': path.resolve(__dirname, '../_dev/scss'),
-      '@node_modules': path.resolve(__dirname, '../node_modules')
+      '@js': path.resolve(__dirname, '../_dev/front/js'),
+      '@pages': path.resolve(__dirname, '../_dev/front/js/pages'),
+      '@graphqlFiles': path.resolve(__dirname, '../_dev/front/js/graphql'),
+      '@components': path.resolve(__dirname, '../_dev/front/js/components'),
+      '@scss': path.resolve(__dirname, '../_dev/front/scss'),
+      '@node_modules': path.resolve(__dirname, '../node_modules'),
+      vue: 'vue/dist/vue.esm.js'
     }
   },
   module: {
     rules: [
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto'
+      },
       {
         test: /\.js$/,
         include: path.resolve(__dirname, '../_dev'),
