@@ -17,24 +17,15 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
-  extends: [
-    'prestashop',
-    'plugin:vue/strongly-recommended',
-  ],
-  plugins: [
-    'import',
-    'vue',
-  ],
+  extends: ['prestashop', 'plugin:vue/strongly-recommended'],
+  plugins: ['import', 'vue'],
   rules: {
     'class-methods-use-this': 0,
     'func-names': 0,
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: [
-          'tests/**/*.js',
-          '.webpack/**/*.js',
-        ],
+        devDependencies: ['tests/**/*.js', '.webpack/**/*.js'],
       },
     ],
     'max-len': ['error', {code: 120}],

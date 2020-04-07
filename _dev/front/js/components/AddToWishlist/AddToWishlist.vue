@@ -23,46 +23,46 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-import List from '../List/List';
+  import List from '../List/List';
 
-export default {
-  name: 'AddToWishlist',
-  components: {
-    List,
-  },
-  props: {
-    url: '',
-    title: '',
-    label: '',
-    placeholder: '',
-    cancelText: '',
-    createText: '',
-  },
-  data() {
-    return {
-      value: '',
-      isHidden: false,
-    };
-  },
-  methods: {
-    toggleModal() {
-      this.isHidden = !this.isHidden;
+  export default {
+    name: 'AddToWishlist',
+    components: {
+      List,
     },
-    createWishlist() {
-      console.log(this.value);
-      console.log('Wishlist created!');
+    props: {
+      url: '',
+      title: '',
+      label: '',
+      placeholder: '',
+      cancelText: '',
+      createText: '',
     },
-    openNewWishlistModal() {
-      const event = new Event('showCreateWishlist');
-      document.dispatchEvent(event);
+    data() {
+      return {
+        value: '',
+        isHidden: false,
+      };
     },
-  },
-  mounted() {
-    document.addEventListener('showAddToWishList', event => {
-      this.toggleModal();
-    });
-  },
-};
+    methods: {
+      toggleModal() {
+        this.isHidden = !this.isHidden;
+      },
+      createWishlist() {
+        console.log(this.value);
+        console.log('Wishlist created!');
+      },
+      openNewWishlistModal() {
+        const event = new Event('showCreateWishlist');
+        document.dispatchEvent(event);
+      },
+    },
+    mounted() {
+      document.addEventListener('showAddToWishList', (event) => {
+        this.toggleModal();
+      });
+    },
+  };
 </script>
 
 <style lang="scss" type="text/scss">

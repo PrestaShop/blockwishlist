@@ -30,7 +30,7 @@ import Create from './Create';
 Vue.use(VueApollo);
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
+  defaultClient: apolloClient,
 });
 
 const wishlistCreate = document.querySelector('.wishlist-create');
@@ -43,6 +43,6 @@ new CreateRoot({
   propsData: {
     title: wishlistCreate.dataset.checked,
     url: wishlistCreate.dataset.url,
-    productId: wishlistCreate.dataset.productId
-  }
+    productId: wishlistCreate.dataset.productId,
+  },
 });

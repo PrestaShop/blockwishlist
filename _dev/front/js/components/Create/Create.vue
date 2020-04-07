@@ -23,37 +23,37 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-export default {
-  name: 'Create',
-  props: {
-    url: '',
-    title: '',
-    label: '',
-    placeholder: '',
-    cancelText: '',
-    createText: '',
-  },
-  data() {
-    return {
-      value: '',
-      isHidden: true,
-    };
-  },
-  methods: {
-    toggleModal() {
-      this.isHidden = !this.isHidden;
+  export default {
+    name: 'Create',
+    props: {
+      url: '',
+      title: '',
+      label: '',
+      placeholder: '',
+      cancelText: '',
+      createText: '',
     },
-    createWishlist() {
-      console.log(this.value);
-      console.log('Wishlist created!');
+    data() {
+      return {
+        value: '',
+        isHidden: true,
+      };
     },
-  },
-  mounted() {
-    document.addEventListener('showCreateWishlist', () => {
-      this.toggleModal();
-    });
-  },
-};
+    methods: {
+      toggleModal() {
+        this.isHidden = !this.isHidden;
+      },
+      createWishlist() {
+        console.log(this.value);
+        console.log('Wishlist created!');
+      },
+    },
+    mounted() {
+      document.addEventListener('showCreateWishlist', () => {
+        this.toggleModal();
+      });
+    },
+  };
 </script>
 
 <style lang="scss" type="text/scss">

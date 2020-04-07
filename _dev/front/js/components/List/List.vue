@@ -35,20 +35,20 @@
 </template>
 
 <script>
-import getLists from '@graphqlFiles/queries/getlists';
+  import getLists from '@graphqlFiles/queries/getlists';
 
-export default {
-  name: 'List',
-  apollo: {
-    lists: getLists,
-  },
-  methods: {
-    select(wishlist) {
-      console.log('select');
+  export default {
+    name: 'List',
+    apollo: {
+      lists: getLists,
     },
-  },
-  mounted() {},
-};
+    methods: {
+      select(wishlist) {
+        console.log('select');
+      },
+    },
+    mounted() {},
+  };
 </script>
 
 <style lang="scss" type="text/scss">

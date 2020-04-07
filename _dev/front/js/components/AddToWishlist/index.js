@@ -30,7 +30,7 @@ import AddToWishlist from './AddToWishlist';
 Vue.use(VueApollo);
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
+  defaultClient: apolloClient,
 });
 
 const AddToWishListElement = document.querySelector('.wishlist-add-to');
@@ -41,6 +41,6 @@ new AddToRoot({
   el: '.wishlist-add-to',
   apolloProvider,
   propsData: {
-    url: AddToWishListElement.dataset.url
-  }
+    url: AddToWishListElement.dataset.url,
+  },
 });

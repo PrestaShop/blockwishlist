@@ -23,19 +23,19 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <template>
-  <div class="wishlist"></div>
+  <div class="wishlist" />
 </template>
 
 <script>
-export default {
-  name: 'App',
-  computed: {},
-  methods: {},
-  components: {},
-  data: () => ({
-    list: {},
-  }),
-};
+  export default {
+    name: 'App',
+    computed: {},
+    methods: {},
+    components: {},
+    data: () => ({
+      list: {},
+    }),
+  };
 </script>
 
 <style lang="scss" type="text/scss"></style>

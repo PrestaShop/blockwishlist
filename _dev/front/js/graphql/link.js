@@ -4,5 +4,5 @@ import typeDefs from './types';
 
 export default makeExecutableSchema({
   typeDefs,
-  resolvers
+  resolvers,
 });

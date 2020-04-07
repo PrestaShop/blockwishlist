@@ -7,5 +7,5 @@ const cache = new InMemoryCache();
 
 export default new ApolloClient({
   link: new SchemaLink({schema: link}),
-  cache
+  cache,
 });

@@ -23,46 +23,55 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <template>
-  <button class="wishlist-button-add" @click="addToWishlist">
-    <i class="material-icons" v-if="isChecked">favorite</i>
-    <i class="material-icons" v-else>favorite_border</i>
+  <button
+    class="wishlist-button-add"
+    @click="addToWishlist"
+  >
+    <i
+      class="material-icons"
+      v-if="isChecked"
+    >favorite</i>
+    <i
+      class="material-icons"
+      v-else
+    >favorite_border</i>
   </button>
 </template>
 
 <script>
-import getProducts from '@graphqlFiles/queries/getproducts';
+  import getProducts from '@graphqlFiles/queries/getproducts';
 
-export default {
-  name: 'Button',
-  apollo: {
-    products: {
-      query: getProducts,
-      variables: {
-        listId: 1,
+  export default {
+    name: 'Button',
+    apollo: {
+      products: {
+        query: getProducts,
+        variables: {
+          listId: 1,
+        },
       },
     },
-  },
-  props: {
-    url: '',
-    productId: null,
-    checked: false,
-  },
-  data() {
-    return {
-      isChecked: this.checked === 'true' ? true : false,
-    };
-  },
-  methods: {
-    toggleCheck() {
-      this.isChecked = !this.isChecked;
+    props: {
+      url: '',
+      productId: null,
+      checked: false,
     },
-    addToWishlist() {
-      this.toggleCheck();
-      console.log(this.products);
-      console.log('Added to wishlist');
+    data() {
+      return {
+        isChecked: this.checked === 'true',
+      };
     },
-  },
-};
+    methods: {
+      toggleCheck() {
+        this.isChecked = !this.isChecked;
+      },
+      addToWishlist() {
+        this.toggleCheck();
+        console.log(this.products);
+        console.log('Added to wishlist');
+      },
+    },
+  };
 </script>
 
 <style lang="scss" type="text/scss">

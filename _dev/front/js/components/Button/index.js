@@ -23,28 +23,28 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 import Vue from 'vue';
-import Button from './Button';
 import VueApollo from 'vue-apollo';
 import apolloClient from '@graphqlFiles/client';
+import Button from './Button';
 
 Vue.use(VueApollo);
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
+  defaultClient: apolloClient,
 });
 
 const wishListButtons = document.querySelectorAll('.wishlist-button');
 
 const ButtonRoot = Vue.extend(Button);
 
-wishListButtons.forEach(e => {
+wishListButtons.forEach((e) => {
   new ButtonRoot({
     el: e,
     apolloProvider,
     propsData: {
       checked: e.dataset.checked,
       url: e.dataset.url,
-      productId: e.dataset.productId
-    }
+      productId: e.dataset.productId,
+    },
   });
 });

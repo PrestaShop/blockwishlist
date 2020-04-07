@@ -28,5 +28,5 @@ import app from './App';
 new Vue({
   el: '#wishlist-app-list',
   template: '<app />',
-  components: {app}
+  components: {app},
 });
