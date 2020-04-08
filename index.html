@@ -99,6 +99,68 @@
     </div>
 
     <div
+      class="wishlist-rename"
+      data-url="https://url-add-product-to-wishlist.com/"
+    >
+      <div
+        class="wishlist-modal modal fade"
+        :class="{show: !isHidden}"
+        tabindex="-1"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Rename wishlist
+              </h5>
+              <button
+                type="button"
+                class="close"
+                @click="toggleModal"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group form-group-lg">
+                <label class="form-control-label" for="input2"
+                  >Wishlist name</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  v-model="value"
+                  id="input2"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-dismiss="modal"
+                @click="toggleModal"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="renameWishlist"
+              >
+                Rename wishlist
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
       class="wishlist-add-to"
       data-url="https://url-add-product-to-wishlist.com/"
     >
@@ -127,19 +189,25 @@
             </div>
 
             <div class="modal-body">
-              <list></list>
+              <choose-list @hide="toggleModal"></choose-list>
             </div>
 
             <div class="modal-footer">
-              <a @click="openNewWishlistModal">+ New wishlist</a>
+              <a @click="openNewWishlistModal" class="wishlist-add-to-new">
+                <i class="material-icons">add_circle_outline</i> New wishlist
+              </a>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <div class="wishlist-container" data-url="#" data-title="Wishlists"></div>
+
     <script src="./public/button.bundle.js" charset="utf-8"></script>
     <script src="./public/create.bundle.js" charset="utf-8"></script>
+    <script src="./public/rename.bundle.js" charset="utf-8"></script>
     <script src="./public/addtowishlist.bundle.js" charset="utf-8"></script>
+    <script src="./public/wishlistcontainer.bundle.js" charset="utf-8"></script>
   </body>
 </html>

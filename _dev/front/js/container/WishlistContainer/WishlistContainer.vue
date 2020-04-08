@@ -22,40 +22,73 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *-->
+<template>
+  <div class="wishlist-container">
+    <div class="wishlist-container-header">
+      <h1>{{ title }}</h1>
+
+      <a @click="openNewWishlistModal" class="wishlist-add-to-new">
+        <i class="material-icons">add_circle_outline</i> New wishlist
+      </a>
+    </div>
+
+    <list :items="lists" @delete="deleteList"></list>
+  </div>
+</template>
+
 <script>
-import ChooseList from '../ChooseList/ChooseList';
+import List from '@components/List/List';
+import getLists from '@graphqlFiles/queries/getlists';
+import deleteList from '@graphqlFiles/mutations/deletelist';
 
 export default {
-  name: 'AddToWishlist',
+  name: 'WishlistContainer',
   components: {
-    ChooseList,
+    List,
+  },
+  apollo: {
+    lists: getLists,
   },
   props: {
     url: '',
     title: '',
-    label: '',
-    placeholder: '',
-    cancelText: '',
-    createText: '',
+    homeLink: '/',
+    returnLink: '/profil',
   },
   data() {
     return {
-      value: '',
-      isHidden: true,
+      lists: [],
     };
   },
   methods: {
-    toggleModal() {
-      this.isHidden = !this.isHidden;
-    },
     openNewWishlistModal() {
       const event = new Event('showCreateWishlist');
       document.dispatchEvent(event);
     },
+    async deleteList(id) {
+      const list = await this.$apollo.mutate({
+        mutation: deleteList,
+        variables: {
+          listId: id,
+        },
+        update: store => {
+          let data = store.readQuery({query: getLists});
+
+          const lists = data.lists.filter(e => {
+            return e.id != id;
+          });
+          data.lists = lists;
+
+          store.writeQuery({query: getLists, data});
+        },
+      });
+
+      this.lists = list.data.deleteList;
+    },
   },
   mounted() {
-    document.addEventListener('showAddToWishList', event => {
-      this.toggleModal();
+    document.addEventListener('refetchList', () => {
+      this.$apollo.queries.lists.refetch();
     });
   },
 };
@@ -63,32 +96,11 @@ export default {
 
 <style lang="scss" type="text/scss">
 .wishlist {
-  &-add-to-new {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.2s ease-out;
-
-    &:hover {
-      opacity: 0.7;
-    }
-
-    i {
-      margin-right: 5px;
-    }
-  }
-
-  &-modal {
-    display: block;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 0;
-
-    &.show {
-      opacity: 1;
-      pointer-events: all;
-      z-index: 1051;
+  &-container {
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 }

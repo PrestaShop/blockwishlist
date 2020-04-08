@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  {
-    lists {
+  mutation deleteList($listId: Int!) {
+    deleteList(listId: $listId) {
       id
       title
       numbersProduct

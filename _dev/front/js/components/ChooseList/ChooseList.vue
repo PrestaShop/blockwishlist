@@ -22,73 +22,49 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *-->
+<template>
+  <ul class="wishlist-list">
+    <li
+      class="wishlist-list-item"
+      v-for="list of lists"
+      @click="select(list.id)"
+    >
+      {{ list.title }}
+    </li>
+  </ul>
+</template>
+
 <script>
-import ChooseList from '../ChooseList/ChooseList';
+import getLists from '@graphqlFiles/queries/getlists';
+import addtolist from '@graphqlFiles/mutations/addtolist';
 
 export default {
-  name: 'AddToWishlist',
-  components: {
-    ChooseList,
-  },
-  props: {
-    url: '',
-    title: '',
-    label: '',
-    placeholder: '',
-    cancelText: '',
-    createText: '',
-  },
-  data() {
-    return {
-      value: '',
-      isHidden: true,
-    };
+  name: 'ChooseList',
+  apollo: {
+    lists: getLists,
   },
   methods: {
-    toggleModal() {
-      this.isHidden = !this.isHidden;
-    },
-    openNewWishlistModal() {
-      const event = new Event('showCreateWishlist');
-      document.dispatchEvent(event);
+    async select(listId) {
+      const list = await this.$apollo.mutate({
+        mutation: addtolist,
+        variables: {
+          listId,
+          userId: 1,
+          productId: 1,
+        },
+      });
+
+      this.$emit('hide');
     },
   },
-  mounted() {
-    document.addEventListener('showAddToWishList', event => {
-      this.toggleModal();
-    });
-  },
+  mounted() {},
 };
 </script>
 
 <style lang="scss" type="text/scss">
 .wishlist {
-  &-add-to-new {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.2s ease-out;
-
-    &:hover {
-      opacity: 0.7;
-    }
-
-    i {
-      margin-right: 5px;
-    }
-  }
-
-  &-modal {
-    display: block;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 0;
-
-    &.show {
-      opacity: 1;
-      pointer-events: all;
-      z-index: 1051;
+  &-list {
+    &-item {
     }
   }
 }

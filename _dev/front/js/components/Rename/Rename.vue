@@ -23,13 +23,10 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-import ChooseList from '../ChooseList/ChooseList';
+import renameList from '@graphqlFiles/mutations/renamelist';
 
 export default {
-  name: 'AddToWishlist',
-  components: {
-    ChooseList,
-  },
+  name: 'Rename',
   props: {
     url: '',
     title: '',
@@ -42,19 +39,32 @@ export default {
     return {
       value: '',
       isHidden: true,
+      listId: 0,
     };
   },
   methods: {
     toggleModal() {
       this.isHidden = !this.isHidden;
     },
-    openNewWishlistModal() {
-      const event = new Event('showCreateWishlist');
+    async renameWishlist(listId) {
+      await this.$apollo.mutate({
+        mutation: renameList,
+        variables: {
+          name: this.value,
+          userId: 1,
+          listId: this.listId,
+        },
+      });
+
+      const event = new Event('refetchList');
       document.dispatchEvent(event);
     },
   },
   mounted() {
-    document.addEventListener('showAddToWishList', event => {
+    document.addEventListener('showRenameWishlist', event => {
+      console.log(event);
+      this.value = event.detail.title;
+      this.listId = event.detail.listId;
       this.toggleModal();
     });
   },
@@ -63,32 +73,18 @@ export default {
 
 <style lang="scss" type="text/scss">
 .wishlist {
-  &-add-to-new {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.2s ease-out;
+  &-create {
+    .wishlist-modal {
+      display: block;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
 
-    &:hover {
-      opacity: 0.7;
-    }
-
-    i {
-      margin-right: 5px;
-    }
-  }
-
-  &-modal {
-    display: block;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 0;
-
-    &.show {
-      opacity: 1;
-      pointer-events: all;
-      z-index: 1051;
+      &.show {
+        opacity: 1;
+        pointer-events: all;
+        z-index: 1051;
+      }
     }
   }
 }

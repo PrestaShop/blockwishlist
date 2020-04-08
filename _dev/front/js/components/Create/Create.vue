@@ -23,37 +23,48 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  export default {
-    name: 'Create',
-    props: {
-      url: '',
-      title: '',
-      label: '',
-      placeholder: '',
-      cancelText: '',
-      createText: '',
+import createList from '@graphqlFiles/mutations/createlist';
+
+export default {
+  name: 'Create',
+  props: {
+    url: '',
+    title: '',
+    label: '',
+    placeholder: '',
+    cancelText: '',
+    createText: '',
+  },
+  data() {
+    return {
+      value: '',
+      isHidden: true,
+    };
+  },
+  methods: {
+    toggleModal() {
+      this.isHidden = !this.isHidden;
     },
-    data() {
-      return {
-        value: '',
-        isHidden: true,
-      };
-    },
-    methods: {
-      toggleModal() {
-        this.isHidden = !this.isHidden;
-      },
-      createWishlist() {
-        console.log(this.value);
-        console.log('Wishlist created!');
-      },
-    },
-    mounted() {
-      document.addEventListener('showCreateWishlist', () => {
-        this.toggleModal();
+    async createWishlist() {
+      await this.$apollo.mutate({
+        mutation: createList,
+        variables: {
+          name: this.value,
+          userId: 1,
+        },
       });
+
+      const event = new Event('refetchList');
+      document.dispatchEvent(event);
     },
-  };
+  },
+  mounted() {
+    document.addEventListener('showCreateWishlist', () => {
+      this.value = '';
+      this.toggleModal();
+    });
+  },
+};
 </script>
 
 <style lang="scss" type="text/scss">
@@ -63,6 +74,7 @@
       display: block;
       opacity: 0;
       pointer-events: none;
+      z-index: 0;
 
       &.show {
         opacity: 1;
