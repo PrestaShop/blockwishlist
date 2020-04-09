@@ -25,6 +25,9 @@
 <script>
 import renameList from '@graphqlFiles/mutations/renamelist';
 
+/**
+ * A modal used to rename a list
+ */
 export default {
   name: 'Rename',
   props: {
@@ -43,9 +46,17 @@ export default {
     };
   },
   methods: {
+    /**
+     * Toggle the modal
+     */
     toggleModal() {
       this.isHidden = !this.isHidden;
     },
+    /**
+     * Launch a renameList mutation, then dispatch an event to everycomponent to refetch the list after renaming it
+     *
+     * @param {Int} listId Id of the list to be renamed
+     */
     async renameWishlist(listId) {
       await this.$apollo.mutate({
         mutation: renameList,
@@ -57,12 +68,15 @@ export default {
       });
 
       const event = new Event('refetchList');
+
       document.dispatchEvent(event);
     },
   },
   mounted() {
+    /**
+     * Register to the showRenameWishlist event so everycomponents can display this modal
+     */
     document.addEventListener('showRenameWishlist', event => {
-      console.log(event);
       this.value = event.detail.title;
       this.listId = event.detail.listId;
       this.toggleModal();

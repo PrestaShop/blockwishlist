@@ -21,20 +21,21 @@
       class="wishlist-button"
       data-url="https://url-add-product-to-wishlist.com/"
       data-product-id="1"
+      data-list-id="1"
       data-checked="true"
     ></div>
 
     <div
       class="wishlist-button"
       data-url="https://url-add-product-to-wishlist.com/"
-      data-product-id="1"
+      data-product-id="2"
       data-checked="false"
     ></div>
 
     <div
       class="wishlist-button"
       data-url="https://url-add-product-to-wishlist.com/"
-      data-product-id="1"
+      data-product-id="3"
       data-checked="false"
     ></div>
 
@@ -189,7 +190,10 @@
             </div>
 
             <div class="modal-body">
-              <choose-list @hide="toggleModal"></choose-list>
+              <choose-list
+                @hide="toggleModal"
+                :product-id="productId"
+              ></choose-list>
             </div>
 
             <div class="modal-footer">

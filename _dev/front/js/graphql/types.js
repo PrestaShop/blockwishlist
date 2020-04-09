@@ -20,6 +20,7 @@ export default `
     createList(name: String!, userId: Int!): [List]
     renameList(name: String!, userId: Int!, listId: Int!): [List]
     addToList(listId: Int!, productId: Int!, userId: Int!): List
+    removeFromList(listId: Int!, productId: Int!): List
     deleteList(listId: Int!): [List]
   }
 `;

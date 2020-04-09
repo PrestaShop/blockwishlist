@@ -23,18 +23,37 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 import Vue from 'vue';
-import Rename from './Rename';
-import initApp from '@components/init';
+import VueApollo from 'vue-apollo';
+import apolloClient from '@graphqlFiles/client';
 
-const props = [
-  {
-    name: 'url',
-    type: String
-  },
-  {
-    name: 'title',
-    type: String
-  }
-];
+/**
+ * Init a VueJS application to keep monolith features such as hooks or event the use of twig/smarty
+ *
+ * @param {Vue} component The component to be init
+ * @param {String} componentSelector A selector for querySelectorAll
+ * @param {Array[Object]} props An array containing Object{name, type} to parse int
+ */
+export default function initApp(component, componentSelector, props) {
+  Vue.use(VueApollo);
 
-initApp(Rename, '.wishlist-rename', props);
+  const apolloProvider = new VueApollo({
+    defaultClient: apolloClient
+  });
+
+  const componentElements = document.querySelectorAll(componentSelector);
+  const ComponentRoot = Vue.extend(component);
+
+  let propsData = {};
+
+  componentElements.forEach(e => {
+    for (const prop of props) {
+      propsData[prop.name] = prop.type === Number ? parseInt(e.dataset[prop.name]) : e.dataset[prop.name];
+    }
+
+    new ComponentRoot({
+      el: e,
+      apolloProvider,
+      propsData
+    });
+  });
+}

@@ -42,20 +42,31 @@ export default {
     return {
       value: '',
       isHidden: true,
+      productId: 0,
     };
   },
   methods: {
+    /**
+     * Open and close the modal
+     */
     toggleModal() {
       this.isHidden = !this.isHidden;
     },
+    /**
+     * Dispatch an event to the Create component
+     */
     openNewWishlistModal() {
       const event = new Event('showCreateWishlist');
       document.dispatchEvent(event);
     },
   },
   mounted() {
+    /**
+     * Register to the event showAddToWishList so others component can open the modal of the current component
+     */
     document.addEventListener('showAddToWishList', event => {
       this.toggleModal();
+      this.productId = event.detail.productId;
     });
   },
 };

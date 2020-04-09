@@ -23,28 +23,26 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 import Vue from 'vue';
-import VueApollo from 'vue-apollo';
-import apolloClient from '@graphqlFiles/client';
 import Button from './Button';
+import initApp from '@components/init';
 
-Vue.use(VueApollo);
+const props = [
+  {
+    name: 'url',
+    type: String
+  },
+  {
+    name: 'checked',
+    type: 'String'
+  },
+  {
+    name: 'productId',
+    type: Number
+  },
+  {
+    name: 'listId',
+    type: Number
+  }
+];
 
-const apolloProvider = new VueApollo({
-  defaultClient: apolloClient,
-});
-
-const wishListButtons = document.querySelectorAll('.wishlist-button');
-
-const ButtonRoot = Vue.extend(Button);
-
-wishListButtons.forEach((e) => {
-  new ButtonRoot({
-    el: e,
-    apolloProvider,
-    propsData: {
-      checked: e.dataset.checked,
-      url: e.dataset.url,
-      productId: e.dataset.productId,
-    },
-  });
-});
+initApp(Button, '.wishlist-button', props);

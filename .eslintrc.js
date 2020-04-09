@@ -6,16 +6,16 @@ module.exports = {
     browser: true,
     node: true,
     es6: true,
-    jquery: true,
+    jquery: true
   },
   globals: {
     google: true,
     document: true,
     navigator: false,
-    window: true,
+    window: true
   },
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: 'babel-eslint'
   },
   extends: ['prestashop', 'plugin:vue/strongly-recommended'],
   plugins: ['import', 'vue'],
@@ -25,8 +25,8 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['tests/**/*.js', '.webpack/**/*.js'],
-      },
+        devDependencies: ['tests/**/*.js', '.webpack/**/*.js']
+      }
     ],
     'max-len': ['error', {code: 120}],
     'no-alert': 0,
@@ -37,28 +37,29 @@ module.exports = {
       'error',
       {
         name: 'global',
-        message: 'Use window variable instead.',
-      },
+        message: 'Use window variable instead.'
+      }
     ],
+    'no-restricted-syntax': 'null',
     'prefer-destructuring': ['error', {object: true, array: false}],
     'vue/script-indent': [
       'error',
       2,
       {
         baseIndent: 1,
-        switchCase: 1,
-      },
-    ],
+        switchCase: 1
+      }
+    ]
   },
   settings: {
-    'import/resolver': 'webpack',
+    'import/resolver': 'webpack'
   },
   overrides: [
     {
       files: ['*.vue'],
       rules: {
-        indent: 0,
-      },
-    },
-  ],
+        indent: 0
+      }
+    }
+  ]
 };

@@ -25,6 +25,9 @@
 <script>
 import createList from '@graphqlFiles/mutations/createlist';
 
+/**
+ * This component display a modal where you can create a wishlist
+ */
 export default {
   name: 'Create',
   props: {
@@ -42,9 +45,15 @@ export default {
     };
   },
   methods: {
+    /**
+     * Toggle the modal
+     */
     toggleModal() {
       this.isHidden = !this.isHidden;
     },
+    /**
+     * Launch a createList mutation to create a Wishlist
+     */
     async createWishlist() {
       await this.$apollo.mutate({
         mutation: createList,
@@ -54,11 +63,24 @@ export default {
         },
       });
 
+      /**
+       * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
+       */
       const event = new Event('refetchList');
       document.dispatchEvent(event);
+
+      /**
+       * Finally hide the modal after creating the list
+       */
+      this.toggleModal();
     },
   },
   mounted() {
+    /**
+     * Register to the event showCreateWishlist so others components can toggle this modal
+     *
+     * @param {String} 'showCreateWishlist'
+     */
     document.addEventListener('showCreateWishlist', () => {
       this.value = '';
       this.toggleModal();

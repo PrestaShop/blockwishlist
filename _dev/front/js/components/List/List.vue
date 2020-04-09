@@ -51,6 +51,9 @@
 </template>
 
 <script>
+/**
+ * Dumb component to display the list of Wishlist on a page
+ */
 export default {
   name: 'List',
   data() {
@@ -65,6 +68,11 @@ export default {
     },
   },
   methods: {
+    /**
+     * Toggle a dropdown with some actions
+     *
+     * @param {Int} id The ID of the list which contain this dropdown
+     */
     togglePopup(id) {
       if (this.activeDropdowns.includes(id)) {
         this.activeDropdowns = this.activeDropdowns.filter(e => e !== id);
@@ -72,10 +80,17 @@ export default {
         this.activeDropdowns.push(id);
       }
     },
+    /**
+     * Toggle the popup to rename a list
+     *
+     * @param {Int} id The list ID so the rename popup know which list to rename
+     * @param {String} The base title so the rename popup can autofill it
+     */
     toggleRename(id, title) {
       const event = new CustomEvent('showRenameWishlist', {
         detail: {listId: id, title},
       });
+
       document.dispatchEvent(event);
     },
   },

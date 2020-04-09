@@ -41,6 +41,9 @@ import List from '@components/List/List';
 import getLists from '@graphqlFiles/queries/getlists';
 import deleteList from '@graphqlFiles/mutations/deletelist';
 
+/**
+ * This component act as a smart component wich will handle every actions of the list one
+ */
 export default {
   name: 'WishlistContainer',
   components: {
@@ -61,16 +64,28 @@ export default {
     };
   },
   methods: {
+    /**
+     * Send an event to opoen the Create Wishlist Modal
+     */
     openNewWishlistModal() {
       const event = new Event('showCreateWishlist');
+
       document.dispatchEvent(event);
     },
+    /**
+     * Delete a list by launching a mutation, updating cache and then on response replacing the lists state
+     *
+     * @param {Int} id The list id to be removed
+     */
     async deleteList(id) {
       const list = await this.$apollo.mutate({
         mutation: deleteList,
         variables: {
           listId: id,
         },
+        /**
+         * Remove the list from the cache
+         */
         update: store => {
           let data = store.readQuery({query: getLists});
 
@@ -83,10 +98,18 @@ export default {
         },
       });
 
+      /**
+       * Finally refetch the list from the response of the mutation
+       */
       this.lists = list.data.deleteList;
     },
   },
   mounted() {
+    /**
+     * Register to the event refetchList so if an other component update it, this one can update his list
+     *
+     * @param {String} 'refetchList' The event I decided to create to communicate between VueJS Apps
+     */
     document.addEventListener('refetchList', () => {
       this.$apollo.queries.lists.refetch();
     });

@@ -23,24 +23,14 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 import Vue from 'vue';
-import VueApollo from 'vue-apollo';
-import apolloClient from '@graphqlFiles/client';
 import AddToWishlist from './AddToWishlist';
+import initApp from '@components/init';
 
-Vue.use(VueApollo);
+const props = [
+  {
+    name: 'url',
+    type: String
+  }
+];
 
-const apolloProvider = new VueApollo({
-  defaultClient: apolloClient,
-});
-
-const AddToWishListElement = document.querySelector('.wishlist-add-to');
-
-const AddToRoot = Vue.extend(AddToWishlist);
-
-new AddToRoot({
-  el: '.wishlist-add-to',
-  apolloProvider,
-  propsData: {
-    url: AddToWishListElement.dataset.url,
-  },
-});
+initApp(AddToWishlist, '.wishlist-add-to', props);

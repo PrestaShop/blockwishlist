@@ -23,55 +23,75 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <template>
-  <button
-    class="wishlist-button-add"
-    @click="addToWishlist"
-  >
-    <i
-      class="material-icons"
-      v-if="isChecked"
-    >favorite</i>
-    <i
-      class="material-icons"
-      v-else
-    >favorite_border</i>
+  <button class="wishlist-button-add" @click="addToWishlist">
+    <i class="material-icons" v-if="isChecked">favorite</i>
+    <i class="material-icons" v-else>favorite_border</i>
   </button>
 </template>
 
 <script>
-  import getProducts from '@graphqlFiles/queries/getproducts';
+import removeFromList from '@graphqlFiles/mutations/removeFromList';
 
-  export default {
-    name: 'Button',
-    apollo: {
-      products: {
-        query: getProducts,
-        variables: {
-          listId: 1,
-        },
-      },
+export default {
+  name: 'Button',
+  props: {
+    url: '',
+    productId: null,
+    listId: null,
+    checked: false,
+  },
+  data() {
+    return {
+      isChecked: this.checked === 'true',
+      idList: this.listId,
+    };
+  },
+  methods: {
+    /**
+     * Toggle the heart on this component, basically if the heart is filled,
+     * then this product is inside a wishlist, else it's not in a wishlist
+     */
+    toggleCheck() {
+      this.isChecked = !this.isChecked;
     },
-    props: {
-      url: '',
-      productId: null,
-      checked: false,
+    /**
+     * If the product isn't in a wishlist, then open the "AddToWishlist" component modal,
+     * if he's in a wishlist, then launch a removeFromList mutation to remote the product from a wishlist
+     */
+    async addToWishlist() {
+      if (!this.isChecked) {
+        const event = new CustomEvent('showAddToWishList', {
+          detail: {productId: this.productId},
+        });
+
+        document.dispatchEvent(event);
+      } else {
+        let response = await this.$apollo.mutate({
+          mutation: removeFromList,
+          variables: {
+            productId: this.productId,
+            listId: this.listId ? this.listId : this.idList,
+          },
+        });
+
+        if (!response.error) {
+          this.toggleCheck();
+        }
+      }
     },
-    data() {
-      return {
-        isChecked: this.checked === 'true',
-      };
-    },
-    methods: {
-      toggleCheck() {
-        this.isChecked = !this.isChecked;
-      },
-      addToWishlist() {
-        this.toggleCheck();
-        console.log(this.products);
-        console.log('Added to wishlist');
-      },
-    },
-  };
+  },
+  mounted() {
+    /**
+     * Register to event addedToWishlist to toggle the heart if the product has been added correctly
+     */
+    document.addEventListener('addedToWishlist', event => {
+      if (event.detail.productId === this.productId) {
+        this.isChecked = true;
+        this.idList = event.detail.listId;
+      }
+    });
+  },
+};
 </script>
 
 <style lang="scss" type="text/scss">

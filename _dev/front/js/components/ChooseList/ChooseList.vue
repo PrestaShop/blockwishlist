@@ -38,12 +38,29 @@
 import getLists from '@graphqlFiles/queries/getlists';
 import addtolist from '@graphqlFiles/mutations/addtolist';
 
+/**
+ * The role of this component is to render a list
+ * and make the possibility to choose one for the selected product
+ */
 export default {
   name: 'ChooseList',
   apollo: {
     lists: getLists,
   },
+  props: {
+    productId: {
+      type: Number,
+      default: 0,
+    },
+  },
   methods: {
+    /**
+     * Select a list and add the product to it
+     *
+     * @param {Int} listId The id of the list selected
+     * @param {Int} userId The id of the user
+     * @param {Int} productId The id of the product
+     */
     async select(listId) {
       const list = await this.$apollo.mutate({
         mutation: addtolist,
@@ -54,7 +71,19 @@ export default {
         },
       });
 
+      /**
+       * Hide the modal inside the parent
+       */
       this.$emit('hide');
+
+      /**
+       * Send an event to the Heart the user previously clicked on
+       */
+      const event = new CustomEvent('addedToWishlist', {
+        detail: {productId: this.productId, listId},
+      });
+
+      document.dispatchEvent(event);
     },
   },
   mounted() {},

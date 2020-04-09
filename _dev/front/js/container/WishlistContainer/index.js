@@ -23,25 +23,18 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 import Vue from 'vue';
-import VueApollo from 'vue-apollo';
-import apolloClient from '@graphqlFiles/client';
 import WishlistContainer from './WishlistContainer';
+import initApp from '@components/init';
 
-Vue.use(VueApollo);
-
-const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
-});
-
-const wishlistContainer = document.querySelector('.wishlist-container');
-
-const WishlistRoot = Vue.extend(WishlistContainer);
-
-new WishlistRoot({
-  el: wishlistContainer,
-  apolloProvider,
-  propsData: {
-    url: wishlistContainer.dataset.url,
-    title: wishlistContainer.dataset.title
+const props = [
+  {
+    name: 'url',
+    type: String
+  },
+  {
+    name: 'title',
+    type: String
   }
-});
+];
+
+initApp(WishlistContainer, '.wishlist-container', props);
