@@ -28,11 +28,16 @@
       <h1>{{ title }}</h1>
 
       <a @click="openNewWishlistModal" class="wishlist-add-to-new">
-        <i class="material-icons">add_circle_outline</i> New wishlist
+        <i class="material-icons">add_circle_outline</i> {{ addText }}
       </a>
     </div>
 
-    <list :items="lists" @delete="deleteList"></list>
+    <list
+      :items="lists"
+      @delete="deleteList"
+      :renameText="renameText"
+      :shareText="shareText"
+    ></list>
   </div>
 </template>
 
@@ -55,8 +60,11 @@ export default {
   props: {
     url: '',
     title: '',
-    homeLink: '/',
-    returnLink: '/profil',
+    homeLink: '',
+    returnLink: '',
+    addText: '',
+    renameText: '',
+    shareText: '',
   },
   data() {
     return {

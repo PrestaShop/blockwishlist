@@ -71,6 +71,7 @@ export default {
           variables: {
             productId: this.productId,
             listId: this.listId ? this.listId : this.idList,
+            userId: 1,
           },
         });
 

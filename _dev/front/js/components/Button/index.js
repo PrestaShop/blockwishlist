@@ -33,7 +33,7 @@ const props = [
   },
   {
     name: 'checked',
-    type: 'String'
+    type: String
   },
   {
     name: 'productId',

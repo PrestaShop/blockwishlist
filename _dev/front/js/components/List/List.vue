@@ -38,8 +38,8 @@
           class="dropdown-menu show"
           v-if="activeDropdowns.includes(list.id)"
         >
-          <a @click="toggleRename(list.id, list.title)">Rename</a>
-          <a @click="shareLink(list.id)">Share</a>
+          <a @click="toggleRename(list.id, list.title)">{{ renameText }}</a>
+          <a @click="shareLink(list.id)">{{ shareText }}</a>
         </div>
 
         <a @click="$emit('delete', list.id)">
@@ -65,6 +65,14 @@ export default {
     items: {
       type: Array,
       default: [],
+    },
+    renameText: {
+      type: String,
+      default: 'Rename',
+    },
+    shareText: {
+      type: String,
+      default: 'Share',
     },
   },
   methods: {

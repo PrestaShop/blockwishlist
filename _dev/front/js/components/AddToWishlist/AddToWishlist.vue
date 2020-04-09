@@ -72,7 +72,7 @@ export default {
 };
 </script>
 
-<style lang="scss" type="text/scss">
+<style lang="scss" type="text/scss" scoped>
 .wishlist {
   &-add-to-new {
     display: flex;

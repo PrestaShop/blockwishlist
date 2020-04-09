@@ -47,7 +47,9 @@ export default function initApp(component, componentSelector, props) {
 
   componentElements.forEach(e => {
     for (const prop of props) {
-      propsData[prop.name] = prop.type === Number ? parseInt(e.dataset[prop.name]) : e.dataset[prop.name];
+      if (e.dataset[prop.name]) {
+        propsData[prop.name] = prop.type === Number ? parseInt(e.dataset[prop.name]) : e.dataset[prop.name];
+      }
     }
 
     new ComponentRoot({

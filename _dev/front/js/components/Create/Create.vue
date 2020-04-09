@@ -89,7 +89,7 @@ export default {
 };
 </script>
 
-<style lang="scss" type="text/scss">
+<style lang="scss" type="text/scss" scoped>
 .wishlist {
   &-create {
     .wishlist-modal {
@@ -101,7 +101,7 @@ export default {
       &.show {
         opacity: 1;
         pointer-events: all;
-        z-index: 1051;
+        z-index: 1053;
       }
     }
   }

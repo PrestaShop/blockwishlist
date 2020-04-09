@@ -34,6 +34,26 @@ const props = [
   {
     name: 'title',
     type: String
+  },
+  {
+    name: 'addText',
+    type: String
+  },
+  {
+    name: 'renameText',
+    type: String
+  },
+  {
+    name: 'returnLink',
+    type: String
+  },
+  {
+    name: 'homeLink',
+    type: String
+  },
+  {
+    name: 'shareText',
+    type: String
   }
 ];
 
