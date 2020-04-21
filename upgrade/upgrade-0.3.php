@@ -17,6 +17,17 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-class AdminAjaxPrestashopWishlistController extends ModuleAdminController
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+/**
+ * @param BlockWishList $module
+ *
+ * @return bool
+ */
+function upgrade_module_0_3($module)
 {
+    return $module->registerHook('displayProductListFunctionalButtons')
+        && $module->registerHook('top');
 }

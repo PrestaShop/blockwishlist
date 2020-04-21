@@ -1,5 +1,4 @@
-<?php
-/**
+{**
  * 2007-2020 PrestaShop and Contributors
  *
  * NOTICE OF LICENSE
@@ -16,7 +15,32 @@
  * @copyright 2007-2020 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
- */
-class AdminAjaxPrestashopWishlistController extends ModuleAdminController
-{
-}
+ *}
+
+{if $isPrestaShopVersionLessThan176}
+  <div class="col-lg-12">
+    <div class="panel">
+      <div class="panel-heading">
+        <i class="icon-file"></i>
+        {$blockwishlist|escape:'html':'UTF-8'}
+        <span class="badge">0</span>
+      </div>
+      <div class="panel-body">
+        {$blockwishlist|escape:'html':'UTF-8'}
+      </div>
+    </div>
+  </div>
+{else}
+  <div class="col">
+    <div class="card">
+      <h3 class="card-header">
+        <i class="material-icons">remove_red_eye</i>
+        {$blockwishlist|escape:'html':'UTF-8'}
+        <span class="badge badge-primary rounded">0</span>
+      </h3>
+      <div class="card-body">
+        {$blockwishlist|escape:'html':'UTF-8'}
+      </div>
+    </div>
+  </div>
+{/if}
