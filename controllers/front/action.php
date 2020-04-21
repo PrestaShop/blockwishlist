@@ -24,22 +24,24 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
-class BlockWishlistFrontControllerModule extends ModuleFrontController
+class BlockWishlistActionModuleFrontController extends ModuleFrontController
 {
     public function initContent()
     {
-        // TODO : finish this logic
-        // dump($params);
+        parent::initContent();
 
-        // if (method_exists($this, $params['action'] . 'Action')) {
-        //     call_user_method($action . 'Action', $this, $params);
-        // }
+        $params = Tools::getValue('params');
 
+        if (method_exists($this, Tools::getValue('action') . 'Action')) {
+            call_user_func(array($this, Tools::getValue('action') . 'Action'), $params);
+        }
+
+        dump('here');die;
         // return error response
     }
 
-    private function AddToAWishlistAction()
+    public function AddToAWishlistAction($params)
     {
-        # code...
+        dump($params);
     }
 }

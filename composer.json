@@ -15,9 +15,14 @@
     "require-dev": {
       "prestashop/php-dev-tools": "^2.2"
   },
-
   "config": {
-    "preferred-install": "dist"
+    "preferred-install": "dist",
+    "platform": {
+        "php": "5.6"
+    },
+    "classmap-authoritative": true,
+    "optimize-autoloader": true,
+    "prepend-autoloader": false
   },
   "autoload": {
     "classmap": [

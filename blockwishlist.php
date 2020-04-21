@@ -46,27 +46,27 @@ class BlockWishList extends Module
         $this->displayName = $this->l('Wishlist block');
         $this->description = $this->l('Adds a block containing the customer\'s wishlists.');
         $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
-        // $this->js_path = $this->_path . 'views/js/';
+        $this->js_path = $this->_path . 'views/js/';
     }
 
     public function install()
     {
-        // $database =  new PrestaShop\Module\BlockWishList\Database\Install($this);
+        $database =  new PrestaShop\Module\BlockWishList\Database\Install($this);
 
-        // if (!parent::install() ||
-        //     !$this->registerHook('displayProductActions') ||
-        //     !$this->registerHook('displayCustomerAccount') ||
-        //     // !$this->registerHook('displayHeader') ||
-        //     !$this->registerHook('displayAdminCustomers') ||
-        //     !$this->registerHook('displayProductListFunctionalButtons')// ||
-        //     // !$this->registerHook('displayTop')
-        // )
-        // {
-        //     return false;
-        // }
+        if (!parent::install() ||
+            !$this->registerHook('displayProductActions') ||
+            !$this->registerHook('displayCustomerAccount') ||
+            !$this->registerHook('displayHeader') ||
+            !$this->registerHook('displayAdminCustomers') ||
+            !$this->registerHook('displayProductAdditionalInfo') ||
+            !$this->registerHook('displayTop')
+        )
+        {
+            return false;
+        }
 
         /* This hook is optional */
-        // $this->registerHook('displayMyAccountBlock');
+        $this->registerHook('displayMyAccountBlock');
 
         return parent::install();
     }
@@ -77,74 +77,90 @@ class BlockWishList extends Module
         return parent::uninstall();
     }
 
-    // public function hookDisplayProductActions()
-    // {
-    //     // Used to show the add to wishlist button near the add to cart button
-    //     Media::addJsDef([
-    //         'WishlistControllerURL' => $this->context->link->getLink('AdminAjaxPrestashopWishlist')
-    //     ]);
+    public function hookDisplayProductActions()
+    {
+        // Used to show the add to wishlist button near the add to cart button
+        // dump($this->context->link->getAdminLink('AdminAjaxPrestashopWishlist'));
+        // Media::addJsDef([
+        //     'WishlistControllerURL' => $this->context->link->getAdminLink('AdminAjaxPrestashopWishlist')
+        // ]);
 
-    //     $this->context->controller->addJS([
-    //         $this->js_path . 'hook/displayProductActions.js',
-    //     ]);
-    // }
+        // $this->context->controller->addJS([
+        //     $this->js_path . 'hook/displayProductActions.js',
+        // ]);
 
-    // public function hookDisplayCustomerAccount()
-    // {
-    //     // Used to show the wishlist in the customer account
-    //     Media::addJsDef([
-    //         'WishlistControllerURL' => $this->context->link->getLink('BlockWishlistFrontControllerModule')
-    //     ]);
+        return $this->display(__FILE__, '/views/templates/front/buttonAddToAwishlist.tpl');
+    }
 
-    //     $this->context->controller->addJS([
-    //         $this->js_path . 'hook/displayCustomerAccount.js',
-    //     ]);
-    // }
+    public function hookDisplayCustomerAccount()
+    {
+        // Used to show the wishlist in the customer account
+        // Media::addJsDef([
+        //     'WishlistControllerURL' => $this->context->link->getLink('BlockWishlistFrontControllerModule')
+        // ]);
 
-    // public function hookDisplayAdminCustomers()
-    // {
-    //     Media::addJsDef([
-    //         'AdminControllerURL' => $this->context->link->getAdminLink('AdminAjaxPrestashopWishlist')
-    //     ]);
+        // $this->context->controller->addJS([
+        //     $this->js_path . 'hook/displayCustomerAccount.js',
+        // ]);
 
-    //     $this->context->controller->addJS([
-    //         $this->js_path . 'hook/adminCustomers.js',
-    //     ]);
+        return $this->display(__FILE__, '/views/templates/front/wishlistCustomerAccount.tpl');
+    }
 
-    // }
-
-    // public function hookDisplayTop()
-    // {
-    // }
-
-    // public function hookDisplayMyAccountBlock()
-    // {
-    // }
-
-    // public function hookDisplayProductListFunctionalButtons()
-    // {
-    //     Media::addJsDef([
-    //         'AdminControllerURL' => $this->context->link->getAdminLink('BlockWishlistFrontControllerModule')
-    //     ]);
-
-    //     $this->context->controller->addJS([
-    //         $this->js_path . 'hook/displayProductListFunctionalButtons.js',
-    //     ]);
-    // }
-
-    // public function hookDisplayHeader()
-    // {
-    // }
-
-    public function getContent()
+    public function hookDisplayAdminCustomers()
     {
         // Media::addJsDef([
         //     'AdminControllerURL' => $this->context->link->getAdminLink('AdminAjaxPrestashopWishlist')
         // ]);
 
         // $this->context->controller->addJS([
-        //     $this->js_path . 'back.js',
+        //     $this->js_path . 'hook/adminCustomers.js',
         // ]);
+
+
+
+    }
+
+    public function hookDisplayTop()
+    {
+        $this->context->controller->addJS([
+            //$this->js_path . 'hook/wishlistTop.js',
+        ]);
+    }
+
+    public function hookDisplayMyAccountBlock()
+    {
+        return $this->display(__FILE__, '/views/templates/front/buttonAddToAwishlist.tpl');
+    }
+
+    public function hookDisplayProductAdditionalInfo()
+    {
+        // Media::addJsDef([
+        //     'AdminControllerURL' => $this->context->link->getAdminLink('BlockWishlistFrontControllerModule')
+        // ]);
+
+        // $this->context->controller->addJS([
+        //     $this->js_path . 'hook/displayProductListFunctionalButtons.js',
+        // ]);
+
+        return $this->display(__FILE__, '/views/templates/front/buttonAddToAwishlist.tpl');
+    }
+
+    public function hookDisplayHeader()
+    {
+        $this->context->controller->addJS([
+            //$this->js_path . 'hook/wishlistHeader.js',
+        ]);
+    }
+
+    public function getContent()
+    {
+        Media::addJsDef([
+            'AdminControllerURL' => $this->context->link->getAdminLink('AdminAjaxPrestashopWishlist')
+        ]);
+
+        $this->context->controller->addJS([
+            $this->js_path . 'back.js',
+        ]);
 
         return $this->display(__FILE__, '/views/templates/admin/config.tpl');
     }
