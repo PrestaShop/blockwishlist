@@ -1,2 +1,20 @@
+# php
+
 vendor
 .php_cs.cache
+
+# vim
+
+*.swp
+*.swo
+
+# npm
+
+node_modules
+
+# assets
+
+public/
+
+# mac
+.DS_Store

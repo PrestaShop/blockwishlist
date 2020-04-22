@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Module Wishlist</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      type="text/css"
+      media="all"
+    />
+  </head>
+  <body>
+    <div
+      class="wishlist-button"
+      data-url="https://url-add-product-to-wishlist.com/"
+      data-product-id="1"
+      data-list-id="1"
+      data-checked="true"
+    ></div>
+
+    <div
+      class="wishlist-button"
+      data-url="https://url-add-product-to-wishlist.com/"
+      data-product-id="2"
+      data-checked="false"
+    ></div>
+
+    <div
+      class="wishlist-button"
+      data-url="https://url-add-product-to-wishlist.com/"
+      data-product-id="3"
+      data-checked="false"
+    ></div>
+
+    <div
+      class="wishlist-create"
+      data-url="https://url-add-product-to-wishlist.com/"
+    >
+      <div
+        class="wishlist-modal modal fade"
+        :class="{show: !isHidden}"
+        tabindex="-1"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">New wishlist</h5>
+              <button
+                type="button"
+                class="close"
+                @click="toggleModal"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group form-group-lg">
+                <label class="form-control-label" for="input2"
+                  >Wishlist name</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  v-model="value"
+                  id="input2"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-dismiss="modal"
+                @click="toggleModal"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="createWishlist"
+              >
+                Create wishlist
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="wishlist-rename"
+      data-url="https://url-add-product-to-wishlist.com/"
+    >
+      <div
+        class="wishlist-modal modal fade"
+        :class="{show: !isHidden}"
+        tabindex="-1"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Rename wishlist
+              </h5>
+              <button
+                type="button"
+                class="close"
+                @click="toggleModal"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group form-group-lg">
+                <label class="form-control-label" for="input2"
+                  >Wishlist name</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  v-model="value"
+                  id="input2"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-dismiss="modal"
+                @click="toggleModal"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="renameWishlist"
+              >
+                Rename wishlist
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="wishlist-add-to"
+      data-url="https://url-add-product-to-wishlist.com/"
+    >
+      <div
+        class="wishlist-modal modal fade"
+        :class="{show: !isHidden}"
+        tabindex="-1"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Add to Wishlist
+              </h5>
+              <button
+                type="button"
+                class="close"
+                @click="toggleModal"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <choose-list
+                @hide="toggleModal"
+                :product-id="productId"
+              ></choose-list>
+            </div>
+
+            <div class="modal-footer">
+              <a @click="openNewWishlistModal" class="wishlist-add-to-new">
+                <i class="material-icons">add_circle_outline</i> New wishlist
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="wishlist-container"
+      data-url="#"
+      data-return-link="#"
+      data-home-link="#"
+      data-title="Wishlists"
+      data-rename-text="Rename"
+      data-share-text="Share"
+      data-add-text="New wishlist"
+    ></div>
+
+    <script src="./public/button.bundle.js" charset="utf-8"></script>
+    <script src="./public/create.bundle.js" charset="utf-8"></script>
+    <script src="./public/rename.bundle.js" charset="utf-8"></script>
+    <script src="./public/addtowishlist.bundle.js" charset="utf-8"></script>
+    <script src="./public/wishlistcontainer.bundle.js" charset="utf-8"></script>
+  </body>
+</html>
