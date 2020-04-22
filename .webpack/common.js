@@ -38,11 +38,16 @@ module.exports = {
   entry: {
     list: './_dev/front/js/pages/list',
     button: './_dev/front/js/components/Button',
-    create: './_dev/front/js/components/Create',
+    create: './_dev/front/js/components/Button',
     rename: './_dev/front/js/components/Rename',
     addtowishlist: './_dev/front/js/components/AddToWishlist',
     wishlistcontainer: './_dev/front/js/container/WishlistContainer',
-    wishlist: ['./_dev/front/scss/common.scss']
+    wishlist: ['./_dev/front/scss/common.scss'],
+    product: [
+      './_dev/front/js/components/Button',
+      './_dev/front/js/components/Create',
+      './_dev/front/js/components/AddToWishlist'
+    ]
   },
   output: {
     path: path.resolve(__dirname, '../public'),

@@ -23,27 +23,32 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <template>
-  <button class="wishlist-button-add" @click="addToWishlist">
+  <button
+    class="wishlist-button-add"
+    :class="{ 'wishlist-button-product': isProduct }"
+    @click="addToWishlist"
+  >
     <i class="material-icons" v-if="isChecked">favorite</i>
     <i class="material-icons" v-else>favorite_border</i>
   </button>
 </template>
 
 <script>
-import removeFromList from '@graphqlFiles/mutations/removeFromList';
+import removeFromList from "@graphqlFiles/mutations/removeFromList";
 
 export default {
-  name: 'Button',
+  name: "Button",
   props: {
-    url: '',
+    url: "",
     productId: null,
     listId: null,
     checked: false,
+    isProduct: false
   },
   data() {
     return {
-      isChecked: this.checked === 'true',
-      idList: this.listId,
+      isChecked: this.checked === "true",
+      idList: this.listId
     };
   },
   methods: {
@@ -58,10 +63,12 @@ export default {
      * If the product isn't in a wishlist, then open the "AddToWishlist" component modal,
      * if he's in a wishlist, then launch a removeFromList mutation to remote the product from a wishlist
      */
-    async addToWishlist() {
+    async addToWishlist(event) {
+      event.preventDefault();
+
       if (!this.isChecked) {
-        const event = new CustomEvent('showAddToWishList', {
-          detail: {productId: this.productId},
+        const event = new CustomEvent("showAddToWishList", {
+          detail: { productId: this.productId }
         });
 
         document.dispatchEvent(event);
@@ -71,33 +78,37 @@ export default {
           variables: {
             productId: this.productId,
             listId: this.listId ? this.listId : this.idList,
-            userId: 1,
-          },
+            userId: 1
+          }
         });
 
         if (!response.error) {
           this.toggleCheck();
         }
       }
-    },
+    }
   },
   mounted() {
     /**
      * Register to event addedToWishlist to toggle the heart if the product has been added correctly
      */
-    document.addEventListener('addedToWishlist', event => {
+    document.addEventListener("addedToWishlist", event => {
       if (event.detail.productId === this.productId) {
         this.isChecked = true;
         this.idList = event.detail.listId;
       }
     });
-  },
+  }
 };
 </script>
 
 <style lang="scss" type="text/scss">
 .wishlist {
   &-button {
+    &-product {
+      margin-left: 20px;
+    }
+
     &-add {
       display: flex;
       align-items: center;

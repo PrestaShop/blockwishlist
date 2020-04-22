@@ -23,25 +23,25 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-import createList from '@graphqlFiles/mutations/createlist';
+import createList from "@graphqlFiles/mutations/createlist";
 
 /**
  * This component display a modal where you can create a wishlist
  */
 export default {
-  name: 'Create',
+  name: "Create",
   props: {
-    url: '',
-    title: '',
-    label: '',
-    placeholder: '',
-    cancelText: '',
-    createText: '',
+    url: "",
+    title: "",
+    label: "",
+    placeholder: "",
+    cancelText: "",
+    createText: ""
   },
   data() {
     return {
-      value: '',
-      isHidden: true,
+      value: "",
+      isHidden: true
     };
   },
   methods: {
@@ -59,21 +59,21 @@ export default {
         mutation: createList,
         variables: {
           name: this.value,
-          userId: 1,
-        },
+          userId: 1
+        }
       });
 
       /**
        * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
        */
-      const event = new Event('refetchList');
+      const event = new Event("refetchList");
       document.dispatchEvent(event);
 
       /**
        * Finally hide the modal after creating the list
        */
       this.toggleModal();
-    },
+    }
   },
   mounted() {
     /**
@@ -81,11 +81,11 @@ export default {
      *
      * @param {String} 'showCreateWishlist'
      */
-    document.addEventListener('showCreateWishlist', () => {
-      this.value = '';
+    document.addEventListener("showCreateWishlist", () => {
+      this.value = "";
       this.toggleModal();
     });
-  },
+  }
 };
 </script>
 
@@ -102,6 +102,26 @@ export default {
         opacity: 1;
         pointer-events: all;
         z-index: 1053;
+      }
+    }
+
+    .modal {
+      &-dialog {
+        width: calc(100% - 30px);
+        max-width: 64rem;
+        transform: translateY(0);
+      }
+
+      &-content {
+        width: 100%;
+      }
+
+      &-backdrop {
+        pointer-events: none;
+
+        &.in {
+          pointer-events: all;
+        }
       }
     }
   }

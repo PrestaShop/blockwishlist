@@ -17,3 +17,4 @@
  * International Registered Trademark & Property of PrestaShop SA
  *}
 <p>{$blockwishlist|escape:'html':'UTF-8'}</p>
+

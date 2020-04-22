@@ -35,23 +35,23 @@
 </template>
 
 <script>
-import getLists from '@graphqlFiles/queries/getlists';
-import addtolist from '@graphqlFiles/mutations/addtolist';
+import getLists from "@graphqlFiles/queries/getlists";
+import addtolist from "@graphqlFiles/mutations/addtolist";
 
 /**
  * The role of this component is to render a list
  * and make the possibility to choose one for the selected product
  */
 export default {
-  name: 'ChooseList',
+  name: "ChooseList",
   apollo: {
-    lists: getLists,
+    lists: getLists
   },
   props: {
     productId: {
       type: Number,
-      default: 0,
-    },
+      default: 0
+    }
   },
   methods: {
     /**
@@ -67,26 +67,26 @@ export default {
         variables: {
           listId,
           userId: 1,
-          productId: 1,
-        },
+          productId: 1
+        }
       });
 
       /**
        * Hide the modal inside the parent
        */
-      this.$emit('hide');
+      this.$emit("hide");
 
       /**
        * Send an event to the Heart the user previously clicked on
        */
-      const event = new CustomEvent('addedToWishlist', {
-        detail: {productId: this.productId, listId},
+      const event = new CustomEvent("addedToWishlist", {
+        detail: { productId: this.productId, listId }
       });
 
       document.dispatchEvent(event);
-    },
+    }
   },
-  mounted() {},
+  mounted() {}
 };
 </script>
 
@@ -94,6 +94,26 @@ export default {
 .wishlist {
   &-list {
     &-item {
+    }
+
+    .modal {
+      &-dialog {
+        width: calc(100% - 30px);
+        max-width: 64rem;
+        transform: translateY(0);
+      }
+
+      &-content {
+        width: 100%;
+      }
+
+      &-backdrop {
+        pointer-events: none;
+
+        &.in {
+          pointer-events: all;
+        }
+      }
     }
   }
 }

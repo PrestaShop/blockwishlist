@@ -54,6 +54,7 @@ export default function initApp(component, componentSelector, props) {
 
     new ComponentRoot({
       el: e,
+      delimiters: ['((', '))'],
       apolloProvider,
       propsData
     });

@@ -42,6 +42,10 @@ const props = [
   {
     name: 'listId',
     type: Number
+  },
+  {
+    name: 'isProduct',
+    type: Boolean
   }
 ];
 

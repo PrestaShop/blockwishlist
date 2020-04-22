@@ -16,4 +16,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
-<p>{$blockwishlist|escape:'html':'UTF-8'}</p>
+{if $context === "product"}
+  {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
+{/if}

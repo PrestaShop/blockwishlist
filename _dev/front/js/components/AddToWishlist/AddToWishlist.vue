@@ -23,26 +23,26 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-import ChooseList from '../ChooseList/ChooseList';
+import ChooseList from "../ChooseList/ChooseList";
 
 export default {
-  name: 'AddToWishlist',
+  name: "AddToWishlist",
   components: {
-    ChooseList,
+    ChooseList
   },
   props: {
-    url: '',
-    title: '',
-    label: '',
-    placeholder: '',
-    cancelText: '',
-    createText: '',
+    url: "",
+    title: "",
+    label: "",
+    placeholder: "",
+    cancelText: "",
+    createText: ""
   },
   data() {
     return {
-      value: '',
+      value: "",
       isHidden: true,
-      productId: 0,
+      productId: 0
     };
   },
   methods: {
@@ -56,30 +56,36 @@ export default {
      * Dispatch an event to the Create component
      */
     openNewWishlistModal() {
-      const event = new Event('showCreateWishlist');
+      const event = new Event("showCreateWishlist");
       document.dispatchEvent(event);
-    },
+    }
   },
   mounted() {
     /**
      * Register to the event showAddToWishList so others component can open the modal of the current component
      */
-    document.addEventListener('showAddToWishList', event => {
+    document.addEventListener("showAddToWishList", event => {
       this.toggleModal();
       this.productId = event.detail.productId;
     });
-  },
+  }
 };
 </script>
 
 <style lang="scss" type="text/scss" scoped>
 .wishlist {
   &-add-to-new {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     cursor: pointer;
     transition: 0.2s ease-out;
+    height: 16px;
+    width: 79px;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 16px;
+
+    &:not([href]):not([tabindex]) {
+      color: #2fb5d2;
+    }
 
     &:hover {
       opacity: 0.7;
@@ -87,6 +93,8 @@ export default {
 
     i {
       margin-right: 5px;
+      vertical-align: middle;
+      color: #2fb5d2;
     }
   }
 
@@ -100,6 +108,43 @@ export default {
       opacity: 1;
       pointer-events: all;
       z-index: 1051;
+    }
+  }
+
+  &-add-to {
+    .modal {
+      &-header {
+        padding: 0.625rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &::after {
+          content: none;
+        }
+      }
+
+      &-dialog {
+        width: calc(100% - 30px);
+        max-width: 610px;
+        transform: translateY(0);
+      }
+
+      &-content {
+        width: 100%;
+      }
+
+      &-footer {
+        text-align: left;
+      }
+
+      &-backdrop {
+        pointer-events: none;
+
+        &.in {
+          pointer-events: all;
+        }
+      }
     }
   }
 }
