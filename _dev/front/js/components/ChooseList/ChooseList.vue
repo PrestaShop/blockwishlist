@@ -29,7 +29,9 @@
       v-for="list of lists"
       @click="select(list.id)"
     >
-      {{ list.title }}
+      <p>
+        {{ list.title }}
+      </p>
     </li>
   </ul>
 </template>
@@ -91,28 +93,32 @@ export default {
 </script>
 
 <style lang="scss" type="text/scss">
+@import "@scss/_variables";
+
 .wishlist {
   &-list {
+    max-height: 200px;
+    overflow-y: scroll;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0;
+
     &-item {
-    }
+      padding: 14px 0;
+      transition: 0.25s ease-out;
+      cursor: pointer;
 
-    .modal {
-      &-dialog {
-        width: calc(100% - 30px);
-        max-width: 64rem;
-        transform: translateY(0);
+      &:hover {
+        background: lighten($blue, 45%);
       }
 
-      &-content {
-        width: 100%;
-      }
-
-      &-backdrop {
-        pointer-events: none;
-
-        &.in {
-          pointer-events: all;
-        }
+      p {
+        font-size: 14px;
+        letter-spacing: 0;
+        color: #232323;
+        margin-bottom: 0;
+        line-height: 16px;
+        padding: 0 40px;
       }
     }
   }

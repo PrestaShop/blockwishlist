@@ -22,11 +22,16 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue';
-import app from './App';
 
-new Vue({
-  el: '#wishlist-app-list',
-  template: '<app />',
-  components: {app},
+let products = document.querySelectorAll('.js-product-miniature');
+
+products.forEach(product => {
+  const wishlistButton = document.createElement('div');
+
+  wishlistButton.classList.add('wishlist-button');
+  wishlistButton.url = 'http://lorem.com';
+  wishlistButton.dataset.productId = product.dataset.idProduct;
+  wishlistButton.dataset.checked = false;
+
+  product.querySelector('.thumbnail-container').append(wishlistButton);
 });

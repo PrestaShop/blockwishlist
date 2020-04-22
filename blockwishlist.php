@@ -116,15 +116,22 @@ class BlockWishList extends Module implements WidgetInterface
             ),
         ]);
 
-        if ('product' === $this->context->controller->php_self) {
-            $this->context->controller->registerJavascript(
-                'blockwishlistController',
-                'modules/'.$this->name.'/public/product.bundle.js',
-                [
-                  'priority' => 200,
-                ]
-            );
-        }
+        $this->context->controller->registerStylesheet(
+            'blockwishlistController',
+            'modules/'.$this->name.'/public/wishlist.css',
+            [
+              'media' => 'all',
+              'priority' => 200,
+            ]
+        );
+
+        $this->context->controller->registerJavascript(
+            'blockwishlistController',
+            'modules/'.$this->name.'/public/product.bundle.js',
+            [
+              'priority' => 200,
+            ]
+        );
     }
 
     /**
@@ -158,7 +165,7 @@ class BlockWishList extends Module implements WidgetInterface
     public function hookDisplayCustomerAccount(array $params)
     {
         $this->smarty->assign([
-            'blockwishlist' => $this->displayName,
+            'url' => '#',
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayCustomerAccount.tpl');

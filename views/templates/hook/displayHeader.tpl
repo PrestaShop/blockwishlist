@@ -16,7 +16,14 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
+
 {if $context === "product"}
   {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
   {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
 {/if}
+
+{if $context === "index" || $context === "category"}
+  {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
+{/if}
+

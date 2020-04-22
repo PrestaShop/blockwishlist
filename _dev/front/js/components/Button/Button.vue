@@ -68,7 +68,7 @@ export default {
 
       if (!this.isChecked) {
         const event = new CustomEvent("showAddToWishList", {
-          detail: { productId: this.productId }
+          detail: { productId: this.productId, forceOpen: true }
         });
 
         document.dispatchEvent(event);

@@ -71,8 +71,16 @@ export default {
 
       /**
        * Finally hide the modal after creating the list
+       * and reopen the wishlist modal
        */
       this.toggleModal();
+      const wishlistEvent = new CustomEvent("showAddToWishList", {
+        detail: {
+          forceOpen: true
+        }
+      });
+
+      document.dispatchEvent(wishlistEvent);
     }
   },
   mounted() {
@@ -102,26 +110,6 @@ export default {
         opacity: 1;
         pointer-events: all;
         z-index: 1053;
-      }
-    }
-
-    .modal {
-      &-dialog {
-        width: calc(100% - 30px);
-        max-width: 64rem;
-        transform: translateY(0);
-      }
-
-      &-content {
-        width: 100%;
-      }
-
-      &-backdrop {
-        pointer-events: none;
-
-        &.in {
-          pointer-events: all;
-        }
       }
     }
   }

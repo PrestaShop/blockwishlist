@@ -54,18 +54,20 @@
               class="form-control form-control-lg"
               v-model="value"
               id="input2"
+              placeholder="Add name"
             />
           </div>
         </div>
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-outline-secondary"
+            class="modal-cancel btn btn-secondary"
             data-dismiss="modal"
             @click="toggleModal"
           >
             Cancel
           </button>
+
           <button
             type="button"
             class="btn btn-primary"

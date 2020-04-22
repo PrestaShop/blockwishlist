@@ -16,4 +16,10 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
-<p>{$blockwishlist|escape:'html':'UTF-8'}</p>
+
+<a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="wishlist-link" href="{$url}">
+  <span class="link-item">
+    <i class="material-icons">favorite</i>
+    Wishlists
+  </span>
+</a>

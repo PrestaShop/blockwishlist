@@ -49,13 +49,19 @@ export default {
     /**
      * Open and close the modal
      */
-    toggleModal() {
-      this.isHidden = !this.isHidden;
+    toggleModal(forceOpen) {
+      if (forceOpen === true) {
+        this.isHidden = false;
+      } else {
+        this.isHidden = !this.isHidden;
+      }
     },
     /**
      * Dispatch an event to the Create component
      */
     openNewWishlistModal() {
+      this.toggleModal();
+
       const event = new Event("showCreateWishlist");
       document.dispatchEvent(event);
     }
@@ -65,7 +71,7 @@ export default {
      * Register to the event showAddToWishList so others component can open the modal of the current component
      */
     document.addEventListener("showAddToWishList", event => {
-      this.toggleModal();
+      this.toggleModal(event.detail.forceOpen ? event.detail.forceOpen : null);
       this.productId = event.detail.productId;
     });
   }
@@ -73,6 +79,8 @@ export default {
 </script>
 
 <style lang="scss" type="text/scss" scoped>
+@import "@scss/_variables";
+
 .wishlist {
   &-add-to-new {
     cursor: pointer;
@@ -84,7 +92,7 @@ export default {
     line-height: 16px;
 
     &:not([href]):not([tabindex]) {
-      color: #2fb5d2;
+      color: $blue;
     }
 
     &:hover {
@@ -94,56 +102,21 @@ export default {
     i {
       margin-right: 5px;
       vertical-align: middle;
-      color: #2fb5d2;
-    }
-  }
-
-  &-modal {
-    display: block;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 0;
-
-    &.show {
-      opacity: 1;
-      pointer-events: all;
-      z-index: 1051;
+      color: $blue;
+      margin-top: -2px;
+      font-size: 20px;
     }
   }
 
   &-add-to {
     .modal {
-      &-header {
-        padding: 0.625rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        &::after {
-          content: none;
-        }
-      }
-
-      &-dialog {
-        width: calc(100% - 30px);
-        max-width: 610px;
-        transform: translateY(0);
-      }
-
-      &-content {
-        width: 100%;
+      &-body {
+        padding: 0;
       }
 
       &-footer {
         text-align: left;
-      }
-
-      &-backdrop {
-        pointer-events: none;
-
-        &.in {
-          pointer-events: all;
-        }
+        padding: 12px 20px;
       }
     }
   }
