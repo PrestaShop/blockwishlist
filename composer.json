@@ -1,35 +1,45 @@
 {
-  "name": "prestashop/blockwishlist",
-  "description": "PrestaShop module blockwishlist",
-  "homepage": "https://github.com/PrestaShop/blockwishlist",
-  "license": "AFL-3.0",
-  "authors": [
-    {
-      "name": "PrestaShop SA",
-      "email": "contact@prestashop.com"
-    }
-  ],
-  "require": {
-    "php": ">=5.6"
-  },
-    "require-dev": {
-      "prestashop/php-dev-tools": "^2.2"
-  },
-  "config": {
-    "preferred-install": "dist",
-    "platform": {
-        "php": "5.6"
+    "name": "prestashop/blockwishlist",
+    "description": "PrestaShop module blockwishlist",
+    "homepage": "https://github.com/PrestaShop/blockwishlist",
+    "license": "AFL-3.0",
+    "type": "prestashop-module",
+    "authors": [
+        {
+            "name": "PrestaShop SA",
+            "email": "contact@prestashop.com"
+        }
+    ],
+    "config": {
+        "platform": {
+            "php": "5.6"
+        },
+        "classmap-authoritative": true,
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "optimize-autoloader": true,
+        "prepend-autoloader": false
     },
-    "classmap-authoritative": true,
-    "optimize-autoloader": true,
-    "prepend-autoloader": false
-  },
-  "autoload": {
-    "classmap": [
-      "blockwishlist.php",
-      "controllers",
-      "classes"
-    ]
-  },
-  "type": "prestashop-module"
+    "require": {
+        "php": ">=5.6"
+    },
+    "require-dev": {
+        "prestashop/header-stamp": "^1.2",
+        "prestashop/php-dev-tools": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "PrestaShop\\Module\\BlockWishList\\": "src/"
+        },
+        "classmap": [
+            "blockwishlist.php",
+            "controllers"
+        ]
+    },
+    "scripts": {
+        "set-license-header": [
+            "@php ./vendor/bin/header-stamp --license=\"assets/afl.txt\" --exclude=\".github,vendor\""
+        ]
+    },
+    "author": "PrestaShop"
 }

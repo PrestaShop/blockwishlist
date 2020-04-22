@@ -17,6 +17,29 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-class AdminAjaxPrestashopWishlistController extends ModuleAdminController
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+/**
+ * @param BlockWishList $module
+ *
+ * @return bool
+ */
+function upgrade_module_1_1($module)
 {
+    $result = true;
+    $list_fields = Db::getInstance()->executeS('SHOW FIELDS FROM `' . _DB_PREFIX_ . 'wishlist`');
+
+    if (is_array($list_fields)) {
+        foreach ($list_fields as $field) {
+            if ($field['Field'] === 'id_shop_group') {
+                $result = $result && (bool) Db::getInstance()->execute('ALTER TABLE `' . _DB_PREFIX_ . 'wishlist` CHANGE `id_group_shop` `id_shop_group` INT( 11 ) NOT NULL DEFAULT "1"');
+            }
+        }
+    }
+
+    return $result
+        && $module->registerHook('displayProductListFunctionalButtons')
+        && $module->registerHook('top');
 }
