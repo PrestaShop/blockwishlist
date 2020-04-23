@@ -21,6 +21,7 @@
   class="wishlist-button"
   data-url="{$url}"
   data-product-id="{$product.id}"
+  data-is-logged="{$customer.is_logged}"
 
   {if $product.id_wishlist}
     data-list-id="{$product.id_wishlist}"
