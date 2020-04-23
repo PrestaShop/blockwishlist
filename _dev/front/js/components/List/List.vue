@@ -39,7 +39,7 @@
           v-if="activeDropdowns.includes(list.id)"
         >
           <a @click="toggleRename(list.id, list.title)">{{ renameText }}</a>
-          <a @click="shareLink(list.id)">{{ shareText }}</a>
+          <a @click="toggleShare(list.id)">{{ shareText }}</a>
         </div>
 
         <a @click="$emit('delete', list.id)">
@@ -55,25 +55,25 @@
  * Dumb component to display the list of Wishlist on a page
  */
 export default {
-  name: 'List',
+  name: "List",
   data() {
     return {
-      activeDropdowns: [],
+      activeDropdowns: []
     };
   },
   props: {
     items: {
       type: Array,
-      default: [],
+      default: []
     },
     renameText: {
       type: String,
-      default: 'Rename',
+      default: "Rename"
     },
     shareText: {
       type: String,
-      default: 'Share',
-    },
+      default: "Share"
+    }
   },
   methods: {
     /**
@@ -95,13 +95,27 @@ export default {
      * @param {String} The base title so the rename popup can autofill it
      */
     toggleRename(id, title) {
-      const event = new CustomEvent('showRenameWishlist', {
-        detail: {listId: id, title},
+      const event = new CustomEvent("showRenameWishlist", {
+        detail: { listId: id, title }
       });
 
       document.dispatchEvent(event);
     },
-  },
+
+    /**
+     * Toggle the popup to rename a list
+     *
+     * @param {Int} id The list ID so the rename popup know which list to rename
+     * @param {String} The base title so the rename popup can autofill it
+     */
+    toggleShare(id, title) {
+      const event = new CustomEvent("showShareModal", {
+        detail: { listId: id, title }
+      });
+
+      document.dispatchEvent(event);
+    }
+  }
 };
 </script>
 

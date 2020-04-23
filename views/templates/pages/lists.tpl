@@ -16,15 +16,27 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
+{extends file='page.tpl'}
 
-{if $context === "product"}
+{block name='page_title'}
+    {l s='My Wishlists' mod='blockwishlist'}
+{/block}
+
+{block name='page_content'}
+  <div
+    class="wishlist-container"
+    data-url="#"
+    data-return-link="#"
+    data-home-link="#"
+    data-title="Wishlists"
+    data-rename-text="Rename"
+    data-share-text="Share"
+    data-add-text="New wishlist"
+  ></div>
+
   {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
   {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
-{/if}
+  {include file="module:blockwishlist/views/templates/components/modals/rename.tpl" url="http://dummy.com"}
+{/block}
 
-{$context}
-{if $context === "index" || $context === "category" || $context === "blockwishlist"}
-  {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
-{/if}
 

@@ -1,4 +1,5 @@
-{**
+<?php
+/**
  * 2007-2020 PrestaShop and Contributors
  *
  * NOTICE OF LICENSE
@@ -15,16 +16,28 @@
  * @copyright 2007-2020 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
- *}
+ */
 
-{if $context === "product"}
-  {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
-{/if}
+class BlockWishlistListsModuleFrontController extends ModuleFrontController
+{
+    public function initContent()
+    {
+      parent::initContent();      
 
-{$context}
-{if $context === "index" || $context === "category" || $context === "blockwishlist"}
-  {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
-{/if}
+      $this->context->smarty->assign(
+        array(
+            'url' => '#',
+        )
+      ); 
 
+      $this->context->controller->registerJavascript(
+          'blockwishlistController',
+          'modules/blockwishlist/public/wishlistcontainer.bundle.js',
+          [
+            'priority' => 200,
+          ]
+      );
+
+      $this->setTemplate('module:blockwishlist/views/templates/pages/lists.tpl');
+    }
+}

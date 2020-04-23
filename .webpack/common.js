@@ -37,12 +37,15 @@ module.exports = {
   },
   entry: {
     button: './_dev/front/js/components/Button',
-    create: './_dev/front/js/components/Button',
+    create: './_dev/front/js/components/Create',
     rename: './_dev/front/js/components/Rename',
     addtowishlist: './_dev/front/js/components/AddToWishlist',
-    wishlistcontainer: './_dev/front/js/container/WishlistContainer',
+    wishlistcontainer: [
+      './_dev/front/js/container/WishlistContainer',
+      './_dev/front/js/components/Create',
+      './_dev/front/js/components/Rename'
+    ],
     wishlist: ['./_dev/front/scss/common.scss'],
-
     product: [
       './_dev/front/js/pages/list',
       './_dev/front/js/components/Button',
