@@ -101,7 +101,6 @@ export default {
 
       document.dispatchEvent(event);
     },
-
     /**
      * Toggle the popup to rename a list
      *
