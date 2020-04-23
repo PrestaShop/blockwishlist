@@ -17,12 +17,25 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+class BlockWishlistActionModuleFrontController extends ModuleFrontController
+{
+    public function initContent()
+    {
+        parent::initContent();
 
-header('Cache-Control: no-store, no-cache, must-revalidate');
-header('Cache-Control: post-check=0, pre-check=0', false);
-header('Pragma: no-cache');
+        $params = Tools::getValue('params');
 
-header('Location: ../');
-exit;
+        if (method_exists($this, Tools::getValue('action') . 'Action')) {
+            call_user_func([$this, Tools::getValue('action') . 'Action'], $params);
+        }
+
+        dump('here');
+        die;
+        // return error response
+    }
+
+    public function AddToAWishlistAction($params)
+    {
+        dump($params);
+    }
+}

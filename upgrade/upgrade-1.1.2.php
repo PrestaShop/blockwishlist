@@ -17,12 +17,32 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
-header('Cache-Control: no-store, no-cache, must-revalidate');
-header('Cache-Control: post-check=0, pre-check=0', false);
-header('Pragma: no-cache');
+/**
+ * @param BlockWishList $module
+ *
+ * @return bool
+ */
+function upgrade_module_1_1_2($module)
+{
+    $list_fields = Db::getInstance()->executeS('SHOW FIELDS FROM `' . _DB_PREFIX_ . 'wishlist`');
 
-header('Location: ../');
-exit;
+    if (is_array($list_fields)) {
+        $isFieldDefaultExist = false;
+
+        foreach ($list_fields as $k => $field) {
+            if ($field['Field'] === 'default') {
+                $isFieldDefaultExist = true;
+            }
+        }
+
+        if (false === $isFieldDefaultExist) {
+            return (bool) Db::getInstance()->execute('ALTER TABLE `' . _DB_PREFIX_ . 'wishlist` ADD COLUMN `is_default` INT( 11 ) NOT NULL DEFAULT "0"');
+        }
+    }
+
+    return true;
+}
