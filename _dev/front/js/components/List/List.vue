@@ -110,8 +110,8 @@
        * @param {String} The base title so the rename popup can autofill it
        */
       toggleShare(id, title) {
-        const event = new CustomEvent('showShareModal', {
-          detail: { listId: id, title }
+        const event = new CustomEvent('showShareWishlist', {
+          detail: { listId: id, userId: 1 }
         })
 
         document.dispatchEvent(event)

@@ -65,6 +65,17 @@ export default {
       }
     ],
     /**
+     * Get a share url for a list
+     *
+     * @param {ID} listId ID of the list
+     * @param {ID} userId ID of the user
+     */
+    shareList: (root, {listId, userId}, context) => {
+      return {
+        url: 'http://url.fr'
+      }
+    },
+    /**
      * Rename a list
      *
      * @param {String} {name New name of the list

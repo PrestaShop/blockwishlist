@@ -22,13 +22,13 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-const path = require('path');
-const webpack = require('webpack');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
+const path = require('path')
+const webpack = require('webpack')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries')
 
 module.exports = {
   externals: {
@@ -43,6 +43,7 @@ module.exports = {
     wishlistcontainer: [
       './_dev/front/js/container/WishlistContainer',
       './_dev/front/js/components/Create',
+      './_dev/front/js/components/Share',
       './_dev/front/js/components/Rename'
     ],
     wishlist: ['./_dev/front/scss/common.scss'],
@@ -159,4 +160,4 @@ module.exports = {
     }),
     new VueLoaderPlugin()
   ]
-};
+}
