@@ -16,9 +16,9 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue'
-import Rename from './Rename'
-import initApp from '@components/init'
+import Vue from 'vue';
+import Rename from './Rename';
+import initApp from '@components/init';
 
 const props = [
   {
@@ -29,6 +29,6 @@ const props = [
     name: 'title',
     type: String
   }
-]
+];
 
-initApp(Rename, '.wishlist-rename', props)
+initApp(Rename, '.wishlist-rename', props);

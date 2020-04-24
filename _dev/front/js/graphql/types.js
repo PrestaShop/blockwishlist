@@ -46,4 +46,4 @@ export default `
     removeFromList(listId: Int!, productId: Int!): List
     deleteList(listId: Int!): [List]
   }
-`
+`;

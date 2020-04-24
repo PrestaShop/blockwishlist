@@ -17,9 +17,9 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-import {makeExecutableSchema} from 'graphql-tools'
-import resolvers from './resolvers'
-import typeDefs from './types'
+import {makeExecutableSchema} from 'graphql-tools';
+import resolvers from './resolvers';
+import typeDefs from './types';
 
 /**
  * Generate SchemaLink that ApolloClient needs to understand schemas
@@ -28,4 +28,4 @@ import typeDefs from './types'
 export default makeExecutableSchema({
   typeDefs,
   resolvers
-})
+});

@@ -18,7 +18,7 @@
  *
  *-->
 <script>
-  import ChooseList from '../ChooseList/ChooseList'
+  import ChooseList from '../ChooseList/ChooseList';
 
   export default {
     name: 'AddToWishlist',
@@ -38,7 +38,7 @@
         value: '',
         isHidden: true,
         productId: 0
-      }
+      };
     },
     methods: {
       /**
@@ -46,19 +46,19 @@
        */
       toggleModal(forceOpen) {
         if (forceOpen === true) {
-          this.isHidden = false
+          this.isHidden = false;
         } else {
-          this.isHidden = !this.isHidden
+          this.isHidden = !this.isHidden;
         }
       },
       /**
        * Dispatch an event to the Create component
        */
       openNewWishlistModal() {
-        this.toggleModal()
+        this.toggleModal();
 
-        const event = new Event('showCreateWishlist')
-        document.dispatchEvent(event)
+        const event = new Event('showCreateWishlist');
+        document.dispatchEvent(event);
       }
     },
     mounted() {
@@ -66,11 +66,13 @@
        * Register to the event showAddToWishList so others component can open the modal of the current component
        */
       document.addEventListener('showAddToWishList', event => {
-        this.toggleModal(event.detail.forceOpen ? event.detail.forceOpen : null)
-        this.productId = event.detail.productId
-      })
+        this.toggleModal(
+          event.detail.forceOpen ? event.detail.forceOpen : null
+        );
+        this.productId = event.detail.productId;
+      });
     }
-  }
+  };
 </script>
 
 <style lang="scss" type="text/scss" scoped>

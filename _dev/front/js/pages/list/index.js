@@ -17,15 +17,15 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-let products = document.querySelectorAll('.js-product-miniature')
+let products = document.querySelectorAll('.js-product-miniature');
 
 products.forEach(product => {
-  const wishlistButton = document.createElement('div')
+  const wishlistButton = document.createElement('div');
 
-  wishlistButton.classList.add('wishlist-button')
-  wishlistButton.url = 'http://lorem.com'
-  wishlistButton.dataset.productId = product.dataset.idProduct
-  wishlistButton.dataset.checked = false
+  wishlistButton.classList.add('wishlist-button');
+  wishlistButton.url = 'http://lorem.com';
+  wishlistButton.dataset.productId = product.dataset.idProduct;
+  wishlistButton.dataset.checked = false;
 
-  product.querySelector('.thumbnail-container').append(wishlistButton)
-})
+  product.querySelector('.thumbnail-container').append(wishlistButton);
+});

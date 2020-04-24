@@ -17,7 +17,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import renameList from '@graphqlFiles/mutations/renamelist'
+  import renameList from '@graphqlFiles/mutations/renamelist';
 
   /**
    * A modal used to rename a list
@@ -37,14 +37,14 @@
         value: '',
         isHidden: true,
         listId: 0
-      }
+      };
     },
     methods: {
       /**
        * Toggle the modal
        */
       toggleModal() {
-        this.isHidden = !this.isHidden
+        this.isHidden = !this.isHidden;
       },
       /**
        * Launch a renameList mutation, then dispatch an event to everycomponent to refetch the list after renaming it
@@ -59,11 +59,11 @@
             userId: 1,
             listId: this.listId
           }
-        })
+        });
 
-        const event = new Event('refetchList')
+        const event = new Event('refetchList');
 
-        document.dispatchEvent(event)
+        document.dispatchEvent(event);
       }
     },
     mounted() {
@@ -71,12 +71,12 @@
        * Register to the showRenameWishlist event so everycomponents can display this modal
        */
       document.addEventListener('showRenameWishlist', event => {
-        this.value = event.detail.title
-        this.listId = event.detail.listId
-        this.toggleModal()
-      })
+        this.value = event.detail.title;
+        this.listId = event.detail.listId;
+        this.toggleModal();
+      });
     }
-  }
+  };
 </script>
 
 <style lang="scss" type="text/scss" scoped>

@@ -92,7 +92,7 @@ export default {
     shareList: (root, {listId, userId}, context) => {
       return {
         url: 'http://url.fr'
-      }
+      };
     },
     /**
      * Rename a list
@@ -129,11 +129,11 @@ export default {
      * @returns {JSON} A success or failed response
      */
     addToList: (root, {listId, userId, productId}, context) => {
-      console.log(listId, userId, productId)
+      console.log(listId, userId, productId);
       return {
         id: 1,
         title: 'Titre de liste 1'
-      }
+      };
     },
     /**
      * Remove a product from a list
@@ -174,4 +174,4 @@ export default {
       }
     ]
   }
-}
+};

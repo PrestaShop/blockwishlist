@@ -17,7 +17,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 export default gql`
   query getProducts($listId: Int!) {
@@ -27,4 +27,4 @@ export default gql`
       price
     }
   }
-`
+`;
