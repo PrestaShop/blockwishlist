@@ -17,7 +17,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import createList from '@graphqlFiles/mutations/createlist'
+  import createList from '@graphqlFiles/mutations/createlist';
 
   /**
    * This component display a modal where you can create a wishlist
@@ -36,14 +36,14 @@
       return {
         value: '',
         isHidden: true
-      }
+      };
     },
     methods: {
       /**
        * Toggle the modal
        */
       toggleModal() {
-        this.isHidden = !this.isHidden
+        this.isHidden = !this.isHidden;
       },
       /**
        * Launch a createList mutation to create a Wishlist
@@ -55,26 +55,26 @@
             name: this.value,
             userId: 1
           }
-        })
+        });
 
         /**
          * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
          */
-        const event = new Event('refetchList')
-        document.dispatchEvent(event)
+        const event = new Event('refetchList');
+        document.dispatchEvent(event);
 
         /**
          * Finally hide the modal after creating the list
          * and reopen the wishlist modal
          */
-        this.toggleModal()
+        this.toggleModal();
         const wishlistEvent = new CustomEvent('showAddToWishList', {
           detail: {
             forceOpen: true
           }
-        })
+        });
 
-        document.dispatchEvent(wishlistEvent)
+        document.dispatchEvent(wishlistEvent);
       }
     },
     mounted() {
@@ -84,11 +84,11 @@
        * @param {String} 'showCreateWishlist'
        */
       document.addEventListener('showCreateWishlist', () => {
-        this.value = ''
-        this.toggleModal()
-      })
+        this.value = '';
+        this.toggleModal();
+      });
     }
-  }
+  };
 </script>
 
 <style lang="scss" type="text/scss" scoped>

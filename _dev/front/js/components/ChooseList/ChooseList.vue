@@ -31,8 +31,8 @@
 </template>
 
 <script>
-  import getLists from '@graphqlFiles/queries/getlists'
-  import addtolist from '@graphqlFiles/mutations/addtolist'
+  import getLists from '@graphqlFiles/queries/getlists';
+  import addtolist from '@graphqlFiles/mutations/addtolist';
 
   /**
    * The role of this component is to render a list
@@ -65,25 +65,25 @@
             userId: 1,
             productId: 1
           }
-        })
+        });
 
         /**
          * Hide the modal inside the parent
          */
-        this.$emit('hide')
+        this.$emit('hide');
 
         /**
          * Send an event to the Heart the user previously clicked on
          */
         const event = new CustomEvent('addedToWishlist', {
           detail: { productId: this.productId, listId }
-        })
+        });
 
-        document.dispatchEvent(event)
+        document.dispatchEvent(event);
       }
     },
     mounted() {}
-  }
+  };
 </script>
 
 <style lang="scss" type="text/scss">

@@ -54,7 +54,7 @@
     data() {
       return {
         activeDropdowns: []
-      }
+      };
     },
     props: {
       items: {
@@ -78,10 +78,10 @@
        */
       togglePopup(id) {
         if (this.activeDropdowns.includes(id)) {
-          this.activeDropdowns = this.activeDropdowns.filter(e => e !== id)
+          this.activeDropdowns = this.activeDropdowns.filter(e => e !== id);
         } else {
-          this.activeDropdowns = []
-          this.activeDropdowns.push(id)
+          this.activeDropdowns = [];
+          this.activeDropdowns.push(id);
         }
       },
       /**
@@ -93,9 +93,9 @@
       toggleRename(id, title) {
         const event = new CustomEvent('showRenameWishlist', {
           detail: { listId: id, title }
-        })
+        });
 
-        document.dispatchEvent(event)
+        document.dispatchEvent(event);
       },
       /**
        * Toggle the popup to rename a list
@@ -106,12 +106,12 @@
       toggleShare(id, title) {
         const event = new CustomEvent('showShareWishlist', {
           detail: { listId: id, userId: 1 }
-        })
+        });
 
-        document.dispatchEvent(event)
+        document.dispatchEvent(event);
       }
     }
-  }
+  };
 </script>
 
 <style lang="scss" type="text/scss">

@@ -1,7 +1,7 @@
 module.exports = {
   htmlWhitespaceSensitivity: 'ignore',
-  semi: false,
+  semi: true,
   singleQuote: true,
   vueIndentScriptAndStyle: true,
   trailingComma: 'none'
-}
+};

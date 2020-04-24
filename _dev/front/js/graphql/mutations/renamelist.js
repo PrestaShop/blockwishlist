@@ -17,7 +17,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 export default gql`
   mutation renameList($name: String!, $userId: Int!, $listId: Int!) {
@@ -26,4 +26,4 @@ export default gql`
       title
     }
   }
-`
+`;

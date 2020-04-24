@@ -16,9 +16,9 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue'
-import Create from './Create'
-import initApp from '@components/init'
+import Vue from 'vue';
+import Create from './Create';
+import initApp from '@components/init';
 
 const props = [
   {
@@ -33,6 +33,6 @@ const props = [
     name: 'productId',
     type: Number
   }
-]
+];
 
-initApp(Create, '.wishlist-create', props)
+initApp(Create, '.wishlist-create', props);

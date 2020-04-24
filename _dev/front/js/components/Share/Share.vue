@@ -17,7 +17,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import shareList from '@graphqlFiles/mutations/sharelist'
+  import shareList from '@graphqlFiles/mutations/sharelist';
 
   /**
    * This component display a modal where you can create a wishlist
@@ -38,34 +38,34 @@
         value: '',
         isHidden: true,
         actionText: ''
-      }
+      };
     },
     methods: {
       /**
        * Toggle the modal
        */
       toggleModal() {
-        this.isHidden = !this.isHidden
+        this.isHidden = !this.isHidden;
       },
       /**
        * Copy the link in the input value
        */
       copyLink() {
-        console.log('copy')
+        console.log('copy');
         const shareInput = document.querySelector(
           '.wishlist-share .form-control'
-        )
+        );
 
-        shareInput.select()
-        shareInput.setSelectionRange(0, 99999)
+        shareInput.select();
+        shareInput.setSelectionRange(0, 99999);
 
-        document.execCommand('copy')
+        document.execCommand('copy');
 
-        this.actionText = this.copiedText
+        this.actionText = this.copiedText;
       }
     },
     mounted() {
-      this.actionText = this.copyText
+      this.actionText = this.copyText;
 
       /**
        * Register to the event showCreateWishlist so others components can toggle this modal
@@ -79,13 +79,13 @@
             listId: event.detail.listId,
             userId: event.detail.userId
           }
-        })
-        const result = data.shareList
-        this.value = result.url
-        this.toggleModal()
-      })
+        });
+        const result = data.shareList;
+        this.value = result.url;
+        this.toggleModal();
+      });
     }
-  }
+  };
 </script>
 
 <style lang="scss" type="text/scss" scoped>

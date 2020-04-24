@@ -28,7 +28,7 @@
 </template>
 
 <script>
-  import removeFromList from '@graphqlFiles/mutations/removeFromList'
+  import removeFromList from '@graphqlFiles/mutations/removeFromList';
 
   export default {
     name: 'Button',
@@ -43,7 +43,7 @@
       return {
         isChecked: this.checked === 'true',
         idList: this.listId
-      }
+      };
     },
     methods: {
       /**
@@ -51,21 +51,21 @@
        * then this product is inside a wishlist, else it's not in a wishlist
        */
       toggleCheck() {
-        this.isChecked = !this.isChecked
+        this.isChecked = !this.isChecked;
       },
       /**
        * If the product isn't in a wishlist, then open the "AddToWishlist" component modal,
        * if he's in a wishlist, then launch a removeFromList mutation to remote the product from a wishlist
        */
       async addToWishlist(event) {
-        event.preventDefault()
+        event.preventDefault();
 
         if (!this.isChecked) {
           const event = new CustomEvent('showAddToWishList', {
             detail: { productId: this.productId, forceOpen: true }
-          })
+          });
 
-          document.dispatchEvent(event)
+          document.dispatchEvent(event);
         } else {
           let response = await this.$apollo.mutate({
             mutation: removeFromList,
@@ -74,10 +74,10 @@
               listId: this.listId ? this.listId : this.idList,
               userId: 1
             }
-          })
+          });
 
           if (!response.error) {
-            this.toggleCheck()
+            this.toggleCheck();
           }
         }
       }
@@ -88,12 +88,12 @@
        */
       document.addEventListener('addedToWishlist', event => {
         if (event.detail.productId === this.productId) {
-          this.isChecked = true
-          this.idList = event.detail.listId
+          this.isChecked = true;
+          this.idList = event.detail.listId;
         }
-      })
+      });
     }
-  }
+  };
 </script>
 
 <style lang="scss" type="text/scss">

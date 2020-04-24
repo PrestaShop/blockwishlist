@@ -17,7 +17,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 export default gql`
   mutation shareList($listId: Int!, $userId: Int!) {
@@ -25,4 +25,4 @@ export default gql`
       url
     }
   }
-`
+`;

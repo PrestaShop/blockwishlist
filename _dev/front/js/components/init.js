@@ -16,9 +16,9 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue'
-import VueApollo from 'vue-apollo'
-import apolloClient from '@graphqlFiles/client'
+import Vue from 'vue';
+import VueApollo from 'vue-apollo';
+import apolloClient from '@graphqlFiles/client';
 
 /**
  * Init a VueJS application to keep monolith features such as hooks or event the use of twig/smarty
@@ -28,21 +28,21 @@ import apolloClient from '@graphqlFiles/client'
  * @param {Array[Object]} props An array containing Object{name, type} to parse int
  */
 export default function initApp(component, componentSelector, props) {
-  Vue.use(VueApollo)
+  Vue.use(VueApollo);
 
   const apolloProvider = new VueApollo({
     defaultClient: apolloClient
-  })
+  });
 
-  const componentElements = document.querySelectorAll(componentSelector)
-  const ComponentRoot = Vue.extend(component)
+  const componentElements = document.querySelectorAll(componentSelector);
+  const ComponentRoot = Vue.extend(component);
 
-  let propsData = {}
+  let propsData = {};
 
   componentElements.forEach(e => {
     for (const prop of props) {
       if (e.dataset[prop.name]) {
-        propsData[prop.name] = prop.type === Number ? parseInt(e.dataset[prop.name]) : e.dataset[prop.name]
+        propsData[prop.name] = prop.type === Number ? parseInt(e.dataset[prop.name]) : e.dataset[prop.name];
       }
     }
 
@@ -51,6 +51,6 @@ export default function initApp(component, componentSelector, props) {
       delimiters: ['((', '))'],
       apolloProvider,
       propsData
-    })
-  })
+    });
+  });
 }
