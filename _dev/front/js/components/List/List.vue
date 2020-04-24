@@ -173,9 +173,6 @@
           }
         }
 
-        &-actions {
-        }
-
         &-title {
           color: #232323;
           font-size: 16px;
