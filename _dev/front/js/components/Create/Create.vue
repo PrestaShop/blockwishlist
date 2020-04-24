@@ -23,95 +23,95 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-import createList from "@graphqlFiles/mutations/createlist";
+  import createList from '@graphqlFiles/mutations/createlist'
 
-/**
- * This component display a modal where you can create a wishlist
- */
-export default {
-  name: "Create",
-  props: {
-    url: "",
-    title: "",
-    label: "",
-    placeholder: "",
-    cancelText: "",
-    createText: ""
-  },
-  data() {
-    return {
-      value: "",
-      isHidden: true
-    };
-  },
-  methods: {
-    /**
-     * Toggle the modal
-     */
-    toggleModal() {
-      this.isHidden = !this.isHidden;
+  /**
+   * This component display a modal where you can create a wishlist
+   */
+  export default {
+    name: 'Create',
+    props: {
+      url: '',
+      title: '',
+      label: '',
+      placeholder: '',
+      cancelText: '',
+      createText: ''
     },
-    /**
-     * Launch a createList mutation to create a Wishlist
-     */
-    async createWishlist() {
-      await this.$apollo.mutate({
-        mutation: createList,
-        variables: {
-          name: this.value,
-          userId: 1
-        }
-      });
-
+    data() {
+      return {
+        value: '',
+        isHidden: true
+      }
+    },
+    methods: {
       /**
-       * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
+       * Toggle the modal
        */
-      const event = new Event("refetchList");
-      document.dispatchEvent(event);
-
+      toggleModal() {
+        this.isHidden = !this.isHidden
+      },
       /**
-       * Finally hide the modal after creating the list
-       * and reopen the wishlist modal
+       * Launch a createList mutation to create a Wishlist
        */
-      this.toggleModal();
-      const wishlistEvent = new CustomEvent("showAddToWishList", {
-        detail: {
-          forceOpen: true
-        }
-      });
+      async createWishlist() {
+        await this.$apollo.mutate({
+          mutation: createList,
+          variables: {
+            name: this.value,
+            userId: 1
+          }
+        })
 
-      document.dispatchEvent(wishlistEvent);
+        /**
+         * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
+         */
+        const event = new Event('refetchList')
+        document.dispatchEvent(event)
+
+        /**
+         * Finally hide the modal after creating the list
+         * and reopen the wishlist modal
+         */
+        this.toggleModal()
+        const wishlistEvent = new CustomEvent('showAddToWishList', {
+          detail: {
+            forceOpen: true
+          }
+        })
+
+        document.dispatchEvent(wishlistEvent)
+      }
+    },
+    mounted() {
+      /**
+       * Register to the event showCreateWishlist so others components can toggle this modal
+       *
+       * @param {String} 'showCreateWishlist'
+       */
+      document.addEventListener('showCreateWishlist', () => {
+        this.value = ''
+        this.toggleModal()
+      })
     }
-  },
-  mounted() {
-    /**
-     * Register to the event showCreateWishlist so others components can toggle this modal
-     *
-     * @param {String} 'showCreateWishlist'
-     */
-    document.addEventListener("showCreateWishlist", () => {
-      this.value = "";
-      this.toggleModal();
-    });
   }
-};
 </script>
 
 <style lang="scss" type="text/scss" scoped>
-.wishlist {
-  &-create {
-    .wishlist-modal {
-      display: block;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 0;
+  .wishlist {
+    &-create {
+      .wishlist-modal {
+        display: block;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 0;
 
-      &.show {
-        opacity: 1;
-        pointer-events: all;
-        z-index: 1053;
+        &.show {
+          opacity: 1;
+          pointer-events: all;
+          z-index: 1053;
+        }
       }
     }
   }
-}
 </style>

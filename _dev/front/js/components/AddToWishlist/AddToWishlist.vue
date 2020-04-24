@@ -23,102 +23,102 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-import ChooseList from "../ChooseList/ChooseList";
+  import ChooseList from '../ChooseList/ChooseList'
 
-export default {
-  name: "AddToWishlist",
-  components: {
-    ChooseList
-  },
-  props: {
-    url: "",
-    title: "",
-    label: "",
-    placeholder: "",
-    cancelText: "",
-    createText: ""
-  },
-  data() {
-    return {
-      value: "",
-      isHidden: true,
-      productId: 0
-    };
-  },
-  methods: {
-    /**
-     * Open and close the modal
-     */
-    toggleModal(forceOpen) {
-      if (forceOpen === true) {
-        this.isHidden = false;
-      } else {
-        this.isHidden = !this.isHidden;
+  export default {
+    name: 'AddToWishlist',
+    components: {
+      ChooseList
+    },
+    props: {
+      url: '',
+      title: '',
+      label: '',
+      placeholder: '',
+      cancelText: '',
+      createText: ''
+    },
+    data() {
+      return {
+        value: '',
+        isHidden: true,
+        productId: 0
       }
     },
-    /**
-     * Dispatch an event to the Create component
-     */
-    openNewWishlistModal() {
-      this.toggleModal();
+    methods: {
+      /**
+       * Open and close the modal
+       */
+      toggleModal(forceOpen) {
+        if (forceOpen === true) {
+          this.isHidden = false
+        } else {
+          this.isHidden = !this.isHidden
+        }
+      },
+      /**
+       * Dispatch an event to the Create component
+       */
+      openNewWishlistModal() {
+        this.toggleModal()
 
-      const event = new Event("showCreateWishlist");
-      document.dispatchEvent(event);
+        const event = new Event('showCreateWishlist')
+        document.dispatchEvent(event)
+      }
+    },
+    mounted() {
+      /**
+       * Register to the event showAddToWishList so others component can open the modal of the current component
+       */
+      document.addEventListener('showAddToWishList', event => {
+        this.toggleModal(event.detail.forceOpen ? event.detail.forceOpen : null)
+        this.productId = event.detail.productId
+      })
     }
-  },
-  mounted() {
-    /**
-     * Register to the event showAddToWishList so others component can open the modal of the current component
-     */
-    document.addEventListener("showAddToWishList", event => {
-      this.toggleModal(event.detail.forceOpen ? event.detail.forceOpen : null);
-      this.productId = event.detail.productId;
-    });
   }
-};
 </script>
 
 <style lang="scss" type="text/scss" scoped>
-@import "@scss/_variables";
+  @import '@scss/_variables';
 
-.wishlist {
-  &-add-to-new {
-    cursor: pointer;
-    transition: 0.2s ease-out;
-    height: 16px;
-    width: 79px;
-    font-size: 14px;
-    letter-spacing: 0;
-    line-height: 16px;
+  .wishlist {
+    &-add-to-new {
+      cursor: pointer;
+      transition: 0.2s ease-out;
+      height: 16px;
+      width: 79px;
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 16px;
 
-    &:not([href]):not([tabindex]) {
-      color: $blue;
-    }
-
-    &:hover {
-      opacity: 0.7;
-    }
-
-    i {
-      margin-right: 5px;
-      vertical-align: middle;
-      color: $blue;
-      margin-top: -2px;
-      font-size: 20px;
-    }
-  }
-
-  &-add-to {
-    .modal {
-      &-body {
-        padding: 0;
+      &:not([href]):not([tabindex]) {
+        color: $blue;
       }
 
-      &-footer {
-        text-align: left;
-        padding: 12px 20px;
+      &:hover {
+        opacity: 0.7;
+      }
+
+      i {
+        margin-right: 5px;
+        vertical-align: middle;
+        color: $blue;
+        margin-top: -2px;
+        font-size: 20px;
+      }
+    }
+
+    &-add-to {
+      .modal {
+        &-body {
+          padding: 0;
+        }
+
+        &-footer {
+          text-align: left;
+          padding: 12px 20px;
+        }
       }
     }
   }
-}
 </style>

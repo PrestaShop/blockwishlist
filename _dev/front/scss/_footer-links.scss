@@ -1,0 +1,24 @@
+.wishlist {
+  &-footer {
+    &-links {
+      margin-bottom: 50px;
+
+      > a {
+        color: $blue;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: 19px;
+
+        &:not(:first-child) {
+          margin-left: 20px;
+        }
+
+        i {
+          font-size: 20px;
+          margin-right: 4px;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
