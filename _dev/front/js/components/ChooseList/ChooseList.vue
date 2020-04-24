@@ -37,90 +37,90 @@
 </template>
 
 <script>
-import getLists from "@graphqlFiles/queries/getlists";
-import addtolist from "@graphqlFiles/mutations/addtolist";
+  import getLists from '@graphqlFiles/queries/getlists'
+  import addtolist from '@graphqlFiles/mutations/addtolist'
 
-/**
- * The role of this component is to render a list
- * and make the possibility to choose one for the selected product
- */
-export default {
-  name: "ChooseList",
-  apollo: {
-    lists: getLists
-  },
-  props: {
-    productId: {
-      type: Number,
-      default: 0
-    }
-  },
-  methods: {
-    /**
-     * Select a list and add the product to it
-     *
-     * @param {Int} listId The id of the list selected
-     * @param {Int} userId The id of the user
-     * @param {Int} productId The id of the product
-     */
-    async select(listId) {
-      const list = await this.$apollo.mutate({
-        mutation: addtolist,
-        variables: {
-          listId,
-          userId: 1,
-          productId: 1
-        }
-      });
-
+  /**
+   * The role of this component is to render a list
+   * and make the possibility to choose one for the selected product
+   */
+  export default {
+    name: 'ChooseList',
+    apollo: {
+      lists: getLists
+    },
+    props: {
+      productId: {
+        type: Number,
+        default: 0
+      }
+    },
+    methods: {
       /**
-       * Hide the modal inside the parent
+       * Select a list and add the product to it
+       *
+       * @param {Int} listId The id of the list selected
+       * @param {Int} userId The id of the user
+       * @param {Int} productId The id of the product
        */
-      this.$emit("hide");
+      async select(listId) {
+        const list = await this.$apollo.mutate({
+          mutation: addtolist,
+          variables: {
+            listId,
+            userId: 1,
+            productId: 1
+          }
+        })
 
-      /**
-       * Send an event to the Heart the user previously clicked on
-       */
-      const event = new CustomEvent("addedToWishlist", {
-        detail: { productId: this.productId, listId }
-      });
+        /**
+         * Hide the modal inside the parent
+         */
+        this.$emit('hide')
 
-      document.dispatchEvent(event);
-    }
-  },
-  mounted() {}
-};
+        /**
+         * Send an event to the Heart the user previously clicked on
+         */
+        const event = new CustomEvent('addedToWishlist', {
+          detail: { productId: this.productId, listId }
+        })
+
+        document.dispatchEvent(event)
+      }
+    },
+    mounted() {}
+  }
 </script>
 
 <style lang="scss" type="text/scss">
-@import "@scss/_variables";
+  @import '@scss/_variables';
 
-.wishlist {
-  &-list {
-    max-height: 200px;
-    overflow-y: scroll;
-    border-top: 1px solid #e5e5e5;
-    border-bottom: 1px solid #e5e5e5;
-    margin: 0;
+  .wishlist {
+    &-list {
+      max-height: 200px;
+      overflow-y: scroll;
+      border-top: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+      margin: 0;
 
-    &-item {
-      padding: 14px 0;
-      transition: 0.25s ease-out;
-      cursor: pointer;
+      &-item {
+        padding: 14px 0;
+        transition: 0.25s ease-out;
+        cursor: pointer;
 
-      &:hover {
-        background: lighten($blue, 45%);
-      }
+        &:hover {
+          background: lighten($blue, 45%);
+        }
 
-      p {
-        font-size: 14px;
-        letter-spacing: 0;
-        color: #232323;
-        margin-bottom: 0;
-        line-height: 16px;
-        padding: 0 40px;
+        p {
+          font-size: 14px;
+          letter-spacing: 0;
+          color: #232323;
+          margin-bottom: 0;
+          line-height: 16px;
+          padding: 0 40px;
+        }
       }
     }
   }
-}
 </style>

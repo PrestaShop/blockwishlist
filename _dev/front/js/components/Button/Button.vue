@@ -34,111 +34,111 @@
 </template>
 
 <script>
-import removeFromList from "@graphqlFiles/mutations/removeFromList";
+  import removeFromList from '@graphqlFiles/mutations/removeFromList'
 
-export default {
-  name: "Button",
-  props: {
-    url: "",
-    productId: null,
-    listId: null,
-    checked: false,
-    isProduct: false
-  },
-  data() {
-    return {
-      isChecked: this.checked === "true",
-      idList: this.listId
-    };
-  },
-  methods: {
-    /**
-     * Toggle the heart on this component, basically if the heart is filled,
-     * then this product is inside a wishlist, else it's not in a wishlist
-     */
-    toggleCheck() {
-      this.isChecked = !this.isChecked;
+  export default {
+    name: 'Button',
+    props: {
+      url: '',
+      productId: null,
+      listId: null,
+      checked: false,
+      isProduct: false
     },
-    /**
-     * If the product isn't in a wishlist, then open the "AddToWishlist" component modal,
-     * if he's in a wishlist, then launch a removeFromList mutation to remote the product from a wishlist
-     */
-    async addToWishlist(event) {
-      event.preventDefault();
+    data() {
+      return {
+        isChecked: this.checked === 'true',
+        idList: this.listId
+      }
+    },
+    methods: {
+      /**
+       * Toggle the heart on this component, basically if the heart is filled,
+       * then this product is inside a wishlist, else it's not in a wishlist
+       */
+      toggleCheck() {
+        this.isChecked = !this.isChecked
+      },
+      /**
+       * If the product isn't in a wishlist, then open the "AddToWishlist" component modal,
+       * if he's in a wishlist, then launch a removeFromList mutation to remote the product from a wishlist
+       */
+      async addToWishlist(event) {
+        event.preventDefault()
 
-      if (!this.isChecked) {
-        const event = new CustomEvent("showAddToWishList", {
-          detail: { productId: this.productId, forceOpen: true }
-        });
+        if (!this.isChecked) {
+          const event = new CustomEvent('showAddToWishList', {
+            detail: { productId: this.productId, forceOpen: true }
+          })
 
-        document.dispatchEvent(event);
-      } else {
-        let response = await this.$apollo.mutate({
-          mutation: removeFromList,
-          variables: {
-            productId: this.productId,
-            listId: this.listId ? this.listId : this.idList,
-            userId: 1
+          document.dispatchEvent(event)
+        } else {
+          let response = await this.$apollo.mutate({
+            mutation: removeFromList,
+            variables: {
+              productId: this.productId,
+              listId: this.listId ? this.listId : this.idList,
+              userId: 1
+            }
+          })
+
+          if (!response.error) {
+            this.toggleCheck()
           }
-        });
-
-        if (!response.error) {
-          this.toggleCheck();
         }
       }
+    },
+    mounted() {
+      /**
+       * Register to event addedToWishlist to toggle the heart if the product has been added correctly
+       */
+      document.addEventListener('addedToWishlist', event => {
+        if (event.detail.productId === this.productId) {
+          this.isChecked = true
+          this.idList = event.detail.listId
+        }
+      })
     }
-  },
-  mounted() {
-    /**
-     * Register to event addedToWishlist to toggle the heart if the product has been added correctly
-     */
-    document.addEventListener("addedToWishlist", event => {
-      if (event.detail.productId === this.productId) {
-        this.isChecked = true;
-        this.idList = event.detail.listId;
-      }
-    });
   }
-};
 </script>
 
 <style lang="scss" type="text/scss">
-.wishlist {
-  &-button {
-    &-product {
-      margin-left: 20px;
-    }
-
-    &-add {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 40px;
-      width: 40px;
-      padding-top: 3px;
-      background-color: #ffffff;
-      box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.2);
-      border-radius: 50%;
-      cursor: pointer;
-      transition: 0.2s ease-out;
-      border: none;
-
-      &:hover {
-        opacity: 0.7;
+  .wishlist {
+    &-button {
+      &-product {
+        margin-left: 20px;
       }
 
-      &:focus {
-        outline: 0;
-      }
+      &-add {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        width: 40px;
+        padding-top: 3px;
+        background-color: #ffffff;
+        box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.2s ease-out;
+        border: none;
 
-      &:active {
-        transform: scale(1.2);
-      }
+        &:hover {
+          opacity: 0.7;
+        }
 
-      i {
-        color: #7a7a7a;
+        &:focus {
+          outline: 0;
+        }
+
+        &:active {
+          transform: scale(1.2);
+        }
+
+        i {
+          color: #7a7a7a;
+        }
       }
     }
   }
-}
 </style>

@@ -99,11 +99,11 @@ export default {
      * @returns {JSON} A success or failed response
      */
     addToList: (root, {listId, userId, productId}, context) => {
-      console.log(listId, userId, productId);
+      console.log(listId, userId, productId)
       return {
         id: 1,
         title: 'Titre de liste 1'
-      };
+      }
     },
     /**
      * Remove a product from a list
@@ -122,7 +122,6 @@ export default {
     /**
      * Remove a list
      *
-     * @param {} root
      * @param {Int} {listId} The list id
      *
      * @returns {JSON} a JSON success or failed response
@@ -145,4 +144,4 @@ export default {
       }
     ]
   }
-};
+}

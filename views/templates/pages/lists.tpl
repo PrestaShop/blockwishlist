@@ -18,17 +18,16 @@
  *}
 {extends file='page.tpl'}
 
-{block name='page_title'}
-    {l s='My Wishlists' mod='blockwishlist'}
+{block name='page_header_container'}
 {/block}
 
-{block name='page_content'}
+{block name='page_content_container'}
   <div
     class="wishlist-container"
     data-url="#"
     data-return-link="#"
     data-home-link="#"
-    data-title="Wishlists"
+    data-title="{l s='My Wishlists' mod='blockwishlist'}"
     data-rename-text="Rename"
     data-share-text="Share"
     data-add-text="New wishlist"
@@ -40,3 +39,9 @@
 {/block}
 
 
+{block name='page_footer_container'}
+  <div class="wishlist-footer-links">
+    <a href="{$accountLink}"><i class="material-icons">chevron_left</i>{l s='Return to your account' mod='blockwishlist'}</a>
+    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' mod='blockwishlist'}</a>
+  </div>
+{/block}

@@ -27,6 +27,7 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
       $this->context->smarty->assign(
         array(
             'url' => '#',
+            'accountLink' => '#'
         )
       ); 
 
