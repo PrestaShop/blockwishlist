@@ -30,7 +30,6 @@
     <section id="content" class="page-content card card-block">
       <list
         :items="lists"
-        @delete="deleteList"
         :renameText="renameText"
         :shareText="shareText"
       ></list>
@@ -82,32 +81,7 @@
        *
        * @param {Int} id The list id to be removed
        */
-      async deleteList(id) {
-        const list = await this.$apollo.mutate({
-          mutation: deleteList,
-          variables: {
-            listId: id
-          },
-          /**
-           * Remove the list from the cache
-           */
-          update: store => {
-            let data = store.readQuery({ query: getLists });
-
-            const lists = data.lists.filter(e => {
-              return e.id != id;
-            });
-            data.lists = lists;
-
-            store.writeQuery({ query: getLists, data });
-          }
-        });
-
-        /**
-         * Finally refetch the list from the response of the mutation
-         */
-        this.lists = list.data.deleteList;
-      }
+      async deleteList(id) {}
     },
     mounted() {
       /**

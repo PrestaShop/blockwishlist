@@ -37,7 +37,7 @@
           <a @click="toggleShare(list.id)">{{ shareText }}</a>
         </div>
 
-        <a @click="$emit('delete', list.id)">
+        <a @click="toggleDelete(list.id, list.title)">
           <i class="material-icons">delete</i>
         </a>
       </div>
@@ -105,6 +105,19 @@
        */
       toggleShare(id, title) {
         const event = new CustomEvent('showShareWishlist', {
+          detail: { listId: id, userId: 1 }
+        });
+
+        document.dispatchEvent(event);
+      },
+      /**
+       * Toggle the popup to rename a list
+       *
+       * @param {Int} id The list ID so the rename popup know which list to rename
+       * @param {String} The base title so the rename popup can autofill it
+       */
+      toggleDelete(id, title) {
+        const event = new CustomEvent('showDeleteWishlist', {
           detail: { listId: id, userId: 1 }
         });
 

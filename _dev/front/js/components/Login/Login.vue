@@ -17,27 +17,21 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import shareList from '@graphqlFiles/mutations/sharelist';
-
   /**
-   * This component display a modal where you can create a wishlist
+   * This component display a modal where you can redirect to login page
    */
   export default {
-    name: 'Share',
+    name: 'Login',
     props: {
       url: '',
-      title: '',
-      label: '',
-      placeholder: '',
       cancelText: '',
-      copyText: '',
-      copiedText: ''
+      loginText: ''
     },
     data() {
       return {
         value: '',
         isHidden: true,
-        actionText: ''
+        listId: null
       };
     },
     methods: {
@@ -46,42 +40,15 @@
        */
       toggleModal() {
         this.isHidden = !this.isHidden;
-      },
-      /**
-       * Copy the link in the input value
-       */
-      copyLink() {
-        const shareInput = document.querySelector(
-          '.wishlist-share .form-control'
-        );
-
-        shareInput.select();
-        shareInput.setSelectionRange(0, 99999);
-
-        document.execCommand('copy');
-
-        this.actionText = this.copiedText;
       }
     },
     mounted() {
-      this.actionText = this.copyText;
-
       /**
        * Register to the event showCreateWishlist so others components can toggle this modal
        *
-       * @param {String} 'showCreateWishlist'
+       * @param {String} 'showDeleteWishlist'
        */
-      document.addEventListener('showShareWishlist', async event => {
-        this.actionText = this.copyText;
-        const { data } = await this.$apollo.mutate({
-          mutation: shareList,
-          variables: {
-            listId: event.detail.listId,
-            userId: event.detail.userId
-          }
-        });
-        const result = data.shareList;
-        this.value = result.url;
+      document.addEventListener('showLogin', () => {
         this.toggleModal();
       });
     }
@@ -90,7 +57,7 @@
 
 <style lang="scss" type="text/scss" scoped>
   .wishlist {
-    &-create {
+    &-login {
       .wishlist-modal {
         display: block;
         opacity: 0;

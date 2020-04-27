@@ -18,7 +18,7 @@
  *}
 
 <div
-  class="wishlist-create"
+  class="wishlist-delete"
   data-url="{$url}"
 >
   <div
@@ -45,17 +45,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="form-group form-group-lg">
-            <label class="form-control-label" for="input2">Wishlist name</label
-            >
-            <input
-              type="text"
-              class="form-control form-control-lg"
-              v-model="value"
-              id="input2"
-              placeholder="Add name"
-            />
-          </div>
+          <p class="modal-text">This action is irreversible</p> 
         </div>
         <div class="modal-footer">
           <button
@@ -70,9 +60,9 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="createWishlist"
+            @click="deleteWishlist"
           >
-            Create wishlist
+            Delete
           </button>
         </div>
       </div>
