@@ -40,6 +40,7 @@ module.exports = {
     create: './_dev/front/js/components/Create',
     rename: './_dev/front/js/components/Rename',
     addtowishlist: './_dev/front/js/components/AddToWishlist',
+    productslist: ['./_dev/front/js/container/ProductsListContainer'],
     wishlistcontainer: [
       './_dev/front/js/container/WishlistContainer',
       './_dev/front/js/components/Create',
