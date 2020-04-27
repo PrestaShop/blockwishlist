@@ -17,27 +17,27 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import shareList from '@graphqlFiles/mutations/sharelist';
+  import deleteList from '@graphqlFiles/mutations/deleteList';
+  import getLists from '@graphqlFiles/queries/getlists';
 
   /**
-   * This component display a modal where you can create a wishlist
+   * This component display a modal where you can delete a wishlist
    */
   export default {
-    name: 'Share',
+    name: 'Delete',
     props: {
       url: '',
       title: '',
       label: '',
       placeholder: '',
       cancelText: '',
-      copyText: '',
-      copiedText: ''
+      createText: ''
     },
     data() {
       return {
         value: '',
         isHidden: true,
-        actionText: ''
+        listId: null
       };
     },
     methods: {
@@ -48,40 +48,51 @@
         this.isHidden = !this.isHidden;
       },
       /**
-       * Copy the link in the input value
+       * Launch a deleteList mutation to delete a Wishlist
        */
-      copyLink() {
-        const shareInput = document.querySelector(
-          '.wishlist-share .form-control'
-        );
+      async deleteWishlist() {
+        const list = await this.$apollo.mutate({
+          mutation: deleteList,
+          variables: {
+            listId: this.listId
+          },
+          /**
+           * Remove the list from the cache
+           */
+          update: store => {
+            let data = store.readQuery({ query: getLists });
 
-        shareInput.select();
-        shareInput.setSelectionRange(0, 99999);
+            const lists = data.lists.filter(e => {
+              return e.id != this.listId;
+            });
+            data.lists = lists;
 
-        document.execCommand('copy');
+            store.writeQuery({ query: getLists, data });
+          }
+        });
 
-        this.actionText = this.copiedText;
+        /**
+         * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
+         */
+        const event = new Event('refetchList');
+        document.dispatchEvent(event);
+
+        /**
+         * Finally hide the modal after deleting the list
+         * and reopen the wishlist modal
+         */
+        this.toggleModal();
       }
     },
     mounted() {
-      this.actionText = this.copyText;
-
       /**
        * Register to the event showCreateWishlist so others components can toggle this modal
        *
-       * @param {String} 'showCreateWishlist'
+       * @param {String} 'showDeleteWishlist'
        */
-      document.addEventListener('showShareWishlist', async event => {
-        this.actionText = this.copyText;
-        const { data } = await this.$apollo.mutate({
-          mutation: shareList,
-          variables: {
-            listId: event.detail.listId,
-            userId: event.detail.userId
-          }
-        });
-        const result = data.shareList;
-        this.value = result.url;
+      document.addEventListener('showDeleteWishlist', () => {
+        this.value = '';
+        this.listId = event.detail.listId;
         this.toggleModal();
       });
     }
@@ -90,7 +101,7 @@
 
 <style lang="scss" type="text/scss" scoped>
   .wishlist {
-    &-create {
+    &-delete {
       .wishlist-modal {
         display: block;
         opacity: 0;

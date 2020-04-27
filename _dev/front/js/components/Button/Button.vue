@@ -29,6 +29,7 @@
 
 <script>
   import removeFromList from '@graphqlFiles/mutations/removeFromList';
+  import prestashop from 'prestashop';
 
   export default {
     name: 'Button',
@@ -59,6 +60,14 @@
        */
       async addToWishlist(event) {
         event.preventDefault();
+
+        if (!prestashop.customer.is_logged) {
+          const event = new CustomEvent('showLogin');
+
+          document.dispatchEvent(event);
+
+          return;
+        }
 
         if (!this.isChecked) {
           const event = new CustomEvent('showAddToWishList', {
