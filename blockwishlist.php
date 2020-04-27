@@ -118,7 +118,7 @@ class BlockWishList extends Module implements WidgetInterface
 
         $this->context->controller->registerStylesheet(
             'blockwishlistController',
-            'modules/'.$this->name.'/public/wishlist.css',
+            'modules/' . $this->name . '/public/wishlist.css',
             [
               'media' => 'all',
               'priority' => 200,
@@ -127,7 +127,7 @@ class BlockWishList extends Module implements WidgetInterface
 
         $this->context->controller->registerJavascript(
             'blockwishlistController',
-            'modules/'.$this->name.'/public/product.bundle.js',
+            'modules/' . $this->name . '/public/product.bundle.js',
             [
               'priority' => 200,
             ]
@@ -145,11 +145,11 @@ class BlockWishList extends Module implements WidgetInterface
     {
         $this->smarty->assign([
           'blockwishlist' => $this->displayName,
-          'product' => array(
+          'product' => [
             'id' => 1,
-            'id_wishlist' => 1
-          ),
-          'url' => 'http://dumburl.com/'
+            'id_wishlist' => 1,
+          ],
+          'url' => 'http://dumburl.com/',
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/product/add-button.tpl');
@@ -246,7 +246,7 @@ class BlockWishList extends Module implements WidgetInterface
     public function hookDisplayHeader(array $params)
     {
         $this->smarty->assign([
-            'context' => $this->context->controller->php_self
+            'context' => $this->context->controller->php_self,
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayHeader.tpl');

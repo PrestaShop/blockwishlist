@@ -33,7 +33,8 @@
         },
         "classmap": [
             "blockwishlist.php",
-            "controllers"
+            "controllers",
+            "classes"
         ]
     },
     "scripts": {
