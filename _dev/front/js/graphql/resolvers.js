@@ -28,8 +28,23 @@ export default {
     products: (root, args, context) => [
       {
         id: 1,
-        name: 'Gnark produit',
-        price: '1.50'
+        name: 'Product 1',
+        price: '1,500'
+      },
+      {
+        id: 2,
+        name: 'Product 2',
+        price: '15,00'
+      },
+      {
+        id: 3,
+        name: 'Product 3',
+        price: '18,00'
+      },
+      {
+        id: 4,
+        name: 'Product 4',
+        price: '21,00'
       }
     ],
     /**

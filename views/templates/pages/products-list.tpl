@@ -25,6 +25,8 @@
   <div
     class="wishlist-products-container"
     data-url="#"
+    data-list-id="1"
+    data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-title="{l s='Gift ideas for Juliette' mod='blockwishlist'}"
   ></div>
 {/block}
