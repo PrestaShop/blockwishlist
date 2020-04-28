@@ -28,6 +28,14 @@ const props = [
   {
     name: 'title',
     type: String
+  },
+  {
+    name: 'defaultSort',
+    type: String
+  },
+  {
+    name: 'listId',
+    type: Number
   }
 ];
 

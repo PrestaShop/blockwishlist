@@ -69,7 +69,10 @@
         this.toggleModal(
           event.detail.forceOpen ? event.detail.forceOpen : null
         );
-        this.productId = event.detail.productId;
+
+        if (event.detail.productId) {
+          this.productId = event.detail.productId;
+        }
       });
     }
   };

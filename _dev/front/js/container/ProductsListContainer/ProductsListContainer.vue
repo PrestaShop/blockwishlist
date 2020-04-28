@@ -17,30 +17,74 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <template>
-  <div class="wishlist-container">
-    <div class="wishlist-container-header">
-      <h1>{{ title }}</h1>
+  <div class="wishlist-products-container">
+    <div class="wishlist-products-container-header">
+      <h1>
+        {{ title }}
+        <span class="wishlist-products-count" v-if="products">
+          ({{ products.length }})
+        </span>
+      </h1>
 
-      <a @click="openNewWishlistModal" class="wishlist-add-to-new">
-        <i class="material-icons">add_circle_outline</i>
-        {{ addText }}
-      </a>
+      <div class="sort-by-row">
+        <span class="col-sm-3 col-md-3 hidden-sm-down sort-by">Sort by:</span>
+        <div class="col-sm-9 col-xs-8 col-md-9 products-sort-order dropdown">
+          <button
+            class="btn-unstyle select-title"
+            rel="nofollow"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {{ selectedSort }}
+            <i class="material-icons float-xs-right">arrow_drop_down</i>
+          </button>
+          <div class="dropdown-menu">
+            <a
+              rel="nofollow"
+              @click="changeSelectedSort('Last added')"
+              class="select-list js-search-link"
+            >
+              Last added
+            </a>
+            <a
+              rel="nofollow"
+              @click="changeSelectedSort('Price, low to high')"
+              class="select-list current js-search-link"
+            >
+              Price, low to high
+            </a>
+            <a
+              rel="nofollow"
+              @click="changeSelectedSort('Price, high to low')"
+              class="select-list js-search-link"
+            >
+              Price, high to low
+            </a>
+          </div>
+        </div>
+
+        <div class="col-sm-3 col-xs-4 hidden-md-up filter-button">
+          <button id="search_filter_toggler" class="btn btn-secondary">
+            Filter
+          </button>
+        </div>
+      </div>
     </div>
 
     <section id="content" class="page-content card card-block">
-      <list
-        :items="lists"
-        :renameText="renameText"
-        :shareText="shareText"
-      ></list>
+      <ul class="wishlist-products-list">
+        <li class="wishlist-products-item" v-for="product in products">
+          <Product :product="product" :listId="listId" />
+        </li>
+      </ul>
     </section>
   </div>
 </template>
 
 <script>
-  import List from '@components/List/List';
-  import getLists from '@graphqlFiles/queries/getlists';
-  import deleteList from '@graphqlFiles/mutations/deletelist';
+  import Product from '@components/Product/Product';
+  import getProducts from '@graphqlFiles/queries/getProducts';
 
   /**
    * This component act as a smart component wich will handle every actions of the list one
@@ -48,14 +92,27 @@
   export default {
     name: 'ProductsListContainer',
     components: {
-      List
+      Product
     },
     apollo: {
-      lists: getLists
+      products: {
+        query: getProducts,
+        variables() {
+          return {
+            listId: this.listId,
+            userId: 1
+          };
+        },
+        skip() {
+          return true;
+        }
+      }
     },
     props: {
       url: '',
       title: '',
+      defaultSort: '',
+      listId: null,
       homeLink: '',
       returnLink: '',
       addText: '',
@@ -64,26 +121,24 @@
     },
     data() {
       return {
-        lists: []
+        lists: [],
+        selectedSort: ''
       };
     },
     methods: {
-      /**
-       * Send an event to opoen the Create Wishlist Modal
-       */
-      openNewWishlistModal() {
-        const event = new Event('showCreateWishlist');
-
-        document.dispatchEvent(event);
-      },
       /**
        * Delete a list by launching a mutation, updating cache and then on response replacing the lists state
        *
        * @param {Int} id The list id to be removed
        */
-      async deleteList(id) {}
+      async deleteList(id) {},
+      async changeSelectedSort(value) {
+        this.selectedSort = value;
+      }
     },
     mounted() {
+      this.$apollo.queries.products.skip = false;
+      this.selectedSort = this.defaultSort;
       /**
        * Register to the event refetchList so if an other component update it, this one can update his list
        *
@@ -96,11 +151,29 @@
   };
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="scss" type="text/scss">
   @import '@scss/_variables';
 
   .wishlist {
-    &-container {
+    &-products-container {
+      .sort-by-row {
+        min-width: 315px;
+        display: flex;
+        align-items: center;
+
+        a {
+          cursor: pointer;
+        }
+
+        .sort-by {
+          padding: 0;
+        }
+
+        .products-sort-order {
+          padding: 0;
+        }
+      }
+
       &-header {
         display: flex;
         align-items: center;
@@ -114,28 +187,26 @@
       }
     }
 
-    &-add-to-new {
-      cursor: pointer;
-      transition: 0.2s ease-out;
-      font-size: 14px;
-      letter-spacing: 0;
-      line-height: 16px;
-
-      &:not([href]):not([tabindex]) {
-        color: $blue;
+    &-products {
+      &-list {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -25px;
+        padding: 20px 45px;
       }
 
-      &:hover {
-        opacity: 0.7;
+      &-count {
+        color: #7a7a7a;
+        font-size: 22px;
+        font-weight: normal;
+        line-height: 30px;
       }
+    }
+  }
 
-      i {
-        margin-right: 5px;
-        vertical-align: middle;
-        color: $blue;
-        margin-top: -2px;
-        font-size: 20px;
-      }
+  #module-blockwishlist-productslist {
+    #wrapper .container {
+      width: 975px;
     }
   }
 </style>
