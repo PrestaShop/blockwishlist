@@ -29,6 +29,9 @@
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-title="{l s='Gift ideas for Juliette' mod='blockwishlist'}"
   ></div>
+
+
+  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" url="http://dummy.com"}
 {/block}
 
 

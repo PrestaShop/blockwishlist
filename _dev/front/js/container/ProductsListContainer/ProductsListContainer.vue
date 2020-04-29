@@ -140,12 +140,12 @@
       this.$apollo.queries.products.skip = false;
       this.selectedSort = this.defaultSort;
       /**
-       * Register to the event refetchList so if an other component update it, this one can update his list
+       * Register to the event refetchProducts so if an other component update it, this one can update his list
        *
-       * @param {String} 'refetchList' The event I decided to create to communicate between VueJS Apps
+       * @param {String} 'refetchProduct' The event I decided to create to communicate between VueJS Apps
        */
       document.addEventListener('refetchList', () => {
-        this.$apollo.queries.lists.refetch();
+        this.$apollo.queries.products.refetch();
       });
     }
   };
