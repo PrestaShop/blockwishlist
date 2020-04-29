@@ -19,6 +19,7 @@
 <script>
   import deleteList from '@graphqlFiles/mutations/deleteList';
   import getLists from '@graphqlFiles/queries/getlists';
+  import removeFromList from '@graphqlFiles/mutations/removeFromList';
 
   /**
    * This component display a modal where you can delete a wishlist
@@ -37,7 +38,8 @@
       return {
         value: '',
         isHidden: true,
-        listId: null
+        listId: null,
+        productId: null
       };
     },
     methods: {
@@ -52,22 +54,10 @@
        */
       async deleteWishlist() {
         const list = await this.$apollo.mutate({
-          mutation: deleteList,
+          mutation: this.productId ? removeFromList : deleteList,
           variables: {
-            listId: this.listId
-          },
-          /**
-           * Remove the list from the cache
-           */
-          update: store => {
-            let data = store.readQuery({ query: getLists });
-
-            const lists = data.lists.filter(e => {
-              return e.id != this.listId;
-            });
-            data.lists = lists;
-
-            store.writeQuery({ query: getLists, data });
+            listId: this.listId,
+            productId: this.productId
           }
         });
 
@@ -90,9 +80,14 @@
        *
        * @param {String} 'showDeleteWishlist'
        */
-      document.addEventListener('showDeleteWishlist', () => {
+      document.addEventListener('showDeleteWishlist', event => {
         this.value = '';
         this.listId = event.detail.listId;
+
+        if (event.detail.productId) {
+          this.productId = event.detail.productId;
+        }
+
         this.toggleModal();
       });
     }

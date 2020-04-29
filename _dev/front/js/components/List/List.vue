@@ -19,10 +19,13 @@
 <template>
   <ul class="wishlist-list">
     <li class="wishlist-list-item" :key="list.id" v-for="list of items">
-      <p class="wishlist-list-item-title">
+      <a
+        class="wishlist-list-item-title"
+        href="http://localhost/prestashop/index.php?fc=module&module=blockwishlist&controller=productslist&id_lang=1"
+      >
         {{ list.title }}
         <span>({{ list.numbersProduct }})</span>
-      </p>
+      </a>
 
       <div class="wishlist-list-item-right">
         <a @click="togglePopup(list.id)" class="wishlist-list-item-actions">

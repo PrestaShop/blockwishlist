@@ -28,12 +28,22 @@
       €{{ product.price }}
     </p>
 
+    <div class="wishlist-product-combinations">
+      <p class="wishlist-product-combinations-text">
+        Size: S - Colour: White - Quantity: 1
+      </p>
+
+      <a href="#">
+        <i class="material-icons">create</i>
+      </a>
+    </div>
+
     <button class="btn btn-primary wishlist-product-addtocart">
       <i class="material-icons shopping-cart">shopping_cart</i>
       Add to cart
     </button>
 
-    <button class="wishlist-button-add" @click="remoteFromWishlist">
+    <button class="wishlist-button-add" @click="removeFromWishlist">
       <i class="material-icons">delete</i>
     </button>
   </div>
@@ -56,30 +66,22 @@
       /**
        * Remove the product from the wishlist
        */
-      async remoteFromWishlist(event) {
-        event.preventDefault();
-
-        let response = await this.$apollo.mutate({
-          mutation: removeFromList,
-          variables: {
-            productId: this.product.id,
-            listId: this.listId,
-            userId: 1
-          }
+      async removeFromWishlist() {
+        const event = new CustomEvent('showDeleteWishlist', {
+          detail: { listId: this.listId, productId: this.productId, userId: 1 }
         });
 
-        if (!response.error) {
-          this.$emit('refetch');
-        }
+        document.dispatchEvent(event);
+        event.preventDefault();
       }
     },
-    mounted() {
-      console.log(prestashop);
-    }
+    mounted() {}
   };
 </script>
 
 <style lang="scss" type="text/scss">
+  @import '@scss/_variables';
+
   .wishlist {
     &-product {
       max-width: 250px;
@@ -132,10 +134,34 @@
         }
       }
 
+      &-combinations {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        a {
+          display: block;
+          color: #7a7a7a;
+
+          &:hover {
+            color: $blue;
+          }
+        }
+
+        &-text {
+          color: #7a7a7a;
+          font-size: 13px;
+          letter-spacing: 0;
+          line-height: 20px;
+          margin: 0;
+        }
+      }
+
       &-addtocart {
         width: 100%;
         text-transform: inherit;
         padding-left: 10px;
+        margin-top: 30px;
 
         i {
           margin-top: -3px;
