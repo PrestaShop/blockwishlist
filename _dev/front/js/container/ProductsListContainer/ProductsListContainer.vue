@@ -73,11 +73,18 @@
     </div>
 
     <section id="content" class="page-content card card-block">
-      <ul class="wishlist-products-list">
+      <ul class="wishlist-products-list" v-if="products.length > 0">
         <li class="wishlist-products-item" v-for="product in products">
           <Product :product="product" :listId="listId" />
         </li>
       </ul>
+
+      <ContentLoader v-else class="wishlist-list-loader" height="105">
+        <rect x="0" y="12" rx="3" ry="0" width="100%" height="11" />
+        <rect x="0" y="36" rx="3" ry="0" width="100%" height="11" />
+        <rect x="0" y="60" rx="3" ry="0" width="100%" height="11" />
+        <rect x="0" y="84" rx="3" ry="0" width="100%" height="11" />
+      </ContentLoader>
     </section>
   </div>
 </template>
@@ -85,6 +92,7 @@
 <script>
   import Product from '@components/Product/Product';
   import getProducts from '@graphqlFiles/queries/getProducts';
+  import { ContentLoader } from 'vue-content-loader';
 
   /**
    * This component act as a smart component wich will handle every actions of the list one
@@ -92,7 +100,8 @@
   export default {
     name: 'ProductsListContainer',
     components: {
-      Product
+      Product,
+      ContentLoader
     },
     apollo: {
       products: {
@@ -121,7 +130,7 @@
     },
     data() {
       return {
-        lists: [],
+        products: [],
         selectedSort: ''
       };
     },
@@ -155,6 +164,11 @@
   @import '@scss/_variables';
 
   .wishlist {
+    &-list-loader {
+      padding: 0 20px;
+      width: 100%;
+    }
+
     &-products-container {
       .sort-by-row {
         min-width: 315px;
