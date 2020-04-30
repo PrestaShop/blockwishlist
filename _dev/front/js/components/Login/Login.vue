@@ -17,25 +17,21 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import createList from '@graphqlFiles/mutations/createlist';
-
   /**
-   * This component display a modal where you can create a wishlist
+   * This component display a modal where you can redirect to login page
    */
   export default {
-    name: 'Create',
+    name: 'Login',
     props: {
       url: '',
-      title: '',
-      label: '',
-      placeholder: '',
       cancelText: '',
-      createText: ''
+      loginText: ''
     },
     data() {
       return {
         value: '',
-        isHidden: true
+        isHidden: true,
+        listId: null
       };
     },
     methods: {
@@ -44,47 +40,15 @@
        */
       toggleModal() {
         this.isHidden = !this.isHidden;
-      },
-      /**
-       * Launch a createList mutation to create a Wishlist
-       */
-      async createWishlist() {
-        await this.$apollo.mutate({
-          mutation: createList,
-          variables: {
-            name: this.value,
-            userId: 1
-          }
-        });
-
-        /**
-         * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
-         */
-        const event = new Event('refetchList');
-        document.dispatchEvent(event);
-
-        /**
-         * Finally hide the modal after creating the list
-         * and reopen the wishlist modal
-         */
-        this.toggleModal();
-        const wishlistEvent = new CustomEvent('showAddToWishList', {
-          detail: {
-            forceOpen: true
-          }
-        });
-
-        document.dispatchEvent(wishlistEvent);
       }
     },
     mounted() {
       /**
        * Register to the event showCreateWishlist so others components can toggle this modal
        *
-       * @param {String} 'showCreateWishlist'
+       * @param {String} 'showDeleteWishlist'
        */
-      document.addEventListener('showCreateWishlist', () => {
-        this.value = '';
+      document.addEventListener('showLogin', () => {
         this.toggleModal();
       });
     }
@@ -93,7 +57,7 @@
 
 <style lang="scss" type="text/scss" scoped>
   .wishlist {
-    &-create {
+    &-login {
       .wishlist-modal {
         display: block;
         opacity: 0;

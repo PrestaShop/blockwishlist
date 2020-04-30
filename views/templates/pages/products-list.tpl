@@ -16,16 +16,28 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
+{extends file='page.tpl'}
 
-<div
-  class="wishlist-button"
-  data-url="{$url}"
-  data-product-id="{$product.id}"
-  data-is-logged="{$customer.is_logged}"
+{block name='page_header_container'}
+{/block}
 
-  {if $product.id_wishlist}
-    data-list-id="{$product.id_wishlist}"
-    data-checked="true"
-    data-is-product="true"
-  {/if}
-></div>
+{block name='page_content_container'}
+  <div
+    class="wishlist-products-container"
+    data-url="#"
+    data-list-id="1"
+    data-default-sort="{l s='Last added' mod='blockwishlist'}"
+    data-title="{l s='Gift ideas for Juliette' mod='blockwishlist'}"
+  ></div>
+
+
+  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" url="http://dummy.com"}
+{/block}
+
+
+{block name='page_footer_container'}
+  <div class="wishlist-footer-links">
+    <a href="{$accountLink}"><i class="material-icons">chevron_left</i>{l s='Return to your account' mod='blockwishlist'}</a>
+    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' mod='blockwishlist'}</a>
+  </div>
+{/block}

@@ -16,14 +16,15 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
+import Vue from 'vue';
+import Login from './Login';
+import initApp from '@components/init';
 
-import gql from 'graphql-tag';
-
-export default gql`
-  mutation renameList($name: String!, $userId: Int!, $listId: Int!) {
-    renameList(name: $name, userId: $userId, listId: $listId) {
-      id
-      title
-    }
+const props = [
+  {
+    name: 'url',
+    type: String
   }
-`;
+];
+
+initApp(Login, '.wishlist-login', props);

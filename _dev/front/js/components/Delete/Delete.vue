@@ -17,13 +17,15 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import createList from '@graphqlFiles/mutations/createlist';
+  import deleteList from '@graphqlFiles/mutations/deleteList';
+  import getLists from '@graphqlFiles/queries/getlists';
+  import removeFromList from '@graphqlFiles/mutations/removeFromList';
 
   /**
-   * This component display a modal where you can create a wishlist
+   * This component display a modal where you can delete a wishlist
    */
   export default {
-    name: 'Create',
+    name: 'Delete',
     props: {
       url: '',
       title: '',
@@ -35,7 +37,9 @@
     data() {
       return {
         value: '',
-        isHidden: true
+        isHidden: true,
+        listId: null,
+        productId: null
       };
     },
     methods: {
@@ -46,14 +50,14 @@
         this.isHidden = !this.isHidden;
       },
       /**
-       * Launch a createList mutation to create a Wishlist
+       * Launch a deleteList mutation to delete a Wishlist
        */
-      async createWishlist() {
-        await this.$apollo.mutate({
-          mutation: createList,
+      async deleteWishlist() {
+        const list = await this.$apollo.mutate({
+          mutation: this.productId ? removeFromList : deleteList,
           variables: {
-            name: this.value,
-            userId: 1
+            listId: this.listId,
+            productId: this.productId
           }
         });
 
@@ -64,27 +68,26 @@
         document.dispatchEvent(event);
 
         /**
-         * Finally hide the modal after creating the list
+         * Finally hide the modal after deleting the list
          * and reopen the wishlist modal
          */
         this.toggleModal();
-        const wishlistEvent = new CustomEvent('showAddToWishList', {
-          detail: {
-            forceOpen: true
-          }
-        });
-
-        document.dispatchEvent(wishlistEvent);
       }
     },
     mounted() {
       /**
        * Register to the event showCreateWishlist so others components can toggle this modal
        *
-       * @param {String} 'showCreateWishlist'
+       * @param {String} 'showDeleteWishlist'
        */
-      document.addEventListener('showCreateWishlist', () => {
+      document.addEventListener('showDeleteWishlist', event => {
         this.value = '';
+        this.listId = event.detail.listId;
+
+        if (event.detail.productId) {
+          this.productId = event.detail.productId;
+        }
+
         this.toggleModal();
       });
     }
@@ -93,7 +96,7 @@
 
 <style lang="scss" type="text/scss" scoped>
   .wishlist {
-    &-create {
+    &-delete {
       .wishlist-modal {
         display: block;
         opacity: 0;

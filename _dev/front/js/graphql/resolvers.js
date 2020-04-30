@@ -1,4 +1,23 @@
 /**
+ * 2007-2020 PrestaShop and Contributors
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License 3.0 (AFL-3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA <contact@prestashop.com>
+ * @copyright 2007-2020 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
+ * International Registered Trademark & Property of PrestaShop SA
+ */
+
+/**
  * Resolvers linked to schemas definitions
  */
 export default {
@@ -9,8 +28,23 @@ export default {
     products: (root, args, context) => [
       {
         id: 1,
-        name: 'Gnark produit',
-        price: '1.50'
+        name: 'Product 1',
+        price: '1,500'
+      },
+      {
+        id: 2,
+        name: 'Product 2',
+        price: '15,00'
+      },
+      {
+        id: 3,
+        name: 'Product 3',
+        price: '18,00'
+      },
+      {
+        id: 4,
+        name: 'Product 4',
+        price: '21,00'
       }
     ],
     /**
@@ -64,6 +98,17 @@ export default {
         title: 'Titre de liste 4'
       }
     ],
+    /**
+     * Get a share url for a list
+     *
+     * @param {ID} listId ID of the list
+     * @param {ID} userId ID of the user
+     */
+    shareList: (root, {listId, userId}, context) => {
+      return {
+        url: 'http://url.fr'
+      };
+    },
     /**
      * Rename a list
      *
@@ -122,7 +167,6 @@ export default {
     /**
      * Remove a list
      *
-     * @param {} root
      * @param {Int} {listId} The list id
      *
      * @returns {JSON} a JSON success or failed response

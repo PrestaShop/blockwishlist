@@ -17,25 +17,27 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import createList from '@graphqlFiles/mutations/createlist';
+  import shareList from '@graphqlFiles/mutations/sharelist';
 
   /**
    * This component display a modal where you can create a wishlist
    */
   export default {
-    name: 'Create',
+    name: 'Share',
     props: {
       url: '',
       title: '',
       label: '',
       placeholder: '',
       cancelText: '',
-      createText: ''
+      copyText: '',
+      copiedText: ''
     },
     data() {
       return {
         value: '',
-        isHidden: true
+        isHidden: true,
+        actionText: ''
       };
     },
     methods: {
@@ -46,45 +48,40 @@
         this.isHidden = !this.isHidden;
       },
       /**
-       * Launch a createList mutation to create a Wishlist
+       * Copy the link in the input value
        */
-      async createWishlist() {
-        await this.$apollo.mutate({
-          mutation: createList,
-          variables: {
-            name: this.value,
-            userId: 1
-          }
-        });
+      copyLink() {
+        const shareInput = document.querySelector(
+          '.wishlist-share .form-control'
+        );
 
-        /**
-         * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
-         */
-        const event = new Event('refetchList');
-        document.dispatchEvent(event);
+        shareInput.select();
+        shareInput.setSelectionRange(0, 99999);
 
-        /**
-         * Finally hide the modal after creating the list
-         * and reopen the wishlist modal
-         */
-        this.toggleModal();
-        const wishlistEvent = new CustomEvent('showAddToWishList', {
-          detail: {
-            forceOpen: true
-          }
-        });
+        document.execCommand('copy');
 
-        document.dispatchEvent(wishlistEvent);
+        this.actionText = this.copiedText;
       }
     },
     mounted() {
+      this.actionText = this.copyText;
+
       /**
        * Register to the event showCreateWishlist so others components can toggle this modal
        *
        * @param {String} 'showCreateWishlist'
        */
-      document.addEventListener('showCreateWishlist', () => {
-        this.value = '';
+      document.addEventListener('showShareWishlist', async event => {
+        this.actionText = this.copyText;
+        const { data } = await this.$apollo.mutate({
+          mutation: shareList,
+          variables: {
+            listId: event.detail.listId,
+            userId: event.detail.userId
+          }
+        });
+        const result = data.shareList;
+        this.value = result.url;
         this.toggleModal();
       });
     }

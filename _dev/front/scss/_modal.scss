@@ -36,7 +36,7 @@
 
       h5 {
         color: #232323;
-        font-family: "Noto Sans";
+        font-family: 'Noto Sans';
         font-size: 22px;
         font-weight: bold;
         letter-spacing: 0;
@@ -48,6 +48,13 @@
       }
     }
 
+    &-text {
+      color: #232323;
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 19px;
+    }
+
     &-body {
       padding: 15px 30px;
 
@@ -57,6 +64,7 @@
         .form-control {
           border-radius: 0;
           background: none;
+          color: black;
         }
       }
     }

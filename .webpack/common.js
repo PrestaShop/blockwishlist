@@ -36,16 +36,23 @@ module.exports = {
     prestashop: 'prestashop'
   },
   entry: {
-    button: './_dev/front/js/components/Button',
-    create: './_dev/front/js/components/Button',
+    button: ['./_dev/front/js/components/Button'],
+    create: './_dev/front/js/components/Create',
     rename: './_dev/front/js/components/Rename',
     addtowishlist: './_dev/front/js/components/AddToWishlist',
-    wishlistcontainer: './_dev/front/js/container/WishlistContainer',
+    productslist: ['./_dev/front/js/container/ProductsListContainer', './_dev/front/js/components/Delete'],
+    wishlistcontainer: [
+      './_dev/front/js/container/WishlistContainer',
+      './_dev/front/js/components/Create',
+      './_dev/front/js/components/Delete',
+      './_dev/front/js/components/Share',
+      './_dev/front/js/components/Rename'
+    ],
     wishlist: ['./_dev/front/scss/common.scss'],
-
     product: [
       './_dev/front/js/pages/list',
       './_dev/front/js/components/Button',
+      './_dev/front/js/components/Login',
       './_dev/front/js/components/Create',
       './_dev/front/js/components/AddToWishlist'
     ]

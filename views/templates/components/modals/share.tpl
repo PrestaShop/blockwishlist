@@ -18,8 +18,10 @@
  *}
 
 <div
-  class="wishlist-create"
+  class="wishlist-share"
   data-url="{$url}"
+  data-copied-text="Copied!"
+  data-copy-text="Copy text"
 >
   <div
     class="wishlist-modal modal fade"
@@ -33,7 +35,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New wishlist</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Share wishlist</h5>
           <button
             type="button"
             class="close"
@@ -46,14 +48,13 @@
         </div>
         <div class="modal-body">
           <div class="form-group form-group-lg">
-            <label class="form-control-label" for="input2">Wishlist name</label
-            >
+            <label class="form-control-label" for="input2">Share link</label>
             <input
               type="text"
               class="form-control form-control-lg"
               v-model="value"
               id="input2"
-              placeholder="Add name"
+              placeholder="Share link"
             />
           </div>
         </div>
@@ -70,9 +71,9 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="createWishlist"
+            @click="copyLink"
           >
-            Create wishlist
+            (( actionText ))
           </button>
         </div>
       </div>

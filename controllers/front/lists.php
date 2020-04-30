@@ -1,3 +1,4 @@
+<?php
 /**
  * 2007-2020 PrestaShop and Contributors
  *
@@ -17,13 +18,27 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-import gql from 'graphql-tag';
+class BlockWishlistListsModuleFrontController extends ModuleFrontController
+{
+    public function initContent()
+    {
+      parent::initContent();      
 
-export default gql`
-  mutation renameList($name: String!, $userId: Int!, $listId: Int!) {
-    renameList(name: $name, userId: $userId, listId: $listId) {
-      id
-      title
+      $this->context->smarty->assign(
+        array(
+            'url' => '#',
+            'accountLink' => '#'
+        )
+      ); 
+
+      $this->context->controller->registerJavascript(
+          'blockwishlistController',
+          'modules/blockwishlist/public/wishlistcontainer.bundle.js',
+          [
+            'priority' => 200,
+          ]
+      );
+
+      $this->setTemplate('module:blockwishlist/views/templates/pages/lists.tpl');
     }
-  }
-`;
+}
