@@ -250,14 +250,14 @@ class WishList extends \ObjectModel
             return false;
         }
 
-        return (\Db::getInstance()->execute('
+        return \Db::getInstance()->execute('
             UPDATE `'._DB_PREFIX_.'wishlist_product` SET
             `priority` = '.(int) $priority.',
             `quantity` = '.(int) $quantity.'
             WHERE `id_wishlist` = '.(int) $id_wishlist.'
             AND `id_product` = '.(int) $id_product.'
             AND `id_product_attribute` = '.(int) $id_product_attribute
-        ));
+        );
     }
 
     /**
@@ -288,5 +288,31 @@ class WishList extends \ObjectModel
             GROUP BY w.`id_wishlist`
             ORDER BY w.`name` ASC')
         );
+    }
+
+    /**
+     * Get products by Wishlist
+     *
+     * @return array|false Results
+     */
+    public static function getProductsByWishlist($id_wishlist)
+    {
+        if (!\Validate::isUnsignedId($id_customer) ||
+            !\Validate::isUnsignedId($id_lang) ||
+            !\Validate::isUnsignedId($id_wishlist)) {
+                return false;
+        }
+
+        $wishlistProducts = \Db::getInstance()->executeS('
+            SELECT `id_product`, `id_product_attribute`, `quantity`
+            FROM `'._DB_PREFIX_.'wishlist_product`
+            WHERE `id_wishlist` = ' . (int) $id_wishlist
+        );
+
+        if (!empty($wishlistProducts)) {
+            return $wishlistProducts;
+        }
+
+        return false;
     }
 }

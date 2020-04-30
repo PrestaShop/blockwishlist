@@ -296,4 +296,21 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             ])
         );
     }
+// TODO
+// vérifier avec valentin ce dont il a besoin pour constituer un produit en front
+    public function getProductsByWishlisActiont($params)
+    {
+        $arrProducts = [];
+        $wishlistProducts = new WishList::getProductsByWishlist($params['idWishlist']);
+        foreach($wishlistProducts as $product) {
+            $arrProducts[$product['id_product']]['product'] = (new \Product(
+                    $product['id_product'],
+                    false,
+                    $this->context->language->id,
+                    $this->context->shop->id,
+                ))
+                ->updateAttribute($product['id_product_attribute']);
+            $arrProducts[$product['id_product']]['quantity'] = $product['quantity'];
+        }
+    }
 }
