@@ -61,6 +61,16 @@
         document.execCommand('copy');
 
         this.actionText = this.copiedText;
+
+        this.toggleModal();
+
+        const toastEvent = new CustomEvent('showToast', {
+          detail: {
+            type: 'success',
+            message: 'copyText'
+          }
+        });
+        document.dispatchEvent(toastEvent);
       }
     },
     mounted() {

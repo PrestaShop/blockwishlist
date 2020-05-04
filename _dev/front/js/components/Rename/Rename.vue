@@ -64,6 +64,14 @@
         const event = new Event('refetchList');
 
         document.dispatchEvent(event);
+
+        const toastEvent = new CustomEvent('showToast', {
+          detail: {
+            type: 'success',
+            message: 'renameWishlistText'
+          }
+        });
+        document.dispatchEvent(toastEvent);
       }
     },
     mounted() {

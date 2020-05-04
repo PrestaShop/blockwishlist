@@ -67,6 +67,14 @@
         const event = new Event('refetchList');
         document.dispatchEvent(event);
 
+        const toastEvent = new CustomEvent('showToast', {
+          detail: {
+            type: 'success',
+            message: this.productId ? 'deleteProductText' : 'deleteWishlistText'
+          }
+        });
+        document.dispatchEvent(toastEvent);
+
         /**
          * Finally hide the modal after deleting the list
          * and reopen the wishlist modal
@@ -86,6 +94,8 @@
 
         if (event.detail.productId) {
           this.productId = event.detail.productId;
+        } else {
+          this.productId = null;
         }
 
         this.toggleModal();

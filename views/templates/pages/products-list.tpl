@@ -32,6 +32,7 @@
 
 
   {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/block}
 
 

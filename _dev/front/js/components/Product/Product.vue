@@ -18,25 +18,27 @@
  *-->
 <template>
   <div class="wishlist-product">
-    <div class="wishlist-product-image">
-      <img src="/prestashop/img/p/2/1/21.jpg" />
-    </div>
-    <p class="wishlist-product-title">{{ product.name }}</p>
+    <a class="wishlist-product-link" href="#">
+      <div class="wishlist-product-image">
+        <img src="/prestashop/img/p/2/1/21.jpg" />
+      </div>
+      <p class="wishlist-product-title">{{ product.name }}</p>
 
-    <p class="wishlist-product-price">
-      <span class="wishlist-product-price-promo">€28.68</span>
-      €{{ product.price }}
-    </p>
-
-    <div class="wishlist-product-combinations">
-      <p class="wishlist-product-combinations-text">
-        Size: S - Colour: White - Quantity: 1
+      <p class="wishlist-product-price">
+        <span class="wishlist-product-price-promo">€28.68</span>
+        €{{ product.price }}
       </p>
 
-      <a href="#">
-        <i class="material-icons">create</i>
-      </a>
-    </div>
+      <div class="wishlist-product-combinations">
+        <p class="wishlist-product-combinations-text">
+          Size: S - Colour: White - Quantity: 1
+        </p>
+
+        <a href="#">
+          <i class="material-icons">create</i>
+        </a>
+      </div>
+    </a>
 
     <button class="btn btn-primary wishlist-product-addtocart">
       <i class="material-icons shopping-cart">shopping_cart</i>
@@ -89,6 +91,18 @@
       margin: 25px;
       position: relative;
 
+      &-link {
+        &:focus {
+          text-decoration: none;
+        }
+
+        &:hover {
+          img {
+            transform: translate(-50%, -50%) scale(1.1);
+          }
+        }
+      }
+
       &-title {
         margin-top: 10px;
         margin-bottom: 5px;
@@ -102,6 +116,7 @@
         width: 250px;
         height: 250px;
         position: relative;
+        overflow: hidden;
 
         img {
           position: absolute;
@@ -110,6 +125,7 @@
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
+          transition: 0.25s ease-out;
         }
       }
 
@@ -136,7 +152,7 @@
 
       &-combinations {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
 
         a {
@@ -153,6 +169,7 @@
           font-size: 13px;
           letter-spacing: 0;
           line-height: 20px;
+          min-height: 50px;
           margin: 0;
         }
       }
@@ -161,7 +178,6 @@
         width: 100%;
         text-transform: inherit;
         padding-left: 10px;
-        margin-top: 30px;
 
         i {
           margin-top: -3px;

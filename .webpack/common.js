@@ -40,11 +40,16 @@ module.exports = {
     create: './_dev/front/js/components/Create',
     rename: './_dev/front/js/components/Rename',
     addtowishlist: './_dev/front/js/components/AddToWishlist',
-    productslist: ['./_dev/front/js/container/ProductsListContainer', './_dev/front/js/components/Delete'],
+    productslist: [
+      './_dev/front/js/container/ProductsListContainer',
+      './_dev/front/js/components/Toast',
+      './_dev/front/js/components/Delete'
+    ],
     wishlistcontainer: [
       './_dev/front/js/container/WishlistContainer',
       './_dev/front/js/components/Create',
       './_dev/front/js/components/Delete',
+      './_dev/front/js/components/Toast',
       './_dev/front/js/components/Share',
       './_dev/front/js/components/Rename'
     ],
@@ -52,6 +57,7 @@ module.exports = {
     product: [
       './_dev/front/js/pages/list',
       './_dev/front/js/components/Button',
+      './_dev/front/js/components/Toast',
       './_dev/front/js/components/Login',
       './_dev/front/js/components/Create',
       './_dev/front/js/components/AddToWishlist'

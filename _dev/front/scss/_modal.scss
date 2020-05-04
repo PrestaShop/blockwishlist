@@ -8,6 +8,10 @@
     opacity: 1;
     pointer-events: all;
     z-index: 1051;
+
+    + .modal-backdrop {
+      pointer-events: all;
+    }
   }
 
   &.fade .modal-dialog {
@@ -97,7 +101,7 @@
     }
   }
 
-  + .modal-backdrop {
+  ~ .modal-backdrop {
     pointer-events: none;
 
     &.in {

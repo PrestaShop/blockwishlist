@@ -75,6 +75,14 @@
         });
 
         document.dispatchEvent(wishlistEvent);
+
+        const toastEvent = new CustomEvent('showToast', {
+          detail: {
+            type: 'success',
+            message: 'createWishlistText'
+          }
+        });
+        document.dispatchEvent(toastEvent);
       }
     },
     mounted() {

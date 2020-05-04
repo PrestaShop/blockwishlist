@@ -21,11 +21,13 @@
   {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
   {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
   {include file="module:blockwishlist/views/templates/components/modals/login.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/if}
 
 {if $context === "index" || $context === "category" || $context === "blockwishlist"}
   {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
   {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
   {include file="module:blockwishlist/views/templates/components/modals/login.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/if}
 
