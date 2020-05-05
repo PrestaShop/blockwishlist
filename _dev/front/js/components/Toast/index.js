@@ -30,6 +30,10 @@ const props = [
     type: String
   },
   {
+    name: 'addedWishlistText',
+    type: String
+  },
+  {
     name: 'shareText',
     type: String
   },

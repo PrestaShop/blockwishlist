@@ -29,6 +29,7 @@
     name: 'Button',
     props: {
       renameWishlistText: '',
+      addedWishlistText: '',
       deleteWishlistText: '',
       createWishlistText: '',
       deleteProductText: '',
@@ -84,6 +85,7 @@
       box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.2);
       position: fixed;
       right: 20px;
+      z-index: 100;
       top: 70px;
       transition: 0.2s ease-out;
       transform: translateY(-10px);

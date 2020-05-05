@@ -20,6 +20,7 @@
 <div
     class="wishlist-toast"
     data-rename-wishlist-text="{l s='Wishlist name modified!' mod='blockwishlist'}"
+    data-added-wishlist-text="{l s='Product added to wishlist!' mod='blockwishlist'}"
     data-create-wishlist-text="{l s='Wishlist created!' mod='blockwishlist'}"
     data-delete-wishlist-text="{l s='Wishlist deleted!' mod='blockwishlist'}"
     data-copy-text="{l s='Share link copied!' mod='blockwishlist'}"

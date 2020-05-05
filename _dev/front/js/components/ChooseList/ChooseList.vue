@@ -72,6 +72,14 @@
          */
         this.$emit('hide');
 
+        const toastEvent = new CustomEvent('showToast', {
+          detail: {
+            type: 'success',
+            message: 'addedWishlistText'
+          }
+        });
+        document.dispatchEvent(toastEvent);
+
         /**
          * Send an event to the Heart the user previously clicked on
          */
