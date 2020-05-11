@@ -34,11 +34,31 @@
   export default {
     name: 'Button',
     props: {
-      url: '',
-      productId: null,
-      listId: null,
-      checked: false,
-      isProduct: false
+      url: {
+        type: String,
+        required: true,
+        default: '#'
+      },
+      productId: {
+        type: Number,
+        required: true,
+        default: null
+      },
+      listId: {
+        type: Number,
+        required: true,
+        default: null
+      },
+      checked: {
+        type: Boolean,
+        required: false,
+        default: false
+      },
+      isProduct: {
+        type: Boolean,
+        required: false,
+        default: false
+      }
     },
     data() {
       return {

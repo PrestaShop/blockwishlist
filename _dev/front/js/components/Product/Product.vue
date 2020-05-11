@@ -58,11 +58,31 @@
   export default {
     name: 'Product',
     props: {
-      product: null,
-      listId: null,
-      productId: null,
-      status: null,
-      hasControls: true
+      product: {
+        type: Object,
+        required: true,
+        default: null
+      },
+      listId: {
+        type: Number,
+        required: true,
+        default: null
+      },
+      productId: {
+        type: Number,
+        required: true,
+        default: null
+      },
+      status: {
+        type: Number,
+        required: false,
+        default: 0
+      },
+      hasControls: {
+        type: Boolean,
+        required: false,
+        default: true
+      }
     },
     methods: {
       /**

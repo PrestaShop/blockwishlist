@@ -25,13 +25,41 @@
   export default {
     name: 'Share',
     props: {
-      url: '',
-      title: '',
-      label: '',
-      placeholder: '',
-      cancelText: '',
-      copyText: '',
-      copiedText: ''
+      url: {
+        type: String,
+        required: true,
+        default: '#'
+      },
+      title: {
+        type: String,
+        required: true,
+        default: 'Share wishlist'
+      },
+      label: {
+        type: String,
+        required: true,
+        default: 'Share link'
+      },
+      placeholder: {
+        type: String,
+        required: true,
+        default: 'Link'
+      },
+      cancelText: {
+        type: String,
+        required: true,
+        default: 'Cancel'
+      },
+      copyText: {
+        type: String,
+        required: true,
+        default: 'Copy text'
+      },
+      copiedText: {
+        type: String,
+        required: true,
+        default: 'Copied'
+      }
     },
     data() {
       return {

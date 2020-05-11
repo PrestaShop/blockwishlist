@@ -23,9 +23,21 @@
   export default {
     name: 'Login',
     props: {
-      url: '',
-      cancelText: '',
-      loginText: ''
+      url: {
+        type: String,
+        required: true,
+        default: '#'
+      },
+      cancelText: {
+        type: String,
+        required: true,
+        default: 'Cancel'
+      },
+      loginText: {
+        type: String,
+        required: true,
+        default: 'Login'
+      }
     },
     data() {
       return {

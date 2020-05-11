@@ -33,7 +33,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+          <h5 class="modal-title" id="exampleModalLabel">((title))</h5>
           <button
             type="button"
             class="close"
@@ -45,7 +45,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p class="modal-text">This action is irreversible</p> 
+          <p class="modal-text">((placeholder))</p> 
         </div>
         <div class="modal-footer">
           <button
@@ -54,7 +54,7 @@
             data-dismiss="modal"
             @click="toggleModal"
           >
-            Cancel
+            ((cancelText))
           </button>
 
           <button
@@ -62,7 +62,7 @@
             class="btn btn-primary"
             @click="deleteWishlist"
           >
-            Delete
+            ((deleteText))
           </button>
         </div>
       </div>

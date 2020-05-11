@@ -28,12 +28,30 @@
   export default {
     name: 'Button',
     props: {
-      renameWishlistText: '',
-      addedWishlistText: '',
-      deleteWishlistText: '',
-      createWishlistText: '',
-      deleteProductText: '',
-      copyText: ''
+      renameWishlistText: {
+        type: String,
+        required: true
+      },
+      addedWishlistText: {
+        type: String,
+        required: true
+      },
+      deleteWishlistText: {
+        type: String,
+        required: true
+      },
+      createWishlistText: {
+        type: String,
+        required: true
+      },
+      deleteProductText: {
+        type: String,
+        required: true
+      },
+      copyText: {
+        type: String,
+        required: true
+      }
     },
     data() {
       return {

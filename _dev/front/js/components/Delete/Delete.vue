@@ -27,12 +27,31 @@
   export default {
     name: 'Delete',
     props: {
-      url: '',
-      title: '',
-      label: '',
-      placeholder: '',
-      cancelText: '',
-      createText: ''
+      url: {
+        type: String,
+        required: true,
+        default: '#'
+      },
+      title: {
+        type: String,
+        required: true,
+        default: 'Delete'
+      },
+      placeholder: {
+        type: String,
+        required: true,
+        default: 'This action is irreversible'
+      },
+      cancelText: {
+        type: String,
+        required: true,
+        default: 'Cancel'
+      },
+      deleteText: {
+        type: String,
+        required: true,
+        default: 'Delete'
+      }
     },
     data() {
       return {

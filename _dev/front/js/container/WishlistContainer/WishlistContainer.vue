@@ -54,13 +54,34 @@
       lists: getLists
     },
     props: {
-      url: '',
-      title: '',
-      homeLink: '',
-      returnLink: '',
-      addText: '',
-      renameText: '',
-      shareText: ''
+      url: {
+        type: String,
+        required: true
+      },
+      title: {
+        type: String,
+        required: true
+      },
+      homeLink: {
+        type: String,
+        required: true
+      },
+      returnLink: {
+        type: String,
+        required: true
+      },
+      addText: {
+        type: String,
+        required: true
+      },
+      renameText: {
+        type: String,
+        required: true
+      },
+      shareText: {
+        type: String,
+        required: true
+      }
     },
     data() {
       return {

@@ -25,12 +25,36 @@
   export default {
     name: 'Rename',
     props: {
-      url: '',
-      title: '',
-      label: '',
-      placeholder: '',
-      cancelText: '',
-      createText: ''
+      url: {
+        type: String,
+        required: true,
+        default: '#'
+      },
+      title: {
+        type: String,
+        required: true,
+        default: 'Rename wishlist'
+      },
+      label: {
+        type: String,
+        required: true,
+        default: 'Wishlist name'
+      },
+      placeholder: {
+        type: String,
+        required: true,
+        default: 'Rename text'
+      },
+      cancelText: {
+        type: String,
+        required: true,
+        default: 'Cancel'
+      },
+      renameText: {
+        type: String,
+        required: true,
+        default: 'Rename'
+      }
     },
     data() {
       return {

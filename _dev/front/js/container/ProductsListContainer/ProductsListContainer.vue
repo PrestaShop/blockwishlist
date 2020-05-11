@@ -118,15 +118,42 @@
       }
     },
     props: {
-      url: '',
-      title: '',
-      defaultSort: '',
-      listId: null,
-      homeLink: '',
-      returnLink: '',
-      addText: '',
-      renameText: '',
-      shareText: ''
+      url: {
+        type: String,
+        required: true
+      },
+      title: {
+        type: String,
+        required: true
+      },
+      defaultSort: {
+        type: defaultSort,
+        required: true
+      },
+      listId: {
+        type: Number,
+        required: true
+      },
+      homeLink: {
+        type: String,
+        required: true
+      },
+      returnLink: {
+        type: String,
+        required: true
+      },
+      addText: {
+        type: String,
+        required: true
+      },
+      renameText: {
+        type: String,
+        required: true
+      },
+      shareText: {
+        type: String,
+        required: true
+      }
     },
     data() {
       return {
