@@ -28,9 +28,9 @@
     data-return-link="#"
     data-home-link="#"
     data-title="{l s='My Wishlists' mod='blockwishlist'}"
-    data-rename-text="Rename"
-    data-share-text="Share"
-    data-add-text="New wishlist"
+    data-rename-text="{l s='Rename' mod='blockwishlist'}"
+    data-share-text="{l s='Share' mod='blockwishlist'}"
+    data-add-text="{l s='New wishlist' mod='blockwishlist'}"
   ></div>
 
   {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}

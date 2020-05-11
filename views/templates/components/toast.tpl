@@ -24,5 +24,5 @@
     data-create-wishlist-text="{l s='Wishlist created!' mod='blockwishlist'}"
     data-delete-wishlist-text="{l s='Wishlist deleted!' mod='blockwishlist'}"
     data-copy-text="{l s='Share link copied!' mod='blockwishlist'}"
-    data-product-text="{l s='Product deleted!' mod='blockwishlist'}"
+    data-delete-product-text="{l s='Product deleted!' mod='blockwishlist'}"
   ></div>

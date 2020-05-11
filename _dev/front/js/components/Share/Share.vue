@@ -40,11 +40,6 @@
         required: true,
         default: 'Share link'
       },
-      placeholder: {
-        type: String,
-        required: true,
-        default: 'Link'
-      },
       cancelText: {
         type: String,
         required: true,

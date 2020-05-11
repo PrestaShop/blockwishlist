@@ -1,6 +1,11 @@
 <div
   class="wishlist-rename"
   data-url="{$url}"
+  data-title="{l s='Rename wishlist' mod='blockwishlist'}"
+  data-label="{l s='Wishlist name' mod='blockwishlist'}"
+  data-placeholder="{l s='Wishlist name' mod='blockwishlist'}"
+  data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
+  data-rename-text="{l s='Rename wishlist' mod='blockwishlist'}"
 >
   <div
     class="wishlist-modal modal fade"
@@ -14,9 +19,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-            Rename wishlist
-          </h5>
+          <h5 class="modal-title" id="exampleModalLabel">((title))</h5>
           <button
             type="button"
             class="close"
@@ -30,7 +33,7 @@
         <div class="modal-body">
           <div class="form-group form-group-lg">
             <label class="form-control-label" for="input2"
-              >Wishlist name</label
+              >((label))</label
             >
             <input
               type="text"
@@ -43,18 +46,18 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-outline-secondary"
+            class="modal-cancel btn btn-secondary"
             data-dismiss="modal"
             @click="toggleModal"
           >
-            Cancel
+            ((cancelText))
           </button>
           <button
             type="button"
             class="btn btn-primary"
             @click="renameWishlist"
           >
-            Rename wishlist
+            ((renameText))
           </button>
         </div>
       </div>

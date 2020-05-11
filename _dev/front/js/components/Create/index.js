@@ -30,8 +30,24 @@ const props = [
     type: String
   },
   {
+    name: 'label',
+    type: String
+  },
+  {
     name: 'productId',
     type: Number
+  },
+  {
+    name: 'placeholder',
+    type: String
+  },
+  {
+    name: 'cancelText',
+    type: String
+  },
+  {
+    name: 'createText',
+    type: String
   }
 ];
 

@@ -127,7 +127,7 @@
         required: true
       },
       defaultSort: {
-        type: defaultSort,
+        type: String,
         required: true
       },
       listId: {

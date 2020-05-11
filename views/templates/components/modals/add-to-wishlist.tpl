@@ -34,7 +34,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
-            Add to wishlist
+            {l s='Add to wishlist' mod='blockwishlist'}
           </h5>
           <button
             type="button"
@@ -56,7 +56,7 @@
 
         <div class="modal-footer">
           <a @click="openNewWishlistModal" class="wishlist-add-to-new">
-            <i class="material-icons">add_circle_outline</i> New wishlist
+            <i class="material-icons">add_circle_outline</i> {l s='New wishlist' mod='blockwishlist'}
           </a>
         </div>
       </div>

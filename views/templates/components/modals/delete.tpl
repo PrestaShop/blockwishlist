@@ -20,6 +20,10 @@
 <div
   class="wishlist-delete"
   data-url="{$url}"
+  data-title="{l s='Delete' mod='blockwishlist'}"
+  data-placeholder="{l s='This action is irreversible' mod='blockwishlist'}"
+  data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
+  data-delete-text="{l s='Delete' mod='blockwishlist'}"
 >
   <div
     class="wishlist-modal modal fade"
