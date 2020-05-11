@@ -20,6 +20,12 @@
  */
 
 use PrestaShop\Module\BlockWishlist\WishList;
+use PrestaShop\PrestaShop\Core\Product\ProductListingPresenter;
+use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
+use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
+use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
+use PrestaShop\PrestaShop\Core\Product\ProductPresentationSettings;
+
 
 class BlockWishlistActionModuleFrontController extends ModuleFrontController
 {
@@ -43,9 +49,12 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             'id_product' => 1,
             'id_product_attribute' => 3,
             'quantity' => 2,
+            'id_cart' => 25,
             'name' => 'newWishTestName'
         ];
-
+        /*
+        Here we call all methods dinamically given by the path
+        */
         if (method_exists($this, Tools::getValue('action') . 'Action')) {
             call_user_func([$this, Tools::getValue('action') . 'Action'], $params);
         }
@@ -296,21 +305,79 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             ])
         );
     }
-// TODO
-// vérifier avec valentin ce dont il a besoin pour constituer un produit en front
-    public function getProductsByWishlisActiont($params)
+
+    public function getProductsByWishlistAction($params)
     {
-        $arrProducts = [];
-        $wishlistProducts = new WishList::getProductsByWishlist($params['idWishlist']);
-        foreach($wishlistProducts as $product) {
-            $arrProducts[$product['id_product']]['product'] = (new \Product(
-                    $product['id_product'],
-                    false,
-                    $this->context->language->id,
-                    $this->context->shop->id,
-                ))
-                ->updateAttribute($product['id_product_attribute']);
-            $arrProducts[$product['id_product']]['quantity'] = $product['quantity'];
+        $params['id_wishlist'] = 3;
+        $wishlistProducts = WishList::getProductByIdCustomer($params['id_wishlist'], $this->context->customer->id, $this->context->language->id);
+
+        if (empty($wishlistProducts)) {
+            $this->ajaxDie(
+                Tools::jsonEncode([
+                    'success' => false,
+                    'message' => $this->module->l('No products found for this customer', 'mywishlist')
+                ])
+            );
+        }
+
+        $assembler = new ProductAssembler($this->context);
+        $presenterFactory = new ProductPresenterFactory($this->context);
+        $presentationSettings = $presenterFactory->getPresentationSettings();
+        $presenter = new ProductListingPresenter(
+            new ImageRetriever(
+                $this->context->link
+            ),
+            $this->context->link,
+            new PriceFormatter(),
+            new ProductColorsRetriever(),
+            $this->context->getTranslator()
+        );
+        $products_for_template = array();
+
+        if (is_array($wishlistProducts)) {
+            foreach ($wishlistProducts as $rawProduct) {
+                $products_for_template[] = $presenter->present(
+                    $presentationSettings,
+                    $assembler->assembleProduct($rawProduct),
+                    $this->context->language
+                );
+            }
+        }
+
+        $this->ajaxDie(
+            Tools::jsonEncode([
+                'status' => 'success',
+                'message' => $this->module->l('The list has been properly created', 'mywishlist'),
+                'datas' => [
+                    'products' => $products_for_template
+                ]
+            ])
+        );
+    }
+
+    public function addProductToCartAction($params)
+    {
+        $productAdd = WishList::addBoughtProduct(
+            $params['idWishlist'],
+            $params['id_product'],
+            $params['id_product_attribute'],
+            $params['id_cart'],
+            $params['quantity']
+        );
+        if($productAdd ===true) {
+            $this->ajaxDie(
+                Tools::jsonEncode([
+                    'status' => 'success',
+                    'message' => $this->module->l('Product added to cart'),
+                ])
+            );
+        } else {
+            $this->ajaxDie(
+                Tools::jsonEncode([
+                    'status' => 'false',
+                    'message' => $this->module->l('error when adding product to cart'),
+                ])
+            );
         }
     }
 }

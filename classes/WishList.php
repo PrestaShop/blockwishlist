@@ -297,12 +297,6 @@ class WishList extends \ObjectModel
      */
     public static function getProductsByWishlist($id_wishlist)
     {
-        if (!\Validate::isUnsignedId($id_customer) ||
-            !\Validate::isUnsignedId($id_lang) ||
-            !\Validate::isUnsignedId($id_wishlist)) {
-                return false;
-        }
-
         $wishlistProducts = \Db::getInstance()->executeS('
             SELECT `id_product`, `id_product_attribute`, `quantity`
             FROM `'._DB_PREFIX_.'wishlist_product`
@@ -314,5 +308,126 @@ class WishList extends \ObjectModel
         }
 
         return false;
+    }
+
+    /**
+     * Get Wishlist products by Customer ID
+     *
+     * @return array Results
+     */
+    public static function getProductByIdCustomer($id_wishlist, $id_customer, $id_lang, $id_product = null, $quantity = false)
+    {
+        if (!\Validate::isUnsignedId($id_customer) ||
+            !\Validate::isUnsignedId($id_lang) ||
+            !\Validate::isUnsignedId($id_wishlist)
+        ){
+            return false;
+        }
+        $products = \Db::getInstance()->executeS('
+            SELECT wp.`id_product`, wp.`quantity`, p.`quantity` AS product_quantity, pl.`name`, wp.`id_product_attribute`, wp.`priority`, pl.link_rewrite, cl.link_rewrite AS category_rewrite
+            FROM `'._DB_PREFIX_.'wishlist_product` wp
+            LEFT JOIN `'._DB_PREFIX_.'product` p ON p.`id_product` = wp.`id_product`
+            '.\Shop::addSqlAssociation('product', 'p').'
+            LEFT JOIN `'._DB_PREFIX_.'product_lang` pl ON pl.`id_product` = wp.`id_product`'.\Shop::addSqlRestrictionOnLang('pl').'
+            LEFT JOIN `'._DB_PREFIX_.'wishlist` w ON w.`id_wishlist` = wp.`id_wishlist`
+            LEFT JOIN `'._DB_PREFIX_.'category_lang` cl ON cl.`id_category` = product_shop.`id_category_default` AND cl.id_lang='.(int) $id_lang.\Shop::addSqlRestrictionOnLang('cl').'
+            WHERE w.`id_customer` = '.(int) $id_customer.'
+            AND pl.`id_lang` = '.(int) $id_lang.'
+            AND wp.`id_wishlist` = '.(int) $id_wishlist.
+            (empty($id_product) === false ? ' AND wp.`id_product` = '.(int) $id_product : '').
+            ($quantity == true ? ' AND wp.`quantity` != 0': '').'
+            GROUP BY p.id_product, wp.id_product_attribute'
+        );
+        if (empty($products) === true || !sizeof($products)){
+            return array();
+        }
+        for ($i = 0; $i < sizeof($products); ++$i)
+        {
+            if (isset($products[$i]['id_product_attribute']) &&
+                \Validate::isUnsignedInt($products[$i]['id_product_attribute']))
+            {
+                $result = \Db::getInstance()->executeS('
+                SELECT al.`name` AS attribute_name, pa.`quantity` AS "attribute_quantity"
+                FROM `'._DB_PREFIX_.'product_attribute_combination` pac
+                LEFT JOIN `'._DB_PREFIX_.'attribute` a ON (a.`id_attribute` = pac.`id_attribute`)
+                LEFT JOIN `'._DB_PREFIX_.'attribute_group` ag ON (ag.`id_attribute_group` = a.`id_attribute_group`)
+                LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al ON (a.`id_attribute` = al.`id_attribute` AND al.`id_lang` = '.(int) $id_lang.')
+                LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl ON (ag.`id_attribute_group` = agl.`id_attribute_group` AND agl.`id_lang` = '.(int) $id_lang.')
+                LEFT JOIN `'._DB_PREFIX_.'product_attribute` pa ON (pac.`id_product_attribute` = pa.`id_product_attribute`)
+                '.\Shop::addSqlAssociation('product_attribute', 'pa').'
+                WHERE pac.`id_product_attribute` = '.(int)($products[$i]['id_product_attribute']));
+                $products[$i]['attributes_small'] = '';
+                if ($result)
+                    foreach ($result AS $k => $row)
+                        $products[$i]['attributes_small'] .= $row['attribute_name'].', ';
+                $products[$i]['attributes_small'] = rtrim($products[$i]['attributes_small'], ', ');
+                if (isset($result[0]))
+                    $products[$i]['attribute_quantity'] = $result[0]['attribute_quantity'];
+            }
+            else
+                $products[$i]['attribute_quantity'] = $products[$i]['product_quantity'];
+        }
+        return ($products);
+    }
+
+    /**
+     * Add bought product
+     *
+     * @return boolean succeed
+     */
+    public static function addBoughtProduct($id_wishlist, $id_product, $id_product_attribute, $id_cart, $quantity)
+    {
+        if (!\Validate::isUnsignedId($id_wishlist) ||
+            !\Validate::isUnsignedId($id_product) ||
+            !\Validate::isUnsignedId($quantity)) {
+                return false;
+            }
+
+        $result = \Db::getInstance()->getRow('
+            SELECT `quantity`, `id_wishlist_product`
+            FROM `'._DB_PREFIX_.'wishlist_product` wp
+            WHERE `id_wishlist` = '.(int)$id_wishlist.'
+            AND `id_product` = '.(int)$id_product.'
+            AND `id_product_attribute` = '.(int)$id_product_attribute);
+
+        if (!sizeof($result) ||
+            ($result['quantity'] - $quantity) < 0 ||
+            $quantity > $result['quantity'])
+            {
+                return (false);
+            }
+
+            \Db::getInstance()->executeS('
+            SELECT *
+            FROM `'._DB_PREFIX_.'wishlist_product_cart`
+            WHERE `id_wishlist_product`='.(int) $result['id_wishlist_product'].' AND `id_cart`='.(int) $id_cart
+            );
+
+        if (\Db::getInstance()->NumRows() > 0) {
+            $result2 = \Db::getInstance()->execute('
+                UPDATE `'._DB_PREFIX_.'wishlist_product_cart`
+                SET `quantity`=`quantity` + '.(int) $quantity.'
+                WHERE `id_wishlist_product`='.(int) $result['id_wishlist_product'].' AND `id_cart`='.(int) $id_cart
+                );
+        }  else {
+            $result2 = \Db::getInstance()->execute('
+                INSERT INTO `'._DB_PREFIX_.'wishlist_product_cart`
+                (`id_wishlist_product`, `id_cart`, `quantity`, `date_add`) VALUES(
+                '.(int) $result['id_wishlist_product'].',
+                '.(int) $id_cart.',
+                '.(int) $quantity.',
+                \''.pSQL(date('Y-m-d H:i:s')).'\')');
+        }
+
+        if ($result2 === false) {
+            return (false);
+        }
+
+        return (\Db::getInstance()->execute('
+            UPDATE `'._DB_PREFIX_.'wishlist_product` SET
+            `quantity` = '.(int) ($result['quantity'] - $quantity).'
+            WHERE `id_wishlist` = '.(int) $id_wishlist.'
+            AND `id_product` = '.(int) $id_product.'
+            AND `id_product_attribute` = '.(int) $id_product_attribute));
     }
 }
