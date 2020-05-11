@@ -68,11 +68,6 @@
         required: true,
         default: null
       },
-      productId: {
-        type: Number,
-        required: true,
-        default: null
-      },
       status: {
         type: Number,
         required: false,
@@ -90,7 +85,7 @@
        */
       async removeFromWishlist() {
         const event = new CustomEvent('showDeleteWishlist', {
-          detail: { listId: this.listId, productId: this.productId, userId: 1 }
+          detail: { listId: this.listId, productId: this.product.id, userId: 1 }
         });
 
         document.dispatchEvent(event);

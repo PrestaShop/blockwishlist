@@ -27,7 +27,12 @@
     data-url="#"
     data-list-id="1"
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
+    data-last-added="{l s='Last added' mod='blockwishlist'}"
+    data-price-low-high="{l s='Price, low to high' mod='blockwishlist'}"
+    data-price-high-low="{l s='Price, high to low' mod='blockwishlist'}"
+    data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-title="{l s='Gift ideas for Juliette' mod='blockwishlist'}"
+    data-filter="{l s='Filter' mod='blockwishlist'}"
   ></div>
 
 

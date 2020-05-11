@@ -42,31 +42,31 @@
           <div class="dropdown-menu">
             <a
               rel="nofollow"
-              @click="changeSelectedSort('Last added')"
+              @click="changeSelectedSort(lastAdded)"
               class="select-list js-search-link"
             >
-              Last added
+              {{ lastAdded }}
             </a>
             <a
               rel="nofollow"
-              @click="changeSelectedSort('Price, low to high')"
+              @click="changeSelectedSort(priceLowHigh)"
               class="select-list current js-search-link"
             >
-              Price, low to high
+              {{ priceLowHigh }}
             </a>
             <a
               rel="nofollow"
-              @click="changeSelectedSort('Price, high to low')"
+              @click="changeSelectedSort(priceHighLow)"
               class="select-list js-search-link"
             >
-              Price, high to low
+              {{ priceHighLow }}
             </a>
           </div>
         </div>
 
         <div class="col-sm-3 col-xs-4 hidden-md-up filter-button">
           <button id="search_filter_toggler" class="btn btn-secondary">
-            Filter
+            {{ filter }}
           </button>
         </div>
       </div>
@@ -142,15 +142,19 @@
         type: String,
         required: true
       },
-      addText: {
+      lastAdded: {
         type: String,
         required: true
       },
-      renameText: {
+      priceLowHigh: {
         type: String,
         required: true
       },
-      shareText: {
+      priceHighLow: {
+        type: String,
+        required: true
+      },
+      filter: {
         type: String,
         required: true
       }
