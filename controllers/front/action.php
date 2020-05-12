@@ -158,7 +158,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     {
         if (isset($params['idWishlist'], $params['name'])) {
             $wishlist = new wishlist($params['idWishlist']);
-            $wishlist->name = $$params['name'];
+            $wishlist->name = $params['name'];
 
             if (true === $wishlist->save()) {
                 $this->ajaxRender(

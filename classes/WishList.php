@@ -174,9 +174,9 @@ class WishList extends \ObjectModel
                 return \Db::getInstance()->execute('
                     UPDATE `' . _DB_PREFIX_ . 'wishlist_product` SET
                     `quantity` = ' . (int) ($quantity + $result['quantity']) . '
-                    WHERE `id_wishlist` = ' . (int) ($id_wishlist) . '
-                    AND `id_product` = ' . (int) ($id_product) . '
-                    AND `id_product_attribute` = ' . (int) ($id_product_attribute)
+                    WHERE `id_wishlist` = ' . (int) $id_wishlist . '
+                    AND `id_product` = ' . (int) $id_product . '
+                    AND `id_product_attribute` = ' . (int) $id_product_attribute
                 );
             }
         } else {
@@ -339,7 +339,7 @@ class WishList extends \ObjectModel
             GROUP BY p.id_product, wp.id_product_attribute'
         );
         if (empty($products) === true || !sizeof($products)){
-            return array();
+            return [];
         }
         for ($i = 0; $i < sizeof($products); ++$i)
         {
