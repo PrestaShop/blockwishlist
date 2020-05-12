@@ -85,21 +85,18 @@
         /**
          * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
          */
-        const event = new Event('refetchList');
-        document.dispatchEvent(event);
+        EventBus.$emit('refetchList');
 
         /**
          * Finally hide the modal after creating the list
          * and reopen the wishlist modal
          */
         this.toggleModal();
-        const wishlistEvent = new CustomEvent('showAddToWishList', {
+        EventBus.$emit('showAddToWishList', {
           detail: {
             forceOpen: true
           }
         });
-
-        document.dispatchEvent(wishlistEvent);
 
         EventBus.$emit('showToast', {
           detail: {

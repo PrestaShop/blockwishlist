@@ -39,6 +39,7 @@ module.exports = {
     button: ['./_dev/front/js/components/Button'],
     create: './_dev/front/js/components/Create',
     rename: './_dev/front/js/components/Rename',
+    WishistEventBus: './_dev/front/js/components/EventBus',
     addtowishlist: './_dev/front/js/components/AddToWishlist',
     productslist: [
       './_dev/front/js/container/ProductsListContainer',
