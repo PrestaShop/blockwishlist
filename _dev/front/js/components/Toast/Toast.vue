@@ -24,6 +24,7 @@
 
 <script>
   import prestashop from 'prestashop';
+  import EventBus from '@components/EventBus';
 
   export default {
     name: 'Button',
@@ -65,7 +66,7 @@
       /**
        * Register to an even so every components can show toast
        */
-      document.addEventListener('showToast', event => {
+      EventBus.$on('showToast', event => {
         if (event.detail.message) {
           if (this[event.detail.message]) {
             this.text = this[event.detail.message];

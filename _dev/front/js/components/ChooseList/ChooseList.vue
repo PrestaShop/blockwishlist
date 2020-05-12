@@ -33,6 +33,7 @@
 <script>
   import getLists from '@graphqlFiles/queries/getlists';
   import addtolist from '@graphqlFiles/mutations/addtolist';
+  import EventBus from '@components/EventBus';
 
   /**
    * The role of this component is to render a list
@@ -73,22 +74,19 @@
          */
         this.$emit('hide');
 
-        const toastEvent = new CustomEvent('showToast', {
+        EventBus.$emit('showToast', {
           detail: {
             type: 'success',
             message: 'addedWishlistText'
           }
         });
-        document.dispatchEvent(toastEvent);
 
         /**
          * Send an event to the Heart the user previously clicked on
          */
-        const event = new CustomEvent('addedToWishlist', {
+        EventBus.$emit('addedToWishlist', {
           detail: { productId: this.productId, listId }
         });
-
-        document.dispatchEvent(event);
       }
     },
     mounted() {}

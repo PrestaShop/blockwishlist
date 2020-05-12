@@ -30,6 +30,7 @@
 <script>
   import removeFromList from '@graphqlFiles/mutations/removeFromList';
   import prestashop from 'prestashop';
+  import EventBus from '@components/EventBus';
 
   export default {
     name: 'Button',
@@ -82,19 +83,15 @@
         event.preventDefault();
 
         if (!prestashop.customer.is_logged) {
-          const event = new CustomEvent('showLogin');
-
-          document.dispatchEvent(event);
+          EventBus.$emit('showLogin');
 
           return;
         }
 
         if (!this.isChecked) {
-          const event = new CustomEvent('showAddToWishList', {
+          EventBus.$emit('showAddToWishList', {
             detail: { productId: this.productId, forceOpen: true }
           });
-
-          document.dispatchEvent(event);
         } else {
           let response = await this.$apollo.mutate({
             mutation: removeFromList,
@@ -115,7 +112,7 @@
       /**
        * Register to event addedToWishlist to toggle the heart if the product has been added correctly
        */
-      document.addEventListener('addedToWishlist', event => {
+      EventBus.$on('addedToWishlist', event => {
         if (event.detail.productId === this.productId) {
           this.isChecked = true;
           this.idList = event.detail.listId;

@@ -17,6 +17,8 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
+  import EventBus from '@components/EventBus';
+
   /**
    * This component display a modal where you can redirect to login page
    */
@@ -60,7 +62,7 @@
        *
        * @param {String} 'showDeleteWishlist'
        */
-      document.addEventListener('showLogin', () => {
+      EventBus.$on('showLogin', () => {
         this.toggleModal();
       });
     }

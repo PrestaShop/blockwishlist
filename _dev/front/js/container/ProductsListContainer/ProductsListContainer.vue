@@ -93,6 +93,7 @@
   import Product from '@components/Product/Product';
   import getProducts from '@graphqlFiles/queries/getProducts';
   import { ContentLoader } from 'vue-content-loader';
+  import EventBus from '@components/EventBus';
 
   /**
    * This component act as a smart component wich will handle every actions of the list one
@@ -184,7 +185,7 @@
        *
        * @param {String} 'refetchProduct' The event I decided to create to communicate between VueJS Apps
        */
-      document.addEventListener('refetchList', () => {
+      EventBus.$on('refetchList', () => {
         this.$apollo.queries.products.refetch();
       });
     }

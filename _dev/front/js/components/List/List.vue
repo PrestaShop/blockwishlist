@@ -63,6 +63,7 @@
 
 <script>
   import { ContentLoader } from 'vue-content-loader';
+  import EventBus from '@components/EventBus';
 
   /**
    * Dumb component to display the list of Wishlist on a page
@@ -112,11 +113,9 @@
        * @param {String} The base title so the rename popup can autofill it
        */
       toggleRename(id, title) {
-        const event = new CustomEvent('showRenameWishlist', {
+        EventBus.$emit('showRenameWishlist', {
           detail: { listId: id, title }
         });
-
-        document.dispatchEvent(event);
       },
       /**
        * Toggle the popup to rename a list
@@ -125,11 +124,9 @@
        * @param {String} The base title so the rename popup can autofill it
        */
       toggleShare(id, title) {
-        const event = new CustomEvent('showShareWishlist', {
+        EventBus.$emit('showShareWishlist', {
           detail: { listId: id, userId: 1 }
         });
-
-        document.dispatchEvent(event);
       },
       /**
        * Toggle the popup to rename a list
@@ -138,11 +135,9 @@
        * @param {String} The base title so the rename popup can autofill it
        */
       toggleDelete(id, title) {
-        const event = new CustomEvent('showDeleteWishlist', {
+        EventBus.$emit('showDeleteWishlist', {
           detail: { listId: id, userId: 1 }
         });
-
-        document.dispatchEvent(event);
       }
     }
   };

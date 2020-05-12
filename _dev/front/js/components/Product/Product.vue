@@ -53,6 +53,7 @@
 
 <script>
   import removeFromList from '@graphqlFiles/mutations/removeFromList';
+  import EventBus from '@components/EventBus';
   import prestashop from 'prestashop';
 
   export default {
@@ -84,12 +85,9 @@
        * Remove the product from the wishlist
        */
       async removeFromWishlist() {
-        const event = new CustomEvent('showDeleteWishlist', {
+        EventBus.$emit('showDeleteWishlist', {
           detail: { listId: this.listId, productId: this.product.id, userId: 1 }
         });
-
-        document.dispatchEvent(event);
-        event.preventDefault();
       }
     },
     mounted() {}

@@ -19,6 +19,7 @@
  *-->
 <script>
   import ChooseList from '../ChooseList/ChooseList';
+  import EventBus from '@components/EventBus';
 
   export default {
     name: 'AddToWishlist',
@@ -81,15 +82,14 @@
       openNewWishlistModal() {
         this.toggleModal();
 
-        const event = new Event('showCreateWishlist');
-        document.dispatchEvent(event);
+        EventBus.$emit('showCreateWishlist');
       }
     },
     mounted() {
       /**
        * Register to the event showAddToWishList so others component can open the modal of the current component
        */
-      document.addEventListener('showAddToWishList', event => {
+      EventBus.$on('showAddToWishList', event => {
         this.toggleModal(
           event.detail.forceOpen ? event.detail.forceOpen : null
         );

@@ -18,6 +18,7 @@
  *-->
 <script>
   import createList from '@graphqlFiles/mutations/createlist';
+  import EventBus from '@components/EventBus';
 
   /**
    * This component display a modal where you can create a wishlist
@@ -100,13 +101,12 @@
 
         document.dispatchEvent(wishlistEvent);
 
-        const toastEvent = new CustomEvent('showToast', {
+        EventBus.$emit('showToast', {
           detail: {
             type: 'success',
             message: 'createWishlistText'
           }
         });
-        document.dispatchEvent(toastEvent);
       }
     },
     mounted() {
@@ -115,7 +115,7 @@
        *
        * @param {String} 'showCreateWishlist'
        */
-      document.addEventListener('showCreateWishlist', () => {
+      EventBus.$on('showCreateWishlist', () => {
         this.value = '';
         this.toggleModal();
       });

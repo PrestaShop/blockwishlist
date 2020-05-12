@@ -20,6 +20,7 @@
   import deleteList from '@graphqlFiles/mutations/deleteList';
   import getLists from '@graphqlFiles/queries/getlists';
   import removeFromList from '@graphqlFiles/mutations/removeFromList';
+  import EventBus from '@components/EventBus';
 
   /**
    * This component display a modal where you can delete a wishlist
@@ -83,16 +84,14 @@
         /**
          * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
          */
-        const event = new Event('refetchList');
-        document.dispatchEvent(event);
+        EventBus.$emit('refetchList');
 
-        const toastEvent = new CustomEvent('showToast', {
+        EventBus.$emit('showToast', {
           detail: {
             type: 'success',
             message: this.productId ? 'deleteProductText' : 'deleteWishlistText'
           }
         });
-        document.dispatchEvent(toastEvent);
 
         /**
          * Finally hide the modal after deleting the list
@@ -107,7 +106,7 @@
        *
        * @param {String} 'showDeleteWishlist'
        */
-      document.addEventListener('showDeleteWishlist', event => {
+      EventBus.$on('showDeleteWishlist', event => {
         this.value = '';
         this.listId = event.detail.listId;
 

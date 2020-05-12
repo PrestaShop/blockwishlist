@@ -18,6 +18,7 @@
  *-->
 <script>
   import renameList from '@graphqlFiles/mutations/renamelist';
+  import EventBus from '@components/EventBus';
 
   /**
    * A modal used to rename a list
@@ -85,24 +86,23 @@
           }
         });
 
-        const event = new Event('refetchList');
+        EventBus.$emit('refetchList');
 
-        document.dispatchEvent(event);
-
-        const toastEvent = new CustomEvent('showToast', {
+        EventBus.$emit('showToast', {
           detail: {
             type: 'success',
             message: 'renameWishlistText'
           }
         });
-        document.dispatchEvent(toastEvent);
+
+        this.toggleModal();
       }
     },
     mounted() {
       /**
        * Register to the showRenameWishlist event so everycomponents can display this modal
        */
-      document.addEventListener('showRenameWishlist', event => {
+      EventBus.$on('showRenameWishlist', event => {
         this.value = event.detail.title;
         this.listId = event.detail.listId;
         this.toggleModal();

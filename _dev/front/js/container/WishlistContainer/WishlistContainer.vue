@@ -41,6 +41,7 @@
   import List from '@components/List/List';
   import getLists from '@graphqlFiles/queries/getlists';
   import deleteList from '@graphqlFiles/mutations/deletelist';
+  import EventBus from '@components/EventBus';
 
   /**
    * This component act as a smart component wich will handle every actions of the list one
@@ -93,9 +94,7 @@
        * Send an event to opoen the Create Wishlist Modal
        */
       openNewWishlistModal() {
-        const event = new Event('showCreateWishlist');
-
-        document.dispatchEvent(event);
+        EventBus.$emit('showCreateWishlist');
       },
       /**
        * Delete a list by launching a mutation, updating cache and then on response replacing the lists state
@@ -110,7 +109,7 @@
        *
        * @param {String} 'refetchList' The event I decided to create to communicate between VueJS Apps
        */
-      document.addEventListener('refetchList', () => {
+      EventBus.$on('refetchList', () => {
         this.$apollo.queries.lists.refetch();
       });
     }

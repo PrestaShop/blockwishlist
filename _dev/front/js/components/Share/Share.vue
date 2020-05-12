@@ -18,6 +18,7 @@
  *-->
 <script>
   import shareList from '@graphqlFiles/mutations/sharelist';
+  import EventBus from '@components/EventBus';
 
   /**
    * This component display a modal where you can create a wishlist
@@ -87,13 +88,12 @@
 
         this.toggleModal();
 
-        const toastEvent = new CustomEvent('showToast', {
+        EventBus.$emit('showToast', {
           detail: {
             type: 'success',
             message: 'copyText'
           }
         });
-        document.dispatchEvent(toastEvent);
       }
     },
     mounted() {
@@ -104,7 +104,7 @@
        *
        * @param {String} 'showCreateWishlist'
        */
-      document.addEventListener('showShareWishlist', async event => {
+      EventBus.$on('showShareWishlist', async event => {
         this.actionText = this.copyText;
         const { data } = await this.$apollo.mutate({
           mutation: shareList,
