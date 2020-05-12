@@ -104,8 +104,8 @@ class WishList extends \ObjectModel
         $result = \Db::getInstance()->getRow('
             SELECT `id_wishlist`, `name`, `token`
                 FROM `' . _DB_PREFIX_ . 'wishlist`
-            WHERE `id_wishlist` = ' . (int) ($id_wishlist) . '
-            AND `id_customer` = ' . (int) ($id_customer) . '
+            WHERE `id_wishlist` = ' . (int) $id_wishlist . '
+            AND `id_customer` = ' . (int) $id_customer . '
             AND `id_shop` = ' . (int) \Context::getContext()->shop->id
         );
 
@@ -120,10 +120,10 @@ class WishList extends \ObjectModel
     public function setDefault()
     {
         if ($default = $this->getDefault($this->id_customer)) {
-            \Db::getInstance()->update('wishlist', ['default' => '0'], 'id_wishlist = ' . $default[0]['id_wishlist']);
+            \Db::getInstance()->update('wishlist', ['default' => '0'], 'id_wishlist = ' .(int) $default[0]['id_wishlist']);
         }
 
-        return \Db::getInstance()->update('wishlist', ['default' => '1'], 'id_wishlist = ' . $this->id);
+        return \Db::getInstance()->update('wishlist', ['default' => '1'], 'id_wishlist = ' .(int) $this->id);
     }
 
     /**
@@ -133,12 +133,12 @@ class WishList extends \ObjectModel
      */
     public static function isDefault($id_customer)
     {
-        return (bool) \Db::getInstance()->getValue('SELECT * FROM `' . _DB_PREFIX_ . 'wishlist` WHERE `id_customer` = ' . $id_customer . ' AND `default` = 1');
+        return (bool) \Db::getInstance()->getValue('SELECT * FROM `' . _DB_PREFIX_ . 'wishlist` WHERE `id_customer` = ' . (int) $id_customer . ' AND `default` = 1');
     }
 
     public static function getDefault($id_customer)
     {
-        return \Db::getInstance()->executeS('SELECT * FROM `' . _DB_PREFIX_ . 'wishlist` WHERE `id_customer` = ' . $id_customer . ' AND `default` = 1');
+        return \Db::getInstance()->executeS('SELECT * FROM `' . _DB_PREFIX_ . 'wishlist` WHERE `id_customer` = ' . (int) $id_customer . ' AND `default` = 1');
     }
 
     /**
@@ -160,9 +160,9 @@ class WishList extends \ObjectModel
             SELECT wp.`quantity`
                 FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
             JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
-            WHERE wp.`id_wishlist` = ' . (int) ($id_wishlist) . '
-            AND w.`id_customer` = ' . (int) ($id_customer) . '
-            AND wp.`id_product` = ' . (int) ($id_product) . '
+            WHERE wp.`id_wishlist` = ' . (int) $id_wishlist . '
+            AND w.`id_customer` = ' . (int) $id_customer . '
+            AND wp.`id_product` = ' . (int) $id_product . '
             AND wp.`id_product_attribute` = ' . (int) ($id_product_attribute)
         );
 
@@ -182,10 +182,10 @@ class WishList extends \ObjectModel
         } else {
             return \Db::getInstance()->execute('
                 INSERT INTO `' . _DB_PREFIX_ . 'wishlist_product` (`id_wishlist`, `id_product`, `id_product_attribute`, `quantity`, `priority`) VALUES (
-                ' . (int) ($id_wishlist) . ',
-                ' . (int) ($id_product) . ',
-                ' . (int) ($id_product_attribute) . ',
-                ' . (int) ($quantity) . ', 1)'
+                ' . (int) $id_wishlist . ',
+                ' . (int) $id_product . ',
+                ' . (int) $id_product_attribute . ',
+                ' . (int) $quantity . ', 1)'
             );
         }
     }

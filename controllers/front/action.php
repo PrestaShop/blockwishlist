@@ -34,8 +34,8 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         parent::initContent();
 
         if (!$this->context->customer->isLogged()) {
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'success' => false,
                     'message' => $this->module->l('You aren\'t logged in', 'mywishlist'),
                 ])
@@ -59,8 +59,8 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             call_user_func([$this, Tools::getValue('action') . 'Action'], $params);
         }
 
-        $this->ajaxDie(
-            Tools::jsonEncode([
+        $this->ajaxRender(
+            json_encode([
                 'success' => false,
                 'message' => $this->module->l('Unknow action', 'mywishlist'),
             ])
@@ -99,16 +99,16 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         );
 
         if ($productIsAdded === false) {
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'success' => false,
                     'message' => $this->module->l('There was an error adding the product', 'mywishlist'),
                 ])
             );
         }
 
-        $this->ajaxDie(
-            Tools::jsonEncode([
+        $this->ajaxRender(
+            json_encode([
                 'success' => false,
                 'message' => $this->module->l('Product added', 'mywishlist'),
             ])
@@ -126,8 +126,8 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             $wishlist->token = $this->generateWishlistToken();
 
             if (true === $wishlist->save()) {
-                $this->ajaxDie(
-                    Tools::jsonEncode([
+                $this->ajaxRender(
+                    json_encode([
                         'status' => 'success',
                         'message' => $this->module->l('The list has been properly created', 'mywishlist'),
                         'datas' => [
@@ -138,15 +138,15 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 );
             }
 
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'success' => false,
                     'message' => $this->module->l('Error saving the new wishlist', 'mywishlist')
                 ])
             );
         } else {
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'success' => false,
                     'message' => $this->module->l('Missing name parameter', 'mywishlist')
                 ])
@@ -161,23 +161,23 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             $wishlist->name = $$params['name'];
 
             if (true === $wishlist->save()) {
-                $this->ajaxDie(
-                    Tools::jsonEncode([
+                $this->ajaxRender(
+                    json_encode([
                         'success' => true,
                         'message' => $this->module->l('Wishlist has been renamed', 'mywishlist')
                     ])
                 );
             }
 
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'success' => false,
                     'message' => $this->module->l("Wishlist couldn't been renamed", 'mywishlist')
                 ])
             );
         }
 
-        $this->ajaxDieMissingParams();
+        $this->ajaxRenderMissingParams();
     }
 
     public function deleteWishlistAction($params)
@@ -186,23 +186,23 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             $wishlist = new wishlist($params['idWishlist']);
 
             if (true === $wishlist->delete()) {
-                $this->ajaxDie(
-                    Tools::jsonEncode([
+                $this->ajaxRender(
+                    json_encode([
                         'success' => true,
                         'message' => $this->module->l('Wishlist has been removed', 'mywishlist')
                     ])
                 );
             }
 
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'success' => false,
                     'message' => $this->module->l("Wishlist couldn't been removed", 'mywishlist')
                 ])
             );
         }
 
-        $this->ajaxDieMissingParams();
+        $this->ajaxRenderMissingParams();
     }
 
     public function deleteProductFromWishlistAction($params)
@@ -221,23 +221,23 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             );
 
             if (true === $isDeleted) {
-                $this->ajaxDie(
-                    Tools::jsonEncode([
+                $this->ajaxRender(
+                    json_encode([
                         'success' => true,
                         'message' => $this->module->l('Product succesfully removed', 'mywishlist')
                     ])
                 );
             }
 
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'success' => false,
                     'message' => $this->module->l('Unable to remove product from wishlist', 'mywishlist')
                 ])
             );
         }
 
-        $this->ajaxDieMissingParams();
+        $this->ajaxRenderMissingParams();
     }
 
     public function updateProductFromWishlistAction($params)
@@ -258,23 +258,23 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             );
 
             if ($isDeleted) {
-                $this->ajaxDie(
-                    Tools::jsonEncode([
+                $this->ajaxRender(
+                    json_encode([
                         'success' => true,
                         'message' => $this->module->l('Product succesfully updated', 'mywishlist')
                     ])
                 );
             }
 
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'success' => false,
                     'message' => $this->module->l('Unable to update product from wishlist', 'mywishlist')
                 ])
             );
         }
 
-        $this->ajaxDieMissingParams();
+        $this->ajaxRenderMissingParams();
     }
 
     public function getAllWishlistAction()
@@ -282,13 +282,13 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         $infos = Wishlist::getAllWishlistsByIdCustomer($this->context->customer->id);
 
         if (!empty($infos)) {
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'wishlists' => $infos,
                 ])
             );
         }
-        $this->ajaxDieMissingParams();
+        $this->ajaxRenderMissingParams();
     }
 
     private function generateWishlistToken()
@@ -296,10 +296,10 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         return strtoupper(substr(sha1(uniqid(rand(), true) . _COOKIE_KEY_ . $this->context->customer->id), 0, 16));
     }
 
-    private function ajaxDieMissingParams()
+    private function ajaxRenderMissingParams()
     {
-        $this->ajaxDie(
-            Tools::jsonEncode([
+        $this->ajaxRender(
+            json_encode([
                 'success' => false,
                 'message' => $this->module->l('Request is missing one or multiple parameters', 'mywishlist')
             ])
@@ -312,8 +312,8 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         $wishlistProducts = WishList::getProductByIdCustomer($params['id_wishlist'], $this->context->customer->id, $this->context->language->id);
 
         if (empty($wishlistProducts)) {
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'success' => false,
                     'message' => $this->module->l('No products found for this customer', 'mywishlist')
                 ])
@@ -344,8 +344,8 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             }
         }
 
-        $this->ajaxDie(
-            Tools::jsonEncode([
+        $this->ajaxRender(
+            json_encode([
                 'status' => 'success',
                 'message' => $this->module->l('The list has been properly created', 'mywishlist'),
                 'datas' => [
@@ -365,15 +365,15 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             $params['quantity']
         );
         if($productAdd ===true) {
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'status' => 'success',
                     'message' => $this->module->l('Product added to cart'),
                 ])
             );
         } else {
-            $this->ajaxDie(
-                Tools::jsonEncode([
+            $this->ajaxRender(
+                json_encode([
                     'status' => 'false',
                     'message' => $this->module->l('error when adding product to cart'),
                 ])
