@@ -98,7 +98,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             $quantity
         );
 
-        if ($productIsAdded === false) {
+        if (false === $productIsAdded) {
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
