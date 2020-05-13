@@ -31,7 +31,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
 {
     public function postProcess()
     {
-        if (!$this->context->customer->isLogged()) {
+        if (false === $this->context->customer->isLogged()) {
             $this->ajaxRender(
                 json_encode([
                     'success' => false,
@@ -51,9 +51,8 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             'id_cart' => 25,
             'name' => 'newWishTestName'
         ];
-        /*
-        Here we call all methods dinamically given by the path
-        */
+        // Here we call all methods dinamically given by the path
+
         if (method_exists($this, Tools::getValue('action') . 'Action')) {
             call_user_func([$this, Tools::getValue('action') . 'Action'], $params);
             exit;
@@ -76,9 +75,9 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         $id_product_attribute = (int) $params['id_product_attribute'];
         $quantity = (int) $params['quantity'];
 
-        if ($idWishlist !== 0) {
-            if (wishlist::exists($idWishlist, $this->context->customer->id) === false) {
-                $wishlist = new wishlist();
+        if (0 !== $idWishlist) {
+            if (Wishlist::exists($idWishlist, $this->context->customer->id) === false) {
+                $wishlist = new Wishlist();
                 $wishlist->id_shop = $this->context->shop->id;
                 $wishlist->id_shop_group = $this->context->shop->id_shop_group;
                 $wishlist->id_customer = $this->context->customer->id;
@@ -158,7 +157,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     private function renameWishlistAction($params)
     {
         if (isset($params['idWishlist'], $params['name'])) {
-            $wishlist = new wishlist($params['idWishlist']);
+            $wishlist = new Wishlist($params['idWishlist']);
             $wishlist->name = $params['name'];
 
             if (true === $wishlist->save()) {
@@ -184,7 +183,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     private function deleteWishlistAction($params)
     {
         if (isset($params['idWishlist'])) {
-            $wishlist = new wishlist($params['idWishlist']);
+            $wishlist = new Wishlist($params['idWishlist']);
 
             if (true === $wishlist->delete()) {
                 return $this->ajaxRender(
@@ -214,7 +213,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             && isset($params['id_product_attribute'])
             && isset($params['id_customer'])
         ) {
-            $isDeleted = wishlist::removeProduct(
+            $isDeleted = Wishlist::removeProduct(
                 $params['idWishlist'],
                 $params['id_customer'],
                 $params['id_product'],
@@ -250,7 +249,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             $params['priority'],
             $params['quantity']
         )) {
-            $isDeleted = wishlist::updateProduct(
+            $isDeleted = Wishlist::updateProduct(
                 $params['idWishlist'],
                 $params['id_product'],
                 $params['id_product_attribute'],
@@ -258,7 +257,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 $params['quantity']
             );
 
-            if ($isDeleted) {
+            if (true === $isDeleted) {
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
@@ -282,7 +281,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     {
         $infos = Wishlist::getAllWishlistsByIdCustomer($this->context->customer->id);
 
-        if (!empty($infos)) {
+        if (false === empty($infos)) {
             return $this->ajaxRender(
                 json_encode([
                     'wishlists' => $infos,
@@ -310,7 +309,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     private function getProductsByWishlistAction($params)
     {
         $params['id_wishlist'] = 3;
-        $wishlistProducts = WishList::getProductByIdCustomer($params['id_wishlist'], $this->context->customer->id, $this->context->language->id);
+        $wishlistProducts = Wishlist::getProductByIdCustomer($params['id_wishlist'], $this->context->customer->id, $this->context->language->id);
 
         if (empty($wishlistProducts)) {
             return $this->ajaxRender(
@@ -365,7 +364,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             $params['id_cart'],
             $params['quantity']
         );
-        if($productAdd ===true) {
+        if(true === $productAdd) {
             return $this->ajaxRender(
                 json_encode([
                     'status' => 'success',
