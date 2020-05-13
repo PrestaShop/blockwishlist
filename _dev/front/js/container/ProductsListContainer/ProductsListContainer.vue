@@ -91,7 +91,7 @@
 
 <script>
   import Product from '@components/Product/Product';
-  import getProducts from '@graphqlFiles/queries/getproducts';
+  import getProducts from '@graphqlFiles/queries/getProducts';
   import { ContentLoader } from 'vue-content-loader';
 
   /**
