@@ -43,6 +43,7 @@ module.exports = {
     addtowishlist: './_dev/front/js/components/AddToWishlist',
     productslist: [
       './_dev/front/js/container/ProductsListContainer',
+      './_dev/front/js/components/Pagination',
       './_dev/front/js/components/Toast',
       './_dev/front/js/components/Delete'
     ],

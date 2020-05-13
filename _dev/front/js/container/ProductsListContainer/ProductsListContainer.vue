@@ -188,6 +188,8 @@
       EventBus.$on('refetchList', () => {
         this.$apollo.queries.products.refetch();
       });
+
+      EventBus.$on('paginationNumbers', payload => {});
     }
   };
 </script>

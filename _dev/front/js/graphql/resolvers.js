@@ -17,6 +17,8 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
+import EventBus from '@components/EventBus';
+
 /**
  * Resolvers linked to schemas definitions
  */
@@ -29,6 +31,16 @@ export default {
       let response = await fetch('http://localhost/prestashop');
 
       let datas = await response.text();
+
+      EventBus.$emit('paginate', {
+        detail: {
+          total: 30,
+          minShown: 1,
+          maxShown: 20,
+          pageNumber: 2,
+          currentPage: 1
+        }
+      });
 
       return [
         {

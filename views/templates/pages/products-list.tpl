@@ -33,9 +33,10 @@
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-title="{l s='Gift ideas for Juliette' mod='blockwishlist'}"
     data-filter="{l s='Filter' mod='blockwishlist'}"
-  ></div>
+  >
+  </div>
 
-
+  {include file="module:blockwishlist/views/templates/components/pagination.tpl"}
   {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" url="http://dummy.com"}
   {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/block}
