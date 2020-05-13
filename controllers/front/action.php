@@ -29,17 +29,16 @@ use PrestaShop\PrestaShop\Core\Product\ProductPresentationSettings;
 
 class BlockWishlistActionModuleFrontController extends ModuleFrontController
 {
-    public function initContent()
+    public function postProcess()
     {
-        parent::initContent();
-
         if (!$this->context->customer->isLogged()) {
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'success' => false,
                     'message' => $this->module->l('You aren\'t logged in', 'mywishlist'),
                 ])
             );
+            exit;
         }
 
         $params = Tools::getValue('params');
@@ -57,17 +56,19 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         */
         if (method_exists($this, Tools::getValue('action') . 'Action')) {
             call_user_func([$this, Tools::getValue('action') . 'Action'], $params);
+            exit;
         }
 
-        $this->ajaxRender(
+        return $this->ajaxRender(
             json_encode([
                 'success' => false,
                 'message' => $this->module->l('Unknow action', 'mywishlist'),
             ])
         );
+        exit;
     }
 
-    public function addProductToWishlistAction($params)
+    private function addProductToWishlistAction($params)
     {
         $id_customer = (int) $this->context->customer->id;
         $idWishlist = (int) $params['idWishlist'];
@@ -99,7 +100,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         );
 
         if ($productIsAdded === false) {
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'success' => false,
                     'message' => $this->module->l('There was an error adding the product', 'mywishlist'),
@@ -107,7 +108,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             );
         }
 
-        $this->ajaxRender(
+        return $this->ajaxRender(
             json_encode([
                 'success' => false,
                 'message' => $this->module->l('Product added', 'mywishlist'),
@@ -115,7 +116,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         );
     }
 
-    public function createNewWishlistAction($params)
+    private function createNewWishlistAction($params)
     {
         if (isset($params['name'])) {
             $wishlist = new Wishlist();
@@ -126,7 +127,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             $wishlist->token = $this->generateWishlistToken();
 
             if (true === $wishlist->save()) {
-                $this->ajaxRender(
+                return $this->ajaxRender(
                     json_encode([
                         'status' => 'success',
                         'message' => $this->module->l('The list has been properly created', 'mywishlist'),
@@ -138,14 +139,14 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 );
             }
 
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'success' => false,
                     'message' => $this->module->l('Error saving the new wishlist', 'mywishlist')
                 ])
             );
         } else {
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'success' => false,
                     'message' => $this->module->l('Missing name parameter', 'mywishlist')
@@ -154,14 +155,14 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         }
     }
 
-    public function renameWishlistAction($params)
+    private function renameWishlistAction($params)
     {
         if (isset($params['idWishlist'], $params['name'])) {
             $wishlist = new wishlist($params['idWishlist']);
             $wishlist->name = $params['name'];
 
             if (true === $wishlist->save()) {
-                $this->ajaxRender(
+                return $this->ajaxRender(
                     json_encode([
                         'success' => true,
                         'message' => $this->module->l('Wishlist has been renamed', 'mywishlist')
@@ -169,7 +170,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 );
             }
 
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'success' => false,
                     'message' => $this->module->l("Wishlist couldn't been renamed", 'mywishlist')
@@ -180,13 +181,13 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         $this->ajaxRenderMissingParams();
     }
 
-    public function deleteWishlistAction($params)
+    private function deleteWishlistAction($params)
     {
         if (isset($params['idWishlist'])) {
             $wishlist = new wishlist($params['idWishlist']);
 
             if (true === $wishlist->delete()) {
-                $this->ajaxRender(
+                return $this->ajaxRender(
                     json_encode([
                         'success' => true,
                         'message' => $this->module->l('Wishlist has been removed', 'mywishlist')
@@ -194,7 +195,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 );
             }
 
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'success' => false,
                     'message' => $this->module->l("Wishlist couldn't been removed", 'mywishlist')
@@ -205,7 +206,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         $this->ajaxRenderMissingParams();
     }
 
-    public function deleteProductFromWishlistAction($params)
+    private function deleteProductFromWishlistAction($params)
     {
         if (
             isset($params['idWishlist'])
@@ -221,7 +222,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             );
 
             if (true === $isDeleted) {
-                $this->ajaxRender(
+                return $this->ajaxRender(
                     json_encode([
                         'success' => true,
                         'message' => $this->module->l('Product succesfully removed', 'mywishlist')
@@ -229,7 +230,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 );
             }
 
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'success' => false,
                     'message' => $this->module->l('Unable to remove product from wishlist', 'mywishlist')
@@ -240,7 +241,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         $this->ajaxRenderMissingParams();
     }
 
-    public function updateProductFromWishlistAction($params)
+    private function updateProductFromWishlistAction($params)
     {
         if (isset(
             $params['idWishlist'],
@@ -258,7 +259,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             );
 
             if ($isDeleted) {
-                $this->ajaxRender(
+                return $this->ajaxRender(
                     json_encode([
                         'success' => true,
                         'message' => $this->module->l('Product succesfully updated', 'mywishlist')
@@ -266,7 +267,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 );
             }
 
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'success' => false,
                     'message' => $this->module->l('Unable to update product from wishlist', 'mywishlist')
@@ -277,12 +278,12 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         $this->ajaxRenderMissingParams();
     }
 
-    public function getAllWishlistAction()
+    private function getAllWishlistAction()
     {
         $infos = Wishlist::getAllWishlistsByIdCustomer($this->context->customer->id);
 
         if (!empty($infos)) {
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'wishlists' => $infos,
                 ])
@@ -298,7 +299,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
 
     private function ajaxRenderMissingParams()
     {
-        $this->ajaxRender(
+        return $this->ajaxRender(
             json_encode([
                 'success' => false,
                 'message' => $this->module->l('Request is missing one or multiple parameters', 'mywishlist')
@@ -306,13 +307,13 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         );
     }
 
-    public function getProductsByWishlistAction($params)
+    private function getProductsByWishlistAction($params)
     {
         $params['id_wishlist'] = 3;
         $wishlistProducts = WishList::getProductByIdCustomer($params['id_wishlist'], $this->context->customer->id, $this->context->language->id);
 
         if (empty($wishlistProducts)) {
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'success' => false,
                     'message' => $this->module->l('No products found for this customer', 'mywishlist')
@@ -344,7 +345,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             }
         }
 
-        $this->ajaxRender(
+        return $this->ajaxRender(
             json_encode([
                 'status' => 'success',
                 'message' => $this->module->l('The list has been properly created', 'mywishlist'),
@@ -355,7 +356,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         );
     }
 
-    public function addProductToCartAction($params)
+    private function addProductToCartAction($params)
     {
         $productAdd = WishList::addBoughtProduct(
             $params['idWishlist'],
@@ -365,14 +366,14 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             $params['quantity']
         );
         if($productAdd ===true) {
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'status' => 'success',
                     'message' => $this->module->l('Product added to cart'),
                 ])
             );
         } else {
-            $this->ajaxRender(
+            return $this->ajaxRender(
                 json_encode([
                     'status' => 'false',
                     'message' => $this->module->l('error when adding product to cart'),
