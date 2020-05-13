@@ -153,7 +153,7 @@ class WishList extends \ObjectModel
             !\Validate::isUnsignedId($id_product) ||
             !\Validate::isUnsignedId($quantity)
         ) {
-            die(\Tools::displayError());
+            \Tools::displayError();
         }
 
         $result = \Db::getInstance()->getRow('
@@ -276,7 +276,7 @@ class WishList extends \ObjectModel
         }
 
         if (!\Validate::isUnsignedId($id_customer)) {
-            die (\Tools::displayError());
+            \Tools::displayError();
         }
 
         return (\Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
@@ -363,11 +363,11 @@ class WishList extends \ObjectModel
                 $products[$i]['attributes_small'] = rtrim($products[$i]['attributes_small'], ', ');
                 if (isset($result[0]))
                     $products[$i]['attribute_quantity'] = $result[0]['attribute_quantity'];
-            }
-            else
+            } else {
                 $products[$i]['attribute_quantity'] = $products[$i]['product_quantity'];
+            }
         }
-        return ($products);
+        return $products;
     }
 
     /**
@@ -394,7 +394,7 @@ class WishList extends \ObjectModel
             ($result['quantity'] - $quantity) < 0 ||
             $quantity > $result['quantity'])
             {
-                return (false);
+                return false;
             }
 
             \Db::getInstance()->executeS('
@@ -420,7 +420,7 @@ class WishList extends \ObjectModel
         }
 
         if ($result2 === false) {
-            return (false);
+            return false;
         }
 
         return (\Db::getInstance()->execute('
