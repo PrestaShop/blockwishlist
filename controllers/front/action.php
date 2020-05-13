@@ -32,7 +32,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     public function postProcess()
     {
         if (!$this->context->customer->isLogged()) {
-            return $this->ajaxRender(
+            $this->ajaxRender(
                 json_encode([
                     'success' => false,
                     'message' => $this->module->l('You aren\'t logged in', 'mywishlist'),
@@ -59,7 +59,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             exit;
         }
 
-        return $this->ajaxRender(
+        $this->ajaxRender(
             json_encode([
                 'success' => false,
                 'message' => $this->module->l('Unknow action', 'mywishlist'),
@@ -178,7 +178,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             );
         }
 
-        $this->ajaxRenderMissingParams();
+        return $this->ajaxRenderMissingParams();
     }
 
     private function deleteWishlistAction($params)
@@ -203,7 +203,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             );
         }
 
-        $this->ajaxRenderMissingParams();
+        return $this->ajaxRenderMissingParams();
     }
 
     private function deleteProductFromWishlistAction($params)
@@ -238,7 +238,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             );
         }
 
-        $this->ajaxRenderMissingParams();
+        return $this->ajaxRenderMissingParams();
     }
 
     private function updateProductFromWishlistAction($params)
@@ -275,7 +275,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             );
         }
 
-        $this->ajaxRenderMissingParams();
+        return $this->ajaxRenderMissingParams();
     }
 
     private function getAllWishlistAction()
@@ -289,7 +289,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 ])
             );
         }
-        $this->ajaxRenderMissingParams();
+        return $this->ajaxRenderMissingParams();
     }
 
     private function generateWishlistToken()
