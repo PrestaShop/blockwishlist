@@ -68,28 +68,34 @@ export default {
     /**
      * Get every lists from User
      */
-    lists: () => [
-      {
-        id: 1,
-        title: 'Titre de liste 1',
-        numbersProduct: 8
-      },
-      {
-        id: 2,
-        title: 'Titre de liste 2',
-        numbersProduct: 5
-      },
-      {
-        id: 3,
-        title: 'Titre de liste 3',
-        numbersProduct: 1
-      },
-      {
-        id: 4,
-        title: 'Titre de liste 4',
-        numbersProduct: 4
-      }
-    ]
+    lists: async () => {
+      let response = await fetch('http://localhost/prestashop');
+
+      let datas = await response.text();
+
+      return [
+        {
+          id: 1,
+          title: 'Titre de liste 1',
+          numbersProduct: 8
+        },
+        {
+          id: 2,
+          title: 'Titre de liste 2',
+          numbersProduct: 5
+        },
+        {
+          id: 3,
+          title: 'Titre de liste 3',
+          numbersProduct: 1
+        },
+        {
+          id: 4,
+          title: 'Titre de liste 4',
+          numbersProduct: 4
+        }
+      ];
+    }
   },
   Mutation: {
     /**
