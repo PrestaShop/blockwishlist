@@ -77,7 +77,8 @@
           mutation: this.productId ? removeFromList : deleteList,
           variables: {
             listId: this.listId,
-            productId: this.productId
+            productId: this.productId,
+            userId: 1
           }
         });
 
