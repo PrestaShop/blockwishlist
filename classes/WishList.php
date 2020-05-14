@@ -18,8 +18,9 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
+namespace PrestaShop\Module\BlockWishlist;
 
-class WishList extends ObjectModel
+class WishList extends \ObjectModel
 {
     /** @var int Wishlist ID */
     public $id;
@@ -75,18 +76,18 @@ class WishList extends ObjectModel
     {
         $cache_id = 'WishList::getCustomers';
 
-        if (false === Cache::isStored($cache_id)) {
-            $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+        if (false === \Cache::isStored($cache_id)) {
+            $result = \Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
                 SELECT c.`id_customer`, c.`firstname`, c.`lastname`
                     FROM `' . _DB_PREFIX_ . 'wishlist` w
                 INNER JOIN `' . _DB_PREFIX_ . 'customer` c ON c.`id_customer` = w.`id_customer`
                 ORDER BY c.`firstname` ASC'
             );
 
-            Cache::store($cache_id, $result);
+            \Cache::store($cache_id, $result);
         }
 
-        return Cache::retrieve($cache_id);
+        return \Cache::retrieve($cache_id);
     }
 
     /**
@@ -96,11 +97,11 @@ class WishList extends ObjectModel
      */
     public static function exists($id_wishlist, $id_customer)
     {
-        if (false === Validate::isUnsignedId($id_wishlist) || false === Validate::isUnsignedId($id_customer)) {
+        if (false === \Validate::isUnsignedId($id_wishlist) || false === \Validate::isUnsignedId($id_customer)) {
             return false;
         }
 
-        $result = Db::getInstance()->getRow('
+        $result = \Db::getInstance()->getRow('
             SELECT `id_wishlist`, `name`, `token`
                 FROM `' . _DB_PREFIX_ . 'wishlist`
             WHERE `id_wishlist` = ' . (int) $id_wishlist . '
@@ -119,10 +120,10 @@ class WishList extends ObjectModel
     public function setDefault()
     {
         if ($default = $this->getDefault($this->id_customer)) {
-            Db::getInstance()->update('wishlist', ['default' => '0'], 'id_wishlist = ' .(int) $default);
+            \Db::getInstance()->update('wishlist', ['default' => '0'], 'id_wishlist = ' .(int) $default);
         }
 
-        return Db::getInstance()->update('wishlist', ['default' => '1'], 'id_wishlist = ' .(int) $this->id);
+        return \Db::getInstance()->update('wishlist', ['default' => '1'], 'id_wishlist = ' .(int) $this->id);
     }
 
     /**
@@ -132,12 +133,12 @@ class WishList extends ObjectModel
      */
     public static function isDefault($id_customer)
     {
-        return (bool) Db::getInstance()->getValue('SELECT 1 FROM `' . _DB_PREFIX_ . 'wishlist` WHERE `id_customer` = ' . (int) $id_customer . ' AND `default` = 1');
+        return (bool) \Db::getInstance()->getValue('SELECT 1 FROM `' . _DB_PREFIX_ . 'wishlist` WHERE `id_customer` = ' . (int) $id_customer . ' AND `default` = 1');
     }
 
     public static function getDefault($id_customer)
     {
-        return (int) Db::getInstance()->getValue('SELECT `id_wishlist` FROM `' . _DB_PREFIX_ . 'wishlist` WHERE `id_customer` = ' . (int) $id_customer . ' AND `default` = 1');
+        return (int) \Db::getInstance()->getValue('SELECT `id_wishlist` FROM `' . _DB_PREFIX_ . 'wishlist` WHERE `id_customer` = ' . (int) $id_customer . ' AND `default` = 1');
     }
 
     /**
@@ -147,15 +148,15 @@ class WishList extends ObjectModel
      */
     public static function addProduct($id_wishlist, $id_customer, $id_product, $id_product_attribute, $quantity)
     {
-        if (false === Validate::isUnsignedId($id_wishlist) ||
-            false === Validate::isUnsignedId($id_customer) ||
-            false === Validate::isUnsignedId($id_product) ||
-            false === Validate::isUnsignedId($quantity)
+        if (false === \Validate::isUnsignedId($id_wishlist) ||
+            false === \Validate::isUnsignedId($id_customer) ||
+            false === \Validate::isUnsignedId($id_product) ||
+            false === \Validate::isUnsignedId($quantity)
         ) {
-            Tools::displayError();
+            \Tools::displayError();
         }
 
-        $result = Db::getInstance()->getRow('
+        $result = \Db::getInstance()->getRow('
             SELECT wp.`quantity`
                 FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
             JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
@@ -170,7 +171,7 @@ class WishList extends ObjectModel
                 return WishList::removeProduct($id_wishlist, $id_customer, $id_product, $id_product_attribute);
             } else {
                 // TODO: use a method for this like updateProduct ?
-                return Db::getInstance()->update('
+                return \Db::getInstance()->update(
                     'wishlist_product',
                     [
                         'quantity' => (int) ($quantity + $result['quantity']),
@@ -179,7 +180,7 @@ class WishList extends ObjectModel
                 );
             }
         } else {
-            return Db::getInstance()->insert(
+            return \Db::getInstance()->insert(
                 'wishlist_product',
                 [
                     'id_wishlist' => (int) $id_wishlist,
@@ -199,14 +200,14 @@ class WishList extends ObjectModel
      */
     public static function removeProduct($id_wishlist, $id_customer, $id_product, $id_product_attribute)
     {
-        if (false === Validate::isUnsignedId($id_wishlist) ||
-            false === Validate::isUnsignedId($id_customer) ||
-            false === Validate::isUnsignedId($id_product)
+        if (false === \Validate::isUnsignedId($id_wishlist) ||
+            false === \Validate::isUnsignedId($id_customer) ||
+            false === \Validate::isUnsignedId($id_product)
         ) {
             return false;
         }
 
-        $result = Db::getInstance()->getRow('
+        $result = \Db::getInstance()->getRow('
             SELECT w.`id_wishlist`, wp.`id_wishlist_product`
             FROM `'._DB_PREFIX_.'wishlist` w
             LEFT JOIN `'._DB_PREFIX_.'wishlist_product` wp ON (wp.`id_wishlist` = w.`id_wishlist`)
@@ -219,12 +220,12 @@ class WishList extends ObjectModel
         }
 
         // Delete product in wishlist_product_cart
-        Db::getInstance()->delete(
+        \Db::getInstance()->delete(
             'wishlist_product_cart',
             'id_wishlist_product = ' . (int) $result['id_wishlist_product']
         );
 
-        return Db::getInstance()->delete(
+        return \Db::getInstance()->delete(
             'wishlist_product',
             'id_wishlist = '. (int) $id_wishlist . 'AND id_product = ' . (int) $id_product . 'id_product_attribute = '. (int) $id_product_attribute
         );
@@ -237,16 +238,16 @@ class WishList extends ObjectModel
      */
     public static function updateProduct($id_wishlist, $id_product, $id_product_attribute, $priority, $quantity)
     {
-        if (false === Validate::isUnsignedId($id_wishlist) ||
-            false === Validate::isUnsignedId($id_product) ||
-            false === Validate::isUnsignedId($quantity) ||
+        if (false === \Validate::isUnsignedId($id_wishlist) ||
+            false === \Validate::isUnsignedId($id_product) ||
+            false === \Validate::isUnsignedId($quantity) ||
             $priority < 0 ||
             $priority > 2
         ) {
             return false;
         }
 
-        return Db::getInstance()->update(
+        return \Db::getInstance()->update(
             'wishlist_product',
             [
                 'priority' => (int) $priority,
@@ -263,19 +264,19 @@ class WishList extends ObjectModel
      */
     public static function getAllWishlistsByIdCustomer($id_customer)
     {
-        if (Shop::getContextShopID()) {
+        if (\Shop::getContextShopID()) {
             $shop_restriction = 'AND id_shop = '.(int)\Shop::getContextShopID();
-        } elseif (Shop::getContextShopGroupID()) {
-            $shop_restriction = 'AND id_shop_group = '.(int)Shop::getContextShopGroupID();
+        } elseif (\Shop::getContextShopGroupID()) {
+            $shop_restriction = 'AND id_shop_group = '.(int)\Shop::getContextShopGroupID();
         } else {
             $shop_restriction = '';
         }
 
-        if (false === Validate::isUnsignedId($id_customer)) {
-            Tools::displayError();
+        if (false === \Validate::isUnsignedId($id_customer)) {
+            \Tools::displayError();
         }
 
-        return Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+        return \Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
             SELECT  w.`id_wishlist`, SUM(wp.`quantity`) AS nbProducts, w.`name`
             FROM `'._DB_PREFIX_.'wishlist_product` wp
             INNER JOIN `'._DB_PREFIX_.'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
@@ -293,7 +294,7 @@ class WishList extends ObjectModel
      */
     public static function getProductsByWishlist($id_wishlist)
     {
-        $wishlistProducts = Db::getInstance()->executeS('
+        $wishlistProducts = \Db::getInstance()->executeS('
             SELECT `id_product`, `id_product_attribute`, `quantity`
             FROM `'._DB_PREFIX_.'wishlist_product`
             WHERE `id_wishlist` = ' . (int) $id_wishlist
@@ -313,20 +314,20 @@ class WishList extends ObjectModel
      */
     public static function getProductByIdCustomer($id_wishlist, $id_customer, $id_lang, $id_product = null, $quantity = false)
     {
-        if (false === Validate::isUnsignedId($id_customer) ||
-            false === Validate::isUnsignedId($id_lang) ||
-            false === Validate::isUnsignedId($id_wishlist)
+        if (false === \Validate::isUnsignedId($id_customer) ||
+            false === \Validate::isUnsignedId($id_lang) ||
+            false === \Validate::isUnsignedId($id_wishlist)
         ){
             return false;
         }
-        $products = Db::getInstance()->executeS('
+        $products = \Db::getInstance()->executeS('
             SELECT wp.`id_product`, wp.`quantity`, p.`quantity` AS product_quantity, pl.`name`, wp.`id_product_attribute`, wp.`priority`, pl.link_rewrite, cl.link_rewrite AS category_rewrite
             FROM `'._DB_PREFIX_.'wishlist_product` wp
             LEFT JOIN `'._DB_PREFIX_.'product` p ON p.`id_product` = wp.`id_product`
-            '.Shop::addSqlAssociation('product', 'p').'
-            LEFT JOIN `'._DB_PREFIX_.'product_lang` pl ON pl.`id_product` = wp.`id_product`'.Shop::addSqlRestrictionOnLang('pl').'
+            '.\Shop::addSqlAssociation('product', 'p').'
+            LEFT JOIN `'._DB_PREFIX_.'product_lang` pl ON pl.`id_product` = wp.`id_product`'.\Shop::addSqlRestrictionOnLang('pl').'
             LEFT JOIN `'._DB_PREFIX_.'wishlist` w ON w.`id_wishlist` = wp.`id_wishlist`
-            LEFT JOIN `'._DB_PREFIX_.'category_lang` cl ON cl.`id_category` = product_shop.`id_category_default` AND cl.id_lang='.(int) $id_lang.Shop::addSqlRestrictionOnLang('cl').'
+            LEFT JOIN `'._DB_PREFIX_.'category_lang` cl ON cl.`id_category` = product_shop.`id_category_default` AND cl.id_lang='.(int) $id_lang.\Shop::addSqlRestrictionOnLang('cl').'
             WHERE w.`id_customer` = '.(int) $id_customer.'
             AND pl.`id_lang` = '.(int) $id_lang.'
             AND wp.`id_wishlist` = '.(int) $id_wishlist.
