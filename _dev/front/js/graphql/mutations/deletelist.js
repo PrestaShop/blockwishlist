@@ -20,11 +20,10 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  mutation deleteList($listId: Int!) {
-    deleteList(listId: $listId) {
-      id
-      title
-      numbersProduct
+  mutation deleteList($listId: Int!, $url: String!) {
+    deleteList(listId: $listId, url: $url) {
+      status
+      message
     }
   }
 `;

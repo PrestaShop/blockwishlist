@@ -42,15 +42,6 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         }
 
         $params = Tools::getValue('params');
-
-        $params = [
-            'idWishlist' => 3,
-            'id_product' => 1,
-            'id_product_attribute' => 3,
-            'quantity' => 2,
-            'id_cart' => 25,
-            'name' => 'newWishTestName'
-        ];
         // Here we call all methods dinamically given by the path
 
         if (method_exists($this, Tools::getValue('action') . 'Action')) {
@@ -119,7 +110,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     {
         if (isset($params['name'])) {
             $wishlist = new Wishlist();
-            $wishlist->name= $params['name'];
+            $wishlist->name = $params['name'];
             $wishlist->id_shop_group = $this->context->shop->id_shop_group;
             $wishlist->id_customer = $this->context->customer->id;
             $wishlist->id_shop = $this->context->shop->id;
@@ -140,14 +131,14 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
 
             return $this->ajaxRender(
                 json_encode([
-                    'success' => false,
+                    'status' => 'failed',
                     'message' => $this->module->l('Error saving the new wishlist', 'mywishlist')
                 ])
             );
         } else {
             return $this->ajaxRender(
                 json_encode([
-                    'success' => false,
+                    'status' => 'failed',
                     'message' => $this->module->l('Missing name parameter', 'mywishlist')
                 ])
             );
@@ -281,14 +272,11 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     {
         $infos = Wishlist::getAllWishlistsByIdCustomer($this->context->customer->id);
 
-        if (false === empty($infos)) {
-            return $this->ajaxRender(
-                json_encode([
-                    'wishlists' => $infos,
-                ])
-            );
-        }
-        return $this->ajaxRenderMissingParams();
+        return $this->ajaxRender(
+            json_encode([
+                'wishlists' => $infos,
+            ])
+        );
     }
 
     private function generateWishlistToken()

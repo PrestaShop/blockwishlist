@@ -20,11 +20,11 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  {
-    lists {
-      id
-      title
-      numbersProduct
+  query lists($url: String!) {
+    lists(url: $url) {
+      id_wishlist
+      name
+      nbProduct
     }
   }
 `;

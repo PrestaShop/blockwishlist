@@ -74,11 +74,19 @@
        * Launch a createList mutation to create a Wishlist
        */
       async createWishlist() {
-        await this.$apollo.mutate({
+        let { data: response } = await this.$apollo.mutate({
           mutation: createList,
           variables: {
             name: this.value,
-            userId: 1
+            url: this.url
+          }
+        });
+
+        EventBus.$emit('showToast', {
+          detail: {
+            type:
+              response.createList.status === 'success' ? 'success' : 'error',
+            message: response.createList.message
           }
         });
 
@@ -95,13 +103,6 @@
         EventBus.$emit('showAddToWishList', {
           detail: {
             forceOpen: true
-          }
-        });
-
-        EventBus.$emit('showToast', {
-          detail: {
-            type: 'success',
-            message: 'createWishlistText'
           }
         });
       }

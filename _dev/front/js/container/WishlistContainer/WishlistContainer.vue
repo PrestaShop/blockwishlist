@@ -32,6 +32,8 @@
         :items="lists"
         :renameText="renameText"
         :shareText="shareText"
+        :emptyText="emptyText"
+        :loading="$apollo.queries.lists.loading"
       ></list>
     </section>
   </div>
@@ -52,7 +54,14 @@
       List
     },
     apollo: {
-      lists: getLists
+      lists: {
+        query: getLists,
+        variables() {
+          return {
+            url: this.url
+          };
+        }
+      }
     },
     props: {
       url: {
@@ -76,6 +85,10 @@
         required: true
       },
       renameText: {
+        type: String,
+        required: true
+      },
+      emptyText: {
         type: String,
         required: true
       },

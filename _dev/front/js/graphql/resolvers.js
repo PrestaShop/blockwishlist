@@ -68,33 +68,12 @@ export default {
     /**
      * Get every lists from User
      */
-    lists: async () => {
-      let response = await fetch('http://localhost/prestashop');
+    lists: async (root, {url}, context) => {
+      let response = await fetch(url);
 
-      let datas = await response.text();
+      let datas = await response.json();
 
-      return [
-        {
-          id: 1,
-          title: 'Titre de liste 1',
-          numbersProduct: 8
-        },
-        {
-          id: 2,
-          title: 'Titre de liste 2',
-          numbersProduct: 5
-        },
-        {
-          id: 3,
-          title: 'Titre de liste 3',
-          numbersProduct: 1
-        },
-        {
-          id: 4,
-          title: 'Titre de liste 4',
-          numbersProduct: 4
-        }
-      ];
+      return datas.wishlists;
     }
   },
   Mutation: {
@@ -104,24 +83,15 @@ export default {
      * @param {String} name The name of the list
      * @param {Int} userId The ID of the user you want to create a list on
      */
-    createList: (root, {name, userId}, context) => [
-      {
-        id: 1,
-        title: 'Titre de liste 1'
-      },
-      {
-        id: 2,
-        title: 'Titre de liste 2'
-      },
-      {
-        id: 3,
-        title: 'Titre de liste 3'
-      },
-      {
-        id: 4,
-        title: 'Titre de liste 4'
-      }
-    ],
+    createList: async (root, {name, url}, context) => {
+      let response = await fetch(url + `&params[name]=${name}`, {
+        method: 'POST'
+      });
+
+      let datas = await response.json();
+
+      return datas;
+    },
     /**
      * Get a share url for a list
      *
@@ -195,22 +165,14 @@ export default {
      *
      * @returns {JSON} a JSON success or failed response
      */
-    deleteList: (root, {listId}, context) => [
-      {
-        id: 1,
-        title: 'Titre de liste 1',
-        numbersProduct: 4
-      },
-      {
-        id: 2,
-        title: 'Titre de liste 2',
-        numbersProduct: 4
-      },
-      {
-        id: 3,
-        title: 'Titre de liste 3',
-        numbersProduct: 4
-      }
-    ]
+    deleteList: async (root, {listId, url}, context) => {
+      let response = await fetch(url + `&params[idWishlist]=${listId}`, {
+        method: 'POST'
+      });
+
+      let datas = await response.json();
+
+      return datas;
+    }
   }
 };

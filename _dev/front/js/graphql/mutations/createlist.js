@@ -20,10 +20,14 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  mutation createList($name: String!, $userId: Int!) {
-    createList(name: $name, userId: $userId) {
-      id
-      title
+  mutation createList($name: String!, $url: String!) {
+    createList(name: $name, url: $url) {
+      message
+      datas {
+        name
+        id
+      }
+      status
     }
   }
 `;

@@ -279,7 +279,7 @@ class WishList extends \ObjectModel
         return \Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
             SELECT  w.`id_wishlist`, SUM(wp.`quantity`) AS nbProducts, w.`name`
             FROM `'._DB_PREFIX_.'wishlist_product` wp
-            INNER JOIN `'._DB_PREFIX_.'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
+            RIGHT JOIN `'._DB_PREFIX_.'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
             WHERE w.`id_customer` = '.(int) $id_customer.'
             '.$shop_restriction.'
             GROUP BY w.`id_wishlist`

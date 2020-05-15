@@ -24,20 +24,21 @@
 {block name='page_content_container'}
   <div
     class="wishlist-container"
-    data-url="#"
+    data-url="{$url}"
     data-return-link="#"
     data-home-link="#"
     data-title="{l s='My Wishlists' mod='blockwishlist'}"
+    data-empty-text="{l s='No wishlist found.' mod='blockwishlist'}"
     data-rename-text="{l s='Rename' mod='blockwishlist'}"
     data-share-text="{l s='Share' mod='blockwishlist'}"
     data-add-text="{l s='New wishlist' mod='blockwishlist'}"
   ></div>
 
-  {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/share.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/rename.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url=$addUrl}
+  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url=$createUrl}
+  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" listUrl=$deleteListUrl productUrl=$deleteProductUrl}
+  {include file="module:blockwishlist/views/templates/components/modals/share.tpl" url=$shareUrl}
+  {include file="module:blockwishlist/views/templates/components/modals/rename.tpl" url=$renameUrl}
   {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/block}
 

@@ -42,6 +42,10 @@ const props = [
     type: String
   },
   {
+    name: 'emptyText',
+    type: String
+  },
+  {
     name: 'homeLink',
     type: String
   },

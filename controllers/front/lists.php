@@ -26,7 +26,13 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
 
       $this->context->smarty->assign(
         array(
-            'url' => '#',
+            'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
+            'createUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),
+            'deleteListUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteWishlist']),
+            'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'renameUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'renameWishlist']),
+            'shareUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'renameWishlist']),
+            'addUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
             'accountLink' => '#'
         )
       ); 

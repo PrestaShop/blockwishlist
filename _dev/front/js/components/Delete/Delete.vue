@@ -28,7 +28,12 @@
   export default {
     name: 'Delete',
     props: {
-      url: {
+      deleteProductUrl: {
+        type: String,
+        required: true,
+        default: '#'
+      },
+      deleteListUrl: {
         type: String,
         required: true,
         default: '#'
@@ -73,14 +78,15 @@
        * Launch a deleteList mutation to delete a Wishlist
        */
       async deleteWishlist() {
-        const list = await this.$apollo.mutate({
+        const { data } = await this.$apollo.mutate({
           mutation: this.productId ? removeFromList : deleteList,
           variables: {
             listId: this.listId,
             productId: this.productId,
-            userId: 1
+            url: this.productId ? this.deleteProductUrl : this.deleteListUrl
           }
         });
+        const { deleteList: response } = data;
 
         /**
          * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
@@ -89,8 +95,8 @@
 
         EventBus.$emit('showToast', {
           detail: {
-            type: 'success',
-            message: this.productId ? 'deleteProductText' : 'deleteWishlistText'
+            type: response.success ? 'success' : 'error',
+            message: response.message
           }
         });
 

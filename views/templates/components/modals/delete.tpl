@@ -19,7 +19,8 @@
 
 <div
   class="wishlist-delete"
-  data-url="{$url}"
+  data-delete-list-url="{$listUrl}"
+  data-delete-product-url="{$productUrl}"
   data-title="{l s='Delete' mod='blockwishlist'}"
   data-placeholder="{l s='This action is irreversible' mod='blockwishlist'}"
   data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
