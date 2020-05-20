@@ -25,9 +25,9 @@ export default gql`
       message
       datas {
         name
-        id
+        id_wishlist
       }
-      status
+      success
     }
   }
 `;

@@ -22,7 +22,7 @@ import gql from 'graphql-tag';
 export default gql`
   mutation deleteList($listId: Int!, $url: String!) {
     deleteList(listId: $listId, url: $url) {
-      status
+      success
       message
     }
   }

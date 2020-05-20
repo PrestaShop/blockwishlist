@@ -24,7 +24,7 @@ export default gql`
     lists(url: $url) {
       id_wishlist
       name
-      nbProduct
+      nbProducts
     }
   }
 `;

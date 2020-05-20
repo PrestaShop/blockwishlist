@@ -21,8 +21,8 @@
     <div class="wishlist-products-container-header">
       <h1>
         {{ title }}
-        <span class="wishlist-products-count" v-if="products">
-          ({{ products.length }})
+        <span class="wishlist-products-count" v-if="products.datas">
+          ({{ products.datas.length }})
         </span>
       </h1>
 
@@ -73,18 +73,32 @@
     </div>
 
     <section id="content" class="page-content card card-block">
-      <ul class="wishlist-products-list" v-if="products.length > 0">
-        <li class="wishlist-products-item" v-for="product in products">
+      <ul
+        class="wishlist-products-list"
+        v-if="products.datas && products.datas.length > 0"
+      >
+        <li class="wishlist-products-item" v-for="product in products.datas">
           <Product :product="product" :listId="listId" />
         </li>
       </ul>
 
-      <ContentLoader v-else class="wishlist-list-loader" height="105">
+      <ContentLoader
+        v-if="!products.datas"
+        class="wishlist-list-loader"
+        height="105"
+      >
         <rect x="0" y="12" rx="3" ry="0" width="100%" height="11" />
         <rect x="0" y="36" rx="3" ry="0" width="100%" height="11" />
         <rect x="0" y="60" rx="3" ry="0" width="100%" height="11" />
         <rect x="0" y="84" rx="3" ry="0" width="100%" height="11" />
       </ContentLoader>
+
+      <p
+        class="wishlist-list-empty"
+        v-if="products.datas && products.success === false"
+      >
+        {{ products.message }}
+      </p>
     </section>
   </div>
 </template>
@@ -110,7 +124,7 @@
         variables() {
           return {
             listId: this.listId,
-            userId: 1
+            url: this.url
           };
         },
         skip() {

@@ -27,8 +27,9 @@ const initButtons = () => {
     const wishlistButton = document.createElement('div');
 
     wishlistButton.classList.add('wishlist-button');
-    wishlistButton.url = 'http://lorem.com';
     wishlistButton.dataset.productId = product.dataset.idProduct;
+    wishlistButton.dataset.url = removeFromWishlistUrl;
+    wishlistButton.dataset.productAttributeId = product.dataset.idProductAttribute;
     wishlistButton.dataset.checked = false;
 
     product.querySelector('.thumbnail-container').append(wishlistButton);

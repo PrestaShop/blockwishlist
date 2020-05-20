@@ -19,8 +19,12 @@
 
 <div
   class="wishlist-delete"
-  data-delete-list-url="{$listUrl}"
-  data-delete-product-url="{$productUrl}"
+  {if isset($listUrl)}
+    data-delete-list-url="{$listUrl}"
+  {/if}
+  {if isset($productUrl)}
+    data-delete-product-url="{$productUrl}"
+  {/if}
   data-title="{l s='Delete' mod='blockwishlist'}"
   data-placeholder="{l s='This action is irreversible' mod='blockwishlist'}"
   data-cancel-text="{l s='Cancel' mod='blockwishlist'}"

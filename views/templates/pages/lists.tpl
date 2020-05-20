@@ -34,7 +34,6 @@
     data-add-text="{l s='New wishlist' mod='blockwishlist'}"
   ></div>
 
-  {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url=$addUrl}
   {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url=$createUrl}
   {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" listUrl=$deleteListUrl productUrl=$deleteProductUrl}
   {include file="module:blockwishlist/views/templates/components/modals/share.tpl" url=$shareUrl}

@@ -104,7 +104,7 @@
       box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.2);
       position: fixed;
       right: 20px;
-      z-index: 100;
+      z-index: 9999;
       top: 70px;
       transition: 0.2s ease-out;
       transform: translateY(-10px);
@@ -113,6 +113,7 @@
 
       &.success {
         background-color: #69b92d;
+        border-color: #69b92d;
 
         .wishlist-toast-text {
           color: white;
@@ -121,6 +122,7 @@
 
       &.error {
         background-color: #b9312d;
+        border-color: #b9312d;
 
         .wishlist-toast-text {
           color: white;

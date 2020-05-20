@@ -46,6 +46,10 @@ const props = [
     type: String
   },
   {
+    name: 'lengthText',
+    type: String
+  },
+  {
     name: 'createText',
     type: String
   }

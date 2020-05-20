@@ -45,6 +45,11 @@
         required: true,
         default: null
       },
+      productAttributeId: {
+        type: Number,
+        required: true,
+        default: null
+      },
       listId: {
         type: Number,
         required: true,
@@ -90,15 +95,29 @@
 
         if (!this.isChecked) {
           EventBus.$emit('showAddToWishList', {
-            detail: { productId: this.productId, forceOpen: true }
+            detail: {
+              productId: this.productId,
+              productAttributeId: this.productAttributeId,
+              forceOpen: true
+            }
           });
         } else {
-          let response = await this.$apollo.mutate({
+          let { data } = await this.$apollo.mutate({
             mutation: removeFromList,
             variables: {
               productId: this.productId,
-              listId: this.listId ? this.listId : this.idList,
-              userId: 1
+              url: this.url,
+              productAttributeId: this.productAttributeId,
+              listId: this.idList ? this.idList : this.listId
+            }
+          });
+
+          const { removeFromList: response } = data;
+
+          EventBus.$emit('showToast', {
+            detail: {
+              type: response.success ? 'success' : 'error',
+              message: response.message
             }
           });
 

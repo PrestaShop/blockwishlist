@@ -77,21 +77,24 @@
        * @param {Int} listId Id of the list to be renamed
        */
       async renameWishlist(listId) {
-        await this.$apollo.mutate({
+        const { data } = await this.$apollo.mutate({
           mutation: renameList,
           variables: {
             name: this.value,
-            userId: 1,
+            url: this.url,
             listId: this.listId
           }
         });
+
+        const { renameList: response } = data;
+        console.log(response);
 
         EventBus.$emit('refetchList');
 
         EventBus.$emit('showToast', {
           detail: {
-            type: 'success',
-            message: 'renameWishlistText'
+            type: response.success ? 'success' : 'error',
+            message: response.message
           }
         });
 

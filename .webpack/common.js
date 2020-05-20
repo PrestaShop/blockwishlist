@@ -33,7 +33,8 @@ const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 module.exports = {
   externals: {
     jquery: 'jQuery',
-    prestashop: 'prestashop'
+    prestashop: 'prestashop',
+    wishlistUrl: 'wishlistUrl'
   },
   entry: {
     button: ['./_dev/front/js/components/Button'],

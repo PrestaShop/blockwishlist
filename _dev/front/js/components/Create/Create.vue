@@ -51,6 +51,11 @@
         required: true,
         default: 'Cancel'
       },
+      lengthText: {
+        type: String,
+        required: true,
+        default: 'List title is too short'
+      },
       createText: {
         type: String,
         required: true,
@@ -74,6 +79,19 @@
        * Launch a createList mutation to create a Wishlist
        */
       async createWishlist() {
+        const valueTrimmed = this.value.replace(/ /g, '');
+
+        if (valueTrimmed.length < 1) {
+          EventBus.$emit('showToast', {
+            detail: {
+              type: 'error',
+              message: this.lengthText
+            }
+          });
+
+          return false;
+        }
+
         let { data: response } = await this.$apollo.mutate({
           mutation: createList,
           variables: {
@@ -84,8 +102,7 @@
 
         EventBus.$emit('showToast', {
           detail: {
-            type:
-              response.createList.status === 'success' ? 'success' : 'error',
+            type: response.createList.success ? 'success' : 'error',
             message: response.createList.message
           }
         });

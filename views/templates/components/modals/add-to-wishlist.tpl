@@ -51,6 +51,9 @@
           <choose-list
             @hide="toggleModal"
             :product-id="productId"
+            :product-attribute-id="productAttributeId"
+            url="{$url}"
+            add-url="{$addUrl}"
           ></choose-list>
         </div>
 

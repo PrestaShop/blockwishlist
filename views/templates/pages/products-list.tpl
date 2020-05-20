@@ -24,8 +24,8 @@
 {block name='page_content_container'}
   <div
     class="wishlist-products-container"
-    data-url="#"
-    data-list-id="1"
+    data-url="{$url}"
+    data-list-id="{$id}"
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-last-added="{l s='Last added' mod='blockwishlist'}"
     data-price-low-high="{l s='Price, low to high' mod='blockwishlist'}"

@@ -36,6 +36,10 @@ const initButtons = () => {
       type: Number
     },
     {
+      name: 'productAttributeId',
+      type: Number
+    },
+    {
       name: 'listId',
       type: Number
     },

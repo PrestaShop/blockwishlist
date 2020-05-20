@@ -62,6 +62,7 @@
       return {
         value: '',
         isHidden: true,
+        productAttributeId: 0,
         productId: 0
       };
     },
@@ -96,6 +97,10 @@
 
         if (event.detail.productId) {
           this.productId = event.detail.productId;
+        }
+
+        if (event.detail.productAttributeId) {
+          this.productAttributeId = event.detail.productAttributeId;
         }
       });
     }

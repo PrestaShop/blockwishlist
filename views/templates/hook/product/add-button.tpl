@@ -21,11 +21,10 @@
   class="wishlist-button"
   data-url="{$url}"
   data-product-id="{$product.id}"
+  data-product-attribute-id="{$product.id}"
   data-is-logged="{$customer.is_logged}"
-
-  {if $product.id_wishlist}
-    data-list-id="{$product.id_wishlist}"
-    data-checked="true"
-    data-is-product="true"
-  {/if}
+  data-list-id="1"
+  data-checked="true"
+  data-is-product="true"
 ></div>
+

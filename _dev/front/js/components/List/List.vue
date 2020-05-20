@@ -26,7 +26,7 @@
       >
         <a
           class="wishlist-list-item-title"
-          href="http://localhost/prestashop/index.php?fc=module&module=blockwishlist&controller=productslist&id_lang=1"
+          :href="`${listUrl}&params[id_wishlist]=${list.id_wishlist}`"
         >
           {{ list.name }}
           <span v-if="list.nbProducts">({{ list.nbProducts }})</span>
@@ -73,6 +73,7 @@
 <script>
   import { ContentLoader } from 'vue-content-loader';
   import EventBus from '@components/EventBus';
+  import wishlistUrl from 'wishlistUrl';
 
   /**
    * Dumb component to display the list of Wishlist on a page
@@ -84,7 +85,8 @@
     },
     data() {
       return {
-        activeDropdowns: []
+        activeDropdowns: [],
+        listUrl: wishlistUrl
       };
     },
     props: {

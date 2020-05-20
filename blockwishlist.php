@@ -114,6 +114,8 @@ class BlockWishList extends Module implements WidgetInterface
                 $this->name,
                 'action'
             ),
+            'removeFromWishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'productslist'),
         ]);
 
         $this->context->controller->registerStylesheet(
@@ -145,11 +147,7 @@ class BlockWishList extends Module implements WidgetInterface
     {
         $this->smarty->assign([
           'blockwishlist' => $this->displayName,
-          'product' => [
-            'id' => 1,
-            'id_wishlist' => 1,
-          ],
-          'url' => 'http://dumburl.com/',
+          'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/product/add-button.tpl');
@@ -248,6 +246,10 @@ class BlockWishList extends Module implements WidgetInterface
     {
         $this->smarty->assign([
             'context' => $this->context->controller->php_self,
+            'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
+            'createUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),
+            'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'addUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayHeader.tpl');

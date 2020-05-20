@@ -25,6 +25,7 @@
   data-placeholder="{l s='Add name' mod='blockwishlist'}"
   data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
   data-create-text="{l s='Create wishlist' mod='blockwishlist'}"
+  data-length-text="{l s='List title is too short' mod='blockwishlist'}"
 >
   <div
     class="wishlist-modal modal fade"

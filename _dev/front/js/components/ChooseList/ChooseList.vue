@@ -21,10 +21,10 @@
     <li
       class="wishlist-list-item"
       v-for="list of lists"
-      @click="select(list.id)"
+      @click="select(list.id_wishlist)"
     >
       <p>
-        {{ list.title }}
+        {{ list.name }}
       </p>
     </li>
   </ul>
@@ -42,13 +42,35 @@
   export default {
     name: 'ChooseList',
     apollo: {
-      lists: getLists
+      lists: {
+        query: getLists,
+        variables() {
+          return {
+            url: this.url
+          };
+        }
+      }
     },
     props: {
       productId: {
         type: Number,
         required: true,
         default: 0
+      },
+      productAttributeId: {
+        type: Number,
+        required: true,
+        default: 0
+      },
+      url: {
+        type: String,
+        required: true,
+        default: ''
+      },
+      addUrl: {
+        type: String,
+        required: true,
+        default: ''
       }
     },
     methods: {
@@ -60,14 +82,19 @@
        * @param {Int} productId The id of the product
        */
       async select(listId) {
-        const list = await this.$apollo.mutate({
+        const { data } = await this.$apollo.mutate({
           mutation: addtolist,
           variables: {
             listId,
-            userId: 1,
-            productId: 1
+            url: this.addUrl,
+            productId: this.productId,
+            quantity: 1,
+            productAttributeId: this.productAttributeId
           }
         });
+        console.log(data);
+
+        const { addToList: response } = data;
 
         /**
          * Hide the modal inside the parent
@@ -76,8 +103,8 @@
 
         EventBus.$emit('showToast', {
           detail: {
-            type: 'success',
-            message: 'addedWishlistText'
+            type: response.success ? 'success' : 'error',
+            message: response.message
           }
         });
 
@@ -89,7 +116,16 @@
         });
       }
     },
-    mounted() {}
+    mounted() {
+      /**
+       * Register to the event refetchList so if an other component update it, this one can update his list
+       *
+       * @param {String} 'refetchList' The event I decided to create to communicate between VueJS Apps
+       */
+      EventBus.$on('refetchList', () => {
+        this.$apollo.queries.lists.refetch();
+      });
+    }
   };
 </script>
 

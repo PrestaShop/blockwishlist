@@ -227,7 +227,7 @@ class WishList extends \ObjectModel
 
         return \Db::getInstance()->delete(
             'wishlist_product',
-            'id_wishlist = '. (int) $id_wishlist . 'AND id_product = ' . (int) $id_product . 'id_product_attribute = '. (int) $id_product_attribute
+            'id_wishlist = '. (int) $id_wishlist . ' AND id_product = ' . (int) $id_product . ' AND id_product_attribute = '. (int) $id_product_attribute
         );
     }
 

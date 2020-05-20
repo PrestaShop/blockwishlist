@@ -30,12 +30,12 @@
     props: {
       deleteProductUrl: {
         type: String,
-        required: true,
+        required: false,
         default: '#'
       },
       deleteListUrl: {
         type: String,
-        required: true,
+        required: false,
         default: '#'
       },
       title: {

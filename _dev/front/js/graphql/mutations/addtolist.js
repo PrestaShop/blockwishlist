@@ -20,10 +20,16 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  mutation addToList($listId: Int!, $productId: Int!, $userId: Int!) {
-    addToList(listId: $listId, productId: $productId, userId: $userId) {
-      id
-      title
+  mutation addToList($listId: Int!, $productId: Int!, $quantity: Int!, $productAttributeId: Int!, $url: String!) {
+    addToList(
+      listId: $listId
+      productId: $productId
+      quantity: $quantity
+      productAttributeId: $productAttributeId
+      url: $url
+    ) {
+      success
+      message
     }
   }
 `;

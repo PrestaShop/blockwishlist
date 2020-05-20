@@ -26,7 +26,7 @@ export default `
   type List {
     id_wishlist: Int
     name: String
-    nbProduct: Int
+    nbProducts: Int
   }
 
   type ShareUrl {
@@ -35,7 +35,7 @@ export default `
 
   type CreateResponse {
     datas: List
-    status: String!
+    success: Boolean!
     message: String!
   }
 
@@ -45,16 +45,16 @@ export default `
   }
 
   type Query {
-    products: [Product]
+    products(listId: Int!, url: String!): [CreateResponse]
     lists(url: String!): [List]
   }
 
   type Mutation {
     createList(name: String!, url: String!): CreateResponse
     shareList(listId: String!, userId: Int!): ShareUrl
-    renameList(name: String!, userId: Int!, listId: Int!): [List]
-    addToList(listId: Int!, productId: Int!, userId: Int!): List
-    removeFromList(listId: Int!, productId: Int!): List
+    renameList(name: String!, url: String!, listId: Int!): Response
+    addToList(listId: Int!, productId: Int!, quantity: Int!, productAttributeId: Int!, url: String!): Response
+    removeFromList(listId: Int!, productId: Int!, productAttributeId: Int!, url: String!): Response
     deleteList(listId: Int!, url: String!): Response
   }
 `;
