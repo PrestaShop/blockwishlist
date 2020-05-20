@@ -18,11 +18,14 @@
  */
 
 import EventBus from '@components/EventBus';
+import GraphQLJSON, {GraphQLJSONObject} from 'graphql-type-json';
 
 /**
  * Resolvers linked to schemas definitions
  */
 export default {
+  JSON: GraphQLJSON,
+  JSONObject: GraphQLJSONObject,
   Query: {
     /**
      * Get product from a list

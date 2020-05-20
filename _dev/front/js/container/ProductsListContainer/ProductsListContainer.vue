@@ -21,8 +21,11 @@
     <div class="wishlist-products-container-header">
       <h1>
         {{ title }}
-        <span class="wishlist-products-count" v-if="products.datas">
-          ({{ products.datas.length }})
+        <span
+          class="wishlist-products-count"
+          v-if="products.datas && products.datas.products"
+        >
+          ({{ products.datas.products.length }})
         </span>
       </h1>
 
@@ -75,9 +78,12 @@
     <section id="content" class="page-content card card-block">
       <ul
         class="wishlist-products-list"
-        v-if="products.datas && products.datas.length > 0"
+        v-if="products.datas && products.datas.products.length > 0"
       >
-        <li class="wishlist-products-item" v-for="product in products.datas">
+        <li
+          class="wishlist-products-item"
+          v-for="product in products.datas.products"
+        >
           <Product :product="product" :listId="listId" />
         </li>
       </ul>
@@ -189,6 +195,7 @@
       async deleteList(id) {},
       async changeSelectedSort(value) {
         this.selectedSort = value;
+        console.log(this.products);
       }
     },
     mounted() {

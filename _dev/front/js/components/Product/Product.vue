@@ -20,13 +20,19 @@
   <div class="wishlist-product">
     <a class="wishlist-product-link" href="#">
       <div class="wishlist-product-image">
-        <img src="/prestashop/img/p/2/1/21.jpg" />
+        <img
+          :src="product.cover.large.url"
+          :alt="product.cover.legend"
+          :title="product.cover.legend"
+        />
       </div>
       <p class="wishlist-product-title">{{ product.name }}</p>
 
       <p class="wishlist-product-price">
-        <span class="wishlist-product-price-promo">€28.68</span>
-        €{{ product.price }}
+        <span class="wishlist-product-price-promo" v-if="product.has_discount">
+          {{ product.price_without_reduction }}
+        </span>
+        {{ product.price }}
       </p>
 
       <div class="wishlist-product-combinations">

@@ -17,11 +17,8 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 export default `
-  type Product {
-    id: Int
-    name: String
-    price: String
-  }
+  scalar JSON
+  scalar JSONObject
 
   type List {
     id_wishlist: Int
@@ -39,13 +36,19 @@ export default `
     message: String!
   }
 
+  type ProductListResponse {
+    datas: JSONObject
+    success: Boolean!
+    message: String!
+  }
+
   type Response {
     success: Boolean!
     message: String!
   }
 
   type Query {
-    products(listId: Int!, url: String!): [CreateResponse]
+    products(listId: Int!, url: String!): ProductListResponse
     lists(url: String!): [List]
   }
 

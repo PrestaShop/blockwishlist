@@ -22,9 +22,9 @@ import gql from 'graphql-tag';
 export default gql`
   query getProducts($listId: Int!, $url: String!) {
     products(listId: $listId, url: $url) {
-      id
-      name
-      price
+      datas
+      success
+      message
     }
   }
 `;
