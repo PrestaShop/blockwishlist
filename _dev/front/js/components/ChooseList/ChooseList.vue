@@ -17,23 +17,44 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <template>
-  <ul class="wishlist-list">
-    <li
-      class="wishlist-list-item"
-      v-for="list of lists"
-      @click="select(list.id_wishlist)"
+  <div class="wishlist-chooselist">
+    <ul class="wishlist-list">
+      <li
+        class="wishlist-list-item"
+        v-for="list of lists"
+        @click="select(list.id_wishlist)"
+      >
+        <p>
+          {{ list.name }}
+        </p>
+      </li>
+    </ul>
+
+    <ContentLoader
+      v-if="$apollo.queries.lists.loading"
+      class="wishlist-list-loader"
+      height="105"
     >
-      <p>
-        {{ list.name }}
-      </p>
-    </li>
-  </ul>
+      <rect x="0" y="12" rx="3" ry="0" width="100%" height="11" />
+      <rect x="0" y="36" rx="3" ry="0" width="100%" height="11" />
+      <rect x="0" y="60" rx="3" ry="0" width="100%" height="11" />
+      <rect x="0" y="84" rx="3" ry="0" width="100%" height="11" />
+    </ContentLoader>
+
+    <p
+      class="wishlist-list-empty"
+      v-if="lists && lists.length <= 0 && !$apollo.queries.lists.loading"
+    >
+      {{ emptyText }}
+    </p>
+  </div>
 </template>
 
 <script>
   import getLists from '@graphqlFiles/queries/getlists';
   import addtolist from '@graphqlFiles/mutations/addtolist';
   import EventBus from '@components/EventBus';
+  import { ContentLoader } from 'vue-content-loader';
 
   /**
    * The role of this component is to render a list
@@ -41,6 +62,9 @@
    */
   export default {
     name: 'ChooseList',
+    components: {
+      ContentLoader
+    },
     apollo: {
       lists: {
         query: getLists,
@@ -66,6 +90,11 @@
         type: String,
         required: true,
         default: ''
+      },
+      emptyText: {
+        type: String,
+        required: true,
+        default: 'No list found'
       },
       addUrl: {
         type: String,
@@ -139,6 +168,15 @@
       border-top: 1px solid #e5e5e5;
       border-bottom: 1px solid #e5e5e5;
       margin: 0;
+
+      &-empty {
+        font-size: 30;
+        text-align: center;
+        padding: 30px;
+        padding-bottom: 20px;
+        font-weight: bold;
+        color: #000;
+      }
 
       &-item {
         padding: 14px 0;

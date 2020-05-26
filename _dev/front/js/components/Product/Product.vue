@@ -18,37 +18,94 @@
  *-->
 <template>
   <div class="wishlist-product">
-    <a class="wishlist-product-link" href="#">
+    <a class="wishlist-product-link" :href="product.canonical_url">
       <div class="wishlist-product-image">
         <img
+          v-if="product.cover"
           :src="product.cover.large.url"
           :alt="product.cover.legend"
           :title="product.cover.legend"
+          :class="{
+            'wishlist-product-unavailable': !product.add_to_cart_url
+          }"
         />
+        <img
+          v-else
+          :src="prestashop.urls.no_picture_image.bySize.home_default.url"
+        />
+
+        <p
+          class="wishlist-product-availability"
+          v-if="product.show_availability"
+        >
+          <i
+            class="material-icons"
+            v-if="product.availability === 'unavailable'"
+          >
+            block
+          </i>
+          <i
+            class="material-icons"
+            v-if="product.availability === 'last_remaining_items'"
+          >
+            warning
+          </i>
+          {{ product.availability_message }}
+        </p>
       </div>
       <p class="wishlist-product-title">{{ product.name }}</p>
 
       <p class="wishlist-product-price">
         <span class="wishlist-product-price-promo" v-if="product.has_discount">
-          {{ product.price_without_reduction }}
+          {{ product.regular_price }}
         </span>
         {{ product.price }}
       </p>
 
       <div class="wishlist-product-combinations">
         <p class="wishlist-product-combinations-text">
-          Size: S - Colour: White - Quantity: 1
+          <template v-for="(attribute, key, index) of product.attributes">
+            {{ attribute.group }} : {{ attribute.name }}
+            <span
+              v-if="
+                index < Object.keys(product.attributes).length - 1 ||
+                  index == Object.keys(product.attributes).length - 1
+              "
+            >
+              -
+            </span>
+
+            <span v-if="index == Object.keys(product.attributes).length - 1">
+              {{ quantityText }} : {{ product.minimal_quantity }}
+            </span>
+          </template>
+
+          <span v-if="Object.keys(product.attributes).length === 0">
+            {{ quantityText }} : {{ product.minimal_quantity }}
+          </span>
         </p>
 
-        <a href="#">
+        <a :href="product.canonical_url">
           <i class="material-icons">create</i>
         </a>
       </div>
     </a>
 
-    <button class="btn btn-primary wishlist-product-addtocart">
-      <i class="material-icons shopping-cart">shopping_cart</i>
-      Add to cart
+    <button
+      class="btn wishlist-product-addtocart"
+      :class="{
+        'btn-secondary': product.customization_required,
+        'btn-primary': !product.customization_required
+      }"
+      :disabled="!product.add_to_cart_url ? true : false"
+    >
+      <i
+        class="material-icons shopping-cart"
+        v-if="!product.customization_required"
+      >
+        shopping_cart
+      </i>
+      {{ product.customization_required ? customizeText : addToCart }}
     </button>
 
     <button class="wishlist-button-add" @click="removeFromWishlist">
@@ -75,6 +132,21 @@
         required: true,
         default: null
       },
+      customizeText: {
+        type: String,
+        required: true,
+        default: 'Customize'
+      },
+      quantityText: {
+        type: String,
+        required: true,
+        default: 'Quantity'
+      },
+      addToCart: {
+        type: String,
+        required: true,
+        default: 'Add to cart'
+      },
       status: {
         type: Number,
         required: false,
@@ -86,13 +158,23 @@
         default: true
       }
     },
+    data() {
+      return {
+        prestashop
+      };
+    },
     methods: {
       /**
        * Remove the product from the wishlist
        */
       async removeFromWishlist() {
+        console.log(this.product);
         EventBus.$emit('showDeleteWishlist', {
-          detail: { listId: this.listId, productId: this.product.id, userId: 1 }
+          detail: {
+            listId: this.listId,
+            productId: this.product.id,
+            productAttributeId: this.product.id_product_attribute
+          }
         });
       }
     },
@@ -109,6 +191,34 @@
       width: 100%;
       margin: 25px;
       position: relative;
+
+      &-unavailable {
+        opacity: 0.5;
+      }
+
+      &-availability {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 0;
+        color: #232323;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 0;
+        line-height: 17px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 17px;
+        z-index: 5;
+        min-width: 80%;
+        justify-content: center;
+
+        i {
+          color: #ff4c4c;
+          margin-right: 5px;
+          font-size: 18px;
+        }
+      }
 
       &-link {
         &:focus {
@@ -197,6 +307,15 @@
         width: 100%;
         text-transform: inherit;
         padding-left: 10px;
+
+        &.btn-secondary {
+          background-color: #dddddd;
+
+          &:hover {
+            background-color: #dddddd;
+            opacity: 0.7;
+          }
+        }
 
         i {
           margin-top: -3px;

@@ -37,7 +37,18 @@ const props = [
     name: 'lastAdded',
     type: String
   },
-
+  {
+    name: 'addToCart',
+    type: String
+  },
+  {
+    name: 'customizeText',
+    type: String
+  },
+  {
+    name: 'quantityText',
+    type: String
+  },
   {
     name: 'priceLowHigh',
     type: String

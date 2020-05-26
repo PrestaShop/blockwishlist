@@ -27,6 +27,9 @@
     data-url="{$url}"
     data-list-id="{$id}"
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
+    data-add-to-cart="{l s='Add to cart' mod='blockwishlist'}"
+    data-customize-text="{l s='Customize' mod='blockwishlist'}"
+    data-quantity-text="{l s='Quantity' mod='blockwishlist'}"
     data-last-added="{l s='Last added' mod='blockwishlist'}"
     data-price-low-high="{l s='Price, low to high' mod='blockwishlist'}"
     data-price-high-low="{l s='Price, high to low' mod='blockwishlist'}"
@@ -37,7 +40,7 @@
   </div>
 
   {include file="module:blockwishlist/views/templates/components/pagination.tpl"}
-  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" deleteProductUrl=$deleteProductUrl}
   {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/block}
 

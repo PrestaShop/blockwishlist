@@ -64,7 +64,8 @@
         value: '',
         isHidden: true,
         listId: null,
-        productId: null
+        productId: null,
+        productAttributeId: null
       };
     },
     methods: {
@@ -82,11 +83,15 @@
           mutation: this.productId ? removeFromList : deleteList,
           variables: {
             listId: this.listId,
-            productId: this.productId,
+            productId: parseInt(this.productId),
+            productAttributeId: parseInt(this.productAttributeId),
             url: this.productId ? this.deleteProductUrl : this.deleteListUrl
           }
         });
-        const { deleteList: response } = data;
+
+        const response = data.deleteList
+          ? data.deleteList
+          : data.removeFromList;
 
         /**
          * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
@@ -119,8 +124,10 @@
 
         if (event.detail.productId) {
           this.productId = event.detail.productId;
+          this.productAttributeId = event.detail.productAttributeId;
         } else {
           this.productId = null;
+          this.productAttributeId = null;
         }
 
         this.toggleModal();

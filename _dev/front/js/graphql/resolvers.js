@@ -34,7 +34,6 @@ export default {
       let response = await fetch(`${url}&params[id_wishlist]=${listId}`);
 
       let datas = await response.json();
-      console.log(datas);
 
       EventBus.$emit('paginate', {
         detail: {
@@ -55,6 +54,7 @@ export default {
       let response = await fetch(url);
 
       let datas = await response.json();
+      console.log(datas);
 
       return datas.wishlists;
     }

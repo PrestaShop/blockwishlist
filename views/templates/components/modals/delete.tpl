@@ -22,8 +22,8 @@
   {if isset($listUrl)}
     data-delete-list-url="{$listUrl}"
   {/if}
-  {if isset($productUrl)}
-    data-delete-product-url="{$productUrl}"
+  {if isset($deleteProductUrl)}
+    data-delete-product-url="{$deleteProductUrl}"
   {/if}
   data-title="{l s='Delete' mod='blockwishlist'}"
   data-placeholder="{l s='This action is irreversible' mod='blockwishlist'}"

@@ -54,6 +54,7 @@
             :product-attribute-id="productAttributeId"
             url="{$url}"
             add-url="{$addUrl}"
+            empty-text="{l s='No list found.' mod='blockwishlist'}"
           ></choose-list>
         </div>
 

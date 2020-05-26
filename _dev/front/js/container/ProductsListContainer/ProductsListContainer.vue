@@ -84,7 +84,13 @@
           class="wishlist-products-item"
           v-for="product in products.datas.products"
         >
-          <Product :product="product" :listId="listId" />
+          <Product
+            :product="product"
+            :add-to-cart="addToCart"
+            :customize-text="customizeText"
+            :quantity-text="quantityText"
+            :listId="listId"
+          />
         </li>
       </ul>
 
@@ -160,6 +166,18 @@
         required: true
       },
       returnLink: {
+        type: String,
+        required: true
+      },
+      addToCart: {
+        type: String,
+        required: true
+      },
+      customizeText: {
+        type: String,
+        required: true
+      },
+      quantityText: {
         type: String,
         required: true
       },
