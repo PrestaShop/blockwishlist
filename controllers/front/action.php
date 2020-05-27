@@ -296,13 +296,17 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     private function getProductsByWishlistAction($params)
     {
         $wishlistProducts = Wishlist::getProductByIdCustomer($params['id_wishlist'], $this->context->customer->id, $this->context->language->id);
+        $wishlist = new Wishlist($params['id_wishlist']);
 
         if (empty($wishlistProducts)) {
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
+                    'name' => $wishlist->name,
                     'message' => $this->module->l('No products found for this customer', 'mywishlist'),
-                    'datas' => [],
+                    'datas' => [
+                      'products' => [] 
+                    ],
                 ])
             );
         }
@@ -334,6 +338,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         return $this->ajaxRender(
             json_encode([
                 'success' => true,
+                'name' => $wishlist->name,
                 'message' => $this->module->l('The list has been properly created', 'mywishlist'),
                 'datas' => [
                     'products' => $products_for_template

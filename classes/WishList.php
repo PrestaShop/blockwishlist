@@ -186,7 +186,7 @@ class WishList extends \ObjectModel
                     'id_wishlist' => (int) $id_wishlist,
                     'id_product' => (int) $id_product,
                     'id_product_attribute' => (int) $id_product_attribute,
-                    'quantity' => (int) $id_product_attribute,
+                    'quantity' => (int) $quantity,
                     'priority' => 1
                 ]
             );

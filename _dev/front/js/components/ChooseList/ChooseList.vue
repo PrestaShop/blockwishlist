@@ -163,7 +163,7 @@
 
   .wishlist {
     &-list {
-      max-height: 200px;
+      max-height: 55vh;
       overflow-y: scroll;
       border-top: 1px solid #e5e5e5;
       border-bottom: 1px solid #e5e5e5;

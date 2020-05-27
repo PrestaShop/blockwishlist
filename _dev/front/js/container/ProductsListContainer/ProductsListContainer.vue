@@ -19,8 +19,8 @@
 <template>
   <div class="wishlist-products-container">
     <div class="wishlist-products-container-header">
-      <h1>
-        {{ title }}
+      <h1 v-if="products.name">
+        {{ products.name }}
         <span
           class="wishlist-products-count"
           v-if="products.datas && products.datas.products"
@@ -294,6 +294,41 @@
   #module-blockwishlist-productslist {
     #wrapper .container {
       width: 975px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .wishlist {
+      &-products-container {
+        &-header {
+          flex-wrap: wrap;
+
+          .products-sort-order {
+            flex: 1;
+          }
+
+          .filter-button {
+            width: auto;
+            padding-right: 0;
+          }
+
+          .sort-by-row {
+            width: 100%;
+          }
+        }
+
+        .page-content.card {
+          box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.2);
+          background-color: #fff;
+          margin-top: 20px;
+        }
+
+        .wishlist-products-list {
+          justify-content: center;
+          margin: 0;
+          padding: 15px;
+        }
+      }
     }
   }
 </style>

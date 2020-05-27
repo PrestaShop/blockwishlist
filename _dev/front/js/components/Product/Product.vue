@@ -53,64 +53,72 @@
           {{ product.availability_message }}
         </p>
       </div>
-      <p class="wishlist-product-title">{{ product.name }}</p>
+      <div class="wishlist-product-right">
+        <p class="wishlist-product-title">{{ product.name }}</p>
 
-      <p class="wishlist-product-price">
-        <span class="wishlist-product-price-promo" v-if="product.has_discount">
-          {{ product.regular_price }}
-        </span>
-        {{ product.price }}
-      </p>
-
-      <div class="wishlist-product-combinations">
-        <p class="wishlist-product-combinations-text">
-          <template v-for="(attribute, key, index) of product.attributes">
-            {{ attribute.group }} : {{ attribute.name }}
-            <span
-              v-if="
-                index < Object.keys(product.attributes).length - 1 ||
-                  index == Object.keys(product.attributes).length - 1
-              "
-            >
-              -
-            </span>
-
-            <span v-if="index == Object.keys(product.attributes).length - 1">
-              {{ quantityText }} : {{ product.minimal_quantity }}
-            </span>
-          </template>
-
-          <span v-if="Object.keys(product.attributes).length === 0">
-            {{ quantityText }} : {{ product.minimal_quantity }}
+        <p class="wishlist-product-price">
+          <span
+            class="wishlist-product-price-promo"
+            v-if="product.has_discount"
+          >
+            {{ product.regular_price }}
           </span>
+          {{ product.price }}
         </p>
 
-        <a :href="product.canonical_url">
-          <i class="material-icons">create</i>
-        </a>
+        <div class="wishlist-product-combinations">
+          <p class="wishlist-product-combinations-text">
+            <template v-for="(attribute, key, index) of product.attributes">
+              {{ attribute.group }} : {{ attribute.name }}
+              <span
+                v-if="
+                  index < Object.keys(product.attributes).length - 1 ||
+                    index == Object.keys(product.attributes).length - 1
+                "
+              >
+                -
+              </span>
+
+              <span v-if="index == Object.keys(product.attributes).length - 1">
+                {{ quantityText }} : {{ product.minimal_quantity }}
+              </span>
+            </template>
+
+            <span v-if="Object.keys(product.attributes).length === 0">
+              {{ quantityText }} : {{ product.minimal_quantity }}
+            </span>
+          </p>
+
+          <a :href="product.canonical_url">
+            <i class="material-icons">create</i>
+          </a>
+        </div>
       </div>
     </a>
 
-    <button
-      class="btn wishlist-product-addtocart"
-      :class="{
-        'btn-secondary': product.customization_required,
-        'btn-primary': !product.customization_required
-      }"
-      :disabled="!product.add_to_cart_url ? true : false"
-    >
-      <i
-        class="material-icons shopping-cart"
-        v-if="!product.customization_required"
+    <div class="wishlist-product-bottom">
+      <button
+        class="btn wishlist-product-addtocart"
+        :class="{
+          'btn-secondary': product.customization_required,
+          'btn-primary': !product.customization_required
+        }"
+        :disabled="!product.add_to_cart_url ? true : false"
+        @click="product.add_to_cart_url ? addToCartAction() : null"
       >
-        shopping_cart
-      </i>
-      {{ product.customization_required ? customizeText : addToCart }}
-    </button>
+        <i
+          class="material-icons shopping-cart"
+          v-if="!product.customization_required"
+        >
+          shopping_cart
+        </i>
+        {{ product.customization_required ? customizeText : addToCart }}
+      </button>
 
-    <button class="wishlist-button-add" @click="removeFromWishlist">
-      <i class="material-icons">delete</i>
-    </button>
+      <button class="wishlist-button-add" @click="removeFromWishlist">
+        <i class="material-icons">delete</i>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -176,6 +184,37 @@
             productAttributeId: this.product.id_product_attribute
           }
         });
+      },
+      async addToCartAction() {
+        try {
+          let response = await fetch(
+            this.product.add_to_cart_url + '&action=update',
+            {
+              headers: {
+                'Content-Type':
+                  'application/x-www-form-urlencoded; charset=UTF-8',
+                Accept: 'application/json, text/javascript, */*; q=0.01'
+              }
+            }
+          );
+
+          let resp = await response.json();
+
+          prestashop.emit('updateCart', {
+            reason: {
+              idProduct: this.product.id_product,
+              idProductAttribute: this.product.id_product_attribute,
+              idCustomization: this.product.id_customization,
+              linkAction: 'add-to-cart'
+            },
+            resp
+          });
+        } catch (error) {
+          prestashop.emit('handleError', {
+            eventType: 'addProductToCart',
+            resp: error
+          });
+        }
       }
     },
     mounted() {}
@@ -356,6 +395,69 @@
         i {
           color: #7a7a7a;
           margin-top: -2px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .wishlist {
+      &-button-add {
+        position: inherit;
+        margin-left: 10px;
+      }
+
+      &-products-item {
+        width: 100%;
+        margin-bottom: 30px;
+
+        &:not(:last-child) {
+          margin-bottom: 62px;
+        }
+      }
+
+      &-product {
+        margin: 0;
+        width: 100%;
+        max-width: 100%;
+
+        &-bottom {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        &-right {
+          flex: 1;
+        }
+
+        &-availability {
+          bottom: -30px;
+          min-width: 100%;
+          justify-content: flex-start;
+        }
+
+        &-image {
+          width: 100px;
+          height: 100px;
+          margin-right: 20px;
+          position: inherit;
+
+          img {
+            position: inherit;
+            left: inherit;
+            top: inherit;
+            transform: inherit;
+          }
+        }
+
+        &-link {
+          display: flex;
+          align-items: flex-start;
+        }
+
+        &-title {
+          margin-top: 0;
         }
       }
     }

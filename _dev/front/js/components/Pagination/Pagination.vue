@@ -59,6 +59,10 @@
 
   .wishlist {
     &-pagination {
+      .previous {
+        margin-right: 30px;
+      }
+
       .js-search-link {
         cursor: pointer;
 

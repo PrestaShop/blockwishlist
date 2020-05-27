@@ -5,6 +5,12 @@
 
   <div class="col-md-6 offset-md-2 pr-0">
     <ul class="page-list clearfix text-sm-center">
+      <li>
+        <a rel="prev" v-if="currentPage !== 1" @click="paginate(currentPage - 1)" class="previous js-search-link">
+          <i class="material-icons">keyboard_arrow_left</i> {l s='Previous' mod='blockwishlist'} 
+        </a>
+      </li>
+
       <li :class="{literal}{current: currentPage === page}{/literal}" v-for="page of pageNumber">
         <a class="js-search-link" @click="paginate(page)" :class="{literal}{disabled: currentPage === page}{/literal}">
           ((page))

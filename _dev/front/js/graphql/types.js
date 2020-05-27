@@ -40,6 +40,7 @@ export default `
     datas: JSONObject
     success: Boolean!
     message: String!
+    name: String!
   }
 
   type Response {

@@ -25,6 +25,7 @@ export default gql`
       datas
       success
       message
+      name
     }
   }
 `;
