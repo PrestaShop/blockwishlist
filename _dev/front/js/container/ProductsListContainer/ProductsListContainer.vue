@@ -161,14 +161,6 @@
         type: Number,
         required: true
       },
-      homeLink: {
-        type: String,
-        required: true
-      },
-      returnLink: {
-        type: String,
-        required: true
-      },
       addToCart: {
         type: String,
         required: true

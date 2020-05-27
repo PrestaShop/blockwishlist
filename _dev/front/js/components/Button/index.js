@@ -29,7 +29,7 @@ const initButtons = () => {
     },
     {
       name: 'checked',
-      type: String
+      type: Boolean
     },
     {
       name: 'productId',
@@ -37,10 +37,6 @@ const initButtons = () => {
     },
     {
       name: 'productAttributeId',
-      type: Number
-    },
-    {
-      name: 'listId',
       type: Number
     },
     {

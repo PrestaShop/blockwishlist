@@ -31,31 +31,6 @@
         type: String,
         required: true,
         default: '#'
-      },
-      title: {
-        type: String,
-        required: true,
-        default: 'New wishlist'
-      },
-      label: {
-        type: String,
-        required: true,
-        default: 'Wishlist name'
-      },
-      placeholder: {
-        type: String,
-        required: true,
-        default: 'Add name'
-      },
-      cancelText: {
-        type: String,
-        required: true,
-        default: 'Cancel'
-      },
-      createText: {
-        type: String,
-        required: true,
-        default: 'Create'
       }
     },
     data() {

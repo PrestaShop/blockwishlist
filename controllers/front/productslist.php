@@ -29,7 +29,7 @@ class BlockWishlistProductslistModuleFrontController extends ModuleFrontControll
         array(
             'id' => $params['id_wishlist'],
             'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getProductsByWishlist']),
-            'accountLink' => '#',
+            'wishlistsLink' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
             'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
         )
       ); 

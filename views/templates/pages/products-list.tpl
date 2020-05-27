@@ -47,7 +47,7 @@
 
 {block name='page_footer_container'}
   <div class="wishlist-footer-links">
-    <a href="{$accountLink}"><i class="material-icons">chevron_left</i>{l s='Return to your account' mod='blockwishlist'}</a>
+    <a href="{$wishlistsLink}"><i class="material-icons">chevron_left</i>{l s='Return to wishlists' mod='blockwishlist'}</a>
     <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' mod='blockwishlist'}</a>
   </div>
 {/block}

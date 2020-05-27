@@ -18,6 +18,7 @@
  *-->
 <script>
   import EventBus from '@components/EventBus';
+  import prestashop from 'prestashop';
 
   /**
    * This component display a modal where you can redirect to login page
@@ -45,7 +46,8 @@
       return {
         value: '',
         isHidden: true,
-        listId: null
+        listId: null,
+        prestashop
       };
     },
     methods: {

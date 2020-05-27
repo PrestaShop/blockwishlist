@@ -72,14 +72,6 @@
         type: String,
         required: true
       },
-      homeLink: {
-        type: String,
-        required: true
-      },
-      returnLink: {
-        type: String,
-        required: true
-      },
       addText: {
         type: String,
         required: true

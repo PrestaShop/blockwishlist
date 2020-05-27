@@ -50,11 +50,6 @@
         required: true,
         default: null
       },
-      listId: {
-        type: Number,
-        required: true,
-        default: null
-      },
       checked: {
         type: Boolean,
         required: false,
