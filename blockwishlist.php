@@ -20,6 +20,7 @@
 
 use PrestaShop\Module\BlockWishList\Database\Install;
 use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
+use PrestaShop\Module\BlockWishlist\WishList;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -109,6 +110,12 @@ class BlockWishList extends Module implements WidgetInterface
      */
     public function hookActionFrontControllerSetMedia(array $params)
     {
+        $productsTagged = false;
+
+        if (true === $this->context->customer->isLogged()) {
+            $productsTagged = Wishlist::getAllProductByCustomer($this->context->customer->id);
+        }
+        
         Media::addJsDef([
             'blockwishlistController' => $this->context->link->getModuleLink(
                 $this->name,
@@ -116,6 +123,7 @@ class BlockWishList extends Module implements WidgetInterface
             ),
             'removeFromWishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
             'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'productslist'),
+            'productsAlreadyTagged' => $productsTagged,
         ]);
 
         $this->context->controller->registerStylesheet(

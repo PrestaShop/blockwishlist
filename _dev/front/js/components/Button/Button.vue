@@ -132,6 +132,17 @@
           this.idList = event.detail.listId;
         }
       });
+
+      const items = productsAlreadyTagged.filter(
+        e =>
+          e.id_product === this.productId.toString() &&
+          e.id_product_attribute === this.productAttributeId.toString()
+      );
+
+      if (items.length > 0) {
+        this.isChecked = true;
+        this.idList = parseInt(items[0].id_wishlist);
+      }
     }
   };
 </script>

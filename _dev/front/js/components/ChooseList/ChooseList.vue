@@ -121,7 +121,6 @@
             productAttributeId: this.productAttributeId
           }
         });
-        console.log(data);
 
         const { addToList: response } = data;
 
