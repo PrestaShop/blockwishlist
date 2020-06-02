@@ -42,6 +42,18 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         }
 
         $params = Tools::getValue('params');
+<<<<<<< HEAD
+=======
+
+        $params = [
+            'idWishlist' => 3,
+            'id_product' => 1,
+            'id_product_attribute' => 3,
+            'quantity' => 2,
+            'id_cart' => 25,
+            'name' => 'newWishTestName'
+        ];
+>>>>>>> add endpoint for share url
         // Here we call all methods dinamically given by the path
 
         if (method_exists($this, Tools::getValue('action') . 'Action')) {
@@ -373,5 +385,16 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 ])
             );
         }
+    }
+
+    private function getUrlByIdWishlistAction($params)
+    {
+        $wishlist = new Wishlist($params['idWishlist']);
+        return $this->ajaxRender(
+            json_encode([
+                'status' => 'true',
+                'url' => $this->context->link->getModuleLink('blockwishlist', 'view', array('token' => $wishlist->token)),
+            ])
+        );
     }
 }
