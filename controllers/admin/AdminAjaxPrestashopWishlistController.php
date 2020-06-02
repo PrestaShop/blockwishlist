@@ -22,4 +22,40 @@ use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 
 class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminController
 {
+    private function setWishlistConfigurationAction($params)
+    {
+        // $key must be ID of lang so json for wishlistPageName should look like:
+        // {"wishlistPageName": {"1":"wishlistPageNameFR", "1":"wishlistPageNameFR"} }
+        if (isset($params['wishlistPageName'])) {
+            $wishlistNames = json_decode($params['wishlistPageName'], true);
+            foreach ($wishlistNames as $key => $value) {
+                Configuration::udpateValue('blockwishlist_wishlistPageName',[$key, $value]);
+            }
+        }
+
+        if (isset($params['wishlistDefaultTitle'])) {
+            $wishlistDefaultTitle = json_decode($params['wishlistDefaultTitle'], true);
+            foreach ($wishlistDefaultTitle as $key => $value) {
+                Configuration::udpateValue('blockwishlist_wishlistDefaultTitle',[$key, $value]);
+            }
+        }
+
+        if (isset($params['createNewButtonLabel'])) {
+            $createNewButtons = json_decode($params['createNewButton'], true);
+            foreach ($createNewButtons as $key => $value) {
+                Configuration::udpateValue('blockwishlist_createNewButtonLabel',[$key, $value]);
+            }
+        }
+    }
+
+    private function getWishlistConfigurationAction($params)
+    {
+        $datas = [
+            'wishlistNames' => Configuration::get('blockwishlist_wishlistPageName'),
+            'wishlistDefaultTitles' => Configuration::get('blockwishlist_wishlistDefaultTitle'),
+            'wishlistCreateNewButtonsLabel' => Configuration::get('blockwishlist_createNewButtonLabel')
+        ];
+
+        return json_encode($datas);
+    }
 }

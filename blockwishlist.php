@@ -88,6 +88,25 @@ class BlockWishList extends Module implements WidgetInterface
         return parent::uninstall();
     }
 
+    public function getContent()
+    {
+        $createNewButtons = [];
+
+        for ($i=1; $i < 10; $i++) {
+            $createNewButtons[$i] = "lang_$i";
+        }
+
+        foreach ($createNewButtons as $key => $value) {
+            Configuration::updateValue('blockwishlist_createNewButtonLabel',[$key, $value]);
+        }
+
+        $get = Configuration::get('blockwishlist_createNewButtonLabel');
+        dump($get);
+        die;
+
+        // Tools::redirectAdmin($this->context->link->getAdminLink(static::MODULE_ADMIN_CONTROLLER));
+    }
+
     /**
      * Add asset for Administration
      *
