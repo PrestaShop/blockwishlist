@@ -60,26 +60,25 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
 
     private function addProductToWishlistAction($params)
     {
-        $id_customer = (int) $this->context->customer->id;
         $idWishlist = (int) $params['idWishlist'];
         $id_product = (int) $params['id_product'];
         $id_product_attribute = (int) $params['id_product_attribute'];
         $quantity = (int) $params['quantity'];
 
-        //if (0 !== $idWishlist) {
-        //    if (Wishlist::exists($idWishlist, $this->context->customer->id) === false) {
-        //        $wishlist = new Wishlist();
-        //        $wishlist->id_shop = $this->context->shop->id;
-        //        $wishlist->id_shop_group = $this->context->shop->id_shop_group;
-        //        $wishlist->id_customer = $this->context->customer->id;
-        //        $wishlist->name = 'default';
-        //        $wishlist->token = $this->generateWishlistToken();
-        //        $wishlist->default = 1;
-        //        $wishlist->save();
-        //    }
-        //} else {
-        //}
-        $wishlist = new Wishlist($idWishlist);
+        if (0 === $idWishlist) {
+            if (Wishlist::exists($idWishlist, $this->context->customer->id) === false) {
+                $wishlist = new Wishlist();
+                $wishlist->id_shop = $this->context->shop->id;
+                $wishlist->id_shop_group = $this->context->shop->id_shop_group;
+                $wishlist->id_customer = $this->context->customer->id;
+                $wishlist->name = 'default';
+                $wishlist->token = $this->generateWishlistToken();
+                $wishlist->default = 1;
+                $wishlist->add();
+            }
+        } else {
+            $wishlist = new Wishlist($idWishlist);
+        }
 
         $productIsAdded = $wishlist->addProduct(
             $idWishlist,
@@ -305,7 +304,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                     'name' => $wishlist->name,
                     'message' => $this->module->l('No products found for this customer', 'mywishlist'),
                     'datas' => [
-                      'products' => [] 
+                      'products' => []
                     ],
                 ])
             );
@@ -335,11 +334,14 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             }
         }
 
+        $wishlist = new Wishlist($params['id_wishlist']);
+
         return $this->ajaxRender(
             json_encode([
                 'success' => true,
                 'name' => $wishlist->name,
                 'message' => $this->module->l('The list has been properly created', 'mywishlist'),
+                'name' => $wishlist->name,
                 'datas' => [
                     'products' => $products_for_template
                 ]

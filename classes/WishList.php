@@ -429,12 +429,153 @@ class WishList extends \ObjectModel
     }
 
     public function getAllProductByCustomer($id_customer) {
+
         $result = \Db::getInstance()->executeS('
-            SELECT  `id_product`, `id_product_attribute`, w.`id_wishlist`
+            SELECT  GROUP_CONCAT(`id_product`) as list
             FROM `'._DB_PREFIX_.'wishlist_product` wp
             LEFT JOIN `'._DB_PREFIX_.'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
-            WHERE w.`id_customer` = ' . (int) $id_customer .'
+            WHERE w.`id_customer` = ' . (int)$id_customer .'
             AND wp.`quantity` > 0 ');
-        return $result;
+        return $result[0]['list'];
+    }
+
+    /**
+     * Get ID wishlist by Token
+     *
+     * @return array Results
+     */
+    public static function getByToken($token)
+    {
+        if (!\Validate::isMessage($token))
+            die (\Tools::displayError());
+        return (\Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow('
+        SELECT w.`id_wishlist`, w.`name`, w.`id_customer`, c.`firstname`, c.`lastname`
+        FROM `'._DB_PREFIX_.'wishlist` w
+        INNER JOIN `'._DB_PREFIX_.'customer` c ON c.`id_customer` = w.`id_customer`
+        WHERE `token` = \''.pSQL($token).'\''));
+    }
+
+    public static function refreshWishList($id_wishlist)
+    {
+        $old_carts = \Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+        SELECT wp.id_product, wp.id_product_attribute, wpc.id_cart, UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(wpc.date_add) AS timecart
+        FROM `'._DB_PREFIX_.'wishlist_product_cart` wpc
+        JOIN `'._DB_PREFIX_.'wishlist_product` wp ON (wp.id_wishlist_product = wpc.id_wishlist_product)
+        JOIN `'._DB_PREFIX_.'cart` c ON  (c.id_cart = wpc.id_cart)
+        JOIN `'._DB_PREFIX_.'cart_product` cp ON (wpc.id_cart = cp.id_cart)
+        LEFT JOIN `'._DB_PREFIX_.'orders` o ON (o.id_cart = c.id_cart)
+        WHERE (wp.id_wishlist='.(int)($id_wishlist).' AND o.id_cart IS NULL)
+        HAVING timecart  >= 3600*6');
+
+        if (isset($old_carts) AND $old_carts != false)
+            foreach ($old_carts AS $old_cart)
+                \Db::getInstance()->execute('
+                    DELETE FROM `'._DB_PREFIX_.'cart_product`
+                    WHERE id_cart='.(int)($old_cart['id_cart']).' AND id_product='.(int)($old_cart['id_product']).' AND id_product_attribute='.(int)($old_cart['id_product_attribute'])
+                );
+
+        $freshwish = \Db::getInstance()->executeS('
+            SELECT  wpc.id_cart, wpc.id_wishlist_product
+            FROM `'._DB_PREFIX_.'wishlist_product_cart` wpc
+            JOIN `'._DB_PREFIX_.'wishlist_product` wp ON (wpc.id_wishlist_product = wp.id_wishlist_product)
+            JOIN `'._DB_PREFIX_.'cart` c ON (c.id_cart = wpc.id_cart)
+            LEFT JOIN `'._DB_PREFIX_.'cart_product` cp ON (cp.id_cart = wpc.id_cart AND cp.id_product = wp.id_product AND cp.id_product_attribute = wp.id_product_attribute)
+            WHERE (wp.id_wishlist = '.(int)($id_wishlist).' AND ((cp.id_product IS NULL AND cp.id_product_attribute IS NULL)))
+            ');
+        $res = \Db::getInstance()->executeS('
+            SELECT wp.id_wishlist_product, cp.quantity AS cart_quantity, wpc.quantity AS wish_quantity, wpc.id_cart
+            FROM `'._DB_PREFIX_.'wishlist_product_cart` wpc
+            JOIN `'._DB_PREFIX_.'wishlist_product` wp ON (wp.id_wishlist_product = wpc.id_wishlist_product)
+            JOIN `'._DB_PREFIX_.'cart` c ON (c.id_cart = wpc.id_cart)
+            JOIN `'._DB_PREFIX_.'cart_product` cp ON (cp.id_cart = wpc.id_cart AND cp.id_product = wp.id_product AND cp.id_product_attribute = wp.id_product_attribute)
+            WHERE wp.id_wishlist='.(int)($id_wishlist)
+        );
+
+        if (isset($res) AND $res != false)
+            foreach ($res AS $refresh)
+                if ($refresh['wish_quantity'] > $refresh['cart_quantity'])
+                {
+                    \Db::getInstance()->execute('
+                        UPDATE `'._DB_PREFIX_.'wishlist_product`
+                        SET `quantity`= `quantity` + '.((int)($refresh['wish_quantity']) - (int)($refresh['cart_quantity'])).'
+                        WHERE id_wishlist_product='.(int)($refresh['id_wishlist_product'])
+                    );
+                    \Db::getInstance()->execute('
+                        UPDATE `'._DB_PREFIX_.'wishlist_product_cart`
+                        SET `quantity`='.(int)($refresh['cart_quantity']).'
+                        WHERE id_wishlist_product='.(int)($refresh['id_wishlist_product']).' AND id_cart='.(int)($refresh['id_cart'])
+                    );
+                }
+        if (isset($freshwish) AND $freshwish != false) {
+            foreach ($freshwish AS $prodcustomer)
+            {
+                \Db::getInstance()->execute('
+                    UPDATE `'._DB_PREFIX_.'wishlist_product` SET `quantity`=`quantity` +
+                    (
+                        SELECT `quantity` FROM `'._DB_PREFIX_.'wishlist_product_cart`
+                        WHERE `id_wishlist_product`='.(int)($prodcustomer['id_wishlist_product']).' AND `id_cart`='.(int)($prodcustomer['id_cart']).'
+                    )
+                    WHERE `id_wishlist_product`='.(int)($prodcustomer['id_wishlist_product']).' AND `id_wishlist`='.(int)($id_wishlist)
+                    );
+                \Db::getInstance()->execute('
+                    DELETE FROM `'._DB_PREFIX_.'wishlist_product_cart`
+                    WHERE `id_wishlist_product`='.(int)($prodcustomer['id_wishlist_product']).' AND `id_cart`='.(int)($prodcustomer['id_cart'])
+                    );
+            }
+        }
+    }
+
+    /**
+     * Increment counter
+     *
+     * @return boolean succeed
+     */
+    public static function incCounter($id_wishlist)
+    {
+        if (!\Validate::isUnsignedId($id_wishlist))
+            die (\Tools::displayError());
+        $result = \Db::getInstance()->getRow('
+            SELECT `counter`
+            FROM `'._DB_PREFIX_.'wishlist`
+            WHERE `id_wishlist` = '.(int)$id_wishlist
+        );
+        if ($result == false || !count($result) || empty($result) === true)
+            return (false);
+
+        return \Db::getInstance()->execute('
+            UPDATE `'._DB_PREFIX_.'wishlist` SET
+            `counter` = '.(int)($result['counter'] + 1).'
+            WHERE `id_wishlist` = '.(int)$id_wishlist
+        );
+    }
+
+    /**
+     * Get Wishlists by Customer ID
+     *
+     * @return array Results
+     */
+    public static function getByIdCustomer($id_customer)
+    {
+        if (!\Validate::isUnsignedId($id_customer))
+            die (\Tools::displayError());
+        if (\Shop::getContextShopID())
+            $shop_restriction = 'AND id_shop = '.(int)\Shop::getContextShopID();
+        elseif (\Shop::getContextShopGroupID())
+            $shop_restriction = 'AND id_shop_group = '.(int)\Shop::getContextShopGroupID();
+        else
+            $shop_restriction = '';
+
+        $cache_id = 'WhishList::getByIdCustomer_'.(int)$id_customer.'-'.(int)\Shop::getContextShopID().'-'.(int)\Shop::getContextShopGroupID();
+        if (!\Cache::isStored($cache_id))
+        {
+            $result = \Db::getInstance()->executeS('
+            SELECT w.`id_wishlist`, w.`name`, w.`token`, w.`date_add`, w.`date_upd`, w.`counter`, w.`default`
+            FROM `'._DB_PREFIX_.'wishlist` w
+            WHERE `id_customer` = '.(int)($id_customer).'
+            '.$shop_restriction.'
+            ORDER BY w.`name` ASC');
+            \Cache::store($cache_id, $result);
+        }
+        return \Cache::retrieve($cache_id);
     }
 }

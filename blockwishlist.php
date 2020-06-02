@@ -115,7 +115,7 @@ class BlockWishList extends Module implements WidgetInterface
         if (true === $this->context->customer->isLogged()) {
             $productsTagged = Wishlist::getAllProductByCustomer($this->context->customer->id);
         }
-        
+
         Media::addJsDef([
             'blockwishlistController' => $this->context->link->getModuleLink(
                 $this->name,
