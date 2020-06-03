@@ -19,8 +19,8 @@
  */
 
 use PrestaShop\Module\BlockWishList\Database\Install;
-use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 use PrestaShop\Module\BlockWishlist\WishList;
+use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 
 if (!defined('_PS_VERSION_')) {
     exit;

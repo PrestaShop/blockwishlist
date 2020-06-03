@@ -17,12 +17,11 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-
 class BlockWishlistListsModuleFrontController extends ModuleFrontController
 {
     public function initContent()
     {
-      parent::initContent();      
+        parent::initContent();
 
       $this->context->smarty->assign(
         array(
@@ -35,9 +34,9 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
             'addUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
             'accountLink' => '#'
         )
-      ); 
+      );
 
-      $this->context->controller->registerJavascript(
+        $this->context->controller->registerJavascript(
           'blockwishlistController',
           'modules/blockwishlist/public/wishlistcontainer.bundle.js',
           [
@@ -45,6 +44,6 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
           ]
       );
 
-      $this->setTemplate('module:blockwishlist/views/templates/pages/lists.tpl');
+        $this->setTemplate('module:blockwishlist/views/templates/pages/lists.tpl');
     }
 }
