@@ -281,7 +281,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
 
     private function generateWishlistToken()
     {
-        return strtoupper(substr(sha1(uniqid(rand(), true) . _COOKIE_KEY_ . $this->context->customer->id), 0, 16));
+        return strtoupper(substr(sha1(uniqid((string) rand(), true) . _COOKIE_KEY_ . $this->context->customer->id), 0, 16));
     }
 
     private function ajaxRenderMissingParams()

@@ -9,6 +9,14 @@ parameters:
 		- _PS_VERSION_
 	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:
-
+		- '#Property ModuleCore::\$version \(float\) does not accept string.#'
+		- '#Parameter \#1 \$master of static method DbCore::getInstance\(\) expects bool, int given.#'
+		- '#Parameter \#2 \$value of static method CacheCore::store\(\) expects string, array\|mysqli_result\|PDOStatement\|resource\|false\|null given.#'
+		- '#Iterating over an object of an unknown class mysqli_result.#'
+		- '#Iterating over an object of an unknown class mysqli_result.#'
+		- '#Access to offset 0 on an unknown class mysqli_result.#'
+		- '#Access to offset 0 on an unknown class mysqli_result.#'
+		- '#Parameter \#1 \$value of method ControllerCore::ajaxRender\(\) expects null, string\|false given.#'
+		- '#Variable \$wishlist might not be defined.#'
 
 	level: 5

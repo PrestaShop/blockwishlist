@@ -31,7 +31,7 @@ class WishList extends \ObjectModel
     /** @var int Token */
     public $token;
 
-    /** @var int Name */
+    /** @var string Name */
     public $name;
 
     /** @var string Object creation date */
@@ -40,10 +40,10 @@ class WishList extends \ObjectModel
     /** @var string Object last modification date */
     public $date_upd;
 
-    /** @var string Object last modification date */
+    /** @var int Object last modification date */
     public $id_shop;
 
-    /** @var string Object last modification date */
+    /** @var int Object last modification date */
     public $id_shop_group;
 
     /** @var int default */
@@ -322,7 +322,7 @@ class WishList extends \ObjectModel
             false === \Validate::isUnsignedId($id_lang) ||
             false === \Validate::isUnsignedId($id_wishlist)
         ) {
-            return false;
+            return [false];
         }
         $products = \Db::getInstance()->executeS('
             SELECT wp.`id_product`, wp.`quantity`, p.`quantity` AS product_quantity, pl.`name`, wp.`id_product_attribute`, wp.`priority`, pl.link_rewrite, cl.link_rewrite AS category_rewrite
@@ -433,7 +433,7 @@ class WishList extends \ObjectModel
             AND `id_product_attribute` = ' . (int) $id_product_attribute);
     }
 
-    public function getAllProductByCustomer($id_customer)
+    public static function getAllProductByCustomer($id_customer)
     {
         $result = \Db::getInstance()->executeS('
             SELECT  GROUP_CONCAT(`id_product`) as list

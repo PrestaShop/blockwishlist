@@ -18,9 +18,10 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
+
 use PrestaShop\Module\BlockWishlist\WishList;
 
-class BlockWishListViewModuleFrontController extends ModuleFrontController
+class BlockWishlistViewModuleFrontController extends ModuleFrontController
 {
     public function __construct()
     {
@@ -99,7 +100,7 @@ class BlockWishListViewModuleFrontController extends ModuleFrontController
                 [
                     'current_wishlist' => $wishlist,
                     'token' => $token,
-                    'ajax' => ((isset($ajax) && (int) $ajax == 1) ? '1' : '0'),
+                    'ajax' => (($ajax == 1) ? '1' : '0'),
                     'wishlists' => $wishlists,
                     'products' => $products,
                 ]
