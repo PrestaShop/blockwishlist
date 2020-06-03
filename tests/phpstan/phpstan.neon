@@ -1,0 +1,14 @@
+parameters:
+	bootstrap: tests/phpstan/bootstrap.php
+	paths:
+		- classes
+		- controllers
+		- blockwishlist.php
+		- src
+	dynamicConstantNames:
+		- _PS_VERSION_
+	reportUnmatchedIgnoredErrors: false
+	ignoreErrors:
+
+
+	level: 5
