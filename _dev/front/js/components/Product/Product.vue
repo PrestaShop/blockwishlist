@@ -80,12 +80,12 @@
               </span>
 
               <span v-if="index == Object.keys(product.attributes).length - 1">
-                {{ quantityText }} : {{ product.minimal_quantity }}
+                {{ quantityText }} : {{ product.quantity }}
               </span>
             </template>
 
             <span v-if="Object.keys(product.attributes).length === 0">
-              {{ quantityText }} : {{ product.minimal_quantity }}
+              {{ quantityText }} : {{ product.quantity }}
             </span>
           </p>
 
@@ -217,7 +217,9 @@
         }
       }
     },
-    mounted() {}
+    mounted() {
+      console.log(this.product);
+    }
   };
 </script>
 

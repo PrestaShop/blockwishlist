@@ -38,7 +38,8 @@
         value: '',
         isHidden: true,
         productAttributeId: 0,
-        productId: 0
+        productId: 0,
+        quantity: 0
       };
     },
     methods: {
@@ -76,6 +77,10 @@
 
         if (event.detail.productAttributeId) {
           this.productAttributeId = event.detail.productAttributeId;
+        }
+
+        if (event.detail.quantity) {
+          this.quantity = event.detail.quantity;
         }
       });
     }

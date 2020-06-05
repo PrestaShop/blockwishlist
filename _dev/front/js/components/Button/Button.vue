@@ -81,6 +81,9 @@
        */
       async addToWishlist(event) {
         event.preventDefault();
+        const quantity = document.querySelector(
+          '.product-quantity input#quantity_wanted'
+        );
 
         if (!prestashop.customer.is_logged) {
           EventBus.$emit('showLogin');
@@ -93,7 +96,8 @@
             detail: {
               productId: this.productId,
               productAttributeId: this.productAttributeId,
-              forceOpen: true
+              forceOpen: true,
+              quantity: quantity ? parseInt(quantity.value) : 0
             }
           });
         } else {
@@ -142,6 +146,31 @@
       if (items.length > 0) {
         this.isChecked = true;
         this.idList = parseInt(items[0].id_wishlist);
+      }
+
+      if (this.isProduct) {
+        prestashop.on('updateProduct', ({ event, eventType }) => {
+          if (eventType === 'updatedProductQuantity') {
+            this.isChecked = false;
+          }
+        });
+
+        prestashop.on('updatedProduct', args => {
+          this.productAttributeId = args.id_product_attribute;
+
+          const items = productsAlreadyTagged.filter(
+            e =>
+              e.id_product === this.productId.toString() &&
+              e.id_product_attribute === this.productAttributeId.toString()
+          );
+
+          if (items.length > 0) {
+            this.isChecked = true;
+            this.idList = parseInt(items[0].id_wishlist);
+          } else {
+            this.isChecked = false;
+          }
+        });
       }
     }
   };
