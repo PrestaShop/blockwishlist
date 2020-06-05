@@ -227,11 +227,7 @@ class WishList extends \ObjectModel
 
         return \Db::getInstance()->delete(
             'wishlist_product',
-<<<<<<< HEAD
-            'id_wishlist = '. (int) $id_wishlist . ' AND id_product = ' . (int) $id_product . ' AND id_product_attribute = '. (int) $id_product_attribute
-=======
-            'id_wishlist = ' . (int) $id_wishlist . 'AND id_product = ' . (int) $id_product . 'id_product_attribute = ' . (int) $id_product_attribute
->>>>>>> cs fixer and CI
+            'id_wishlist = ' . (int) $id_wishlist . ' AND id_product = ' . (int) $id_product . ' AND id_product_attribute = ' . (int) $id_product_attribute
         );
     }
 
@@ -436,13 +432,13 @@ class WishList extends \ObjectModel
     public static function getAllProductByCustomer($id_customer)
     {
         $result = \Db::getInstance()->executeS('
-            SELECT  GROUP_CONCAT(`id_product`) as list
+            SELECT  `id_product`, `id_product_attribute`, w.`id_wishlist`
             FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
             LEFT JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
             WHERE w.`id_customer` = ' . (int) $id_customer . '
             AND wp.`quantity` > 0 ');
 
-        return $result[0]['list'];
+        return $result;
     }
 
     /**

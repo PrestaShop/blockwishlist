@@ -21,7 +21,7 @@
   class="wishlist-button"
   data-url="{$url}"
   data-product-id="{$product.id}"
-  data-product-attribute-id="{$product.id}"
+  data-product-attribute-id="{$product.id_product_attribute}"
   data-is-logged="{$customer.is_logged}"
   data-list-id="1"
   data-checked="true"

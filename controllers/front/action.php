@@ -120,8 +120,8 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                         'message' => $this->module->l('The list has been properly created', 'mywishlist'),
                         'datas' => [
                             'name' => $wishlist->name,
-                            'id_wishlist' => $wishlist->id
-                        ]
+                            'id_wishlist' => $wishlist->id,
+                        ],
                     ])
                 );
             }
@@ -306,7 +306,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                     'name' => $wishlist->name,
                     'message' => $this->module->l('No products found for this customer', 'mywishlist'),
                     'datas' => [
-                      'products' => []
+                      'products' => [],
                     ],
                 ])
             );
@@ -343,7 +343,6 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 'success' => true,
                 'name' => $wishlist->name,
                 'message' => $this->module->l('The list has been properly created', 'mywishlist'),
-                'name' => $wishlist->name,
                 'datas' => [
                     'products' => $products_for_template,
                 ],
