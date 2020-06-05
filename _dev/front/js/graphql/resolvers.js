@@ -121,6 +121,15 @@ export default {
 
       let datas = await response.json();
 
+      if (datas.success) {
+        productsAlreadyTagged.push({
+          id_product: productId.toString(),
+          id_wishlist: listId.toString(),
+          quantity: quantity.toString(),
+          id_product_attribute: productAttributeId.toString()
+        });
+      }
+
       return datas;
     },
     /**
@@ -142,6 +151,16 @@ export default {
       );
 
       let datas = await response.json();
+
+      if (datas.success) {
+        productsAlreadyTagged = productsAlreadyTagged.filter(
+          e =>
+            e.id_product !== productId.toString() ||
+            (e.id_product_attribute !== productAttributeId.toString() && e.id_product === productId.toString()) ||
+            e.id_wishlist !== listId.toString()
+        );
+        console.log(productsAlreadyTagged);
+      }
 
       return datas;
     },
