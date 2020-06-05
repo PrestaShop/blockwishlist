@@ -156,11 +156,16 @@
         });
 
         prestashop.on('updatedProduct', args => {
+          const quantity = document.querySelector(
+            '.product-quantity input#quantity_wanted'
+          );
+
           this.productAttributeId = args.id_product_attribute;
 
           const items = productsAlreadyTagged.filter(
             e =>
               e.id_product === this.productId.toString() &&
+              e.quantity === quantity.value &&
               e.id_product_attribute === this.productAttributeId.toString()
           );
 
