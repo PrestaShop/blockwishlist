@@ -18,5 +18,6 @@ parameters:
 		- '#Access to offset 0 on an unknown class mysqli_result.#'
 		- '#Parameter \#1 \$value of method ControllerCore::ajaxRender\(\) expects null, string\|false given.#'
 		- '#Variable \$wishlist might not be defined.#'
+		- '#Call to an undefined method BlockWishlistActionModuleFrontController::ajaxRender\(\).#'
 
 	level: 5
