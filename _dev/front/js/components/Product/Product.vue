@@ -80,12 +80,12 @@
               </span>
 
               <span v-if="index == Object.keys(product.attributes).length - 1">
-                {{ quantityText }} : {{ product.minimal_quantity }}
+                {{ quantityText }} : {{ product.quantity }}
               </span>
             </template>
 
             <span v-if="Object.keys(product.attributes).length === 0">
-              {{ quantityText }} : {{ product.minimal_quantity }}
+              {{ quantityText }} : {{ product.quantity }}
             </span>
           </p>
 
@@ -176,7 +176,6 @@
        * Remove the product from the wishlist
        */
       async removeFromWishlist() {
-        console.log(this.product);
         EventBus.$emit('showDeleteWishlist', {
           detail: {
             listId: this.listId,
@@ -216,8 +215,7 @@
           });
         }
       }
-    },
-    mounted() {}
+    }
   };
 </script>
 

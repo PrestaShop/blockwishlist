@@ -18,7 +18,11 @@
  *-->
 <template>
   <div class="wishlist-list-container">
-    <ul class="wishlist-list" v-if="items.length > 0 && items">
+    <ul
+      class="wishlist-list"
+      v-if="items.length > 0 && items"
+      v-click-outside="event => emptyPopups()"
+    >
       <li
         class="wishlist-list-item"
         :key="list.id_wishlist"
@@ -35,8 +39,8 @@
 
         <div class="wishlist-list-item-right">
           <a
-            @click="togglePopup(list.id_wishlist)"
             class="wishlist-list-item-actions"
+            @click="togglePopup(list.id_wishlist)"
           >
             <i class="material-icons">more_vert</i>
           </a>
@@ -74,6 +78,7 @@
   import { ContentLoader } from 'vue-content-loader';
   import EventBus from '@components/EventBus';
   import wishlistUrl from 'wishlistUrl';
+  import vClickOutside from 'v-click-outside';
 
   /**
    * Dumb component to display the list of Wishlist on a page
@@ -125,6 +130,9 @@
           this.activeDropdowns.push(id);
         }
       },
+      emptyPopups() {
+        this.activeDropdowns = [];
+      },
       /**
        * Toggle the popup to rename a list
        *
@@ -158,6 +166,9 @@
           detail: { listId: id, userId: 1 }
         });
       }
+    },
+    directives: {
+      clickOutside: vClickOutside.directive
     }
   };
 </script>

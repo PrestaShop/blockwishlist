@@ -17,7 +17,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import deleteList from '@graphqlFiles/mutations/deleteList';
+  import deleteList from '@graphqlFiles/mutations/deletelist';
   import getLists from '@graphqlFiles/queries/getlists';
   import removeFromList from '@graphqlFiles/mutations/removeFromList';
   import EventBus from '@components/EventBus';
