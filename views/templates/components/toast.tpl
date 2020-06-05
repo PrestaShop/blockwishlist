@@ -1,4 +1,4 @@
-/**
+{**
  * 2007-2020 PrestaShop and Contributors
  *
  * NOTICE OF LICENSE
@@ -15,15 +15,14 @@
  * @copyright 2007-2020 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
- */
+ *}
 
-import gql from 'graphql-tag';
-
-export default gql`
-  mutation removeFromList($listId: Int!, $productId: Int!, $productAttributeId: Int!, $url: String!) {
-    removeFromList(listId: $listId, productId: $productId, productAttributeId: $productAttributeId, url: $url) {
-      success
-      message
-    }
-  }
-`;
+<div
+    class="wishlist-toast"
+    data-rename-wishlist-text="{l s='Wishlist name modified!' mod='blockwishlist'}"
+    data-added-wishlist-text="{l s='Product added to wishlist!' mod='blockwishlist'}"
+    data-create-wishlist-text="{l s='Wishlist created!' mod='blockwishlist'}"
+    data-delete-wishlist-text="{l s='Wishlist deleted!' mod='blockwishlist'}"
+    data-copy-text="{l s='Share link copied!' mod='blockwishlist'}"
+    data-delete-product-text="{l s='Product deleted!' mod='blockwishlist'}"
+  ></div>

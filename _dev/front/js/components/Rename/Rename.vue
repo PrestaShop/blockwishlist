@@ -18,6 +18,7 @@
  *-->
 <script>
   import renameList from '@graphqlFiles/mutations/renamelist';
+  import EventBus from '@components/EventBus';
 
   /**
    * A modal used to rename a list
@@ -25,12 +26,36 @@
   export default {
     name: 'Rename',
     props: {
-      url: '',
-      title: '',
-      label: '',
-      placeholder: '',
-      cancelText: '',
-      createText: ''
+      url: {
+        type: String,
+        required: true,
+        default: '#'
+      },
+      title: {
+        type: String,
+        required: true,
+        default: 'Rename wishlist'
+      },
+      label: {
+        type: String,
+        required: true,
+        default: 'Wishlist name'
+      },
+      placeholder: {
+        type: String,
+        required: true,
+        default: 'Rename text'
+      },
+      cancelText: {
+        type: String,
+        required: true,
+        default: 'Cancel'
+      },
+      renameText: {
+        type: String,
+        required: true,
+        default: 'Rename'
+      }
     },
     data() {
       return {
@@ -52,25 +77,35 @@
        * @param {Int} listId Id of the list to be renamed
        */
       async renameWishlist(listId) {
-        await this.$apollo.mutate({
+        const { data } = await this.$apollo.mutate({
           mutation: renameList,
           variables: {
             name: this.value,
-            userId: 1,
+            url: this.url,
             listId: this.listId
           }
         });
 
-        const event = new Event('refetchList');
+        const { renameList: response } = data;
+        console.log(response);
 
-        document.dispatchEvent(event);
+        EventBus.$emit('refetchList');
+
+        EventBus.$emit('showToast', {
+          detail: {
+            type: response.success ? 'success' : 'error',
+            message: response.message
+          }
+        });
+
+        this.toggleModal();
       }
     },
     mounted() {
       /**
        * Register to the showRenameWishlist event so everycomponents can display this modal
        */
-      document.addEventListener('showRenameWishlist', event => {
+      EventBus.$on('showRenameWishlist', event => {
         this.value = event.detail.title;
         this.listId = event.detail.listId;
         this.toggleModal();

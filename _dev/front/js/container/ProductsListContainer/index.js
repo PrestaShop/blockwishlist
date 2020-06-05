@@ -34,6 +34,34 @@ const props = [
     type: String
   },
   {
+    name: 'lastAdded',
+    type: String
+  },
+  {
+    name: 'addToCart',
+    type: String
+  },
+  {
+    name: 'customizeText',
+    type: String
+  },
+  {
+    name: 'quantityText',
+    type: String
+  },
+  {
+    name: 'priceLowHigh',
+    type: String
+  },
+  {
+    name: 'priceHighLow',
+    type: String
+  },
+  {
+    name: 'filter',
+    type: String
+  },
+  {
     name: 'listId',
     type: Number
   }

@@ -24,26 +24,27 @@
 {block name='page_content_container'}
   <div
     class="wishlist-container"
-    data-url="#"
+    data-url="{$url}"
     data-return-link="#"
     data-home-link="#"
     data-title="{l s='My Wishlists' mod='blockwishlist'}"
-    data-rename-text="Rename"
-    data-share-text="Share"
-    data-add-text="New wishlist"
+    data-empty-text="{l s='No wishlist found.' mod='blockwishlist'}"
+    data-rename-text="{l s='Rename' mod='blockwishlist'}"
+    data-share-text="{l s='Share' mod='blockwishlist'}"
+    data-add-text="{l s='New wishlist' mod='blockwishlist'}"
   ></div>
 
-  {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/share.tpl" url="http://dummy.com"}
-  {include file="module:blockwishlist/views/templates/components/modals/rename.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url=$createUrl}
+  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" listUrl=$deleteListUrl productUrl=$deleteProductUrl}
+  {include file="module:blockwishlist/views/templates/components/modals/share.tpl" url=$shareUrl}
+  {include file="module:blockwishlist/views/templates/components/modals/rename.tpl" url=$renameUrl}
+  {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/block}
 
 
 {block name='page_footer_container'}
   <div class="wishlist-footer-links">
-    <a href="{$accountLink}"><i class="material-icons">chevron_left</i>{l s='Return to your account' mod='blockwishlist'}</a>
+    <a href="{$link->getPageLink('my-account', true)|escape:'html'}"><i class="material-icons">chevron_left</i>{l s='Return to your account' mod='blockwishlist'}</a>
     <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' mod='blockwishlist'}</a>
   </div>
 {/block}

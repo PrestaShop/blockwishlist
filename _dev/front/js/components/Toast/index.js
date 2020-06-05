@@ -16,14 +16,39 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
+import Vue from 'vue';
+import Toast from './Toast';
+import initApp from '@components/init';
 
-import gql from 'graphql-tag';
-
-export default gql`
-  mutation removeFromList($listId: Int!, $productId: Int!, $productAttributeId: Int!, $url: String!) {
-    removeFromList(listId: $listId, productId: $productId, productAttributeId: $productAttributeId, url: $url) {
-      success
-      message
-    }
+const props = [
+  {
+    name: 'renameWishlistText',
+    type: String
+  },
+  {
+    name: 'createWishlistText',
+    type: String
+  },
+  {
+    name: 'addedWishlistText',
+    type: String
+  },
+  {
+    name: 'shareText',
+    type: String
+  },
+  {
+    name: 'deleteWishlistText',
+    type: String
+  },
+  {
+    name: 'deleteProductText',
+    type: String
+  },
+  {
+    name: 'copyText',
+    type: String
   }
-`;
+];
+
+initApp(Toast, '.wishlist-toast', props);

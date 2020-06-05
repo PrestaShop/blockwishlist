@@ -34,7 +34,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
-            Add to wishlist
+            {l s='Add to wishlist' mod='blockwishlist'}
           </h5>
           <button
             type="button"
@@ -51,12 +51,16 @@
           <choose-list
             @hide="toggleModal"
             :product-id="productId"
+            :product-attribute-id="productAttributeId"
+            url="{$url}"
+            add-url="{$addUrl}"
+            empty-text="{l s='No list found.' mod='blockwishlist'}"
           ></choose-list>
         </div>
 
         <div class="modal-footer">
           <a @click="openNewWishlistModal" class="wishlist-add-to-new">
-            <i class="material-icons">add_circle_outline</i> New wishlist
+            <i class="material-icons">add_circle_outline</i> {l s='New wishlist' mod='blockwishlist'}
           </a>
         </div>
       </div>

@@ -22,7 +22,11 @@ import initApp from '@components/init';
 
 const props = [
   {
-    name: 'url',
+    name: 'deleteProductUrl',
+    type: String
+  },
+  {
+    name: 'deleteListUrl',
     type: String
   },
   {
@@ -30,8 +34,16 @@ const props = [
     type: String
   },
   {
-    name: 'productId',
-    type: Number
+    name: 'placeholder',
+    type: String
+  },
+  {
+    name: 'cancelText',
+    type: String
+  },
+  {
+    name: 'deleteText',
+    type: String
   }
 ];
 

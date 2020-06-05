@@ -17,33 +17,48 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 export default `
-  type Product {
-    id: Int
-    name: String
-    price: String
-  }
+  scalar JSON
+  scalar JSONObject
 
   type List {
-    id: Int
-    title: String
-    numbersProduct: Int
+    id_wishlist: Int
+    name: String
+    nbProducts: Int
   }
 
   type ShareUrl {
     url: String
   }
 
+  type CreateResponse {
+    datas: List
+    success: Boolean!
+    message: String!
+  }
+
+  type ProductListResponse {
+    datas: JSONObject
+    success: Boolean!
+    message: String!
+    name: String!
+  }
+
+  type Response {
+    success: Boolean!
+    message: String!
+  }
+
   type Query {
-    products: [Product]
-    lists: [List]
+    products(listId: Int!, url: String!): ProductListResponse
+    lists(url: String!): [List]
   }
 
   type Mutation {
-    createList(name: String!, userId: Int!): [List]
+    createList(name: String!, url: String!): CreateResponse
     shareList(listId: String!, userId: Int!): ShareUrl
-    renameList(name: String!, userId: Int!, listId: Int!): [List]
-    addToList(listId: Int!, productId: Int!, userId: Int!): List
-    removeFromList(listId: Int!, productId: Int!): List
-    deleteList(listId: Int!): [List]
+    renameList(name: String!, url: String!, listId: Int!): Response
+    addToList(listId: Int!, productId: Int!, quantity: Int!, productAttributeId: Int!, url: String!): Response
+    removeFromList(listId: Int!, productId: Int!, productAttributeId: Int!, url: String!): Response
+    deleteList(listId: Int!, url: String!): Response
   }
 `;

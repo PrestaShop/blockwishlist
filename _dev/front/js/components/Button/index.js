@@ -18,29 +18,36 @@
  */
 import Vue from 'vue';
 import Button from './Button';
+import prestashop from 'prestashop';
 import initApp from '@components/init';
 
-const props = [
-  {
-    name: 'url',
-    type: String
-  },
-  {
-    name: 'checked',
-    type: String
-  },
-  {
-    name: 'productId',
-    type: Number
-  },
-  {
-    name: 'listId',
-    type: Number
-  },
-  {
-    name: 'isProduct',
-    type: Boolean
-  }
-];
+const initButtons = () => {
+  const props = [
+    {
+      name: 'url',
+      type: String
+    },
+    {
+      name: 'checked',
+      type: Boolean
+    },
+    {
+      name: 'productId',
+      type: Number
+    },
+    {
+      name: 'productAttributeId',
+      type: Number
+    },
+    {
+      name: 'isProduct',
+      type: Boolean
+    }
+  ];
 
-initApp(Button, '.wishlist-button', props);
+  initApp(Button, '.wishlist-button', props);
+};
+
+initButtons();
+
+export default initButtons;

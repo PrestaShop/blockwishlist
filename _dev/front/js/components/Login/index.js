@@ -24,6 +24,14 @@ const props = [
   {
     name: 'url',
     type: String
+  },
+  {
+    name: 'loginText',
+    type: String
+  },
+  {
+    name: 'cancelText',
+    type: String
   }
 ];
 

@@ -17,15 +17,38 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-let products = document.querySelectorAll('.js-product-miniature');
+import prestashop from 'prestashop';
+import initVueButtons from '@components/Button';
 
-products.forEach(product => {
-  const wishlistButton = document.createElement('div');
+const initButtons = () => {
+  const products = document.querySelectorAll('.js-product-miniature');
 
-  wishlistButton.classList.add('wishlist-button');
-  wishlistButton.url = 'http://lorem.com';
-  wishlistButton.dataset.productId = product.dataset.idProduct;
-  wishlistButton.dataset.checked = false;
+  products.forEach(product => {
+    const wishlistButton = document.createElement('div');
 
-  product.querySelector('.thumbnail-container').append(wishlistButton);
+    wishlistButton.classList.add('wishlist-button');
+    wishlistButton.dataset.productId = product.dataset.idProduct;
+    wishlistButton.dataset.url = removeFromWishlistUrl;
+    wishlistButton.dataset.productAttributeId = product.dataset.idProductAttribute;
+    wishlistButton.dataset.checked = false;
+
+    product.querySelector('.thumbnail-container').append(wishlistButton);
+  });
+};
+
+initButtons();
+initVueButtons();
+
+var productList = document.querySelectorAll('#products, .featured-products');
+var config = {attributes: false, childList: true};
+
+productList.forEach(e => {
+  const callback = function(mutationsList) {
+    initButtons();
+    initVueButtons();
+  };
+
+  const observer = new MutationObserver(callback);
+
+  observer.observe(e, config);
 });

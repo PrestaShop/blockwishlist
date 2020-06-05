@@ -19,10 +19,13 @@
 <template>
   <div class="wishlist-products-container">
     <div class="wishlist-products-container-header">
-      <h1>
-        {{ title }}
-        <span class="wishlist-products-count" v-if="products">
-          ({{ products.length }})
+      <h1 v-if="products.name">
+        {{ products.name }}
+        <span
+          class="wishlist-products-count"
+          v-if="products.datas && products.datas.products"
+        >
+          ({{ products.datas.products.length }})
         </span>
       </h1>
 
@@ -42,49 +45,72 @@
           <div class="dropdown-menu">
             <a
               rel="nofollow"
-              @click="changeSelectedSort('Last added')"
+              @click="changeSelectedSort(lastAdded)"
               class="select-list js-search-link"
             >
-              Last added
+              {{ lastAdded }}
             </a>
             <a
               rel="nofollow"
-              @click="changeSelectedSort('Price, low to high')"
+              @click="changeSelectedSort(priceLowHigh)"
               class="select-list current js-search-link"
             >
-              Price, low to high
+              {{ priceLowHigh }}
             </a>
             <a
               rel="nofollow"
-              @click="changeSelectedSort('Price, high to low')"
+              @click="changeSelectedSort(priceHighLow)"
               class="select-list js-search-link"
             >
-              Price, high to low
+              {{ priceHighLow }}
             </a>
           </div>
         </div>
 
         <div class="col-sm-3 col-xs-4 hidden-md-up filter-button">
           <button id="search_filter_toggler" class="btn btn-secondary">
-            Filter
+            {{ filter }}
           </button>
         </div>
       </div>
     </div>
 
     <section id="content" class="page-content card card-block">
-      <ul class="wishlist-products-list" v-if="products.length > 0">
-        <li class="wishlist-products-item" v-for="product in products">
-          <Product :product="product" :listId="listId" />
+      <ul
+        class="wishlist-products-list"
+        v-if="products.datas && products.datas.products.length > 0"
+      >
+        <li
+          class="wishlist-products-item"
+          v-for="product in products.datas.products"
+        >
+          <Product
+            :product="product"
+            :add-to-cart="addToCart"
+            :customize-text="customizeText"
+            :quantity-text="quantityText"
+            :listId="listId"
+          />
         </li>
       </ul>
 
-      <ContentLoader v-else class="wishlist-list-loader" height="105">
+      <ContentLoader
+        v-if="!products.datas"
+        class="wishlist-list-loader"
+        height="105"
+      >
         <rect x="0" y="12" rx="3" ry="0" width="100%" height="11" />
         <rect x="0" y="36" rx="3" ry="0" width="100%" height="11" />
         <rect x="0" y="60" rx="3" ry="0" width="100%" height="11" />
         <rect x="0" y="84" rx="3" ry="0" width="100%" height="11" />
       </ContentLoader>
+
+      <p
+        class="wishlist-list-empty"
+        v-if="products.datas && products.success === false"
+      >
+        {{ products.message }}
+      </p>
     </section>
   </div>
 </template>
@@ -93,6 +119,7 @@
   import Product from '@components/Product/Product';
   import getProducts from '@graphqlFiles/queries/getProducts';
   import { ContentLoader } from 'vue-content-loader';
+  import EventBus from '@components/EventBus';
 
   /**
    * This component act as a smart component wich will handle every actions of the list one
@@ -109,7 +136,7 @@
         variables() {
           return {
             listId: this.listId,
-            userId: 1
+            url: this.url
           };
         },
         skip() {
@@ -118,15 +145,50 @@
       }
     },
     props: {
-      url: '',
-      title: '',
-      defaultSort: '',
-      listId: null,
-      homeLink: '',
-      returnLink: '',
-      addText: '',
-      renameText: '',
-      shareText: ''
+      url: {
+        type: String,
+        required: true
+      },
+      title: {
+        type: String,
+        required: true
+      },
+      defaultSort: {
+        type: String,
+        required: true
+      },
+      listId: {
+        type: Number,
+        required: true
+      },
+      addToCart: {
+        type: String,
+        required: true
+      },
+      customizeText: {
+        type: String,
+        required: true
+      },
+      quantityText: {
+        type: String,
+        required: true
+      },
+      lastAdded: {
+        type: String,
+        required: true
+      },
+      priceLowHigh: {
+        type: String,
+        required: true
+      },
+      priceHighLow: {
+        type: String,
+        required: true
+      },
+      filter: {
+        type: String,
+        required: true
+      }
     },
     data() {
       return {
@@ -143,6 +205,7 @@
       async deleteList(id) {},
       async changeSelectedSort(value) {
         this.selectedSort = value;
+        console.log(this.products);
       }
     },
     mounted() {
@@ -153,9 +216,11 @@
        *
        * @param {String} 'refetchProduct' The event I decided to create to communicate between VueJS Apps
        */
-      document.addEventListener('refetchList', () => {
+      EventBus.$on('refetchList', () => {
         this.$apollo.queries.products.refetch();
       });
+
+      EventBus.$on('paginationNumbers', payload => {});
     }
   };
 </script>
@@ -221,6 +286,41 @@
   #module-blockwishlist-productslist {
     #wrapper .container {
       width: 975px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .wishlist {
+      &-products-container {
+        &-header {
+          flex-wrap: wrap;
+
+          .products-sort-order {
+            flex: 1;
+          }
+
+          .filter-button {
+            width: auto;
+            padding-right: 0;
+          }
+
+          .sort-by-row {
+            width: 100%;
+          }
+        }
+
+        .page-content.card {
+          box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.2);
+          background-color: #fff;
+          margin-top: 20px;
+        }
+
+        .wishlist-products-list {
+          justify-content: center;
+          margin: 0;
+          padding: 15px;
+        }
+      }
     }
   }
 </style>

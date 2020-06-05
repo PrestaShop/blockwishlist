@@ -18,6 +18,7 @@
  *-->
 <script>
   import createList from '@graphqlFiles/mutations/createlist';
+  import EventBus from '@components/EventBus';
 
   /**
    * This component display a modal where you can create a wishlist
@@ -25,12 +26,41 @@
   export default {
     name: 'Create',
     props: {
-      url: '',
-      title: '',
-      label: '',
-      placeholder: '',
-      cancelText: '',
-      createText: ''
+      url: {
+        type: String,
+        required: true,
+        default: '#'
+      },
+      title: {
+        type: String,
+        required: true,
+        default: 'New wishlist'
+      },
+      label: {
+        type: String,
+        required: true,
+        default: 'Wishlist name'
+      },
+      placeholder: {
+        type: String,
+        required: true,
+        default: 'Add name'
+      },
+      cancelText: {
+        type: String,
+        required: true,
+        default: 'Cancel'
+      },
+      lengthText: {
+        type: String,
+        required: true,
+        default: 'List title is too short'
+      },
+      createText: {
+        type: String,
+        required: true,
+        default: 'Create'
+      }
     },
     data() {
       return {
@@ -49,32 +79,49 @@
        * Launch a createList mutation to create a Wishlist
        */
       async createWishlist() {
-        await this.$apollo.mutate({
+        const valueTrimmed = this.value.replace(/ /g, '');
+
+        if (valueTrimmed.length < 1) {
+          EventBus.$emit('showToast', {
+            detail: {
+              type: 'error',
+              message: this.lengthText
+            }
+          });
+
+          return false;
+        }
+
+        let { data: response } = await this.$apollo.mutate({
           mutation: createList,
           variables: {
             name: this.value,
-            userId: 1
+            url: this.url
+          }
+        });
+
+        EventBus.$emit('showToast', {
+          detail: {
+            type: response.createList.success ? 'success' : 'error',
+            message: response.createList.message
           }
         });
 
         /**
          * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
          */
-        const event = new Event('refetchList');
-        document.dispatchEvent(event);
+        EventBus.$emit('refetchList');
 
         /**
          * Finally hide the modal after creating the list
          * and reopen the wishlist modal
          */
         this.toggleModal();
-        const wishlistEvent = new CustomEvent('showAddToWishList', {
+        EventBus.$emit('showAddToWishList', {
           detail: {
             forceOpen: true
           }
         });
-
-        document.dispatchEvent(wishlistEvent);
       }
     },
     mounted() {
@@ -83,7 +130,7 @@
        *
        * @param {String} 'showCreateWishlist'
        */
-      document.addEventListener('showCreateWishlist', () => {
+      EventBus.$on('showCreateWishlist', () => {
         this.value = '';
         this.toggleModal();
       });

@@ -20,6 +20,8 @@
 <div
   class="wishlist-login"
   data-url="{$url}"
+  data-login-text="{l s='Sign in' mod='blockwishlist'}"
+  data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
 >
   <div
     class="wishlist-modal modal fade"
@@ -33,7 +35,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Sign in</h5>
+          <h5 class="modal-title" id="exampleModalLabel">{l s='Sign in' mod='blockwishlist'}</h5>
           <button
             type="button"
             class="close"
@@ -45,7 +47,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p class="modal-text">You need to be logged in to save products in your wishlist.</p> 
+          <p class="modal-text">{l s='You need to be logged in to save products in your wishlist.' mod='blockwishlist'}</p> 
         </div>
         <div class="modal-footer">
           <button
@@ -54,15 +56,15 @@
             data-dismiss="modal"
             @click="toggleModal"
           >
-            Cancel
+            ((cancelText))
           </button>
 
           <a
             type="button"
             class="btn btn-primary"
-            href="/login"
+            :href="prestashop.urls.pages.authentication"
           >
-            Sign in
+            ((loginText))
           </a>
         </div>
       </div>

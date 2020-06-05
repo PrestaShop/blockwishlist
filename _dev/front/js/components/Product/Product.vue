@@ -18,61 +18,203 @@
  *-->
 <template>
   <div class="wishlist-product">
-    <div class="wishlist-product-image">
-      <img src="/prestashop/img/p/2/1/21.jpg" />
+    <a class="wishlist-product-link" :href="product.canonical_url">
+      <div class="wishlist-product-image">
+        <img
+          v-if="product.cover"
+          :src="product.cover.large.url"
+          :alt="product.cover.legend"
+          :title="product.cover.legend"
+          :class="{
+            'wishlist-product-unavailable': !product.add_to_cart_url
+          }"
+        />
+        <img
+          v-else
+          :src="prestashop.urls.no_picture_image.bySize.home_default.url"
+        />
+
+        <p
+          class="wishlist-product-availability"
+          v-if="product.show_availability"
+        >
+          <i
+            class="material-icons"
+            v-if="product.availability === 'unavailable'"
+          >
+            block
+          </i>
+          <i
+            class="material-icons"
+            v-if="product.availability === 'last_remaining_items'"
+          >
+            warning
+          </i>
+          {{ product.availability_message }}
+        </p>
+      </div>
+      <div class="wishlist-product-right">
+        <p class="wishlist-product-title">{{ product.name }}</p>
+
+        <p class="wishlist-product-price">
+          <span
+            class="wishlist-product-price-promo"
+            v-if="product.has_discount"
+          >
+            {{ product.regular_price }}
+          </span>
+          {{ product.price }}
+        </p>
+
+        <div class="wishlist-product-combinations">
+          <p class="wishlist-product-combinations-text">
+            <template v-for="(attribute, key, index) of product.attributes">
+              {{ attribute.group }} : {{ attribute.name }}
+              <span
+                v-if="
+                  index < Object.keys(product.attributes).length - 1 ||
+                    index == Object.keys(product.attributes).length - 1
+                "
+              >
+                -
+              </span>
+
+              <span v-if="index == Object.keys(product.attributes).length - 1">
+                {{ quantityText }} : {{ product.minimal_quantity }}
+              </span>
+            </template>
+
+            <span v-if="Object.keys(product.attributes).length === 0">
+              {{ quantityText }} : {{ product.minimal_quantity }}
+            </span>
+          </p>
+
+          <a :href="product.canonical_url">
+            <i class="material-icons">create</i>
+          </a>
+        </div>
+      </div>
+    </a>
+
+    <div class="wishlist-product-bottom">
+      <button
+        class="btn wishlist-product-addtocart"
+        :class="{
+          'btn-secondary': product.customization_required,
+          'btn-primary': !product.customization_required
+        }"
+        :disabled="!product.add_to_cart_url ? true : false"
+        @click="product.add_to_cart_url ? addToCartAction() : null"
+      >
+        <i
+          class="material-icons shopping-cart"
+          v-if="!product.customization_required"
+        >
+          shopping_cart
+        </i>
+        {{ product.customization_required ? customizeText : addToCart }}
+      </button>
+
+      <button class="wishlist-button-add" @click="removeFromWishlist">
+        <i class="material-icons">delete</i>
+      </button>
     </div>
-    <p class="wishlist-product-title">{{ product.name }}</p>
-
-    <p class="wishlist-product-price">
-      <span class="wishlist-product-price-promo">€28.68</span>
-      €{{ product.price }}
-    </p>
-
-    <div class="wishlist-product-combinations">
-      <p class="wishlist-product-combinations-text">
-        Size: S - Colour: White - Quantity: 1
-      </p>
-
-      <a href="#">
-        <i class="material-icons">create</i>
-      </a>
-    </div>
-
-    <button class="btn btn-primary wishlist-product-addtocart">
-      <i class="material-icons shopping-cart">shopping_cart</i>
-      Add to cart
-    </button>
-
-    <button class="wishlist-button-add" @click="removeFromWishlist">
-      <i class="material-icons">delete</i>
-    </button>
   </div>
 </template>
 
 <script>
   import removeFromList from '@graphqlFiles/mutations/removeFromList';
+  import EventBus from '@components/EventBus';
   import prestashop from 'prestashop';
 
   export default {
     name: 'Product',
     props: {
-      product: null,
-      listId: null,
-      productId: null,
-      status: null,
-      hasControls: true
+      product: {
+        type: Object,
+        required: true,
+        default: null
+      },
+      listId: {
+        type: Number,
+        required: true,
+        default: null
+      },
+      customizeText: {
+        type: String,
+        required: true,
+        default: 'Customize'
+      },
+      quantityText: {
+        type: String,
+        required: true,
+        default: 'Quantity'
+      },
+      addToCart: {
+        type: String,
+        required: true,
+        default: 'Add to cart'
+      },
+      status: {
+        type: Number,
+        required: false,
+        default: 0
+      },
+      hasControls: {
+        type: Boolean,
+        required: false,
+        default: true
+      }
+    },
+    data() {
+      return {
+        prestashop
+      };
     },
     methods: {
       /**
        * Remove the product from the wishlist
        */
       async removeFromWishlist() {
-        const event = new CustomEvent('showDeleteWishlist', {
-          detail: { listId: this.listId, productId: this.productId, userId: 1 }
+        console.log(this.product);
+        EventBus.$emit('showDeleteWishlist', {
+          detail: {
+            listId: this.listId,
+            productId: this.product.id,
+            productAttributeId: this.product.id_product_attribute
+          }
         });
+      },
+      async addToCartAction() {
+        try {
+          let response = await fetch(
+            this.product.add_to_cart_url + '&action=update',
+            {
+              headers: {
+                'Content-Type':
+                  'application/x-www-form-urlencoded; charset=UTF-8',
+                Accept: 'application/json, text/javascript, */*; q=0.01'
+              }
+            }
+          );
 
-        document.dispatchEvent(event);
-        event.preventDefault();
+          let resp = await response.json();
+
+          prestashop.emit('updateCart', {
+            reason: {
+              idProduct: this.product.id_product,
+              idProductAttribute: this.product.id_product_attribute,
+              idCustomization: this.product.id_customization,
+              linkAction: 'add-to-cart'
+            },
+            resp
+          });
+        } catch (error) {
+          prestashop.emit('handleError', {
+            eventType: 'addProductToCart',
+            resp: error
+          });
+        }
       }
     },
     mounted() {}
@@ -89,6 +231,46 @@
       margin: 25px;
       position: relative;
 
+      &-unavailable {
+        opacity: 0.5;
+      }
+
+      &-availability {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 0;
+        color: #232323;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 0;
+        line-height: 17px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 17px;
+        z-index: 5;
+        min-width: 80%;
+        justify-content: center;
+
+        i {
+          color: #ff4c4c;
+          margin-right: 5px;
+          font-size: 18px;
+        }
+      }
+
+      &-link {
+        &:focus {
+          text-decoration: none;
+        }
+
+        &:hover {
+          img {
+            transform: translate(-50%, -50%) scale(1.1);
+          }
+        }
+      }
+
       &-title {
         margin-top: 10px;
         margin-bottom: 5px;
@@ -102,6 +284,7 @@
         width: 250px;
         height: 250px;
         position: relative;
+        overflow: hidden;
 
         img {
           position: absolute;
@@ -110,6 +293,7 @@
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
+          transition: 0.25s ease-out;
         }
       }
 
@@ -136,7 +320,7 @@
 
       &-combinations {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
 
         a {
@@ -153,6 +337,7 @@
           font-size: 13px;
           letter-spacing: 0;
           line-height: 20px;
+          min-height: 50px;
           margin: 0;
         }
       }
@@ -161,7 +346,15 @@
         width: 100%;
         text-transform: inherit;
         padding-left: 10px;
-        margin-top: 30px;
+
+        &.btn-secondary {
+          background-color: #dddddd;
+
+          &:hover {
+            background-color: #dddddd;
+            opacity: 0.7;
+          }
+        }
 
         i {
           margin-top: -3px;
@@ -202,6 +395,69 @@
         i {
           color: #7a7a7a;
           margin-top: -2px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .wishlist {
+      &-button-add {
+        position: inherit;
+        margin-left: 10px;
+      }
+
+      &-products-item {
+        width: 100%;
+        margin-bottom: 30px;
+
+        &:not(:last-child) {
+          margin-bottom: 62px;
+        }
+      }
+
+      &-product {
+        margin: 0;
+        width: 100%;
+        max-width: 100%;
+
+        &-bottom {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        &-right {
+          flex: 1;
+        }
+
+        &-availability {
+          bottom: -30px;
+          min-width: 100%;
+          justify-content: flex-start;
+        }
+
+        &-image {
+          width: 100px;
+          height: 100px;
+          margin-right: 20px;
+          position: inherit;
+
+          img {
+            position: inherit;
+            left: inherit;
+            top: inherit;
+            transform: inherit;
+          }
+        }
+
+        &-link {
+          display: flex;
+          align-items: flex-start;
+        }
+
+        &-title {
+          margin-top: 0;
         }
       }
     }

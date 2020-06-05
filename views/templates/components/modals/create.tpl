@@ -20,6 +20,12 @@
 <div
   class="wishlist-create"
   data-url="{$url}"
+  data-title="{l s='Create wishlist' mod='blockwishlist'}"
+  data-label="{l s='Wishlist name' mod='blockwishlist'}"
+  data-placeholder="{l s='Add name' mod='blockwishlist'}"
+  data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
+  data-create-text="{l s='Create wishlist' mod='blockwishlist'}"
+  data-length-text="{l s='List title is too short' mod='blockwishlist'}"
 >
   <div
     class="wishlist-modal modal fade"
@@ -33,7 +39,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New wishlist</h5>
+          <h5 class="modal-title" id="exampleModalLabel">((title))</h5>
           <button
             type="button"
             class="close"
@@ -46,14 +52,13 @@
         </div>
         <div class="modal-body">
           <div class="form-group form-group-lg">
-            <label class="form-control-label" for="input2">Wishlist name</label
-            >
+            <label class="form-control-label" for="input2">((label))</label>
             <input
               type="text"
               class="form-control form-control-lg"
               v-model="value"
               id="input2"
-              placeholder="Add name"
+              :placeholder="placeholder"
             />
           </div>
         </div>
@@ -64,7 +69,7 @@
             data-dismiss="modal"
             @click="toggleModal"
           >
-            Cancel
+            ((cancelText))
           </button>
 
           <button
@@ -72,7 +77,7 @@
             class="btn btn-primary"
             @click="createWishlist"
           >
-            Create wishlist
+            ((createText))
           </button>
         </div>
       </div>

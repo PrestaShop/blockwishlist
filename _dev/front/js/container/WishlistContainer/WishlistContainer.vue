@@ -32,6 +32,8 @@
         :items="lists"
         :renameText="renameText"
         :shareText="shareText"
+        :emptyText="emptyText"
+        :loading="$apollo.queries.lists.loading"
       ></list>
     </section>
   </div>
@@ -41,6 +43,7 @@
   import List from '@components/List/List';
   import getLists from '@graphqlFiles/queries/getlists';
   import deleteList from '@graphqlFiles/mutations/deletelist';
+  import EventBus from '@components/EventBus';
 
   /**
    * This component act as a smart component wich will handle every actions of the list one
@@ -51,16 +54,40 @@
       List
     },
     apollo: {
-      lists: getLists
+      lists: {
+        query: getLists,
+        variables() {
+          return {
+            url: this.url
+          };
+        }
+      }
     },
     props: {
-      url: '',
-      title: '',
-      homeLink: '',
-      returnLink: '',
-      addText: '',
-      renameText: '',
-      shareText: ''
+      url: {
+        type: String,
+        required: true
+      },
+      title: {
+        type: String,
+        required: true
+      },
+      addText: {
+        type: String,
+        required: true
+      },
+      renameText: {
+        type: String,
+        required: true
+      },
+      emptyText: {
+        type: String,
+        required: true
+      },
+      shareText: {
+        type: String,
+        required: true
+      }
     },
     data() {
       return {
@@ -72,9 +99,7 @@
        * Send an event to opoen the Create Wishlist Modal
        */
       openNewWishlistModal() {
-        const event = new Event('showCreateWishlist');
-
-        document.dispatchEvent(event);
+        EventBus.$emit('showCreateWishlist');
       },
       /**
        * Delete a list by launching a mutation, updating cache and then on response replacing the lists state
@@ -89,7 +114,7 @@
        *
        * @param {String} 'refetchList' The event I decided to create to communicate between VueJS Apps
        */
-      document.addEventListener('refetchList', () => {
+      EventBus.$on('refetchList', () => {
         this.$apollo.queries.lists.refetch();
       });
     }

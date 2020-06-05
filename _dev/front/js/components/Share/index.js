@@ -30,11 +30,19 @@ const props = [
     type: String
   },
   {
+    name: 'label',
+    type: String
+  },
+  {
     name: 'copyText',
     type: String
   },
   {
     name: 'copiedText',
+    type: String
+  },
+  {
+    name: 'cancelText',
     type: String
   }
 ];

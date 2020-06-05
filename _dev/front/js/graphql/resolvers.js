@@ -17,61 +17,46 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
+import EventBus from '@components/EventBus';
+import GraphQLJSON, {GraphQLJSONObject} from 'graphql-type-json';
+
 /**
  * Resolvers linked to schemas definitions
  */
 export default {
+  JSON: GraphQLJSON,
+  JSONObject: GraphQLJSONObject,
   Query: {
     /**
      * Get product from a list
      */
-    products: (root, args, context) => [
-      {
-        id: 1,
-        name: 'Product 1',
-        price: '1,500'
-      },
-      {
-        id: 2,
-        name: 'Product 2',
-        price: '15,00'
-      },
-      {
-        id: 3,
-        name: 'Product 3',
-        price: '18,00'
-      },
-      {
-        id: 4,
-        name: 'Product 4',
-        price: '21,00'
-      }
-    ],
+    products: async (root, {url, listId}, context) => {
+      let response = await fetch(`${url}&params[id_wishlist]=${listId}`);
+
+      let datas = await response.json();
+
+      EventBus.$emit('paginate', {
+        detail: {
+          total: 30,
+          minShown: 1,
+          maxShown: 20,
+          pageNumber: 2,
+          currentPage: 1
+        }
+      });
+
+      return datas;
+    },
     /**
      * Get every lists from User
      */
-    lists: () => [
-      {
-        id: 1,
-        title: 'Titre de liste 1',
-        numbersProduct: 8
-      },
-      {
-        id: 2,
-        title: 'Titre de liste 2',
-        numbersProduct: 5
-      },
-      {
-        id: 3,
-        title: 'Titre de liste 3',
-        numbersProduct: 1
-      },
-      {
-        id: 4,
-        title: 'Titre de liste 4',
-        numbersProduct: 4
-      }
-    ]
+    lists: async (root, {url}, context) => {
+      let response = await fetch(url);
+
+      let datas = await response.json();
+
+      return datas.wishlists;
+    }
   },
   Mutation: {
     /**
@@ -80,24 +65,15 @@ export default {
      * @param {String} name The name of the list
      * @param {Int} userId The ID of the user you want to create a list on
      */
-    createList: (root, {name, userId}, context) => [
-      {
-        id: 1,
-        title: 'Titre de liste 1'
-      },
-      {
-        id: 2,
-        title: 'Titre de liste 2'
-      },
-      {
-        id: 3,
-        title: 'Titre de liste 3'
-      },
-      {
-        id: 4,
-        title: 'Titre de liste 4'
-      }
-    ],
+    createList: async (root, {name, url}, context) => {
+      let response = await fetch(url + `&params[name]=${name}`, {
+        method: 'POST'
+      });
+
+      let datas = await response.json();
+
+      return datas;
+    },
     /**
      * Get a share url for a list
      *
@@ -116,24 +92,15 @@ export default {
      * @param {Int} userId Id of the user
      * @param {Int} listId} ID of the list to be renamed
      */
-    renameList: (root, {name, userId, listId}, context) => [
-      {
-        id: 1,
-        title: 'Renamed'
-      },
-      {
-        id: 2,
-        title: 'Titre de liste 2'
-      },
-      {
-        id: 3,
-        title: 'Titre de liste 3'
-      },
-      {
-        id: 4,
-        title: 'Titre de liste 4'
-      }
-    ],
+    renameList: async (root, {name, listId, url}, context) => {
+      let response = await fetch(url + `&params[name]=${name}&params[idWishlist]=${listId}`, {
+        method: 'POST'
+      });
+
+      let datas = await response.json();
+
+      return datas;
+    },
     /**
      * Add a product to a list
      *
@@ -143,12 +110,18 @@ export default {
      *
      * @returns {JSON} A success or failed response
      */
-    addToList: (root, {listId, userId, productId}, context) => {
-      console.log(listId, userId, productId);
-      return {
-        id: 1,
-        title: 'Titre de liste 1'
-      };
+    addToList: async (root, {listId, url, productId, quantity, productAttributeId}, context) => {
+      let response = await fetch(
+        url +
+          `&params[id_product]=${productId}&params[idWishlist]=${listId}&params[quantity]=${quantity}&params[id_product_attribute]=${productAttributeId}`,
+        {
+          method: 'POST'
+        }
+      );
+
+      let datas = await response.json();
+
+      return datas;
     },
     /**
      * Remove a product from a list
@@ -159,11 +132,19 @@ export default {
      *
      * @returns {JSON} A success or failed response
      */
-    removeFromList: (root, {listId, productId, userId}, context) => ({
-      id: 1,
-      title: 'Titre de liste 1',
-      numbersProduct: 2
-    }),
+    removeFromList: async (root, {listId, productId, url, productAttributeId}, context) => {
+      let response = await fetch(
+        url +
+          `&params[id_product]=${productId}&params[idWishlist]=${listId}&params[id_product_attribute]=${productAttributeId}`,
+        {
+          method: 'POST'
+        }
+      );
+
+      let datas = await response.json();
+
+      return datas;
+    },
     /**
      * Remove a list
      *
@@ -171,22 +152,14 @@ export default {
      *
      * @returns {JSON} a JSON success or failed response
      */
-    deleteList: (root, {listId}, context) => [
-      {
-        id: 1,
-        title: 'Titre de liste 1',
-        numbersProduct: 4
-      },
-      {
-        id: 2,
-        title: 'Titre de liste 2',
-        numbersProduct: 4
-      },
-      {
-        id: 3,
-        title: 'Titre de liste 3',
-        numbersProduct: 4
-      }
-    ]
+    deleteList: async (root, {listId, url}, context) => {
+      let response = await fetch(url + `&params[idWishlist]=${listId}`, {
+        method: 'POST'
+      });
+
+      let datas = await response.json();
+
+      return datas;
+    }
   }
 };

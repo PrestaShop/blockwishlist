@@ -20,6 +20,7 @@
 
 use PrestaShop\Module\BlockWishList\Database\Install;
 use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
+use PrestaShop\Module\BlockWishlist\WishList;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -109,11 +110,20 @@ class BlockWishList extends Module implements WidgetInterface
      */
     public function hookActionFrontControllerSetMedia(array $params)
     {
+        $productsTagged = false;
+
+        if (true === $this->context->customer->isLogged()) {
+            $productsTagged = Wishlist::getAllProductByCustomer($this->context->customer->id);
+        }
+        
         Media::addJsDef([
             'blockwishlistController' => $this->context->link->getModuleLink(
                 $this->name,
                 'action'
             ),
+            'removeFromWishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'productslist'),
+            'productsAlreadyTagged' => $productsTagged,
         ]);
 
         $this->context->controller->registerStylesheet(
@@ -145,11 +155,7 @@ class BlockWishList extends Module implements WidgetInterface
     {
         $this->smarty->assign([
           'blockwishlist' => $this->displayName,
-          'product' => [
-            'id' => 1,
-            'id_wishlist' => 1,
-          ],
-          'url' => 'http://dumburl.com/',
+          'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/product/add-button.tpl');
@@ -248,6 +254,10 @@ class BlockWishList extends Module implements WidgetInterface
     {
         $this->smarty->assign([
             'context' => $this->context->controller->php_self,
+            'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
+            'createUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),
+            'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'addUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayHeader.tpl');

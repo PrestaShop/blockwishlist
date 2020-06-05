@@ -18,51 +18,62 @@
  *-->
 <template>
   <div class="wishlist-list-container">
-    <ul class="wishlist-list" v-if="items.length > 0">
-      <li class="wishlist-list-item" :key="list.id" v-for="list of items">
+    <ul class="wishlist-list" v-if="items.length > 0 && items">
+      <li
+        class="wishlist-list-item"
+        :key="list.id_wishlist"
+        v-for="list of items"
+      >
         <a
           class="wishlist-list-item-title"
-          href="http://localhost/prestashop/index.php?fc=module&module=blockwishlist&controller=productslist&id_lang=1"
+          :href="`${listUrl}&params[id_wishlist]=${list.id_wishlist}`"
         >
-          {{ list.title }}
-          <span>({{ list.numbersProduct }})</span>
+          {{ list.name }}
+          <span v-if="list.nbProducts">({{ list.nbProducts }})</span>
+          <span v-else>(0)</span>
         </a>
 
         <div class="wishlist-list-item-right">
-          <a @click="togglePopup(list.id)" class="wishlist-list-item-actions">
+          <a
+            @click="togglePopup(list.id_wishlist)"
+            class="wishlist-list-item-actions"
+          >
             <i class="material-icons">more_vert</i>
           </a>
 
           <div
             class="dropdown-menu show"
-            v-if="activeDropdowns.includes(list.id)"
+            v-if="activeDropdowns.includes(list.id_wishlist)"
           >
-            <a @click="toggleRename(list.id, list.title)">{{ renameText }}</a>
-            <a @click="toggleShare(list.id)">{{ shareText }}</a>
+            <a @click="toggleRename(list.id_wishlist, list.name)">
+              {{ renameText }}
+            </a>
+            <a @click="toggleShare(list.id_wishlist)">{{ shareText }}</a>
           </div>
 
-          <a @click="toggleDelete(list.id, list.title)">
+          <a @click="toggleDelete(list.id_wishlist, list.name)">
             <i class="material-icons">delete</i>
           </a>
         </div>
       </li>
     </ul>
 
-    <ContentLoader
-      v-if="items.length <= 0"
-      class="wishlist-list-loader"
-      height="105"
-    >
+    <ContentLoader v-if="loading" class="wishlist-list-loader" height="105">
       <rect x="0" y="12" rx="3" ry="0" width="100%" height="11" />
       <rect x="0" y="36" rx="3" ry="0" width="100%" height="11" />
       <rect x="0" y="60" rx="3" ry="0" width="100%" height="11" />
       <rect x="0" y="84" rx="3" ry="0" width="100%" height="11" />
     </ContentLoader>
+    <p class="wishlist-list-empty" v-if="items.length <= 0 && !loading">
+      {{ emptyText }}
+    </p>
   </div>
 </template>
 
 <script>
   import { ContentLoader } from 'vue-content-loader';
+  import EventBus from '@components/EventBus';
+  import wishlistUrl from 'wishlistUrl';
 
   /**
    * Dumb component to display the list of Wishlist on a page
@@ -74,7 +85,8 @@
     },
     data() {
       return {
-        activeDropdowns: []
+        activeDropdowns: [],
+        listUrl: wishlistUrl
       };
     },
     props: {
@@ -86,9 +98,17 @@
         type: String,
         default: 'Rename'
       },
+      emptyText: {
+        type: String,
+        default: ''
+      },
       shareText: {
         type: String,
         default: 'Share'
+      },
+      loading: {
+        type: Boolean,
+        default: true
       }
     },
     methods: {
@@ -112,11 +132,9 @@
        * @param {String} The base title so the rename popup can autofill it
        */
       toggleRename(id, title) {
-        const event = new CustomEvent('showRenameWishlist', {
+        EventBus.$emit('showRenameWishlist', {
           detail: { listId: id, title }
         });
-
-        document.dispatchEvent(event);
       },
       /**
        * Toggle the popup to rename a list
@@ -125,11 +143,9 @@
        * @param {String} The base title so the rename popup can autofill it
        */
       toggleShare(id, title) {
-        const event = new CustomEvent('showShareWishlist', {
+        EventBus.$emit('showShareWishlist', {
           detail: { listId: id, userId: 1 }
         });
-
-        document.dispatchEvent(event);
       },
       /**
        * Toggle the popup to rename a list
@@ -138,11 +154,9 @@
        * @param {String} The base title so the rename popup can autofill it
        */
       toggleDelete(id, title) {
-        const event = new CustomEvent('showDeleteWishlist', {
+        EventBus.$emit('showDeleteWishlist', {
           detail: { listId: id, userId: 1 }
         });
-
-        document.dispatchEvent(event);
       }
     }
   };
@@ -152,6 +166,15 @@
   .wishlist {
     &-list {
       margin-bottom: 0;
+
+      &-empty {
+        font-size: 30;
+        text-align: center;
+        padding: 30px;
+        padding-bottom: 20px;
+        font-weight: bold;
+        color: #000;
+      }
 
       &-loader {
         padding: 0 20px;

@@ -20,6 +20,7 @@
   import deleteList from '@graphqlFiles/mutations/deleteList';
   import getLists from '@graphqlFiles/queries/getlists';
   import removeFromList from '@graphqlFiles/mutations/removeFromList';
+  import EventBus from '@components/EventBus';
 
   /**
    * This component display a modal where you can delete a wishlist
@@ -27,19 +28,44 @@
   export default {
     name: 'Delete',
     props: {
-      url: '',
-      title: '',
-      label: '',
-      placeholder: '',
-      cancelText: '',
-      createText: ''
+      deleteProductUrl: {
+        type: String,
+        required: false,
+        default: '#'
+      },
+      deleteListUrl: {
+        type: String,
+        required: false,
+        default: '#'
+      },
+      title: {
+        type: String,
+        required: true,
+        default: 'Delete'
+      },
+      placeholder: {
+        type: String,
+        required: true,
+        default: 'This action is irreversible'
+      },
+      cancelText: {
+        type: String,
+        required: true,
+        default: 'Cancel'
+      },
+      deleteText: {
+        type: String,
+        required: true,
+        default: 'Delete'
+      }
     },
     data() {
       return {
         value: '',
         isHidden: true,
         listId: null,
-        productId: null
+        productId: null,
+        productAttributeId: null
       };
     },
     methods: {
@@ -53,19 +79,31 @@
        * Launch a deleteList mutation to delete a Wishlist
        */
       async deleteWishlist() {
-        const list = await this.$apollo.mutate({
+        const { data } = await this.$apollo.mutate({
           mutation: this.productId ? removeFromList : deleteList,
           variables: {
             listId: this.listId,
-            productId: this.productId
+            productId: parseInt(this.productId),
+            productAttributeId: parseInt(this.productAttributeId),
+            url: this.productId ? this.deleteProductUrl : this.deleteListUrl
           }
         });
+
+        const response = data.deleteList
+          ? data.deleteList
+          : data.removeFromList;
 
         /**
          * As this is not a real SPA, we need to inform others VueJS apps that they need to refetch the list
          */
-        const event = new Event('refetchList');
-        document.dispatchEvent(event);
+        EventBus.$emit('refetchList');
+
+        EventBus.$emit('showToast', {
+          detail: {
+            type: response.success ? 'success' : 'error',
+            message: response.message
+          }
+        });
 
         /**
          * Finally hide the modal after deleting the list
@@ -80,12 +118,16 @@
        *
        * @param {String} 'showDeleteWishlist'
        */
-      document.addEventListener('showDeleteWishlist', event => {
+      EventBus.$on('showDeleteWishlist', event => {
         this.value = '';
         this.listId = event.detail.listId;
 
         if (event.detail.productId) {
           this.productId = event.detail.productId;
+          this.productAttributeId = event.detail.productAttributeId;
+        } else {
+          this.productId = null;
+          this.productAttributeId = null;
         }
 
         this.toggleModal();

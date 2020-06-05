@@ -28,6 +28,22 @@ const props = [
   {
     name: 'title',
     type: String
+  },
+  {
+    name: 'label',
+    type: String
+  },
+  {
+    name: 'placeholder',
+    type: String
+  },
+  {
+    name: 'cancelText',
+    type: String
+  },
+  {
+    name: 'renameText',
+    type: String
   }
 ];
 

@@ -16,14 +16,10 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
+import Vue from 'vue';
+import Pagination from './Pagination';
+import initApp from '@components/init';
 
-import gql from 'graphql-tag';
+const props = [];
 
-export default gql`
-  mutation removeFromList($listId: Int!, $productId: Int!, $productAttributeId: Int!, $url: String!) {
-    removeFromList(listId: $listId, productId: $productId, productAttributeId: $productAttributeId, url: $url) {
-      success
-      message
-    }
-  }
-`;
+initApp(Pagination, '.wishlist-pagination', props);

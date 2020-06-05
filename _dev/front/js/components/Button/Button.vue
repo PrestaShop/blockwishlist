@@ -30,15 +30,36 @@
 <script>
   import removeFromList from '@graphqlFiles/mutations/removeFromList';
   import prestashop from 'prestashop';
+  import EventBus from '@components/EventBus';
 
   export default {
     name: 'Button',
     props: {
-      url: '',
-      productId: null,
-      listId: null,
-      checked: false,
-      isProduct: false
+      url: {
+        type: String,
+        required: true,
+        default: '#'
+      },
+      productId: {
+        type: Number,
+        required: true,
+        default: null
+      },
+      productAttributeId: {
+        type: Number,
+        required: true,
+        default: null
+      },
+      checked: {
+        type: Boolean,
+        required: false,
+        default: false
+      },
+      isProduct: {
+        type: Boolean,
+        required: false,
+        default: false
+      }
     },
     data() {
       return {
@@ -62,26 +83,36 @@
         event.preventDefault();
 
         if (!prestashop.customer.is_logged) {
-          const event = new CustomEvent('showLogin');
-
-          document.dispatchEvent(event);
+          EventBus.$emit('showLogin');
 
           return;
         }
 
         if (!this.isChecked) {
-          const event = new CustomEvent('showAddToWishList', {
-            detail: { productId: this.productId, forceOpen: true }
+          EventBus.$emit('showAddToWishList', {
+            detail: {
+              productId: this.productId,
+              productAttributeId: this.productAttributeId,
+              forceOpen: true
+            }
           });
-
-          document.dispatchEvent(event);
         } else {
-          let response = await this.$apollo.mutate({
+          let { data } = await this.$apollo.mutate({
             mutation: removeFromList,
             variables: {
               productId: this.productId,
-              listId: this.listId ? this.listId : this.idList,
-              userId: 1
+              url: this.url,
+              productAttributeId: this.productAttributeId,
+              listId: this.idList ? this.idList : this.listId
+            }
+          });
+
+          const { removeFromList: response } = data;
+
+          EventBus.$emit('showToast', {
+            detail: {
+              type: response.success ? 'success' : 'error',
+              message: response.message
             }
           });
 
@@ -95,12 +126,23 @@
       /**
        * Register to event addedToWishlist to toggle the heart if the product has been added correctly
        */
-      document.addEventListener('addedToWishlist', event => {
+      EventBus.$on('addedToWishlist', event => {
         if (event.detail.productId === this.productId) {
           this.isChecked = true;
           this.idList = event.detail.listId;
         }
       });
+
+      const items = productsAlreadyTagged.filter(
+        e =>
+          e.id_product === this.productId.toString() &&
+          e.id_product_attribute === this.productAttributeId.toString()
+      );
+
+      if (items.length > 0) {
+        this.isChecked = true;
+        this.idList = parseInt(items[0].id_wishlist);
+      }
     }
   };
 </script>

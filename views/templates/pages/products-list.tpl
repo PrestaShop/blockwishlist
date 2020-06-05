@@ -24,20 +24,30 @@
 {block name='page_content_container'}
   <div
     class="wishlist-products-container"
-    data-url="#"
-    data-list-id="1"
+    data-url="{$url}"
+    data-list-id="{$id}"
+    data-default-sort="{l s='Last added' mod='blockwishlist'}"
+    data-add-to-cart="{l s='Add to cart' mod='blockwishlist'}"
+    data-customize-text="{l s='Customize' mod='blockwishlist'}"
+    data-quantity-text="{l s='Quantity' mod='blockwishlist'}"
+    data-last-added="{l s='Last added' mod='blockwishlist'}"
+    data-price-low-high="{l s='Price, low to high' mod='blockwishlist'}"
+    data-price-high-low="{l s='Price, high to low' mod='blockwishlist'}"
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-title="{l s='Gift ideas for Juliette' mod='blockwishlist'}"
-  ></div>
+    data-filter="{l s='Filter' mod='blockwishlist'}"
+  >
+  </div>
 
-
-  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/pagination.tpl"}
+  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" deleteProductUrl=$deleteProductUrl}
+  {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/block}
 
 
 {block name='page_footer_container'}
   <div class="wishlist-footer-links">
-    <a href="{$accountLink}"><i class="material-icons">chevron_left</i>{l s='Return to your account' mod='blockwishlist'}</a>
+    <a href="{$wishlistsLink}"><i class="material-icons">chevron_left</i>{l s='Return to wishlists' mod='blockwishlist'}</a>
     <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' mod='blockwishlist'}</a>
   </div>
 {/block}
