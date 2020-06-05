@@ -81,6 +81,11 @@
         required: true,
         default: 0
       },
+      quantity: {
+        type: Number,
+        required: true,
+        default: 0
+      },
       productAttributeId: {
         type: Number,
         required: true,
@@ -117,7 +122,7 @@
             listId,
             url: this.addUrl,
             productId: this.productId,
-            quantity: 1,
+            quantity: this.quantity,
             productAttributeId: this.productAttributeId
           }
         });

@@ -52,6 +52,7 @@
             @hide="toggleModal"
             :product-id="productId"
             :product-attribute-id="productAttributeId"
+            :quantity="quantity"
             url="{$url}"
             add-url="{$addUrl}"
             empty-text="{l s='No list found.' mod='blockwishlist'}"

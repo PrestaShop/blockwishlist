@@ -90,6 +90,10 @@
       padding: 12px 30px;
       border: none;
       padding-bottom: 30px;
+
+      .btn {
+        text-transform: none;
+      }
     }
 
     &-backdrop {
