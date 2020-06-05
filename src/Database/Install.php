@@ -22,13 +22,6 @@ namespace PrestaShop\Module\BlockWishList\Database;
 
 class Install
 {
-    private $module;
-
-    public function __construct(\BlockWishList $module)
-    {
-        $this->module = $module;
-    }
-
     public function installTables()
     {
         $sql = [];
@@ -64,8 +57,34 @@ class Install
           `date_add` datetime NOT NULL
         ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
+        $sql[] = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'blockwishlist_statistics` (
+            `id_statistics` int(10) unsigned NOT NULL auto_increment,
+            `id_cart` int(10) unsigned default NULL,
+            `id_product` int(10) unsigned NOT NULL,
+            `id_product_attribute` int(10) unsigned NOT NULL,
+            `is_adding_product` TINYINT(1) NOT NULL,
+            `is_removing_product` TINYINT(1) NOT NULL,
+            `date_add` datetime NOT NULL,
+            PRIMARY KEY  (`id_statistics`)
+        ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+
         $result = true;
 
+        foreach ($sql as $query) {
+            $result = $result && \Db::getInstance()->execute($query);
+        }
+
+        return $result;
+    }
+
+    public function dropTables()
+    {
+        $sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'wishlist`';
+        $sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'wishlist_product`';
+        $sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'wishlist_product_cart`';
+        $sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'blockwishlist_statistics`';
+
+        $result = true;
         foreach ($sql as $query) {
             $result = $result && \Db::getInstance()->execute($query);
         }

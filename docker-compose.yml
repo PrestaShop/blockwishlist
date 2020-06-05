@@ -10,7 +10,7 @@ services:
     environment:
       _PS_ROOT_DIR_: /var/www/html
   node:
-    image: node:13.1
+    image: node:10
     volumes:
       - ./:/var/www/html/modules/blockwishlist
     working_dir: /var/www/html/modules/blockwishlist
