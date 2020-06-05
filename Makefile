@@ -10,3 +10,7 @@ build-back:
 
 build-back-prod:
 	docker-compose run --rm php sh -c "composer install --no-dev -o"
+
+build-front:
+	docker-compose run --rm node sh -c "npm install"
+	docker-compose run --rm node sh -c "npm run build"

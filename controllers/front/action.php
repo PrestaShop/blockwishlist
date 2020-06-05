@@ -18,6 +18,8 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
+use PrestaShop\Module\BlockWishlist\WishList;
+use PrestaShop\Module\BlockWishList\ObjectModel\Statistics;
 use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
@@ -87,6 +89,12 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             $id_product_attribute,
             $quantity
         );
+
+        $newStat = new Statistics;
+        $newStat->id_wishlist = $idWishlist;
+        $newStat->id_product = $id_product;
+        $newStat->id_product_attribute = $id_product_attribute;
+        $newStat->save();
 
         if (false === $productIsAdded) {
             return $this->ajaxRender(
@@ -212,6 +220,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             );
 
             if (true === $isDeleted) {
+
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
@@ -333,6 +342,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             new ProductColorsRetriever(),
             $this->context->getTranslator()
         );
+
         $products_for_template = [];
 
         if (is_array($wishlistProducts)) {
@@ -368,6 +378,16 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             (int) $this->context->cart->id,
             $params['quantity']
         );
+
+        // Transform an add to favorite
+        Db::getInstance()->execute('
+            UPDATE `' . _DB_PREFIX_ . 'blockwishlist_statistics`
+            SET `id_cart` = ' . (int) $this->context->cart->id . '
+            WHERE `id_cart` = 0
+            AND `id_product` = ' . (int) $params['id_product'] . '
+            AND `id_product_attribute` = ' . (int) $params['id_product_attribute']
+        );
+
         if (true === $productAdd) {
             return $this->ajaxRender(
                 json_encode([

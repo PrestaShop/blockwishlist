@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController:
+    class: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController
+    arguments:
+      - '@doctrine.cache.provider'
+      - '@prestashop.adapter.legacy.context'

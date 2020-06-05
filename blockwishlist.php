@@ -18,6 +18,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 use PrestaShop\Module\BlockWishList\Database\Install;
 use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 
@@ -70,9 +71,7 @@ class BlockWishList extends Module implements WidgetInterface
      */
     public function install()
     {
-        $isDatabaseInstalled = new Install($this);
-
-        if (false === $isDatabaseInstalled->installTables()) {
+        if (false === (new Install())->installTables()) {
             return false;
         }
 
@@ -85,26 +84,15 @@ class BlockWishList extends Module implements WidgetInterface
      */
     public function uninstall()
     {
-        return parent::uninstall();
+        return (new Install())->dropTables()
+            && parent::uninstall();
     }
 
     public function getContent()
     {
-        $createNewButtons = [];
-
-        for ($i=1; $i < 10; $i++) {
-            $createNewButtons[$i] = "lang_$i";
-        }
-
-        foreach ($createNewButtons as $key => $value) {
-            Configuration::updateValue('blockwishlist_createNewButtonLabel',[$key, $value]);
-        }
-
-        $get = Configuration::get('blockwishlist_createNewButtonLabel');
-        dump($get);
-        die;
-
-        // Tools::redirectAdmin($this->context->link->getAdminLink(static::MODULE_ADMIN_CONTROLLER));
+        Tools::redirectAdmin(
+            SymfonyContainer::getInstance()->get('router')->generate('blockwishlist_home')
+        );
     }
 
     /**
