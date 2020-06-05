@@ -176,7 +176,6 @@
        * Remove the product from the wishlist
        */
       async removeFromWishlist() {
-        console.log(this.product);
         EventBus.$emit('showDeleteWishlist', {
           detail: {
             listId: this.listId,
@@ -216,9 +215,6 @@
           });
         }
       }
-    },
-    mounted() {
-      console.log(this.product);
     }
   };
 </script>

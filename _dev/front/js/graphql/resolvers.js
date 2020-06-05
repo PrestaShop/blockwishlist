@@ -159,7 +159,6 @@ export default {
             (e.id_product_attribute !== productAttributeId.toString() && e.id_product === productId.toString()) ||
             e.id_wishlist !== listId.toString()
         );
-        console.log(productsAlreadyTagged);
       }
 
       return datas;
