@@ -62,6 +62,10 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         $id_product = (int) $params['id_product'];
         $id_product_attribute = (int) $params['id_product_attribute'];
         $quantity = (int) $params['quantity'];
+        if (0 === $quantity) {
+            $product = new Product($id_product);
+            $quantity = $product->minimal_quantity;
+        }
 
         if (0 === $idWishlist) {
             if (Wishlist::exists($idWishlist, $this->context->customer->id) === false) {
@@ -267,6 +271,10 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     private function getAllWishlistAction()
     {
         $infos = Wishlist::getAllWishlistsByIdCustomer($this->context->customer->id);
+
+        foreach ($infos as $key => $wishlist) {
+            $infos[$key]['url'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist['token']]);
+        }
 
         if (false === empty($infos)) {
             return $this->ajaxRender(

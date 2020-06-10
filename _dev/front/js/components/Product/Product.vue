@@ -80,12 +80,12 @@
               </span>
 
               <span v-if="index == Object.keys(product.attributes).length - 1">
-                {{ quantityText }} : {{ product.quantity }}
+                {{ quantityText }} : {{ product.wishlist_quantity }}
               </span>
             </template>
 
             <span v-if="Object.keys(product.attributes).length === 0">
-              {{ quantityText }} : {{ product.quantity }}
+              {{ quantityText }} : {{ product.wishlist_quantity }}
             </span>
           </p>
 

@@ -277,7 +277,7 @@ class WishList extends \ObjectModel
         }
 
         return \Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
-            SELECT  w.`id_wishlist`, SUM(wp.`quantity`) AS nbProducts, w.`name`
+            SELECT  w.`id_wishlist`, SUM(wp.`quantity`) AS nbProducts, w.`name`, w.`token`
             FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
             RIGHT JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
             WHERE w.`id_customer` = ' . (int) $id_customer . '
@@ -321,7 +321,7 @@ class WishList extends \ObjectModel
             return [false];
         }
         $products = \Db::getInstance()->executeS('
-            SELECT wp.`id_product`, wp.`quantity`, p.`quantity` AS product_quantity, pl.`name`, wp.`id_product_attribute`, wp.`priority`, pl.link_rewrite, cl.link_rewrite AS category_rewrite
+            SELECT wp.`id_product`, wp.`quantity` as wishlist_quantity, p.`quantity` AS product_quantity, pl.`name`, wp.`id_product_attribute`, wp.`priority`, pl.link_rewrite, cl.link_rewrite AS category_rewrite
             FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
             LEFT JOIN `' . _DB_PREFIX_ . 'product` p ON p.`id_product` = wp.`id_product`
             ' . \Shop::addSqlAssociation('product', 'p') . '
@@ -432,7 +432,7 @@ class WishList extends \ObjectModel
     public static function getAllProductByCustomer($id_customer)
     {
         $result = \Db::getInstance()->executeS('
-            SELECT  `id_product`, `id_product_attribute`, w.`id_wishlist`, wp.`quantity`  
+            SELECT  `id_product`, `id_product_attribute`, w.`id_wishlist`, wp.`quantity`
             FROM `'._DB_PREFIX_.'wishlist_product` wp
             LEFT JOIN `'._DB_PREFIX_.'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
             WHERE w.`id_customer` = ' . (int) $id_customer .'
