@@ -46,6 +46,14 @@ const props = [
     type: String
   },
   {
+    name: 'wishlistProducts',
+    type: String
+  },
+  {
+    name: 'wishlist',
+    type: String
+  },
+  {
     name: 'quantityText',
     type: String
   },

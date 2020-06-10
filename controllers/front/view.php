@@ -17,6 +17,12 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
+use PrestaShop\Module\BlockWishlist\WishList;
+use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
+use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
+use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
+use PrestaShop\PrestaShop\Core\Product\ProductListingPresenter;
+
 class BlockWishlistViewModuleFrontController extends ModuleFrontController
 {
     public function __construct()
@@ -29,6 +35,7 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
     {
         parent::initContent();
         $token = Tools::getValue('token');
+
         $module = new BlockWishList();
 
         if (true === empty($token)) {
@@ -83,6 +90,30 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
             $products[$i]['bought'] = false;
         }
 
+        $assembler = new ProductAssembler($this->context);
+        $presenterFactory = new ProductPresenterFactory($this->context);
+        $presentationSettings = $presenterFactory->getPresentationSettings();
+        $presenter = new ProductListingPresenter(
+            new ImageRetriever(
+                $this->context->link
+            ),
+            $this->context->link,
+            new PriceFormatter(),
+            new ProductColorsRetriever(),
+            $this->context->getTranslator()
+        );
+        $products_for_template = [];
+
+        if (is_array($products)) {
+            foreach ($products as $rawProduct) {
+                $products_for_template[] = $presenter->present(
+                    $presentationSettings,
+                    $assembler->assembleProduct($rawProduct),
+                    $this->context->language
+                );
+            }
+        }
+
         WishList::incCounter((int) $wishlist['id_wishlist']);
         $ajax = Configuration::get('PS_BLOCK_CART_AJAX');
 
@@ -93,18 +124,25 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
                 unset($wishlists[$key]);
                 break;
             }
+
+            $this->context->controller->registerJavascript(
+                'blockwishlistController',
+                'modules/blockwishlist/public/productslist.bundle.js',
+                [
+                  'priority' => 200,
+                ]
+            );
+
+            $this->context->smarty->assign(
+                [
+                    'current_wishlist' => $wishlist,
+                    'token' => $token,
+                    'ajax' => (($ajax == 1) ? '1' : '0'),
+                    'wishlists' => $wishlists,
+                    'products' => $products_for_template,
+                ]
+            );
         }
-
-        $this->context->smarty->assign(
-            [
-                'current_wishlist' => $wishlist,
-                'token' => $token,
-                'ajax' => (($ajax == 1) ? '1' : '0'),
-                'wishlists' => $wishlists,
-                'products' => $products,
-            ]
-        );
-
-        $this->setTemplate('module:blockwishlist/views/templates/front/view.tpl');
+        $this->setTemplate('module:blockwishlist/views/templates/pages/view.tpl');
     }
 }

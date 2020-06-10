@@ -33,7 +33,7 @@ class BlockWishlistProductslistModuleFrontController extends ModuleFrontControll
         ]
       );
 
-        $this->context->controller->registerJavascript(
+      $this->context->controller->registerJavascript(
           'blockwishlistController',
           'modules/blockwishlist/public/productslist.bundle.js',
           [

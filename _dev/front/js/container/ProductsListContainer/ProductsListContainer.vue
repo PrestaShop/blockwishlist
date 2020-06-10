@@ -89,7 +89,8 @@
             :add-to-cart="addToCart"
             :customize-text="customizeText"
             :quantity-text="quantityText"
-            :listId="listId"
+            :listId="listId ? listId : parseInt(currentWishlist.id_wishlist)"
+            :isShare="wishlistProducts ? true : false"
           />
         </li>
       </ul>
@@ -147,7 +148,7 @@
     props: {
       url: {
         type: String,
-        required: true
+        required: false
       },
       title: {
         type: String,
@@ -159,7 +160,15 @@
       },
       listId: {
         type: Number,
-        required: true
+        required: false
+      },
+      wishlistProducts: {
+        type: String,
+        required: false
+      },
+      wishlist: {
+        type: String,
+        required: false
       },
       addToCart: {
         type: String,
@@ -193,6 +202,7 @@
     data() {
       return {
         products: [],
+        currentWishlist: {},
         selectedSort: ''
       };
     },
@@ -205,12 +215,27 @@
       async deleteList(id) {},
       async changeSelectedSort(value) {
         this.selectedSort = value;
-        console.log(this.products);
       }
     },
     mounted() {
-      this.$apollo.queries.products.skip = false;
+      if (this.listId) {
+        this.$apollo.queries.products.skip = false;
+      }
       this.selectedSort = this.defaultSort;
+
+      if (this.wishlist) {
+        this.currentWishlist = JSON.parse(this.wishlist);
+        this.products.name = this.currentWishlist.name;
+      }
+
+      if (this.wishlistProducts) {
+        const products = JSON.parse(this.wishlistProducts);
+
+        if (products.length > 0) {
+          this.products.datas = { products };
+        }
+      }
+
       /**
        * Register to the event refetchProducts so if an other component update it, this one can update his list
        *
@@ -283,7 +308,8 @@
     }
   }
 
-  #module-blockwishlist-productslist {
+  #module-blockwishlist-productslist,
+  #module-blockwishlist-view {
     #wrapper .container {
       width: 975px;
     }

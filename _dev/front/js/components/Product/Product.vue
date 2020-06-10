@@ -89,7 +89,7 @@
             </span>
           </p>
 
-          <a :href="product.canonical_url">
+          <a :href="product.canonical_url" v-if="!isShare">
             <i class="material-icons">create</i>
           </a>
         </div>
@@ -115,7 +115,11 @@
         {{ product.customization_required ? customizeText : addToCart }}
       </button>
 
-      <button class="wishlist-button-add" @click="removeFromWishlist">
+      <button
+        class="wishlist-button-add"
+        v-if="!isShare"
+        @click="removeFromWishlist"
+      >
         <i class="material-icons">delete</i>
       </button>
     </div>
@@ -139,6 +143,11 @@
         type: Number,
         required: true,
         default: null
+      },
+      isShare: {
+        type: Boolean,
+        required: false,
+        default: false
       },
       customizeText: {
         type: String,
@@ -228,6 +237,9 @@
           });
         }
       }
+    },
+    mounted() {
+      console.log(this.product);
     }
   };
 </script>

@@ -49,7 +49,9 @@
             <a @click="toggleRename(list.id_wishlist, list.name)">
               {{ renameText }}
             </a>
-            <a @click="toggleShare(list.id_wishlist)">{{ shareText }}</a>
+            <a @click="toggleShare(list.id_wishlist, list.token)">
+              {{ shareText }}
+            </a>
           </div>
 
           <a @click="toggleDelete(list.id_wishlist, list.name)">
@@ -147,9 +149,10 @@
        * @param {Int} id The list ID so the rename popup know which list to rename
        * @param {String} The base title so the rename popup can autofill it
        */
-      toggleShare(id, title) {
+      toggleShare(id, token) {
+        console.log(token);
         EventBus.$emit('showShareWishlist', {
-          detail: { listId: id, userId: 1 }
+          detail: { listId: id, token }
         });
       },
       /**

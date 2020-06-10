@@ -95,7 +95,7 @@
           EventBus.$emit('showAddToWishList', {
             detail: {
               productId: this.productId,
-              productAttributeId: this.productAttributeId,
+              productAttributeId: parseInt(this.productAttributeId),
               forceOpen: true,
               quantity: quantity ? parseInt(quantity.value) : 0
             }
