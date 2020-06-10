@@ -26,11 +26,6 @@
   export default {
     name: 'Login',
     props: {
-      url: {
-        type: String,
-        required: true,
-        default: '#'
-      },
       cancelText: {
         type: String,
         required: true,

@@ -22,10 +22,6 @@ import initApp from '@components/init';
 
 const props = [
   {
-    name: 'url',
-    type: String
-  },
-  {
     name: 'loginText',
     type: String
   },

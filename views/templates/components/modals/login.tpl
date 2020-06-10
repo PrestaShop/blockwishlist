@@ -19,7 +19,6 @@
 
 <div
   class="wishlist-login"
-  data-url="{$url}"
   data-login-text="{l s='Sign in' mod='blockwishlist'}"
   data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
 >
