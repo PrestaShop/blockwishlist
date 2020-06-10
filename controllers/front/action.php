@@ -273,7 +273,8 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         $infos = Wishlist::getAllWishlistsByIdCustomer($this->context->customer->id);
 
         foreach ($infos as $key => $wishlist) {
-            $infos[$key]['url'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist['token']]);
+            $infos[$key]['shareUrl'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist['token']]);
+            $infos[$key]['listUrl'] = $this->context->link->getModuleLink('blockwishlist', 'productslist', ['id_wishlist' => $wishlist['id_wishlist']]);
         }
 
         if (false === empty($infos)) {

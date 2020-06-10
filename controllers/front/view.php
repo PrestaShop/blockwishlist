@@ -37,7 +37,6 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
 
         if (false === empty($token)) {
             $wishlist = WishList::getByToken($token);
-
             WishList::refreshWishList($wishlist['id_wishlist']);
             $products = WishList::getProductByIdCustomer(
                 (int) $wishlist['id_wishlist'],
@@ -51,37 +50,36 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
             $priority_names = [0 => $module->l('High'), 1 => $module->l('Medium'), 2 => $module->l('Low')];
 
             for ($i = 0; $i < $nb_products; ++$i) {
+
                 $obj = new Product((int) $products[$i]['id_product'], true, $this->context->language->id);
-                if (!Validate::isLoadedObject($obj)) {
-                    continue;
-                } else {
-                    $products[$i]['priority_name'] = $priority_names[$products[$i]['priority']];
-                    $quantity = Product::getQuantity((int) $products[$i]['id_product'], $products[$i]['id_product_attribute']);
-                    $products[$i]['attribute_quantity'] = $quantity;
-                    $products[$i]['product_quantity'] = $quantity;
-                    $products[$i]['allow_oosp'] = $obj->isAvailableWhenOutOfStock((int) $obj->out_of_stock);
-                    if ($products[$i]['id_product_attribute'] != 0) {
-                        $combination_imgs = $obj->getCombinationImages($this->context->language->id);
-                        if (isset($combination_imgs[$products[$i]['id_product_attribute']][0])) {
-                            $products[$i]['cover'] = $obj->id . '-' . $combination_imgs[$products[$i]['id_product_attribute']][0]['id_image'];
-                        } else {
-                            $cover = Product::getCover($obj->id);
-                            $products[$i]['cover'] = $obj->id . '-' . $cover['id_image'];
-                        }
+
+                $products[$i]['priority_name'] = $priority_names[$products[$i]['priority']];
+                $quantity = Product::getQuantity((int) $products[$i]['id_product'], $products[$i]['id_product_attribute']);
+                $products[$i]['attribute_quantity'] = $quantity;
+                $products[$i]['product_quantity'] = $quantity;
+                $products[$i]['allow_oosp'] = $obj->isAvailableWhenOutOfStock((int) $obj->out_of_stock);
+                if ($products[$i]['id_product_attribute'] != 0) {
+                    $combination_imgs = $obj->getCombinationImages($this->context->language->id);
+                    if (isset($combination_imgs[$products[$i]['id_product_attribute']][0])) {
+                        $products[$i]['cover'] = $obj->id . '-' . $combination_imgs[$products[$i]['id_product_attribute']][0]['id_image'];
                     } else {
-                        $images = $obj->getImages($this->context->language->id);
-                        foreach ($images as $image) {
-                            if ($image['cover']) {
-                                $products[$i]['cover'] = $obj->id . '-' . $image['id_image'];
-                                break;
-                            }
-                        }
+                        $cover = Product::getCover($obj->id);
+                        $products[$i]['cover'] = $obj->id . '-' . $cover['id_image'];
                     }
-                    if (!isset($products[$i]['cover'])) {
-                        $products[$i]['cover'] = $this->context->language->iso_code . '-default';
+                } else {
+                    $images = $obj->getImages($this->context->language->id);
+                    foreach ($images as $image) {
+                        if ($image['cover']) {
+                            $products[$i]['cover'] = $obj->id . '-' . $image['id_image'];
+                        break;
                     }
                 }
-                $products[$i]['bought'] = false;
+            }
+            if (!isset($products[$i]['cover'])) {
+                $products[$i]['cover'] = $this->context->language->iso_code . '-default';
+            }
+
+            $products[$i]['bought'] = false;
             }
 
             WishList::incCounter((int) $wishlist['id_wishlist']);

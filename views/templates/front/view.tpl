@@ -48,7 +48,7 @@
                     {if isset($product.attributes_small)}
                         <a href="{$link->getProductlink($product.id_product, $product.link_rewrite, $product.category_rewrite)|escape:'html'}" title="{l s='Product detail' mod='blockwishlist'}">{$product.attributes_small|escape:'html':'UTF-8'}</a>
                     {/if}
-                        <br />{l s='Quantity' mod='blockwishlist'}:<input type="text" id="quantity_{$product.id_product}_{$product.id_product_attribute}" value="{$product.quantity|intval}" size="3"  />
+                        <br />{l s='Quantity' mod='blockwishlist'}:<input type="text" id="quantity_{$product.id_product}_{$product.id_product_attribute}" value="{$product.wishlist_quantity|intval}" size="3"  />
                         <br /><br />
                         <span><strong>{l s='Priority' mod='blockwishlist'}:</strong> {$product.priority_name}</span>
                     </span>

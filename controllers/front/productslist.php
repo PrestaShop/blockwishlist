@@ -22,11 +22,11 @@ class BlockWishlistProductslistModuleFrontController extends ModuleFrontControll
     public function initContent()
     {
         parent::initContent();
-        $params = Tools::getValue('params');
+        $id_wishlist = Tools::getValue('id_wishlist');
 
         $this->context->smarty->assign(
         [
-            'id' => $params['id_wishlist'],
+            'id' => $id_wishlist,
             'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getProductsByWishlist']),
             'wishlistsLink' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
             'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
