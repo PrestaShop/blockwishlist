@@ -433,9 +433,9 @@ class WishList extends \ObjectModel
     {
         $result = \Db::getInstance()->executeS('
             SELECT  `id_product`, `id_product_attribute`, w.`id_wishlist`, wp.`quantity`
-            FROM `'._DB_PREFIX_.'wishlist_product` wp
-            LEFT JOIN `'._DB_PREFIX_.'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
-            WHERE w.`id_customer` = ' . (int) $id_customer .'
+            FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
+            LEFT JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
+            WHERE w.`id_customer` = ' . (int) $id_customer . '
             AND wp.`quantity` > 0 ');
 
         return $result;
