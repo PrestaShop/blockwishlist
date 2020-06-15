@@ -194,6 +194,7 @@
         justify-content: center;
         height: 40px;
         width: 40px;
+        min-width: 40px;
         padding-top: 3px;
         background-color: #ffffff;
         box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.2);

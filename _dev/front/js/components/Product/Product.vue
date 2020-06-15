@@ -248,11 +248,18 @@
   @import '@scss/_variables';
 
   .wishlist {
+    &-products-item {
+      margin: 25px;
+    }
+
     &-product {
       max-width: 250px;
       width: 100%;
-      margin: 25px;
       position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
 
       &-unavailable {
         opacity: 0.5;
@@ -395,6 +402,7 @@
         justify-content: center;
         height: 40px;
         width: 40px;
+        min-width: 40px;
         padding-top: 3px;
         background-color: #ffffff;
         box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.2);
