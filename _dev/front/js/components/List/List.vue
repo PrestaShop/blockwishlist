@@ -30,7 +30,7 @@
       >
         <a
           class="wishlist-list-item-title"
-          :href="`${listUrl}&params[id_wishlist]=${list.id_wishlist}`"
+          :href="`${listUrl}&id_wishlist=${list.id_wishlist}`"
         >
           {{ list.name }}
           <span v-if="list.nbProducts">({{ list.nbProducts }})</span>
