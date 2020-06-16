@@ -541,20 +541,27 @@ class WishList extends \ObjectModel
         if (!\Validate::isUnsignedId($id_wishlist)) {
             die(\Tools::displayError());
         }
-        $result = \Db::getInstance()->getRow('
-            SELECT `counter`
-            FROM `' . _DB_PREFIX_ . 'wishlist`
-            WHERE `id_wishlist` = ' . (int) $id_wishlist
-        );
-        if ($result == false || !count($result) || empty($result) === true) {
-            return false;
-        }
+        $result = $this->getWishlistCounter($id_wishlist);
 
         return \Db::getInstance()->execute('
             UPDATE `' . _DB_PREFIX_ . 'wishlist` SET
             `counter` = ' . (int) ($result['counter'] + 1) . '
             WHERE `id_wishlist` = ' . (int) $id_wishlist
         );
+    }
+
+    public static function getWishlistCounter($id_wishlist)
+    {
+        $result = \Db::getInstance()->getRow('
+            SELECT `counter`
+            FROM `' . _DB_PREFIX_ . 'wishlist`
+            WHERE `id_wishlist` = ' . (int) $id_wishlist
+        );
+
+        if ($result == false || !count($result) || empty($result) === true) {
+            return false;
+        }
+        return true;
     }
 
     /**
