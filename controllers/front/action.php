@@ -365,7 +365,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             $params['idWishlist'],
             $params['id_product'],
             $params['id_product_attribute'],
-            $params['id_cart'],
+            (int) $this->context->cart->id,
             $params['quantity']
         );
         if (true === $productAdd) {
