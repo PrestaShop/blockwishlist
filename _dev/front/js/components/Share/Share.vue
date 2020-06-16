@@ -106,16 +106,7 @@
        */
       EventBus.$on('showShareWishlist', async event => {
         this.actionText = this.copyText;
-        //const { data } = await this.$apollo.mutate({
-        //  mutation: shareList,
-        //  variables: {
-        //    listId: event.detail.listId,
-        //    token: event.detail.token,
-        //    userId: event.detail.userId
-        //  }
-        //});
-        //const result = data.shareList;
-        this.value = `${this.url}&token=${event.detail.token}`;
+        this.value = event.detail.shareUrl;
         this.toggleModal();
       });
     }
