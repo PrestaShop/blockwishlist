@@ -208,6 +208,17 @@
             },
             resp
           });
+
+          let statResponse = await fetch(wishlistAddProductToCartUrl, {
+            headers: {
+              'Content-Type':
+                'application/x-www-form-urlencoded; charset=UTF-8',
+              Accept: 'application/json, text/javascript, */*; q=0.01'
+            }
+          });
+
+          let statsResp = await statResponse.json();
+          console.log(statsResp);
         } catch (error) {
           prestashop.emit('handleError', {
             eventType: 'addProductToCart',
