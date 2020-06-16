@@ -23,6 +23,8 @@ export default `
   type List {
     id_wishlist: Int
     name: String
+    listUrl: String
+    shareUrl: String
     nbProducts: Int
   }
 
