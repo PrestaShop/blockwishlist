@@ -1,12 +1,13 @@
+includes:
+	- %currentWorkingDirectory%/vendor/prestashop/php-dev-tools/phpstan/ps-module-extension.neon
+
 parameters:
-	bootstrap: tests/phpstan/bootstrap.php
 	paths:
-		- classes
-		- controllers
-		- blockwishlist.php
-		- src
-	dynamicConstantNames:
-		- _PS_VERSION_
+		# From PHPStan 0.12, paths to check are relative to the neon file
+		- ../../classes
+		- ../../controllers
+		- ../../blockwishlist.php
+		- ../../src
 	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:
 		- '#Property ModuleCore::\$version \(float\) does not accept string.#'
