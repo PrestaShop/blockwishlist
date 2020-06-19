@@ -55,25 +55,40 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
         // $key must be ID of lang so json for wishlistPageName should look like:
         // {"wishlistPageName": {"1":"wishlistPageNameFR", "1":"wishlistPageNameFR"} }
 
-        if (isset($params['wishlistPageName'])) {
-            $wishlistNames = json_decode($params['wishlistPageName'], true);
+        $wishlistPageName = $request->request->get('wishlistPageName');
+        if (isset($wishlistPageName)) {
+            $wishlistNames = json_decode($wishlistPageName, true);
             foreach ($wishlistNames as $langID => $value) {
-                Configuration::udpateValue('blockwishlist_wishlistPageName',[$langID => $value]);
+                $result &= Configuration::udpateValue('blockwishlist_wishlistPageName',[$langID => $value]);
             }
         }
 
-        if (isset($params['wishlistDefaultTitle'])) {
-            $wishlistDefaultTitle = json_decode($params['wishlistDefaultTitle'], true);
+        $wishlistDefaultTitle = $request->request->get('wishlistDefaultTitle');
+        if (isset($wishlistDefaultTitle)) {
+            $wishlistDefaultTitle = json_decode($wishlistDefaultTitle, true);
             foreach ($wishlistDefaultTitle as $langID => $value) {
-                Configuration::udpateValue('blockwishlist_wishlistDefaultTitle',[$langID => $value]);
+                $result &= Configuration::udpateValue('blockwishlist_wishlistDefaultTitle',[$langID => $value]);
             }
         }
 
-        if (isset($params['createNewButtonLabel'])) {
-            $createNewButtons = json_decode($params['createNewButton'], true);
+        $createNewButtonLabel = $request->request->get('createNewButtonLabel');
+        if (isset($createNewButtonLabel)) {
+            $createNewButtons = json_decode($createNewButtonLabel, true);
             foreach ($createNewButtons as $langID => $value) {
-                Configuration::udpateValue('blockwishlist_createNewButtonLabel',[$langID => $value]);
+                $result &= Configuration::udpateValue('blockwishlist_createNewButtonLabel',[$langID => $value]);
             }
+        }
+
+        if (isset($result) && true === $result) {
+            return $this->json([
+                'success' => true,
+                'message' => 'Configuration updated'
+            ]);
+        } else {
+            return $this->json([
+                'success' => false,
+                'message' => 'Something wrong happened'
+            ]);
         }
     }
 
@@ -98,8 +113,13 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
 
     public function getStatisticsAction(Request $request)
     {
-        if ($this->cache->contains('blockwishlist.cachetest')) {
-            $results = $this->cache->fetch('blockwishlist.cachetest');
+        if ($this->cache->contains('blockwishlist.stats.allTime')) {
+            $results = [
+                'allTime' => $this->cache->fetch('blockwishlist.stats.allTime'),
+                'currentYear' => $this->cache->fetch('blockwishlist.stats.currentYear'),
+                'currentMonth' => $this->cache->fetch('blockwishlist.stats.currentMonth'),
+                'currentDay' => $this->cache->fetch('blockwishlist.stats.currentDay'),
+            ];
         } else {
             $results = (new StatisticsCalculator($this->context))->computeAllStats();
             $this->cache->save('blockwishlist.stats.allTime', $results['allTime'], self::CACHE_LIFETIME_SECONDS);
@@ -114,29 +134,29 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
         ]);
     }
 
-    public function forceRefreshCacheStatsAction(Request $request)
-    {
-        $cacheName = $request->request->get('cacheName');
+    // this idea need some functional specification
+    // public function forceRefreshCacheStatsAction(Request $request)
+    // {
+    //     $cacheName = $request->request->get('cacheName');
 
-        $statsCalculator = new StatisticsCalculator($this->context);
-        switch ($cacheName) {
-            case 'year':
-                $result = $statsCalculator->computeYearStats();
-                break;
-            case 'month':
-                $result = $statsCalculator->computeMonthStats();
-                break;
-            case 'day':
-                $result = $statsCalculator->computeDayStats();
-            break;
-            default:
-                break;
-        }
+    //     $statsCalculator = new StatisticsCalculator($this->context);
+    //     switch ($cacheName) {
+    //         case 'year':
+    //             $results = $statsCalculator->computeYearStats();
+    //             break;
+    //         case 'month':
+    //             $results = $statsCalculator->computeMonthStats();
+    //             break;
+    //         case 'day':
+    //             $results = $statsCalculator->computeDayStats();
+    //         break;
+    //         default:
+    //             break;
+    //     }
 
-        return $this->json([
-            'success' => true,
-            'stats' => $results
-        ]);
-    }
-
+    //     return $this->json([
+    //         'success' => true,
+    //         'stats' => $results
+    //     ]);
+    // }
 }
