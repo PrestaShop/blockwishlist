@@ -37,6 +37,7 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
 
         if (true === empty($token)) {
             $this->setTemplate('module:blockwishlist/views/templates/front/view.tpl');
+
             return false;
         }
 

@@ -297,7 +297,8 @@ class WishList extends \ObjectModel
         $wishlistProducts = \Db::getInstance()->executeS('
             SELECT `id_product`, `id_product_attribute`, `quantity`
             FROM `' . _DB_PREFIX_ . 'wishlist_product`
-            WHERE `id_wishlist` = ' . (int) $id_wishlist
+            WHERE `id_wishlist` = ' . (int) $id_wishlist .'
+            And quantity > 0'
         );
 
         if (false === empty($wishlistProducts)) {
@@ -541,7 +542,7 @@ class WishList extends \ObjectModel
         if (!\Validate::isUnsignedId($id_wishlist)) {
             die(\Tools::displayError());
         }
-        $result = $this->getWishlistCounter($id_wishlist);
+        $result = WishList::getWishlistCounter($id_wishlist);
 
         return \Db::getInstance()->execute('
             UPDATE `' . _DB_PREFIX_ . 'wishlist` SET
@@ -561,6 +562,7 @@ class WishList extends \ObjectModel
         if ($result == false || !count($result) || empty($result) === true) {
             return false;
         }
+
         return true;
     }
 
