@@ -20,7 +20,6 @@
 
 use PrestaShop\Module\BlockWishList\Database\Install;
 use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
-use PrestaShop\Module\BlockWishlist\WishList;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -60,7 +59,7 @@ class BlockWishList extends Module implements WidgetInterface
         $this->displayName = $this->l('Wishlist block');
         $this->description = $this->l('Adds a block containing the customer\'s wishlists.');
         $this->ps_versions_compliancy = [
-            'min' => '1.7',
+            'min' => '1.7.6.0',
             'max' => _PS_VERSION_,
         ];
         $this->isPrestaShopVersionLessThan176 = (bool) version_compare(_PS_VERSION_, '1.7.6', '<');
@@ -113,9 +112,9 @@ class BlockWishList extends Module implements WidgetInterface
         $productsTagged = false;
 
         if (true === $this->context->customer->isLogged()) {
-            $productsTagged = Wishlist::getAllProductByCustomer($this->context->customer->id);
+            $productsTagged = WishList::getAllProductByCustomer($this->context->customer->id);
         }
-        
+
         Media::addJsDef([
             'blockwishlistController' => $this->context->link->getModuleLink(
                 $this->name,
@@ -123,6 +122,7 @@ class BlockWishList extends Module implements WidgetInterface
             ),
             'removeFromWishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
             'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'productslist'),
+            'wishlistAddProductToCartUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToCart']),
             'productsAlreadyTagged' => $productsTagged,
         ]);
 

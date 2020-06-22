@@ -80,12 +80,12 @@
               </span>
 
               <span v-if="index == Object.keys(product.attributes).length - 1">
-                {{ quantityText }} : {{ product.quantity }}
+                {{ quantityText }} : {{ product.wishlist_quantity }}
               </span>
             </template>
 
             <span v-if="Object.keys(product.attributes).length === 0">
-              {{ quantityText }} : {{ product.quantity }}
+              {{ quantityText }} : {{ product.wishlist_quantity }}
             </span>
           </p>
 
@@ -208,6 +208,19 @@
             },
             resp
           });
+
+          let statResponse = await fetch(
+            `${wishlistAddProductToCartUrl}&params[idWishlist]=${this.listId}&params[id_product]=${this.product.id_product}&params[id_product_attribute]=${this.product.id_product_attribute}&params[quantity]=${this.product.wishlist_quantity}`,
+            {
+              headers: {
+                'Content-Type':
+                  'application/x-www-form-urlencoded; charset=UTF-8',
+                Accept: 'application/json, text/javascript, */*; q=0.01'
+              }
+            }
+          );
+
+          let statsResp = await statResponse.json();
         } catch (error) {
           prestashop.emit('handleError', {
             eventType: 'addProductToCart',

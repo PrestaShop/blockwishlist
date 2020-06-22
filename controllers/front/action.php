@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 2007-2020 PrestaShop and Contributors
  *
@@ -19,15 +18,12 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-use PrestaShop\Module\BlockWishlist\WishList;
-use PrestaShop\PrestaShop\Core\Product\ProductListingPresenter;
 use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
-use PrestaShop\PrestaShop\Core\Product\ProductPresentationSettings;
+use PrestaShop\PrestaShop\Core\Product\ProductListingPresenter;
 
-
-class BlockWishlistActionModuleFrontController extends ModuleFrontController
+class BlockWishListActionModuleFrontController extends ModuleFrontController
 {
     public function postProcess()
     {
@@ -58,31 +54,34 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         exit;
     }
 
-    private function addProductToWishlistAction($params)
+    private function addProductToWishListAction($params)
     {
-        $id_customer = (int) $this->context->customer->id;
-        $idWishlist = (int) $params['idWishlist'];
+        $idWishList = (int) $params['idWishList'];
         $id_product = (int) $params['id_product'];
         $id_product_attribute = (int) $params['id_product_attribute'];
         $quantity = (int) $params['quantity'];
+        if (0 === $quantity) {
+            $product = new Product($id_product);
+            $quantity = $product->minimal_quantity;
+        }
 
-        //if (0 !== $idWishlist) {
-        //    if (Wishlist::exists($idWishlist, $this->context->customer->id) === false) {
-        //        $wishlist = new Wishlist();
-        //        $wishlist->id_shop = $this->context->shop->id;
-        //        $wishlist->id_shop_group = $this->context->shop->id_shop_group;
-        //        $wishlist->id_customer = $this->context->customer->id;
-        //        $wishlist->name = 'default';
-        //        $wishlist->token = $this->generateWishlistToken();
-        //        $wishlist->default = 1;
-        //        $wishlist->save();
-        //    }
-        //} else {
-        //}
-        $wishlist = new Wishlist($idWishlist);
+        if (0 === $idWishList) {
+            if (WishList::exists($idWishList, $this->context->customer->id) === false) {
+                $wishlist = new WishList();
+                $wishlist->id_shop = $this->context->shop->id;
+                $wishlist->id_shop_group = $this->context->shop->id_shop_group;
+                $wishlist->id_customer = $this->context->customer->id;
+                $wishlist->name = 'default';
+                $wishlist->token = $this->generateWishListToken();
+                $wishlist->default = 1;
+                $wishlist->add();
+            }
+        } else {
+            $wishlist = new WishList($idWishList);
+        }
 
         $productIsAdded = $wishlist->addProduct(
-            $idWishlist,
+            $idWishList,
             $this->context->customer->id,
             $id_product,
             $id_product_attribute,
@@ -106,15 +105,15 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         );
     }
 
-    private function createNewWishlistAction($params)
+    private function createNewWishListAction($params)
     {
         if (isset($params['name'])) {
-            $wishlist = new Wishlist();
+            $wishlist = new WishList();
             $wishlist->name = $params['name'];
             $wishlist->id_shop_group = $this->context->shop->id_shop_group;
             $wishlist->id_customer = $this->context->customer->id;
             $wishlist->id_shop = $this->context->shop->id;
-            $wishlist->token = $this->generateWishlistToken();
+            $wishlist->token = $this->generateWishListToken();
 
             if (true === $wishlist->save()) {
                 return $this->ajaxRender(
@@ -123,8 +122,8 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                         'message' => $this->module->l('The list has been properly created', 'mywishlist'),
                         'datas' => [
                             'name' => $wishlist->name,
-                            'id_wishlist' => $wishlist->id
-                        ]
+                            'id_wishlist' => $wishlist->id,
+                        ],
                     ])
                 );
             }
@@ -132,30 +131,30 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('Error saving the new wishlist', 'mywishlist')
+                    'message' => $this->module->l('Error saving the new wishlist', 'mywishlist'),
                 ])
             );
         } else {
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('Missing name parameter', 'mywishlist')
+                    'message' => $this->module->l('Missing name parameter', 'mywishlist'),
                 ])
             );
         }
     }
 
-    private function renameWishlistAction($params)
+    private function renameWishListAction($params)
     {
-        if (isset($params['idWishlist'], $params['name'])) {
-            $wishlist = new Wishlist($params['idWishlist']);
+        if (isset($params['idWishList'], $params['name'])) {
+            $wishlist = new WishList($params['idWishList']);
             $wishlist->name = $params['name'];
 
             if (true === $wishlist->save()) {
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->module->l('Wishlist has been renamed', 'mywishlist')
+                        'message' => $this->module->l('WishList has been renamed', 'mywishlist'),
                     ])
                 );
             }
@@ -163,7 +162,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l("Wishlist couldn't been renamed", 'mywishlist')
+                    'message' => $this->module->l("WishList couldn't been renamed", 'mywishlist'),
                 ])
             );
         }
@@ -171,16 +170,16 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         return $this->ajaxRenderMissingParams();
     }
 
-    private function deleteWishlistAction($params)
+    private function deleteWishListAction($params)
     {
-        if (isset($params['idWishlist'])) {
-            $wishlist = new Wishlist($params['idWishlist']);
+        if (isset($params['idWishList'])) {
+            $wishlist = new WishList($params['idWishList']);
 
             if (true === (bool) $wishlist->delete()) {
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->module->l('Wishlist has been removed', 'mywishlist')
+                        'message' => $this->module->l('WishList has been removed', 'mywishlist'),
                     ])
                 );
             }
@@ -188,7 +187,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l("Wishlist couldn't been removed", 'mywishlist')
+                    'message' => $this->module->l("WishList couldn't been removed", 'mywishlist'),
                 ])
             );
         }
@@ -196,15 +195,15 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         return $this->ajaxRenderMissingParams();
     }
 
-    private function deleteProductFromWishlistAction($params)
+    private function deleteProductFromWishListAction($params)
     {
         if (
-            isset($params['idWishlist'])
+            isset($params['idWishList'])
             && isset($params['id_product'])
             && isset($params['id_product_attribute'])
         ) {
-            $isDeleted = Wishlist::removeProduct(
-                $params['idWishlist'],
+            $isDeleted = WishList::removeProduct(
+                $params['idWishList'],
                 $this->context->customer->id,
                 $params['id_product'],
                 $params['id_product_attribute']
@@ -214,7 +213,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->module->l('Product succesfully removed', 'mywishlist')
+                        'message' => $this->module->l('Product succesfully removed', 'mywishlist'),
                     ])
                 );
             }
@@ -222,7 +221,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('Unable to remove product from wishlist', 'mywishlist')
+                    'message' => $this->module->l('Unable to remove product from wishlist', 'mywishlist'),
                 ])
             );
         }
@@ -230,17 +229,17 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         return $this->ajaxRenderMissingParams();
     }
 
-    private function updateProductFromWishlistAction($params)
+    private function updateProductFromWishListAction($params)
     {
         if (isset(
-            $params['idWishlist'],
+            $params['idWishList'],
             $params['id_product'],
             $params['id_product_attribute'],
             $params['priority'],
             $params['quantity']
         )) {
-            $isDeleted = Wishlist::updateProduct(
-                $params['idWishlist'],
+            $isDeleted = WishList::updateProduct(
+                $params['idWishList'],
                 $params['id_product'],
                 $params['id_product_attribute'],
                 $params['priority'],
@@ -251,7 +250,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->module->l('Product succesfully updated', 'mywishlist')
+                        'message' => $this->module->l('Product succesfully updated', 'mywishlist'),
                     ])
                 );
             }
@@ -259,7 +258,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('Unable to update product from wishlist', 'mywishlist')
+                    'message' => $this->module->l('Unable to update product from wishlist', 'mywishlist'),
                 ])
             );
         }
@@ -267,20 +266,29 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         return $this->ajaxRenderMissingParams();
     }
 
-    private function getAllWishlistAction()
+    private function getAllWishListAction()
     {
-        $infos = Wishlist::getAllWishlistsByIdCustomer($this->context->customer->id);
+        $infos = WishList::getAllWishListsByIdCustomer($this->context->customer->id);
 
-        return $this->ajaxRender(
-            json_encode([
-                'wishlists' => $infos,
-            ])
-        );
+        foreach ($infos as $key => $wishlist) {
+            $infos[$key]['shareUrl'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist['token']]);
+            $infos[$key]['listUrl'] = $this->context->link->getModuleLink('blockwishlist', 'productslist', ['id_wishlist' => $wishlist['id_wishlist']]);
+        }
+
+        if (false === empty($infos)) {
+            return $this->ajaxRender(
+                json_encode([
+                    'wishlists' => $infos,
+                ])
+            );
+        }
+
+        return $this->ajaxRenderMissingParams();
     }
 
-    private function generateWishlistToken()
+    private function generateWishListToken()
     {
-        return strtoupper(substr(sha1(uniqid(rand(), true) . _COOKIE_KEY_ . $this->context->customer->id), 0, 16));
+        return strtoupper(substr(sha1(uniqid((string) rand(), true) . _COOKIE_KEY_ . $this->context->customer->id), 0, 16));
     }
 
     private function ajaxRenderMissingParams()
@@ -288,15 +296,15 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
         return $this->ajaxRender(
             json_encode([
                 'success' => false,
-                'message' => $this->module->l('Request is missing one or multiple parameters', 'mywishlist')
+                'message' => $this->module->l('Request is missing one or multiple parameters', 'mywishlist'),
             ])
         );
     }
 
-    private function getProductsByWishlistAction($params)
+    private function getProductsByWishListAction($params)
     {
-        $wishlistProducts = Wishlist::getProductByIdCustomer($params['id_wishlist'], $this->context->customer->id, $this->context->language->id);
-        $wishlist = new Wishlist($params['id_wishlist']);
+        $wishlistProducts = WishList::getProductByIdCustomer($params['id_wishlist'], $this->context->customer->id, $this->context->language->id);
+        $wishlist = new WishList($params['id_wishlist']);
 
         if (empty($wishlistProducts)) {
             return $this->ajaxRender(
@@ -305,7 +313,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                     'name' => $wishlist->name,
                     'message' => $this->module->l('No products found for this customer', 'mywishlist'),
                     'datas' => [
-                      'products' => [] 
+                      'products' => [],
                     ],
                 ])
             );
@@ -323,7 +331,7 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             new ProductColorsRetriever(),
             $this->context->getTranslator()
         );
-        $products_for_template = array();
+        $products_for_template = [];
 
         if (is_array($wishlistProducts)) {
             foreach ($wishlistProducts as $rawProduct) {
@@ -335,14 +343,16 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
             }
         }
 
+        $wishlist = new WishList($params['id_wishlist']);
+
         return $this->ajaxRender(
             json_encode([
                 'success' => true,
                 'name' => $wishlist->name,
                 'message' => $this->module->l('The list has been properly created', 'mywishlist'),
                 'datas' => [
-                    'products' => $products_for_template
-                ]
+                    'products' => $products_for_template,
+                ],
             ])
         );
     }
@@ -350,13 +360,13 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
     private function addProductToCartAction($params)
     {
         $productAdd = WishList::addBoughtProduct(
-            $params['idWishlist'],
+            $params['idWishList'],
             $params['id_product'],
             $params['id_product_attribute'],
-            $params['id_cart'],
+            (int) $this->context->cart->id,
             $params['quantity']
         );
-        if(true === $productAdd) {
+        if (true === $productAdd) {
             return $this->ajaxRender(
                 json_encode([
                     'success' => true,
@@ -371,5 +381,17 @@ class BlockWishlistActionModuleFrontController extends ModuleFrontController
                 ])
             );
         }
+    }
+
+    private function getUrlByIdWishListAction($params)
+    {
+        $wishlist = new WishList($params['idWishList']);
+
+        return $this->ajaxRender(
+            json_encode([
+                'status' => 'true',
+                'url' => $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist->token]),
+            ])
+        );
     }
 }

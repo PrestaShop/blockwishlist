@@ -28,10 +28,7 @@
         :key="list.id_wishlist"
         v-for="list of items"
       >
-        <a
-          class="wishlist-list-item-title"
-          :href="`${listUrl}&params[id_wishlist]=${list.id_wishlist}`"
-        >
+        <a class="wishlist-list-item-title" :href="list.listUrl">
           {{ list.name }}
           <span v-if="list.nbProducts">({{ list.nbProducts }})</span>
           <span v-else>(0)</span>
