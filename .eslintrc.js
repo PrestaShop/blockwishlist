@@ -50,6 +50,7 @@ module.exports = {
         switchCase: 1,
       },
     ],
+    'vue/require-default-prop': 0,
   },
   settings: {
     'import/resolver': 'webpack',

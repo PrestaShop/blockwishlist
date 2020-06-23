@@ -89,7 +89,7 @@
         <li
           class="wishlist-products-item"
           v-for="product in products.datas.products"
-          :key="product.id"
+          :key="product.id_product_attribute"
         >
           <Product
             :product="product"
@@ -202,14 +202,12 @@
         default: 0,
       },
       wishlistProducts: {
-        type: String,
+        type: Array,
         required: false,
-        default: () => [],
       },
       wishlist: {
         type: String,
         required: false,
-        default: 'Wishlist',
       },
       addToCart: {
         type: String,
