@@ -20,6 +20,7 @@
 
 namespace PrestaShop\Module\BlockWishList\Search;
 
+use Db;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
@@ -32,15 +33,22 @@ use WishList;
 class WishListProductSearchProvider implements ProductSearchProviderInterface
 {
     /**
+     * @var Db
+     */
+    private $db;
+
+    /**
      * @var WishList
      */
     private $wishList;
 
     /**
+     * @param Db $db
      * @param WishList $wishList
      */
-    public function __construct(WishList $wishList)
+    public function __construct(Db $db, WishList $wishList)
     {
+        $this->db = $db;
         $this->wishList = $wishList;
     }
 
@@ -54,8 +62,31 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         ProductSearchContext $context,
         ProductSearchQuery $query
     ) {
-        $products = []; // @todo Implement Search
-        $count = 0; // @todo Implement Search
+        // @todo Complete SQL Query
+        $querySearch = new \DbQuery();
+        $querySearch->select(); // @todo Set fields used to render Product, example \ManufacturerCore::getProducts()
+        $querySearch->from();
+        $querySearch->innerJoin();
+        $querySearch->where('id_wishlist = ' . (int) $this->wishList->id);
+        $querySearch->limit(); // @todo use ProductSearchQuery to get pagination...
+
+        $products = $this->db->executeS($querySearch);
+
+        if (empty($products)) {
+            $products = [];
+        }
+
+        // @todo Complete SQL Query count
+        $querySearch = new \DbQuery();
+        $querySearch->select('COUNT(*)');
+        $querySearch->from();
+        $querySearch->innerJoin();
+        $querySearch->where('id_wishlist = ' . (int) $this->wishList->id);
+        $querySearch->where(); // @todo use ProductSearchContext to get Language identifier etc...
+        // @todo No use pagination here, we want count all results
+
+        $count = (int) $this->db->getValue($querySearch);
+
         $result = new ProductSearchResult();
         $result->setProducts($products);
         $result->setTotalProductsCount($count);
