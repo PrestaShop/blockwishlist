@@ -9,3 +9,15 @@ blockwishlist_statistics:
   methods: [GET]
   defaults:
     _controller: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController::getStatisticsAction
+
+blockwishlist_setwishlistconfiguration:
+  path: blockwishlist/setwishlistconfiguration
+  methods: [POST]
+  defaults:
+    _controller: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController::setWishlistConfigurationAction
+
+blockwishlist_setwishlistconfiguration:
+  path: blockwishlist/getwishlistconfiguration
+  methods: [GET]
+  defaults:
+    _controller: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController::getWishlistConfigurationAction
