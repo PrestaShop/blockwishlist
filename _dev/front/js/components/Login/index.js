@@ -16,19 +16,18 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue';
-import Login from './Login';
 import initApp from '@components/init';
+import Login from './Login';
 
 const props = [
   {
     name: 'loginText',
-    type: String
+    type: String,
   },
   {
     name: 'cancelText',
-    type: String
-  }
+    type: String,
+  },
 ];
 
 initApp(Login, '.wishlist-login', props);

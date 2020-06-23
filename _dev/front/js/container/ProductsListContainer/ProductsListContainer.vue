@@ -68,14 +68,20 @@
         </div>
 
         <div class="col-sm-3 col-xs-4 hidden-md-up filter-button">
-          <button id="search_filter_toggler" class="btn btn-secondary">
+          <button
+            id="search_filter_toggler"
+            class="btn btn-secondary"
+          >
             {{ filter }}
           </button>
         </div>
       </div>
     </div>
 
-    <section id="content" class="page-content card card-block">
+    <section
+      id="content"
+      class="page-content card card-block"
+    >
       <ul
         class="wishlist-products-list"
         v-if="products.datas && products.datas.products.length > 0"
@@ -83,14 +89,15 @@
         <li
           class="wishlist-products-item"
           v-for="product in products.datas.products"
+          :key="product.id"
         >
           <Product
             :product="product"
             :add-to-cart="addToCart"
             :customize-text="customizeText"
             :quantity-text="quantityText"
-            :listId="listId ? listId : parseInt(currentWishlist.id_wishlist)"
-            :isShare="wishlistProducts ? true : false"
+            :list-id="listId ? listId : parseInt(currentWishlist.id_wishlist)"
+            :is-share="wishlistProducts ? true : false"
           />
         </li>
       </ul>
@@ -100,10 +107,38 @@
         class="wishlist-list-loader"
         height="105"
       >
-        <rect x="0" y="12" rx="3" ry="0" width="100%" height="11" />
-        <rect x="0" y="36" rx="3" ry="0" width="100%" height="11" />
-        <rect x="0" y="60" rx="3" ry="0" width="100%" height="11" />
-        <rect x="0" y="84" rx="3" ry="0" width="100%" height="11" />
+        <rect
+          x="0"
+          y="12"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
+        <rect
+          x="0"
+          y="36"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
+        <rect
+          x="0"
+          y="60"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
+        <rect
+          x="0"
+          y="84"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
       </ContentLoader>
 
       <p
@@ -119,7 +154,7 @@
 <script>
   import Product from '@components/Product/Product';
   import getProducts from '@graphqlFiles/queries/getproducts';
-  import { ContentLoader } from 'vue-content-loader';
+  import {ContentLoader} from 'vue-content-loader';
   import EventBus from '@components/EventBus';
 
   /**
@@ -129,7 +164,7 @@
     name: 'ProductsListContainer',
     components: {
       Product,
-      ContentLoader
+      ContentLoader,
     },
     apollo: {
       products: {
@@ -137,85 +172,96 @@
         variables() {
           return {
             listId: this.listId,
-            url: this.url
+            url: this.url,
           };
         },
         skip() {
           return true;
-        }
-      }
+        },
+      },
     },
     props: {
       url: {
         type: String,
-        required: false
+        required: false,
+        default: '#',
       },
       title: {
         type: String,
-        required: true
+        required: true,
+        default: 'Product name',
       },
       defaultSort: {
         type: String,
-        required: true
+        required: true,
+        default: 'All',
       },
       listId: {
         type: Number,
-        required: false
+        required: false,
+        default: 0,
       },
       wishlistProducts: {
         type: String,
-        required: false
+        required: false,
+        default: () => [],
       },
       wishlist: {
         type: String,
-        required: false
+        required: false,
+        default: 'Wishlist',
       },
       addToCart: {
         type: String,
-        required: true
+        required: true,
+        default: 'Add to cart',
       },
       customizeText: {
         type: String,
-        required: true
+        required: true,
+        default: 'Customize',
       },
       quantityText: {
         type: String,
-        required: true
+        required: true,
+        defalut: 'Quantity',
       },
       lastAdded: {
         type: String,
-        required: true
+        required: true,
+        default: 'Last added',
       },
       priceLowHigh: {
         type: String,
-        required: true
+        required: true,
+        default: 'Price low to high',
       },
       priceHighLow: {
         type: String,
-        required: true
+        required: true,
+        default: 'Price high to low',
       },
       filter: {
         type: String,
-        required: true
-      }
+        required: true,
+        default: 'Filter',
+      },
     },
     data() {
       return {
         products: [],
         currentWishlist: {},
-        selectedSort: ''
+        selectedSort: '',
       };
     },
     methods: {
       /**
-       * Delete a list by launching a mutation, updating cache and then on response replacing the lists state
-       *
-       * @param {Int} id The list id to be removed
+       * Sort by the select drop down
+       * @param {String} value The value selected
        */
-      async deleteList(id) {},
       async changeSelectedSort(value) {
         this.selectedSort = value;
-      }
+      },
     },
     mounted() {
       if (this.listId) {
@@ -232,7 +278,7 @@
         const products = JSON.parse(this.wishlistProducts);
 
         if (products.length > 0) {
-          this.products.datas = { products };
+          this.products.datas = {products};
         }
       }
 
@@ -245,8 +291,8 @@
         this.$apollo.queries.products.refetch();
       });
 
-      EventBus.$on('paginationNumbers', payload => {});
-    }
+      EventBus.$on('paginationNumbers', (payload) => payload);
+    },
   };
 </script>
 

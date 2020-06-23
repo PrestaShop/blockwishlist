@@ -30,10 +30,10 @@ export default {
     /**
      * Get product from a list
      */
-    products: async (root, {url, listId}, context) => {
-      let response = await fetch(`${url}&params[id_wishlist]=${listId}`);
+    products: async (root, {url, listId}) => {
+      const response = await fetch(`${url}&params[id_wishlist]=${listId}`);
 
-      let datas = await response.json();
+      const datas = await response.json();
 
       EventBus.$emit('paginate', {
         detail: {
@@ -50,10 +50,10 @@ export default {
     /**
      * Get every lists from User
      */
-    lists: async (root, {url}, context) => {
-      let response = await fetch(url);
+    lists: async (root, {url}) => {
+      const response = await fetch(url);
 
-      let datas = await response.json();
+      const datas = await response.json();
 
       return datas.wishlists;
     }
@@ -65,25 +65,14 @@ export default {
      * @param {String} name The name of the list
      * @param {Int} userId The ID of the user you want to create a list on
      */
-    createList: async (root, {name, url}, context) => {
-      let response = await fetch(url + `&params[name]=${name}`, {
+    createList: async (root, {name, url}) => {
+      const response = await fetch(`${url}&params[name]=${name}`, {
         method: 'POST'
       });
 
-      let datas = await response.json();
+      const datas = await response.json();
 
       return datas;
-    },
-    /**
-     * Get a share url for a list
-     *
-     * @param {ID} listId ID of the list
-     * @param {ID} userId ID of the user
-     */
-    shareList: (root, {listId, userId}, context) => {
-      return {
-        url: 'http://url.fr'
-      };
     },
     /**
      * Rename a list
@@ -92,12 +81,12 @@ export default {
      * @param {Int} userId Id of the user
      * @param {Int} listId} ID of the list to be renamed
      */
-    renameList: async (root, {name, listId, url}, context) => {
-      let response = await fetch(url + `&params[name]=${name}&params[idWishlist]=${listId}`, {
+    renameList: async (root, {name, listId, url}) => {
+      const response = await fetch(`${url}&params[name]=${name}&params[idWishList]=${listId}`, {
         method: 'POST'
       });
 
-      let datas = await response.json();
+      const datas = await response.json();
 
       return datas;
     },
@@ -110,18 +99,20 @@ export default {
      *
      * @returns {JSON} A success or failed response
      */
-    addToList: async (root, {listId, url, productId, quantity, productAttributeId}, context) => {
-      let response = await fetch(
-        url +
-          `&params[id_product]=${productId}&params[idWishlist]=${listId}&params[quantity]=${quantity}&params[id_product_attribute]=${productAttributeId}`,
+    addToList: async (root, {listId, url, productId, quantity, productAttributeId}) => {
+      /* eslint-disable */
+      const response = await fetch(
+        `${url}&params[id_product]=${productId}&params[idWishList]=${listId}&params[quantity]=${quantity}&params[id_product_attribute]=${productAttributeId}`,
         {
           method: 'POST'
         }
       );
+      /* eslint-enable */
 
-      let datas = await response.json();
+      const datas = await response.json();
 
       if (datas.success) {
+        // eslint-disable-next-line
         productsAlreadyTagged.push({
           id_product: productId.toString(),
           id_wishlist: listId.toString(),
@@ -141,18 +132,20 @@ export default {
      *
      * @returns {JSON} A success or failed response
      */
-    removeFromList: async (root, {listId, productId, url, productAttributeId}, context) => {
-      let response = await fetch(
-        url +
-          `&params[id_product]=${productId}&params[idWishlist]=${listId}&params[id_product_attribute]=${productAttributeId}`,
+    removeFromList: async (root, {listId, productId, url, productAttributeId}) => {
+      /* eslint-disable */
+      const response = await fetch(
+        `${url}&params[id_product]=${productId}&params[idWishList]=${listId}&params[id_product_attribute]=${productAttributeId}`,
         {
           method: 'POST'
         }
       );
+      /* eslint-enable */
 
-      let datas = await response.json();
+      const datas = await response.json();
 
       if (datas.success) {
+        // eslint-disable-next-line
         productsAlreadyTagged = productsAlreadyTagged.filter(
           e =>
             e.id_product !== productId.toString() ||
@@ -170,12 +163,12 @@ export default {
      *
      * @returns {JSON} a JSON success or failed response
      */
-    deleteList: async (root, {listId, url}, context) => {
-      let response = await fetch(url + `&params[idWishlist]=${listId}`, {
+    deleteList: async (root, {listId, url}) => {
+      const response = await fetch(`${url}&params[idWishList]=${listId}`, {
         method: 'POST'
       });
 
-      let datas = await response.json();
+      const datas = await response.json();
 
       return datas;
     }

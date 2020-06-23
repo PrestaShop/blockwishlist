@@ -17,7 +17,6 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import shareList from '@graphqlFiles/mutations/sharelist';
   import EventBus from '@components/EventBus';
 
   /**
@@ -29,39 +28,39 @@
       url: {
         type: String,
         required: true,
-        default: '#'
+        default: '#',
       },
       title: {
         type: String,
         required: true,
-        default: 'Share wishlist'
+        default: 'Share wishlist',
       },
       label: {
         type: String,
         required: true,
-        default: 'Share link'
+        default: 'Share link',
       },
       cancelText: {
         type: String,
         required: true,
-        default: 'Cancel'
+        default: 'Cancel',
       },
       copyText: {
         type: String,
         required: true,
-        default: 'Copy text'
+        default: 'Copy text',
       },
       copiedText: {
         type: String,
         required: true,
-        default: 'Copied'
-      }
+        default: 'Copied',
+      },
     },
     data() {
       return {
         value: '',
         isHidden: true,
-        actionText: ''
+        actionText: '',
       };
     },
     methods: {
@@ -76,7 +75,7 @@
        */
       copyLink() {
         const shareInput = document.querySelector(
-          '.wishlist-share .form-control'
+          '.wishlist-share .form-control',
         );
 
         shareInput.select();
@@ -91,10 +90,10 @@
         EventBus.$emit('showToast', {
           detail: {
             type: 'success',
-            message: 'copyText'
-          }
+            message: 'copyText',
+          },
         });
-      }
+      },
     },
     mounted() {
       this.actionText = this.copyText;
@@ -104,12 +103,12 @@
        *
        * @param {String} 'showCreateWishlist'
        */
-      EventBus.$on('showShareWishlist', async event => {
+      EventBus.$on('showShareWishlist', async (event) => {
         this.actionText = this.copyText;
         this.value = event.detail.shareUrl;
         this.toggleModal();
       });
-    }
+    },
   };
 </script>
 

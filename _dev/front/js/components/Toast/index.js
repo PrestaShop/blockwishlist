@@ -16,39 +16,38 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue';
-import Toast from './Toast';
 import initApp from '@components/init';
+import Toast from './Toast';
 
 const props = [
   {
     name: 'renameWishlistText',
-    type: String
+    type: String,
   },
   {
     name: 'createWishlistText',
-    type: String
+    type: String,
   },
   {
     name: 'addedWishlistText',
-    type: String
+    type: String,
   },
   {
     name: 'shareText',
-    type: String
+    type: String,
   },
   {
     name: 'deleteWishlistText',
-    type: String
+    type: String,
   },
   {
     name: 'deleteProductText',
-    type: String
+    type: String,
   },
   {
     name: 'copyText',
-    type: String
-  }
+    type: String,
+  },
 ];
 
 initApp(Toast, '.wishlist-toast', props);

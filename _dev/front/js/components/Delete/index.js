@@ -16,35 +16,34 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue';
-import Delete from './Delete';
 import initApp from '@components/init';
+import Delete from './Delete';
 
 const props = [
   {
     name: 'deleteProductUrl',
-    type: String
+    type: String,
   },
   {
     name: 'deleteListUrl',
-    type: String
+    type: String,
   },
   {
     name: 'title',
-    type: String
+    type: String,
   },
   {
     name: 'placeholder',
-    type: String
+    type: String,
   },
   {
     name: 'cancelText',
-    type: String
+    type: String,
   },
   {
     name: 'deleteText',
-    type: String
-  }
+    type: String,
+  },
 ];
 
 initApp(Delete, '.wishlist-delete', props);

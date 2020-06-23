@@ -31,31 +31,33 @@ export default function initApp(component, componentSelector, props) {
   Vue.use(VueApollo);
 
   const apolloProvider = new VueApollo({
-    defaultClient: apolloClient
+    defaultClient: apolloClient,
   });
 
   const componentElements = document.querySelectorAll(componentSelector);
   const ComponentRoot = Vue.extend(component);
 
-  let propsData = {};
+  const propsData = {};
 
-  componentElements.forEach(e => {
+  componentElements.forEach((e) => {
+    /* eslint-disable */
     for (const prop of props) {
       if (e.dataset[prop.name]) {
         propsData[prop.name] =
           prop.type === Number
-            ? parseInt(e.dataset[prop.name])
+            ? parseInt(e.dataset[prop.name], 10)
             : prop.type === Boolean
             ? e.dataset[prop.name] === 'true'
             : e.dataset[prop.name];
       }
     }
+    /* eslint-enable */
 
     new ComponentRoot({
       el: e,
       delimiters: ['((', '))'],
       apolloProvider,
-      propsData
+      propsData,
     });
   });
 }

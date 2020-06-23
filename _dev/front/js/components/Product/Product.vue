@@ -18,7 +18,10 @@
  *-->
 <template>
   <div class="wishlist-product">
-    <a class="wishlist-product-link" :href="product.canonical_url">
+    <a
+      class="wishlist-product-link"
+      :href="product.canonical_url"
+    >
       <div class="wishlist-product-image">
         <img
           v-if="product.cover"
@@ -28,11 +31,11 @@
           :class="{
             'wishlist-product-unavailable': !product.add_to_cart_url
           }"
-        />
+        >
         <img
           v-else
           :src="prestashop.urls.no_picture_image.bySize.home_default.url"
-        />
+        >
 
         <p
           class="wishlist-product-availability"
@@ -71,6 +74,7 @@
             <template v-for="(attribute, key, index) of product.attributes">
               {{ attribute.group }} : {{ attribute.name }}
               <span
+                :key="key"
                 v-if="
                   index < Object.keys(product.attributes).length - 1 ||
                     index == Object.keys(product.attributes).length - 1
@@ -79,7 +83,10 @@
                 -
               </span>
 
-              <span v-if="index == Object.keys(product.attributes).length - 1">
+              <span
+                :key="key + 'end'"
+                v-if="index == Object.keys(product.attributes).length - 1"
+              >
                 {{ quantityText }} : {{ product.wishlist_quantity }}
               </span>
             </template>
@@ -89,7 +96,10 @@
             </span>
           </p>
 
-          <a :href="product.canonical_url" v-if="!isShare">
+          <a
+            :href="product.canonical_url"
+            v-if="!isShare"
+          >
             <i class="material-icons">create</i>
           </a>
         </div>
@@ -127,9 +137,9 @@
 </template>
 
 <script>
-  import removeFromList from '@graphqlFiles/mutations/removeFromList';
   import EventBus from '@components/EventBus';
   import prestashop from 'prestashop';
+  import wishlistAddProductToCartUrl from 'wishlistAddProductToCartUrl';
 
   export default {
     name: 'Product',
@@ -137,47 +147,47 @@
       product: {
         type: Object,
         required: true,
-        default: null
+        default: null,
       },
       listId: {
         type: Number,
         required: true,
-        default: null
+        default: null,
       },
       isShare: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
       },
       customizeText: {
         type: String,
         required: true,
-        default: 'Customize'
+        default: 'Customize',
       },
       quantityText: {
         type: String,
         required: true,
-        default: 'Quantity'
+        default: 'Quantity',
       },
       addToCart: {
         type: String,
         required: true,
-        default: 'Add to cart'
+        default: 'Add to cart',
       },
       status: {
         type: Number,
         required: false,
-        default: 0
+        default: 0,
       },
       hasControls: {
         type: Boolean,
         required: false,
-        default: true
-      }
+        default: true,
+      },
     },
     data() {
       return {
-        prestashop
+        prestashop,
       };
     },
     methods: {
@@ -189,36 +199,37 @@
           detail: {
             listId: this.listId,
             productId: this.product.id,
-            productAttributeId: this.product.id_product_attribute
-          }
+            productAttributeId: this.product.id_product_attribute,
+          },
         });
       },
       async addToCartAction() {
         try {
-          let response = await fetch(
-            this.product.add_to_cart_url + '&action=update',
+          const response = await fetch(
+            `${this.product.add_to_cart_url}&action=update`,
             {
               headers: {
                 'Content-Type':
                   'application/x-www-form-urlencoded; charset=UTF-8',
-                Accept: 'application/json, text/javascript, */*; q=0.01'
-              }
-            }
+                Accept: 'application/json, text/javascript, */*; q=0.01',
+              },
+            },
           );
 
-          let resp = await response.json();
+          const resp = await response.json();
 
           prestashop.emit('updateCart', {
             reason: {
               idProduct: this.product.id_product,
               idProductAttribute: this.product.id_product_attribute,
               idCustomization: this.product.id_customization,
-              linkAction: 'add-to-cart'
+              linkAction: 'add-to-cart',
             },
-            resp
+            resp,
           });
 
-          let statResponse = await fetch(
+          /* eslint-disable */
+          const statResponse = await fetch(
             `${wishlistAddProductToCartUrl}&params[idWishlist]=${this.listId}&params[id_product]=${this.product.id_product}&params[id_product_attribute]=${this.product.id_product_attribute}&params[quantity]=${this.product.wishlist_quantity}`,
             {
               headers: {
@@ -228,19 +239,20 @@
               }
             }
           );
+          /* eslint-enable */
 
-          let statsResp = await statResponse.json();
+          await statResponse.json();
         } catch (error) {
           prestashop.emit('handleError', {
             eventType: 'addProductToCart',
-            resp: error
+            resp: error,
           });
         }
-      }
+      },
     },
     mounted() {
       console.log(this.product);
-    }
+    },
   };
 </script>
 

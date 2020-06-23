@@ -17,20 +17,20 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <script>
-  import ChooseList from '../ChooseList/ChooseList';
   import EventBus from '@components/EventBus';
+  import ChooseList from '../ChooseList/ChooseList';
 
   export default {
     name: 'AddToWishlist',
     components: {
-      ChooseList
+      ChooseList,
     },
     props: {
       url: {
         type: String,
         required: true,
-        default: '#'
-      }
+        default: '#',
+      },
     },
     data() {
       return {
@@ -38,7 +38,7 @@
         isHidden: true,
         productAttributeId: 0,
         productId: 0,
-        quantity: 0
+        quantity: 0,
       };
     },
     methods: {
@@ -59,15 +59,15 @@
         this.toggleModal();
 
         EventBus.$emit('showCreateWishlist');
-      }
+      },
     },
     mounted() {
       /**
        * Register to the event showAddToWishList so others component can open the modal of the current component
        */
-      EventBus.$on('showAddToWishList', event => {
+      EventBus.$on('showAddToWishList', (event) => {
         this.toggleModal(
-          event.detail.forceOpen ? event.detail.forceOpen : null
+          event.detail.forceOpen ? event.detail.forceOpen : null,
         );
 
         if (event.detail.productId) {
@@ -82,7 +82,7 @@
           this.quantity = event.detail.quantity;
         }
       });
-    }
+    },
   };
 </script>
 

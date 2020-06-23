@@ -16,33 +16,31 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue';
-import Button from './Button';
-import prestashop from 'prestashop';
 import initApp from '@components/init';
+import Button from './Button';
 
 const initButtons = () => {
   const props = [
     {
       name: 'url',
-      type: String
+      type: String,
     },
     {
       name: 'checked',
-      type: Boolean
+      type: Boolean,
     },
     {
       name: 'productId',
-      type: Number
+      type: Number,
     },
     {
       name: 'productAttributeId',
-      type: Number
+      type: Number,
     },
     {
       name: 'isProduct',
-      type: Boolean
-    }
+      type: Boolean,
+    },
   ];
 
   initApp(Button, '.wishlist-button', props);

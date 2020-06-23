@@ -17,13 +17,13 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-import prestashop from 'prestashop';
 import initVueButtons from '@components/Button';
+import removeFromWishlistUrl from 'removeFromWishlistUrl';
 
 const initButtons = () => {
   const products = document.querySelectorAll('.js-product-miniature');
 
-  products.forEach(product => {
+  products.forEach((product) => {
     const wishlistButton = document.createElement('div');
 
     wishlistButton.classList.add('wishlist-button');
@@ -39,11 +39,11 @@ const initButtons = () => {
 initButtons();
 initVueButtons();
 
-var productList = document.querySelectorAll('#products, .featured-products');
-var config = {attributes: false, childList: true};
+const productList = document.querySelectorAll('#products, .featured-products');
+const config = {attributes: false, childList: true};
 
-productList.forEach(e => {
-  const callback = function(mutationsList) {
+productList.forEach((e) => {
+  const callback = function () {
     initButtons();
     initVueButtons();
   };
