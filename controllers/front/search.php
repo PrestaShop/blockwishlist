@@ -18,8 +18,9 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
 
 class BlockWishlistSearchModuleFrontController extends ProductListingFrontController
 {
@@ -119,6 +120,8 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
     protected function getProductSearchQuery()
     {
         $query = new ProductSearchQuery();
+        $query->setSortOrder(new SortOrder('product', 'cp.'Tools::getProductsOrder('by'), Tools::getProductsOrder('way')));
+
         // @todo Adds filters criteria
 
         return $query;
@@ -140,8 +143,25 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
      */
     protected function getAjaxProductSearchVariables()
     {
-        $data = parent::getAjaxProductSearchVariables();
+        $search = parent::getAjaxProductSearchVariables();
         // @todo Adds custom data for ajax
+
+        $rendered_products_top = $this->render('catalog/_partials/products-top', ['listing' => $search]);
+        $rendered_products = $this->render('catalog/_partials/products', ['listing' => $search]);
+        $rendered_products_bottom = $this->render('catalog/_partials/products-bottom', ['listing' => $search]);
+
+        $data = array_merge(
+            [
+                'rendered_products_top' => $rendered_products_top,
+                'rendered_products' => $rendered_products,
+                'rendered_products_bottom' => $rendered_products_bottom,
+            ],
+            $search
+        );
+
+        if (!empty($data['products']) && is_array($data['products'])) {
+            $data['products'] = $this->prepareProductArrayForAjaxReturn($data['products']);
+        }
 
         return $data;
     }
