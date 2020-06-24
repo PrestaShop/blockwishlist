@@ -25,21 +25,21 @@ class BlockWishlistProductslistModuleFrontController extends ModuleFrontControll
         $id_wishlist = Tools::getValue('id_wishlist');
 
         $this->context->smarty->assign(
-        [
-            'id' => $id_wishlist,
-            'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getProductsByWishlist']),
-            'wishlistsLink' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
-            'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
-        ]
-      );
+            [
+                'id' => $id_wishlist,
+                'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getProductsByWishlist']),
+                'wishlistsLink' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
+                'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            ]
+        );
 
-      $this->context->controller->registerJavascript(
-          'blockwishlistController',
-          'modules/blockwishlist/public/productslist.bundle.js',
-          [
-            'priority' => 200,
-          ]
-      );
+        $this->context->controller->registerJavascript(
+            'blockwishlistController',
+            'modules/blockwishlist/public/productslist.bundle.js',
+            [
+              'priority' => 200,
+            ]
+        );
 
         $this->setTemplate('module:blockwishlist/views/templates/pages/products-list.tpl');
     }
