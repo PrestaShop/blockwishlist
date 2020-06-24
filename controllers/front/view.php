@@ -38,7 +38,7 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
         $module = new BlockWishList();
 
         if (true === empty($token)) {
-            $this->setTemplate('module:blockwishlist/views/templates/front/view.tpl');
+            $this->setTemplate('module:blockwishlist/views/templates/pages/view.tpl');
 
             return false;
         }
@@ -142,6 +142,8 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
                     'products' => $products_for_template,
                 ]
             );
+
+            $this->setTemplate('module:blockwishlist/views/templates/pages/view.tpl');
         }
     }
 }
