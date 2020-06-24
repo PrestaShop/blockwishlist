@@ -93,7 +93,7 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
         parent::initContent();
 
         $this->doProductSearch(
-            '../../../modules/blockwishlist/views/templates/pages/products-list.tpl',
+            'catalog/listing/product-list.tpl',
             [
                 'entity' => 'wishlist_product',
                 'id_wishlist' => $this->wishlist->id,
@@ -129,7 +129,10 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
      */
     protected function getDefaultProductSearchProvider()
     {
-        return new WishListProductSearchProvider($this->wishlist);
+        return new WishListProductSearchProvider(
+            Db::getInstance(),
+            $this->wishlist
+        );
     }
 
     /**
