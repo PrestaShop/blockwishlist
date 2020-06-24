@@ -21,20 +21,26 @@
     <div class="wishlist-container-header">
       <h1>{{ title }}</h1>
 
-      <a @click="openNewWishlistModal" class="wishlist-add-to-new">
+      <a
+        @click="openNewWishlistModal"
+        class="wishlist-add-to-new"
+      >
         <i class="material-icons">add_circle_outline</i>
         {{ addText }}
       </a>
     </div>
 
-    <section id="content" class="page-content card card-block">
+    <section
+      id="content"
+      class="page-content card card-block"
+    >
       <list
         :items="lists"
-        :renameText="renameText"
-        :shareText="shareText"
-        :emptyText="emptyText"
+        :rename-text="renameText"
+        :share-text="shareText"
+        :empty-text="emptyText"
         :loading="$apollo.queries.lists.loading"
-      ></list>
+      />
     </section>
   </div>
 </template>
@@ -42,7 +48,6 @@
 <script>
   import List from '@components/List/List';
   import getLists from '@graphqlFiles/queries/getlists';
-  import deleteList from '@graphqlFiles/mutations/deletelist';
   import EventBus from '@components/EventBus';
 
   /**
@@ -51,47 +56,47 @@
   export default {
     name: 'WishlistContainer',
     components: {
-      List
+      List,
     },
     apollo: {
       lists: {
         query: getLists,
         variables() {
           return {
-            url: this.url
+            url: this.url,
           };
-        }
-      }
+        },
+      },
     },
     props: {
       url: {
         type: String,
-        required: true
+        required: true,
       },
       title: {
         type: String,
-        required: true
+        required: true,
       },
       addText: {
         type: String,
-        required: true
+        required: true,
       },
       renameText: {
         type: String,
-        required: true
+        required: true,
       },
       emptyText: {
         type: String,
-        required: true
+        required: true,
       },
       shareText: {
         type: String,
-        required: true
-      }
+        required: true,
+      },
     },
     data() {
       return {
-        lists: []
+        lists: [],
       };
     },
     methods: {
@@ -101,12 +106,6 @@
       openNewWishlistModal() {
         EventBus.$emit('showCreateWishlist');
       },
-      /**
-       * Delete a list by launching a mutation, updating cache and then on response replacing the lists state
-       *
-       * @param {Int} id The list id to be removed
-       */
-      async deleteList(id) {}
     },
     mounted() {
       /**
@@ -117,7 +116,7 @@
       EventBus.$on('refetchList', () => {
         this.$apollo.queries.lists.refetch();
       });
-    }
+    },
   };
 </script>
 

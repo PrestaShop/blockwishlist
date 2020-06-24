@@ -29,43 +29,43 @@
       url: {
         type: String,
         required: true,
-        default: '#'
+        default: '#',
       },
       title: {
         type: String,
         required: true,
-        default: 'New wishlist'
+        default: 'New wishlist',
       },
       label: {
         type: String,
         required: true,
-        default: 'Wishlist name'
+        default: 'Wishlist name',
       },
       placeholder: {
         type: String,
         required: true,
-        default: 'Add name'
+        default: 'Add name',
       },
       cancelText: {
         type: String,
         required: true,
-        default: 'Cancel'
+        default: 'Cancel',
       },
       lengthText: {
         type: String,
         required: true,
-        default: 'List title is too short'
+        default: 'List title is too short',
       },
       createText: {
         type: String,
         required: true,
-        default: 'Create'
-      }
+        default: 'Create',
+      },
     },
     data() {
       return {
         value: '',
-        isHidden: true
+        isHidden: true,
       };
     },
     methods: {
@@ -85,26 +85,26 @@
           EventBus.$emit('showToast', {
             detail: {
               type: 'error',
-              message: this.lengthText
-            }
+              message: this.lengthText,
+            },
           });
 
           return false;
         }
 
-        let { data: response } = await this.$apollo.mutate({
+        const {data: response} = await this.$apollo.mutate({
           mutation: createList,
           variables: {
             name: this.value,
-            url: this.url
-          }
+            url: this.url,
+          },
         });
 
         EventBus.$emit('showToast', {
           detail: {
             type: response.createList.success ? 'success' : 'error',
-            message: response.createList.message
-          }
+            message: response.createList.message,
+          },
         });
 
         /**
@@ -119,10 +119,12 @@
         this.toggleModal();
         EventBus.$emit('showAddToWishList', {
           detail: {
-            forceOpen: true
-          }
+            forceOpen: true,
+          },
         });
-      }
+
+        return true;
+      },
     },
     mounted() {
       /**
@@ -134,7 +136,7 @@
         this.value = '';
         this.toggleModal();
       });
-    }
+    },
   };
 </script>
 

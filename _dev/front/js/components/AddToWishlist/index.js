@@ -16,15 +16,14 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue';
-import AddToWishlist from './AddToWishlist';
 import initApp from '@components/init';
+import AddToWishlist from './AddToWishlist';
 
 const props = [
   {
     name: 'url',
-    type: String
-  }
+    type: String,
+  },
 ];
 
 initApp(AddToWishlist, '.wishlist-add-to', props);

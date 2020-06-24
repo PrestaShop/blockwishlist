@@ -16,43 +16,42 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue';
-import WishlistContainer from './WishlistContainer';
 import initApp from '@components/init';
+import WishlistContainer from './WishlistContainer';
 
 const props = [
   {
     name: 'url',
-    type: String
+    type: String,
   },
   {
     name: 'title',
-    type: String
+    type: String,
   },
   {
     name: 'addText',
-    type: String
+    type: String,
   },
   {
     name: 'renameText',
-    type: String
+    type: String,
   },
   {
     name: 'returnLink',
-    type: String
+    type: String,
   },
   {
     name: 'emptyText',
-    type: String
+    type: String,
   },
   {
     name: 'homeLink',
-    type: String
+    type: String,
   },
   {
     name: 'shareText',
-    type: String
-  }
+    type: String,
+  },
 ];
 
 initApp(WishlistContainer, '.wishlist-container', props);

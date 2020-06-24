@@ -172,7 +172,6 @@ class BlockWishList extends Module implements WidgetInterface
     {
         $this->smarty->assign([
             'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
-            'listUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'productslist'),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayCustomerAccount.tpl');

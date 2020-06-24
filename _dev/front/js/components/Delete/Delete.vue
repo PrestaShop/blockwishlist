@@ -18,7 +18,6 @@
  *-->
 <script>
   import deleteList from '@graphqlFiles/mutations/deletelist';
-  import getLists from '@graphqlFiles/queries/getlists';
   import removeFromList from '@graphqlFiles/mutations/removeFromList';
   import EventBus from '@components/EventBus';
 
@@ -31,33 +30,33 @@
       deleteProductUrl: {
         type: String,
         required: false,
-        default: '#'
+        default: '#',
       },
       deleteListUrl: {
         type: String,
         required: false,
-        default: '#'
+        default: '#',
       },
       title: {
         type: String,
         required: true,
-        default: 'Delete'
+        default: 'Delete',
       },
       placeholder: {
         type: String,
         required: true,
-        default: 'This action is irreversible'
+        default: 'This action is irreversible',
       },
       cancelText: {
         type: String,
         required: true,
-        default: 'Cancel'
+        default: 'Cancel',
       },
       deleteText: {
         type: String,
         required: true,
-        default: 'Delete'
-      }
+        default: 'Delete',
+      },
     },
     data() {
       return {
@@ -65,7 +64,7 @@
         isHidden: true,
         listId: null,
         productId: null,
-        productAttributeId: null
+        productAttributeId: null,
       };
     },
     methods: {
@@ -79,14 +78,14 @@
        * Launch a deleteList mutation to delete a Wishlist
        */
       async deleteWishlist() {
-        const { data } = await this.$apollo.mutate({
+        const {data} = await this.$apollo.mutate({
           mutation: this.productId ? removeFromList : deleteList,
           variables: {
             listId: this.listId,
-            productId: parseInt(this.productId),
-            productAttributeId: parseInt(this.productAttributeId),
-            url: this.productId ? this.deleteProductUrl : this.deleteListUrl
-          }
+            productId: parseInt(this.productId, 10),
+            productAttributeId: parseInt(this.productAttributeId, 10),
+            url: this.productId ? this.deleteProductUrl : this.deleteListUrl,
+          },
         });
 
         const response = data.deleteList
@@ -101,8 +100,8 @@
         EventBus.$emit('showToast', {
           detail: {
             type: response.success ? 'success' : 'error',
-            message: response.message
-          }
+            message: response.message,
+          },
         });
 
         /**
@@ -110,7 +109,7 @@
          * and reopen the wishlist modal
          */
         this.toggleModal();
-      }
+      },
     },
     mounted() {
       /**
@@ -118,7 +117,7 @@
        *
        * @param {String} 'showDeleteWishlist'
        */
-      EventBus.$on('showDeleteWishlist', event => {
+      EventBus.$on('showDeleteWishlist', (event) => {
         this.value = '';
         this.listId = event.detail.listId;
 
@@ -132,7 +131,7 @@
 
         this.toggleModal();
       });
-    }
+    },
   };
 </script>
 

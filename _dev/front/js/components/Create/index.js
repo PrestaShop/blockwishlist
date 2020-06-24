@@ -16,43 +16,42 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue';
-import Create from './Create';
 import initApp from '@components/init';
+import Create from './Create';
 
 const props = [
   {
     name: 'url',
-    type: String
+    type: String,
   },
   {
     name: 'title',
-    type: String
+    type: String,
   },
   {
     name: 'label',
-    type: String
+    type: String,
   },
   {
     name: 'productId',
-    type: Number
+    type: Number,
   },
   {
     name: 'placeholder',
-    type: String
+    type: String,
   },
   {
     name: 'cancelText',
-    type: String
+    type: String,
   },
   {
     name: 'lengthText',
-    type: String
+    type: String,
   },
   {
     name: 'createText',
-    type: String
-  }
+    type: String,
+  },
 ];
 
 initApp(Create, '.wishlist-create', props);

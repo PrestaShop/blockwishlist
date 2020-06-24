@@ -20,7 +20,7 @@
 {if $context === "product"}
   {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url=$url addUrl=$addUrl}
   {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url=$createUrl}
-  {include file="module:blockwishlist/views/templates/components/modals/login.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/modals/login.tpl"}
   {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/if}
 
@@ -28,7 +28,7 @@
   {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url=$url addUrl=$addUrl}
   {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url=$createUrl}
   {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" productUrl=$deleteProductUrl}
-  {include file="module:blockwishlist/views/templates/components/modals/login.tpl" url="http://dummy.com"}
+  {include file="module:blockwishlist/views/templates/components/modals/login.tpl"}
   {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/if}
 

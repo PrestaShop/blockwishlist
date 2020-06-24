@@ -16,55 +16,62 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-import Vue from 'vue';
-import ProductsListContainer from './ProductsListContainer.vue';
 import initApp from '@components/init';
+import ProductsListContainer from './ProductsListContainer.vue';
 
 const props = [
   {
     name: 'url',
-    type: String
+    type: String,
   },
   {
     name: 'title',
-    type: String
+    type: String,
   },
   {
     name: 'defaultSort',
-    type: String
+    type: String,
   },
   {
     name: 'lastAdded',
-    type: String
+    type: String,
   },
   {
     name: 'addToCart',
-    type: String
+    type: String,
   },
   {
     name: 'customizeText',
-    type: String
+    type: String,
+  },
+  {
+    name: 'wishlistProducts',
+    type: String,
+  },
+  {
+    name: 'wishlist',
+    type: String,
   },
   {
     name: 'quantityText',
-    type: String
+    type: String,
   },
   {
     name: 'priceLowHigh',
-    type: String
+    type: String,
   },
   {
     name: 'priceHighLow',
-    type: String
+    type: String,
   },
   {
     name: 'filter',
-    type: String
+    type: String,
   },
   {
     name: 'listId',
-    type: Number
-  }
+    type: Number,
+  },
 ];
 
 initApp(ProductsListContainer, '.wishlist-products-container', props);

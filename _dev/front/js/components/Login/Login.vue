@@ -26,28 +26,23 @@
   export default {
     name: 'Login',
     props: {
-      url: {
-        type: String,
-        required: true,
-        default: '#'
-      },
       cancelText: {
         type: String,
         required: true,
-        default: 'Cancel'
+        default: 'Cancel',
       },
       loginText: {
         type: String,
         required: true,
-        default: 'Login'
-      }
+        default: 'Login',
+      },
     },
     data() {
       return {
         value: '',
         isHidden: true,
         listId: null,
-        prestashop
+        prestashop,
       };
     },
     methods: {
@@ -56,7 +51,7 @@
        */
       toggleModal() {
         this.isHidden = !this.isHidden;
-      }
+      },
     },
     mounted() {
       /**
@@ -67,7 +62,7 @@
       EventBus.$on('showLogin', () => {
         this.toggleModal();
       });
-    }
+    },
   };
 </script>
 
