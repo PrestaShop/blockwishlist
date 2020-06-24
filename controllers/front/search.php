@@ -18,9 +18,9 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 
 class BlockWishlistSearchModuleFrontController extends ProductListingFrontController
 {
@@ -120,7 +120,7 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
     protected function getProductSearchQuery()
     {
         $query = new ProductSearchQuery();
-        $query->setSortOrder(new SortOrder('product', 'cp.'Tools::getProductsOrder('by'), Tools::getProductsOrder('way')));
+        $query->setSortOrder(new SortOrder('product', 'cp' . Tools::getProductsOrder('by'), Tools::getProductsOrder('way')));
 
         // @todo Adds filters criteria
 
