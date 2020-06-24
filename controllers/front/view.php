@@ -17,7 +17,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-use PrestaShop\Module\BlockWishlist\WishList;
 use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
@@ -46,6 +45,7 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
 
         $wishlist = WishList::getByToken($token);
         WishList::refreshWishList($wishlist['id_wishlist']);
+
         $products = WishList::getProductByIdCustomer(
             (int) $wishlist['id_wishlist'],
             (int) $wishlist['id_customer'],
@@ -143,6 +143,5 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
                 ]
             );
         }
-        $this->setTemplate('module:blockwishlist/views/templates/pages/view.tpl');
     }
 }
