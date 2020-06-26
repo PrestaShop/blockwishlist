@@ -4,7 +4,12 @@ import List from '@components/List/List.vue';
 import EventBus from '@components/EventBus';
 
 const items = [
-  {id_wishlist: 1, nbProducts: 2, name: 'Test of list', listUrl: '#'},
+  {
+    id_wishlist: 1,
+    nbProducts: 2,
+    name: 'Test of list number one',
+    listUrl: '#'
+  },
   {
     id_wishlist: 2,
     nbProducts: 2,
