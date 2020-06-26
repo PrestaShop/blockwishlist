@@ -22,8 +22,14 @@
     :class="{ 'wishlist-button-product': isProduct }"
     @click="addToWishlist"
   >
-    <i class="material-icons" v-if="isChecked">favorite</i>
-    <i class="material-icons" v-else>favorite_border</i>
+    <i
+      class="material-icons"
+      v-if="isChecked"
+    >favorite</i>
+    <i
+      class="material-icons"
+      v-else
+    >favorite_border</i>
   </button>
 </template>
 
@@ -38,33 +44,33 @@
       url: {
         type: String,
         required: true,
-        default: '#'
+        default: '#',
       },
       productId: {
         type: Number,
         required: true,
-        default: null
+        default: null,
       },
       productAttributeId: {
         type: Number,
         required: true,
-        default: null
+        default: null,
       },
       checked: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
       },
       isProduct: {
         type: Boolean,
         required: false,
-        default: false
-      }
+        default: false,
+      },
     },
     data() {
       return {
         isChecked: this.checked === 'true',
-        idList: this.listId
+        idList: this.listId,
       };
     },
     methods: {
@@ -82,7 +88,7 @@
       async addToWishlist(event) {
         event.preventDefault();
         const quantity = document.querySelector(
-          '.product-quantity input#quantity_wanted'
+          '.product-quantity input#quantity_wanted',
         );
 
         if (!prestashop.customer.is_logged) {
@@ -97,40 +103,40 @@
               productId: this.productId,
               productAttributeId: parseInt(this.productAttributeId, 10),
               forceOpen: true,
-              quantity: quantity ? parseInt(quantity.value, 10) : 0
-            }
+              quantity: quantity ? parseInt(quantity.value, 10) : 0,
+            },
           });
         } else {
-          const { data } = await this.$apollo.mutate({
+          const {data} = await this.$apollo.mutate({
             mutation: removeFromList,
             variables: {
               productId: this.productId,
               url: this.url,
               productAttributeId: this.productAttributeId,
-              listId: this.idList ? this.idList : this.listId
-            }
+              listId: this.idList ? this.idList : this.listId,
+            },
           });
 
-          const { removeFromList: response } = data;
+          const {removeFromList: response} = data;
 
           EventBus.$emit('showToast', {
             detail: {
               type: response.success ? 'success' : 'error',
-              message: response.message
-            }
+              message: response.message,
+            },
           });
 
           if (!response.error) {
             this.toggleCheck();
           }
         }
-      }
+      },
     },
     mounted() {
       /**
        * Register to event addedToWishlist to toggle the heart if the product has been added correctly
        */
-      EventBus.$on('addedToWishlist', event => {
+      EventBus.$on('addedToWishlist', (event) => {
         if (event.detail.productId === this.productId) {
           this.isChecked = true;
           this.idList = event.detail.listId;
@@ -139,9 +145,8 @@
 
       // eslint-disable-next-line
       const items = productsAlreadyTagged.filter(
-        e =>
-          e.id_product === this.productId.toString() &&
-          e.id_product_attribute === this.productAttributeId.toString()
+        (e) => e.id_product === this.productId.toString()
+          && e.id_product_attribute === this.productAttributeId.toString(),
       );
 
       if (items.length > 0) {
@@ -150,25 +155,24 @@
       }
 
       if (this.isProduct) {
-        prestashop.on('updateProduct', ({ eventType }) => {
+        prestashop.on('updateProduct', ({eventType}) => {
           if (eventType === 'updatedProductQuantity') {
             this.isChecked = false;
           }
         });
 
-        prestashop.on('updatedProduct', args => {
+        prestashop.on('updatedProduct', (args) => {
           const quantity = document.querySelector(
-            '.product-quantity input#quantity_wanted'
+            '.product-quantity input#quantity_wanted',
           );
 
           this.productAttributeId = args.id_product_attribute;
 
           // eslint-disable-next-line
           const itemsFiltered = productsAlreadyTagged.filter(
-            e =>
-              e.id_product === this.productId.toString() &&
-              e.quantity === quantity.value &&
-              e.id_product_attribute === this.productAttributeId.toString()
+            (e) => e.id_product === this.productId.toString()
+              && e.quantity === quantity.value
+              && e.id_product_attribute === this.productAttributeId.toString(),
           );
 
           if (itemsFiltered.length > 0) {
@@ -179,7 +183,7 @@
           }
         });
       }
-    }
+    },
   };
 </script>
 

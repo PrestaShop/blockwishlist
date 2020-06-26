@@ -4,7 +4,7 @@ import Create from '@components/Create/Create.vue';
 import EventBus from '@components/EventBus';
 
 describe('Create.vue', () => {
-  it('should be checked if it receive the event addedToWishlist', async () => {
+  it(`should'nt be hidden if it receive the event showCreateWishlist`, async () => {
     const wrapper = shallowMount(Create);
 
     EventBus.$emit('showCreateWishlist');
