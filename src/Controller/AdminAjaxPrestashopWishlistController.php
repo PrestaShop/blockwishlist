@@ -20,12 +20,12 @@
 
 namespace PrestaShop\Module\BlockWishList\Controller;
 
-use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
 use Doctrine\Common\Cache\CacheProvider;
-use Symfony\Component\HttpFoundation\Request;
-use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShop\Module\BlockWishList\Calculator\StatisticsCalculator;
+use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
+use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
+use Symfony\Component\HttpFoundation\Request;
 
 class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminController
 {
@@ -52,13 +52,13 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
         $configurationForm = $this->createForm(ConfigurationType::class, $datas);
         $configurationForm->handleRequest($request);
 
-        if ($configurationForm->isSubmitted() && $configurationForm->isValid() ) {
+        if ($configurationForm->isSubmitted() && $configurationForm->isValid()) {
             $resultHandleForm = $this->handleForm($configurationForm->getData());
         }
 
         return $this->render('@Modules/blockwishlist/views/templates/admin/home.html.twig', [
             'configurationForm' => $configurationForm->createView(),
-            'resultHandleForm' => isset($resultHandleForm) ? $resultHandleForm : null
+            'resultHandleForm' => isset($resultHandleForm) ? $resultHandleForm : null,
         ]);
     }
 
@@ -99,7 +99,7 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
         $datas = [
             'WishlistPageName' => $wishlistNames,
             'WishlistDefaultTitle' => $wishlistDefaultTitles,
-            'CreateButtonLabel' => $wishlistCreateNewButtonsLabel
+            'CreateButtonLabel' => $wishlistCreateNewButtonsLabel,
         ];
 
         return $datas;
@@ -124,7 +124,7 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
 
         return $this->json([
             'success' => true,
-            'stats' => $results
+            'stats' => $results,
         ]);
     }
 
@@ -150,7 +150,7 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
 
         return $this->json([
             'success' => true,
-            'stats' => $results
+            'stats' => $results,
         ]);
     }
 }

@@ -89,7 +89,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             $quantity
         );
 
-        $newStat = new Statistics;
+        $newStat = new Statistics();
         $newStat->id_wishlist = $idWishList;
         $newStat->id_product = $id_product;
         $newStat->id_product_attribute = $id_product_attribute;
@@ -219,7 +219,6 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             );
 
             if (true === $isDeleted) {
-
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,

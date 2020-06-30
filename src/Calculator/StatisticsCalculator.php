@@ -1,4 +1,22 @@
 <?php
+/**
+ * 2007-2020 PrestaShop and Contributors
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License 3.0 (AFL-3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA <contact@prestashop.com>
+ * @copyright 2007-2020 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
+ * International Registered Trademark & Property of PrestaShop SA
+ */
 
 namespace PrestaShop\Module\BlockWishList\Calculator;
 
@@ -13,7 +31,7 @@ class StatisticsCalculator
         'allTime',
         'currentYear',
         'currentMonth',
-        'currentDay'
+        'currentDay',
     ];
 
     private $context;
@@ -46,7 +64,7 @@ class StatisticsCalculator
         $currentDate = new \DateTime('now');
 
         foreach ($results as $result) {
-            $productAttributeKey = $result['id_product'].'.'.$result['id_product_attribute'];
+            $productAttributeKey = $result['id_product'] . '.' . $result['id_product_attribute'];
 
             if (isset($stats['allTime'][$productAttributeKey])) {
                 $stats['allTime'][$productAttributeKey] = $stats['allTime'][$productAttributeKey] + 1;
@@ -122,7 +140,7 @@ class StatisticsCalculator
                 $id_product_attribute = $ids[1];
                 $productDetails = $this->productAssembler->assembleProduct([
                     'id_product' => $id_product,
-                    'id_product_attribute' => $id_product_attribute
+                    'id_product_attribute' => $id_product_attribute,
                 ]);
                 $imgDetails = $this->getProductImage($productDetails);
 
@@ -200,7 +218,7 @@ class StatisticsCalculator
         $queryCarts->where('id_product_attribute = ' . $id_product_attribute);
 
         if (null != $dateStart) {
-            $queryCarts->where('date_add >= "' . $dateStart. '"');
+            $queryCarts->where('date_add >= "' . $dateStart . '"');
         }
 
         $carts = \Db::getInstance()->executeS($queryCarts);
@@ -225,7 +243,7 @@ class StatisticsCalculator
                     if ($product['product_id'] == $id_product
                         && $product['product_attribute_id'] == $id_product_attribute
                     ) {
-                        $nbCartPaidAndShipped++;
+                        ++$nbCartPaidAndShipped;
                     }
                 }
             }
@@ -238,7 +256,7 @@ class StatisticsCalculator
         $queryCountAll->where('id_product_attribute = ' . $id_product_attribute);
 
         if (null != $dateStart) {
-            $queryCountAll->where('date_add >= "' . $dateStart. '"');
+            $queryCountAll->where('date_add >= "' . $dateStart . '"');
         }
 
         $countAddedToWishlist = \Db::getInstance()->getValue($queryCountAll);
