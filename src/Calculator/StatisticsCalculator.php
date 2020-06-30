@@ -35,6 +35,7 @@ class StatisticsCalculator
     ];
 
     private $context;
+    private $productAssembler;
 
     public function __construct($context)
     {

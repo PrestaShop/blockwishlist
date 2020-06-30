@@ -18,7 +18,6 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-use PrestaShop\Module\BlockWishlist\WishList;
 use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
@@ -90,7 +89,6 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
         );
 
         $newStat = new Statistics();
-        $newStat->id_wishlist = $idWishList;
         $newStat->id_product = $id_product;
         $newStat->id_product_attribute = $id_product_attribute;
         $newStat->save();

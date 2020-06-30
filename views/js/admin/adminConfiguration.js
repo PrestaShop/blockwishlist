@@ -18,7 +18,7 @@
  */
 
 console.log('blockwishlist - adminConfiguration.js');
-import TranslatableInput from "admin-dev/themes/new-theme/js/components/translatable-input";
+// import TranslatableInput from "admin-dev/themes/new-theme/js/components/translatable-input";
 
-// enable togging of different locales
-new TranslatableInput();
+// // enable togging of different locales
+// new TranslatableInput();

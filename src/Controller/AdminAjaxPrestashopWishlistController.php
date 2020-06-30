@@ -89,6 +89,9 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
     private function getWishlistConfigurationDatas()
     {
         $languages = \Language::getLanguages(true);
+        $wishlistNames = [];
+        $wishlistDefaultTitles = [];
+        $wishlistCreateNewButtonsLabel = [];
 
         foreach ($languages as $lang) {
             $wishlistNames[$lang['id_lang']] = \Configuration::get('blockwishlist_WishlistPageName', $lang['id_lang']);
@@ -129,28 +132,28 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
     }
 
     // this idea need some functional specification, it is not used ATM
-    public function forceRefreshCacheStatsAction(Request $request)
-    {
-        $cacheName = $request->request->get('cacheName');
+    // public function forceRefreshCacheStatsAction(Request $request)
+    // {
+    //     $cacheName = $request->request->get('cacheName');
 
-        $statsCalculator = new StatisticsCalculator($this->context);
-        switch ($cacheName) {
-            case 'year':
-                $results = $statsCalculator->computeYearStats();
-                break;
-            case 'month':
-                $results = $statsCalculator->computeMonthStats();
-                break;
-            case 'day':
-                $results = $statsCalculator->computeDayStats();
-            break;
-            default:
-                break;
-        }
+    //     $statsCalculator = new StatisticsCalculator($this->context);
+    //     switch ($cacheName) {
+    //         case 'year':
+    //             $results = $statsCalculator->computeYearStats();
+    //             break;
+    //         case 'month':
+    //             $results = $statsCalculator->computeMonthStats();
+    //             break;
+    //         case 'day':
+    //             $results = $statsCalculator->computeDayStats();
+    //         break;
+    //         default:
+    //             break;
+    //     }
 
-        return $this->json([
-            'success' => true,
-            'stats' => $results,
-        ]);
-    }
+    //     return $this->json([
+    //         'success' => true,
+    //         'stats' => $results,
+    //     ]);
+    // }
 }
