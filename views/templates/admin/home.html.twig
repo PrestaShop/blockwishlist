@@ -1,3 +1,20 @@
-{# {{ asset('../modules/blockwishlist/views/js/......') }} #}
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
 
-home.html.twig
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('../modules/blockwishlist/views/js/admin/adminConfiguration.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+{% if resultHandleForm != null %}
+ saved = {{ resultHandleForm }}
+  {# resutHandleForm represent the save of every config (true/false/null) null = no #}
+{% endif %}
+
+{{ form_start(configurationForm) }}
+{{ form_widget(configurationForm) }}
+    <button type="submit">Submit button</button>
+{{ form_end(configurationForm) }}
+{% endblock %}
+

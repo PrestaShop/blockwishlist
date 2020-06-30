@@ -1,6 +1,6 @@
 blockwishlist_home:
   path: blockwishlist/home
-  methods: [GET]
+  methods: [GET, POST]
   defaults:
     _controller: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController::homeAction
 
@@ -9,15 +9,3 @@ blockwishlist_statistics:
   methods: [GET]
   defaults:
     _controller: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController::getStatisticsAction
-
-blockwishlist_setwishlistconfiguration:
-  path: blockwishlist/setwishlistconfiguration
-  methods: [POST]
-  defaults:
-    _controller: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController::setWishlistConfigurationAction
-
-blockwishlist_setwishlistconfiguration:
-  path: blockwishlist/getwishlistconfiguration
-  methods: [GET]
-  defaults:
-    _controller: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController::getWishlistConfigurationAction

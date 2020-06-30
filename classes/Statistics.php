@@ -1,8 +1,6 @@
 <?php
 
-namespace PrestaShop\Module\BlockWishList\ObjectModel;
-
-class Statistics extends \ObjectModel
+class Statistics extends ObjectModel
 {
     /** @var int ID */
     public $id_statistics;

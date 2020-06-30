@@ -7,3 +7,8 @@ services:
     arguments:
       - '@doctrine.cache.provider'
       - '@prestashop.adapter.legacy.context'
+
+  prestashop.module.blockwishlist.grid.statistics_grid_definition_factory:
+    class: 'PrestaShop\Module\BlockWishList\Grid\StatisticsGridDefinitionFactory'
+    parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+    public: true

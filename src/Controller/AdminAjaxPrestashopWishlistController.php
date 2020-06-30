@@ -20,6 +20,7 @@
 
 namespace PrestaShop\Module\BlockWishList\Controller;
 
+use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
 use Doctrine\Common\Cache\CacheProvider;
 use Symfony\Component\HttpFoundation\Request;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
@@ -47,68 +48,61 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
 
     public function homeAction(Request $request)
     {
-        return $this->render('@Modules/blockwishlist/views/templates/admin/home.html.twig');
+        $datas = $this->getWishlistConfigurationDatas();
+        $configurationForm = $this->createForm(ConfigurationType::class, $datas);
+        $configurationForm->handleRequest($request);
+
+        if ($configurationForm->isSubmitted() && $configurationForm->isValid() ) {
+            $resultHandleForm = $this->handleForm($configurationForm->getData());
+        }
+
+        return $this->render('@Modules/blockwishlist/views/templates/admin/home.html.twig', [
+            'configurationForm' => $configurationForm->createView(),
+            'resultHandleForm' => isset($resultHandleForm) ? $resultHandleForm : null
+        ]);
     }
 
-    public function setWishlistConfigurationAction(Request $request)
+    private function handleForm($datas)
     {
-        // $key must be ID of lang so json for wishlistPageName should look like:
-        // {"wishlistPageName": {"1":"wishlistPageNameFR", "1":"wishlistPageNameFR"} }
-
-        $wishlistPageName = $request->request->get('wishlistPageName');
-        if (isset($wishlistPageName)) {
-            $wishlistNames = json_decode($wishlistPageName, true);
-            foreach ($wishlistNames as $langID => $value) {
-                $result &= Configuration::udpateValue('blockwishlist_wishlistPageName',[$langID => $value]);
+        $result = true;
+        if (isset($datas['WishlistPageName'])) {
+            foreach ($datas['WishlistPageName'] as $langID => $value) {
+                $result &= \Configuration::updateValue('blockwishlist_WishlistPageName', [$langID => $value]);
             }
         }
 
-        $wishlistDefaultTitle = $request->request->get('wishlistDefaultTitle');
-        if (isset($wishlistDefaultTitle)) {
-            $wishlistDefaultTitle = json_decode($wishlistDefaultTitle, true);
-            foreach ($wishlistDefaultTitle as $langID => $value) {
-                $result &= Configuration::udpateValue('blockwishlist_wishlistDefaultTitle',[$langID => $value]);
+        if (isset($datas['WishlistDefaultTitle'])) {
+            foreach ($datas['WishlistDefaultTitle'] as $langID => $value) {
+                $result &= \Configuration::updateValue('blockwishlist_WishlistDefaultTitle', [$langID => $value]);
             }
         }
 
-        $createNewButtonLabel = $request->request->get('createNewButtonLabel');
-        if (isset($createNewButtonLabel)) {
-            $createNewButtons = json_decode($createNewButtonLabel, true);
-            foreach ($createNewButtons as $langID => $value) {
-                $result &= Configuration::udpateValue('blockwishlist_createNewButtonLabel',[$langID => $value]);
+        if (isset($datas['CreateButtonLabel'])) {
+            foreach ($datas['CreateButtonLabel'] as $langID => $value) {
+                $result &= \Configuration::updateValue('blockwishlist_CreateButtonLabel', [$langID => $value]);
             }
         }
 
-        if (isset($result) && true === $result) {
-            return $this->json([
-                'success' => true,
-                'message' => 'Configuration updated'
-            ]);
-        } else {
-            return $this->json([
-                'success' => false,
-                'message' => 'Something wrong happened'
-            ]);
-        }
+        return $result;
     }
 
-    public function getWishlistConfigurationAction(Request $request)
+    private function getWishlistConfigurationDatas()
     {
-        $languages = Language::getLanguages(true);
+        $languages = \Language::getLanguages(true);
 
         foreach ($languages as $lang) {
-            $wishlistNames[$lang['id_lang']] = Configuration::get('blockwishlist_wishlistPageName', $lang['id_lang']);
-            $wishlistDefaultTitles[$lang['id_lang']] = Configuration::get('blockwishlist_wishlistDefaultTitle', $lang['id_lang']);
-            $wishlistCreateNewButtonsLabel[$lang['id_lang']] = Configuration::get('blockwishlist_createNewButtonLabel', $lang['id_lang']);
+            $wishlistNames[$lang['id_lang']] = \Configuration::get('blockwishlist_WishlistPageName', $lang['id_lang']);
+            $wishlistDefaultTitles[$lang['id_lang']] = \Configuration::get('blockwishlist_WishlistDefaultTitle', $lang['id_lang']);
+            $wishlistCreateNewButtonsLabel[$lang['id_lang']] = \Configuration::get('blockwishlist_CreateButtonLabel', $lang['id_lang']);
         }
 
         $datas = [
-            'wishlistNames' => $wishlistNames,
-            'wishlistDefaultTitles' => $wishlistDefaultTitles,
-            'wishlistCreateNewButtonsLabel' => $wishlistCreateNewButtonsLabel
+            'WishlistPageName' => $wishlistNames,
+            'WishlistDefaultTitle' => $wishlistDefaultTitles,
+            'CreateButtonLabel' => $wishlistCreateNewButtonsLabel
         ];
 
-        return json_encode($datas);
+        return $datas;
     }
 
     public function getStatisticsAction(Request $request)
@@ -134,29 +128,29 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
         ]);
     }
 
-    // this idea need some functional specification
-    // public function forceRefreshCacheStatsAction(Request $request)
-    // {
-    //     $cacheName = $request->request->get('cacheName');
+    // this idea need some functional specification, it is not used ATM
+    public function forceRefreshCacheStatsAction(Request $request)
+    {
+        $cacheName = $request->request->get('cacheName');
 
-    //     $statsCalculator = new StatisticsCalculator($this->context);
-    //     switch ($cacheName) {
-    //         case 'year':
-    //             $results = $statsCalculator->computeYearStats();
-    //             break;
-    //         case 'month':
-    //             $results = $statsCalculator->computeMonthStats();
-    //             break;
-    //         case 'day':
-    //             $results = $statsCalculator->computeDayStats();
-    //         break;
-    //         default:
-    //             break;
-    //     }
+        $statsCalculator = new StatisticsCalculator($this->context);
+        switch ($cacheName) {
+            case 'year':
+                $results = $statsCalculator->computeYearStats();
+                break;
+            case 'month':
+                $results = $statsCalculator->computeMonthStats();
+                break;
+            case 'day':
+                $results = $statsCalculator->computeDayStats();
+            break;
+            default:
+                break;
+        }
 
-    //     return $this->json([
-    //         'success' => true,
-    //         'stats' => $results
-    //     ]);
-    // }
+        return $this->json([
+            'success' => true,
+            'stats' => $results
+        ]);
+    }
 }
