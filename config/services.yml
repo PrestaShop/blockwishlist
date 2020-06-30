@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    public: true
+
+  PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController:
+    class: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController
+    arguments:
+      - '@doctrine.cache.provider'
+      - '@prestashop.adapter.legacy.context'
+
+  prestashop.module.blockwishlist.grid.statistics_grid_definition_factory:
+    class: 'PrestaShop\Module\BlockWishList\Grid\StatisticsGridDefinitionFactory'
+    parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+    public: true

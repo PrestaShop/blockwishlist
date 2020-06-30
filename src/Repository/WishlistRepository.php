@@ -17,9 +17,11 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-
-use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
-
-class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminController
+class WishlistRepository
 {
+    public function getAllWishlistsProductID()
+    {
+        return Db::getInstance()
+            ->getRow('SELECT `id_product` FROM `' . _DB_PREFIX_ . 'wishlist_product`');
+    }
 }

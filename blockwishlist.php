@@ -19,6 +19,7 @@
  */
 
 use PrestaShop\Module\BlockWishList\Database\Install;
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 
 if (!defined('_PS_VERSION_')) {
@@ -70,9 +71,7 @@ class BlockWishList extends Module implements WidgetInterface
      */
     public function install()
     {
-        $isDatabaseInstalled = new Install($this);
-
-        if (false === $isDatabaseInstalled->installTables()) {
+        if (false === (new Install())->installTables()) {
             return false;
         }
 
@@ -85,7 +84,15 @@ class BlockWishList extends Module implements WidgetInterface
      */
     public function uninstall()
     {
-        return parent::uninstall();
+        return (new Install())->dropTables()
+            && parent::uninstall();
+    }
+
+    public function getContent()
+    {
+        Tools::redirectAdmin(
+            SymfonyContainer::getInstance()->get('router')->generate('blockwishlist_home')
+        );
     }
 
     /**
