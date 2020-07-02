@@ -14,7 +14,7 @@ services:
   # Grid Definition
   prestashop.module.blockwishlist.grid.statistics_grid_definition_factory:
     public: true
-    class: 'PrestaShop\Module\BlockWishList\Grid\StatisticsGridDefinitionFactory'
+    class: 'PrestaShop\Module\BlockWishList\Grid\AllTimeStatisticsGridDefinitionFactory'
     parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
 
   # Grid Data Factories
@@ -22,25 +22,25 @@ services:
     class: 'PrestaShop\Module\BlockWishList\Grid\AllTimeStatisticsGridDataFactory'
     arguments:
         - '@doctrine.cache.provider'
-        - '@prestashop.adapter.legacy.context'
+        - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
 
   prestashop.module.blockwishlist.grid.current_year_statistics_data_factory:
     class: 'PrestaShop\Module\BlockWishList\Grid\CurrentYearStatisticsGridDataFactory'
     arguments:
         - '@doctrine.cache.provider'
-        - '@prestashop.adapter.legacy.context'
+        - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
 
   prestashop.module.blockwishlist.grid.current_month_statistics_data_factory:
     class: 'PrestaShop\Module\BlockWishList\Grid\CurrentMonthStatisticsGridDataFactory'
     arguments:
         - '@doctrine.cache.provider'
-        - '@prestashop.adapter.legacy.context'
+        - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
 
   prestashop.module.blockwishlist.grid.current_day_statistics_data_factory:
     class: 'PrestaShop\Module\BlockWishList\Grid\CurrentDayStatisticsGridDataFactory'
     arguments:
         - '@doctrine.cache.provider'
-        - '@prestashop.adapter.legacy.context'
+        - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
 
   # Grid Factories
   prestashop.module.blockwishlist.grid.all_time_stastistics_grid_factory:

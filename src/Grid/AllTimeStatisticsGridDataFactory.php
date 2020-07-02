@@ -16,13 +16,13 @@ class AllTimeStatisticsGridDataFactory implements GridDataFactoryInterface
     /* @var CacheProvider $cache */
     private $cache;
 
-    /* @var LegacyContext $context */
-    private $context;
+    /* @var StatisticsCalculator $calculator */
+    private $calculator;
 
-    public function __construct(CacheProvider $cache, $context)
+    public function __construct(CacheProvider $cache, StatisticsCalculator $calculator)
     {
         $this->cache = $cache;
-        $this->context = $context;
+        $this->calculator = $calculator;
     }
 
     public function getData(SearchCriteriaInterface $searchCriteria)
@@ -30,11 +30,8 @@ class AllTimeStatisticsGridDataFactory implements GridDataFactoryInterface
         // if ($this->cache->contains('blockwishlist.stats.allTime')) {
         //     $results = $this->cache->fetch('blockwishlist.stats.allTime');
         // } else {
-            $results = (new StatisticsCalculator($this->context))->computeStatsFor('allTime');
-            // $this->cache->save('blockwishlist.stats.allTime', $results, self::CACHE_LIFETIME_SECONDS);
-            // $this->cache->save('blockwishlist.stats.currentYear', $results['currentYear'], self::CACHE_LIFETIME_SECONDS);
-            // $this->cache->save('blockwishlist.stats.currentMonth', $results['currentMonth'], self::CACHE_LIFETIME_SECONDS);
-            // $this->cache->save('blockwishlist.stats.currentDay', $results['currentDay'], self::CACHE_LIFETIME_SECONDS);
+            $results = $this->calculator->computeStatsFor('allTime');
+            $this->cache->save('blockwishlist.stats.allTime', $results, self::CACHE_LIFETIME_SECONDS);
         // }
 
         return new GridData(new RecordCollection($results), count($results));

@@ -98,108 +98,6 @@ class StatisticsCalculator
         return $stats;
     }
 
-    // public function computeCurrentYearStats()
-    // {
-    //     $dateStart = (new \DateTime('now'))->modify('-1 year')->format('Y-m-d H:i:s');
-    //     $query = new \DbQuery();
-    //     $query->select('id_product');
-    //     $query->select('id_product_attribute');
-    //     $query->select('date_add');
-    //     $query->select('id_statistics');
-    //     $query->from('blockwishlist_statistics');
-    //     $query->where('date_add >= "' . $dateStart . '"');
-
-    //     $results = \Db::getInstance()->executeS($query);
-    //     $stats = [];
-
-    //     foreach ($results as $result) {
-    //         $productAttributeKey = $result['id_product'] . '.' . $result['id_product_attribute'];
-
-    //         if (isset($stats['currentYear'][$productAttributeKey])) {
-    //             $stats['currentYear'][$productAttributeKey] = $stats['currentYear'][$productAttributeKey] + 1;
-    //         } else {
-    //             $stats['currentYear'][$productAttributeKey] = 1;
-    //         }
-    //     }
-
-    //     arsort($stats);
-    //     $stats = array_slice($stats, 0, 10);
-    //     $this->computeConversionRate($stats, 'currentYear');
-
-    //     return $stats;
-    // }
-
-    // public function computeAllStats()
-    // {
-    //     $query = new \DbQuery();
-    //     $query->select('id_product');
-    //     $query->select('id_product_attribute');
-    //     $query->select('date_add');
-    //     $query->select('id_statistics');
-    //     $query->from('blockwishlist_statistics');
-
-    //     $results = \Db::getInstance()->executeS($query);
-
-    //     $stats = [
-    //         'allTime' => [],
-    //         'currentYear' => [],
-    //         'currentMonth' => [],
-    //         'currentDay' => [],
-    //     ];
-
-    //     $currentDate = new \DateTime('now');
-
-    //     foreach ($results as $result) {
-    //         $productAttributeKey = $result['id_product'] . '.' . $result['id_product_attribute'];
-
-    //         if (isset($stats['allTime'][$productAttributeKey])) {
-    //             $stats['allTime'][$productAttributeKey] = $stats['allTime'][$productAttributeKey] + 1;
-    //         } else {
-    //             $stats['allTime'][$productAttributeKey] = 1;
-    //         }
-
-    //         $dateTime = \DateTime::createFromFormat('Y-m-d H:i:s', $result['date_add']);
-    //         $diff = $dateTime->diff($currentDate);
-
-    //         if ($diff->y < 1) {
-    //             if (isset($stats['currentYear'][$productAttributeKey])) {
-    //                 $stats['currentYear'][$productAttributeKey] = $stats['currentYear'][$productAttributeKey] + 1;
-    //             } else {
-    //                 $stats['currentYear'][$productAttributeKey] = 1;
-    //             }
-    //         }
-
-    //         if ($diff->m < 1) {
-    //             if (isset($stats['currentMonth'][$productAttributeKey])) {
-    //                 $stats['currentMonth'][$productAttributeKey] = $stats['currentMonth'][$productAttributeKey] + 1;
-    //             } else {
-    //                 $stats['currentMonth'][$productAttributeKey] = 1;
-    //             }
-    //         }
-
-    //         if ($diff->d < 1) {
-    //             if (isset($stats['currentDay'][$productAttributeKey])) {
-    //                 $stats['currentDay'][$productAttributeKey] = $stats['currentDay'][$productAttributeKey] + 1;
-    //             } else {
-    //                 $stats['currentDay'][$productAttributeKey] = 1;
-    //             }
-    //         }
-    //     }
-
-    //     arsort($stats['allTime']);
-    //     arsort($stats['currentYear']);
-    //     arsort($stats['currentMonth']);
-    //     arsort($stats['currentDay']);
-    //     $stats['allTime'] = array_slice($stats['allTime'], 0, 10);
-    //     $stats['currentYear'] = array_slice($stats['currentYear'], 0, 10);
-    //     $stats['currentMonth'] = array_slice($stats['currentMonth'], 0, 10);
-    //     $stats['currentDay'] = array_slice($stats['currentDay'], 0, 10);
-
-    //     $this->computeConversionRate($stats);
-
-    //     return $stats;
-    // }
-
     /**
      * computeconversionRate
      *
@@ -210,6 +108,7 @@ class StatisticsCalculator
      */
     public function computeConversionRate(&$stats, $dateStart = null)
     {
+        $position = 0;
         foreach ($stats as $idProductAndAttribute => $count) {
             // first ID is product, second one is product_attribute
             $ids = explode('.', $idProductAndAttribute);
@@ -220,20 +119,21 @@ class StatisticsCalculator
                 'id_product_attribute' => $id_product_attribute,
             ]);
             $imgDetails = $this->getProductImage($productDetails);
-
             $stats[$idProductAndAttribute] = [
+                'position' => $position,
                 'count' => $count,
                 'id_product' => $id_product,
                 'id_product_attribute' => $id_product_attribute,
                 'name' => $productDetails['name'],
                 'category_name' => $productDetails['category_name'],
-                'image' => $imgDetails,
+                'image_small_url' => $imgDetails['small']['url'],
                 'link' => $productDetails['link'],
                 'reference' => $productDetails['reference'],
                 'price' => $productDetails['price'],
                 'quantity' => $productDetails['quantity'],
                 'conversionRate' => $this->computeConversionByProduct($id_product, $id_product_attribute, $dateStart),
             ];
+            $position++;
         }
     }
 

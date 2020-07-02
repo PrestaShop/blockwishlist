@@ -21,10 +21,13 @@
 namespace PrestaShop\Module\BlockWishList\Grid;
 
 use PrestaShop\PrestaShop\Core\Grid\Column\ColumnCollection;
+use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\LinkColumn;
+use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\ImageColumn;
+use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\PositionColumn;
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\DataColumn;
 use PrestaShop\PrestaShop\Core\Grid\Definition\Factory\AbstractGridDefinitionFactory;
 
-final class StatisticsGridDefinitionFactory extends AbstractGridDefinitionFactory
+class BaseStatisticsGridDefinitionFactory extends AbstractGridDefinitionFactory
 {
     protected function getId()
     {
@@ -33,23 +36,33 @@ final class StatisticsGridDefinitionFactory extends AbstractGridDefinitionFactor
 
     protected function getName()
     {
-        return 'statistics';
-        // return $this->trans('Products', [], 'Admin.Advparameters.Feature');
+        return $this->trans('Statistics', [], 'Admin.Advparameters.Feature');
     }
 
     protected function getColumns()
     {
         return (new ColumnCollection())
-            ->add((new DataColumn('id_product'))
-                ->setName($this->trans('ID', [], 'prestashop.module.blockwishlist.statistics.ID'))
+                ->add((new PositionColumn('position'))
+                ->setName($this->trans('position', [], 'prestashop.module.blockwishlist.statistics.image'))
                 ->setOptions([
-                    'field' => 'id_product',
+                    'id_field' => 'position',
+                    'position_field' => 'position',
+                    'update_route' => 'admin_link_block_update_positions',
                 ])
             )
-            ->add((new DataColumn('name'))
+            ->add((new ImageColumn('image'))
+                ->setName($this->trans('image', [], 'prestashop.module.blockwishlist.statistics.image'))
+                ->setOptions([
+                    'src_field' => 'image_small_url',
+                ])
+            )
+            ->add((new LinkColumn('name'))
                 ->setName($this->trans('name', [], 'prestashop.module.blockwishlist.statistics.name'))
                 ->setOptions([
                     'field' => 'name',
+                    'route' => 'admin_product_form',
+                    'route_param_name' => 'id',
+                    'route_param_field' => 'id_product',
                 ])
             )
             ->add((new DataColumn('reference'))
@@ -58,7 +71,6 @@ final class StatisticsGridDefinitionFactory extends AbstractGridDefinitionFactor
                     'field' => 'reference',
                 ])
             )
-
             ->add((new DataColumn('category_name'))
                 ->setName($this->trans('category_name', [], 'prestashop.module.blockwishlist.statistics.category_name'))
                 ->setOptions([

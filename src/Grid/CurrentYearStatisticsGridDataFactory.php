@@ -16,13 +16,13 @@ class CurrentYearStatisticsGridDataFactory implements GridDataFactoryInterface
     /* @var CacheProvider $cache */
     private $cache;
 
-    /* @var LegacyContext $context */
-    private $context;
+    /* @var StatisticsCalculator $calculator */
+    private $calculator;
 
-    public function __construct(CacheProvider $cache, $context)
+    public function __construct(CacheProvider $cache, StatisticsCalculator $calculator)
     {
         $this->cache = $cache;
-        $this->context = $context;
+        $this->calculator = $calculator;
     }
 
     public function getData(SearchCriteriaInterface $searchCriteria)
@@ -30,7 +30,7 @@ class CurrentYearStatisticsGridDataFactory implements GridDataFactoryInterface
         // if ($this->cache->contains('blockwishlist.stats.currentYear')) {
         //     $results = $this->cache->fetch('blockwishlist.stats.currentYear');
         // } else {
-            $results = (new StatisticsCalculator($this->context))->computeStatsFor('currentYear');
+            $results = $this->calculator->computeStatsFor('currentYear');
             $this->cache->save('blockwishlist.stats.currentYear', $results, self::CACHE_LIFETIME_SECONDS);
         // }
 
