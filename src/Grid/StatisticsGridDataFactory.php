@@ -7,6 +7,8 @@ use PrestaShop\Module\BlockWishList\Calculator\StatisticsCalculator;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShop\PrestaShop\Core\Grid\Data\Factory\GridDataFactoryInterface;
 use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteriaInterface;
+use PrestaShop\PrestaShop\Core\Grid\Record\RecordCollection;
+use PrestaShop\PrestaShop\Core\Grid\Data\GridData;
 
 class StatisticsGridDataFactory implements GridDataFactoryInterface
 {
@@ -43,7 +45,12 @@ class StatisticsGridDataFactory implements GridDataFactoryInterface
             $this->cache->save('blockwishlist.stats.currentMonth', $results['currentMonth'], self::CACHE_LIFETIME_SECONDS);
             $this->cache->save('blockwishlist.stats.currentDay', $results['currentDay'], self::CACHE_LIFETIME_SECONDS);
         }
-
-        return $results;
+        dump($results['allTime']);
+        die;
+        return new GridData(
+            new RecordCollection($results['allTime']),
+            count($results['allTime']),
+            'cached datas'
+        );
     }
 }
