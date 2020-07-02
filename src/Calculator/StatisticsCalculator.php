@@ -40,7 +40,7 @@ class StatisticsCalculator
     public function __construct($context)
     {
         $this->context = $context;
-        $this->context->customer = new \Customer(); // (╯°□°)╯︵ ┻━┻
+        $this->context->customer = new \Customer(1); // (╯°□°)╯︵ ┻━┻
         $this->productAssembler = new \ProductAssembler($this->context);
     }
 

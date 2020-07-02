@@ -25,6 +25,8 @@
 
 {% block content %}
 
+{% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': productsGrid} %}
+
 {% if resultHandleForm != null %}
  saved = {{ resultHandleForm }}
   {# resutHandleForm represent the save of every config (true/false/null) null = no #}

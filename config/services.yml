@@ -1,14 +1,26 @@
 services:
-  _defaults:
-    public: true
-
   PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController:
+    public: true
     class: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController
     arguments:
       - '@doctrine.cache.provider'
       - '@prestashop.adapter.legacy.context'
 
   prestashop.module.blockwishlist.grid.statistics_grid_definition_factory:
+    public: true
     class: 'PrestaShop\Module\BlockWishList\Grid\StatisticsGridDefinitionFactory'
     parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
-    public: true
+
+  prestashop.module.blockwishlist.grid.statistics_data_factory:
+    class: 'PrestaShop\Module\BlockWishList\Grid\StatisticsGridDataFactory'
+    arguments:
+        - '@doctrine.cache.provider' # we use cache to get datas
+        - '@prestashop.adapter.legacy.context'
+
+  prestashop.module.blockwishlist.grid.stastistics_grid_factory:
+    class: 'PrestaShop\PrestaShop\Core\Grid\GridFactory'
+    arguments:
+        - '@prestashop.module.blockwishlist.grid.statistics_grid_definition_factory'  # our definition factory
+        - '@prestashop.module.blockwishlist.grid.statistics_data_factory'        # our data factory
+        - '@prestashop.core.grid.filter.form_factory'                         # core service needed by grid factory
+        - '@prestashop.core.hook.dispatcher'

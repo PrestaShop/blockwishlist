@@ -26,14 +26,10 @@ use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
+use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 
 class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminController
 {
-    const CACHE_LIFETIME_SECONDS = 86400;
-    const YEAR_CACHE_LIFETIME_SECONDS = 86400;
-    const MONTH_CACHE_LIFETIME_SECONDS = 86400;
-    const DAY_CACHE_LIFETIME_SECONDS = 86400;
-
     /* @var CacheProvider $cache */
     private $cache;
 
@@ -56,9 +52,14 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
             $resultHandleForm = $this->handleForm($configurationForm->getData());
         }
 
+        $searchCriteria = new SearchCriteria();
+        $productGridFactory = $this->get('prestashop.module.blockwishlist.grid.stastistics_grid_factory');
+        $productGrid = $productGridFactory->getGrid($searchCriteria);
+
         return $this->render('@Modules/blockwishlist/views/templates/admin/home.html.twig', [
             'configurationForm' => $configurationForm->createView(),
             'resultHandleForm' => isset($resultHandleForm) ? $resultHandleForm : null,
+            'productsGrid' => $this->presentGrid($productGrid)
         ]);
     }
 
@@ -108,28 +109,28 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
         return $datas;
     }
 
-    public function getStatisticsAction(Request $request)
-    {
-        if ($this->cache->contains('blockwishlist.stats.allTime')) {
-            $results = [
-                'allTime' => $this->cache->fetch('blockwishlist.stats.allTime'),
-                'currentYear' => $this->cache->fetch('blockwishlist.stats.currentYear'),
-                'currentMonth' => $this->cache->fetch('blockwishlist.stats.currentMonth'),
-                'currentDay' => $this->cache->fetch('blockwishlist.stats.currentDay'),
-            ];
-        } else {
-            $results = (new StatisticsCalculator($this->context))->computeAllStats();
-            $this->cache->save('blockwishlist.stats.allTime', $results['allTime'], self::CACHE_LIFETIME_SECONDS);
-            $this->cache->save('blockwishlist.stats.currentYear', $results['currentYear'], self::CACHE_LIFETIME_SECONDS);
-            $this->cache->save('blockwishlist.stats.currentMonth', $results['currentMonth'], self::CACHE_LIFETIME_SECONDS);
-            $this->cache->save('blockwishlist.stats.currentDay', $results['currentDay'], self::CACHE_LIFETIME_SECONDS);
-        }
+    // public function getStatisticsAction(Request $request)
+    // {
+    //     if ($this->cache->contains('blockwishlist.stats.allTime')) {
+    //         $results = [
+    //             'allTime' => $this->cache->fetch('blockwishlist.stats.allTime'),
+    //             'currentYear' => $this->cache->fetch('blockwishlist.stats.currentYear'),
+    //             'currentMonth' => $this->cache->fetch('blockwishlist.stats.currentMonth'),
+    //             'currentDay' => $this->cache->fetch('blockwishlist.stats.currentDay'),
+    //         ];
+    //     } else {
+    //         $results = (new StatisticsCalculator($this->context))->computeAllStats();
+    //         $this->cache->save('blockwishlist.stats.allTime', $results['allTime'], self::CACHE_LIFETIME_SECONDS);
+    //         $this->cache->save('blockwishlist.stats.currentYear', $results['currentYear'], self::CACHE_LIFETIME_SECONDS);
+    //         $this->cache->save('blockwishlist.stats.currentMonth', $results['currentMonth'], self::CACHE_LIFETIME_SECONDS);
+    //         $this->cache->save('blockwishlist.stats.currentDay', $results['currentDay'], self::CACHE_LIFETIME_SECONDS);
+    //     }
 
-        return $this->json([
-            'success' => true,
-            'stats' => $results,
-        ]);
-    }
+    //     return $this->json([
+    //         'success' => true,
+    //         'stats' => $results,
+    //     ]);
+    // }
 
     // this idea need some functional specification, it is not used ATM
     // public function forceRefreshCacheStatsAction(Request $request)
