@@ -41,21 +41,46 @@ final class StatisticsGridDefinitionFactory extends AbstractGridDefinitionFactor
     {
         return (new ColumnCollection())
             ->add((new DataColumn('id_product'))
-                ->setName($this->trans('ID', [], 'Admin.Global'))
+                ->setName($this->trans('ID', [], 'prestashop.module.blockwishlist.statistics.ID'))
                 ->setOptions([
                     'field' => 'id_product',
                 ])
             )
+            ->add((new DataColumn('name'))
+                ->setName($this->trans('name', [], 'prestashop.module.blockwishlist.statistics.name'))
+                ->setOptions([
+                    'field' => 'name',
+                ])
+            )
             ->add((new DataColumn('reference'))
-                ->setName($this->trans('Reference', [], 'Admin.Advparameters.Feature'))
+                ->setName($this->trans('reference', [], 'prestashop.module.blockwishlist.statistics.reference'))
                 ->setOptions([
                     'field' => 'reference',
                 ])
             )
-            ->add((new DataColumn('name'))
-                ->setName($this->trans('Name', [], 'Admin.Advparameters.Feature'))
+
+            ->add((new DataColumn('category_name'))
+                ->setName($this->trans('category_name', [], 'prestashop.module.blockwishlist.statistics.category_name'))
                 ->setOptions([
-                    'field' => 'name',
+                    'field' => 'category_name',
+                ])
+            )
+            ->add((new DataColumn('price'))
+                ->setName($this->trans('price', [], 'prestashop.module.blockwishlist.statistics.price'))
+                ->setOptions([
+                    'field' => 'price',
+                ])
+            )
+            ->add((new DataColumn('quantity'))
+                ->setName($this->trans('quantity', [], 'prestashop.module.blockwishlist.statistics.quantity'))
+                ->setOptions([
+                    'field' => 'quantity',
+                ])
+            )
+            ->add((new DataColumn('conversionRate'))
+                ->setName($this->trans('conversionRate', [], 'prestashop.module.blockwishlist.statistics.conversionRate'))
+                ->setOptions([
+                    'field' => 'conversionRate',
                 ])
             )
         ;

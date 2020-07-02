@@ -31,22 +31,21 @@ class StatisticsGridDataFactory implements GridDataFactoryInterface
 
     public function getData(SearchCriteriaInterface $searchCriteria)
     {
-        if ($this->cache->contains('blockwishlist.stats.allTime')) {
-            $results = [
-                'allTime' => $this->cache->fetch('blockwishlist.stats.allTime'),
-                'currentYear' => $this->cache->fetch('blockwishlist.stats.currentYear'),
-                'currentMonth' => $this->cache->fetch('blockwishlist.stats.currentMonth'),
-                'currentDay' => $this->cache->fetch('blockwishlist.stats.currentDay'),
-            ];
-        } else {
+        // if ($this->cache->contains('blockwishlist.stats.allTime')) {
+        //     $results = [
+        //         'allTime' => $this->cache->fetch('blockwishlist.stats.allTime'),
+        //         'currentYear' => $this->cache->fetch('blockwishlist.stats.currentYear'),
+        //         'currentMonth' => $this->cache->fetch('blockwishlist.stats.currentMonth'),
+        //         'currentDay' => $this->cache->fetch('blockwishlist.stats.currentDay'),
+        //     ];
+        // } else {
             $results = (new StatisticsCalculator($this->context))->computeAllStats();
-            $this->cache->save('blockwishlist.stats.allTime', $results['allTime'], self::CACHE_LIFETIME_SECONDS);
-            $this->cache->save('blockwishlist.stats.currentYear', $results['currentYear'], self::CACHE_LIFETIME_SECONDS);
-            $this->cache->save('blockwishlist.stats.currentMonth', $results['currentMonth'], self::CACHE_LIFETIME_SECONDS);
-            $this->cache->save('blockwishlist.stats.currentDay', $results['currentDay'], self::CACHE_LIFETIME_SECONDS);
-        }
-        dump($results['allTime']);
-        die;
+            // $this->cache->save('blockwishlist.stats.allTime', $results['allTime'], self::CACHE_LIFETIME_SECONDS);
+            // $this->cache->save('blockwishlist.stats.currentYear', $results['currentYear'], self::CACHE_LIFETIME_SECONDS);
+            // $this->cache->save('blockwishlist.stats.currentMonth', $results['currentMonth'], self::CACHE_LIFETIME_SECONDS);
+            // $this->cache->save('blockwishlist.stats.currentDay', $results['currentDay'], self::CACHE_LIFETIME_SECONDS);
+        // }
+
         return new GridData(
             new RecordCollection($results['allTime']),
             count($results['allTime']),

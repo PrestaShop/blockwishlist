@@ -368,7 +368,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
     private function addProductToCartAction($params)
     {
         $productAdd = WishList::addBoughtProduct(
-            $params['idWishList'],
+            $params['idWishlist'],
             $params['id_product'],
             $params['id_product_attribute'],
             (int) $this->context->cart->id,
