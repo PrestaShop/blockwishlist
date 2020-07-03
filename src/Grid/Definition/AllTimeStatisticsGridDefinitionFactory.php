@@ -18,11 +18,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShop\Module\BlockWishList\Grid;
-
-use PrestaShop\PrestaShop\Core\Grid\Column\ColumnCollection;
-use PrestaShop\PrestaShop\Core\Grid\Column\Type\DataColumn;
-use PrestaShop\PrestaShop\Core\Grid\Definition\Factory\AbstractGridDefinitionFactory;
+namespace PrestaShop\Module\BlockWishList\Grid\Definition;
 
 class AllTimeStatisticsGridDefinitionFactory extends BaseStatisticsGridDefinitionFactory
 {

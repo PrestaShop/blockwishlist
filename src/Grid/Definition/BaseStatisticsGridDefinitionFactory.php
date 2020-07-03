@@ -18,7 +18,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShop\Module\BlockWishList\Grid;
+namespace PrestaShop\Module\BlockWishList\Grid\Definition;
 
 use PrestaShop\PrestaShop\Core\Grid\Column\ColumnCollection;
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\LinkColumn;
@@ -47,7 +47,7 @@ class BaseStatisticsGridDefinitionFactory extends AbstractGridDefinitionFactory
                 ->setOptions([
                     'id_field' => 'position',
                     'position_field' => 'position',
-                    'update_route' => 'admin_link_block_update_positions',
+                    'update_route' => '',
                 ])
             )
             ->add((new ImageColumn('image'))

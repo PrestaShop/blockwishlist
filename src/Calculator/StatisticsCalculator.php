@@ -45,6 +45,13 @@ class StatisticsCalculator
         $this->productAssembler = new \ProductAssembler($this->context);
     }
 
+    /**
+     * computeStatsFor
+     *
+     * @param string|null $statsRange
+     *
+     * @return array
+     */
     public function computeStatsFor($statsRange = null)
     {
         $query = new \DbQuery();

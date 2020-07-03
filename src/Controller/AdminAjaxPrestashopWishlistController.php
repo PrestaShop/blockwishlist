@@ -57,6 +57,13 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
         ]);
     }
 
+    /**
+     * handleForm
+     *
+     * @param array $datas
+     *
+     * @return bool
+     */
     private function handleForm($datas)
     {
         $result = true;
@@ -81,6 +88,11 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
         return $result;
     }
 
+    /**
+     * getWishlistConfigurationDatas
+     *
+     * @return array
+     */
     private function getWishlistConfigurationDatas()
     {
         $languages = \Language::getLanguages(true);
