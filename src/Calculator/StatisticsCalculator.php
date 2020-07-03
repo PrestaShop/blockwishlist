@@ -20,8 +20,8 @@
 
 namespace PrestaShop\Module\BlockWishList\Calculator;
 
-use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
+use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
 use PrestaShop\PrestaShop\Core\Product\ProductPresenter;
@@ -61,28 +61,26 @@ class StatisticsCalculator
         $query->select('id_statistics');
         $query->from('blockwishlist_statistics');
 
-        if (null !== $statsRange) {
-            switch ($statsRange) {
-                case 'currentYear':
-                    $dateStart = (new \DateTime('now'))->modify('-1 year')->format('Y-m-d H:i:s');
-                break;
-                case 'currentMonth':
-                    $dateStart = (new \DateTime('now'))->modify('-1 month')->format('Y-m-d H:i:s');
-                break;
-                case 'currentDay':
-                    $dateStart = (new \DateTime('now'))->modify('-1 day')->format('Y-m-d H:i:s');
-                break;
-                case 'allTime':
-                    $dateStart = null;
-                break;
-                default:
-                    $dateStart = null;
-                break;
-            }
+        switch ($statsRange) {
+            case 'currentYear':
+                $dateStart = (new \DateTime('now'))->modify('-1 year')->format('Y-m-d H:i:s');
+            break;
+            case 'currentMonth':
+                $dateStart = (new \DateTime('now'))->modify('-1 month')->format('Y-m-d H:i:s');
+            break;
+            case 'currentDay':
+                $dateStart = (new \DateTime('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+            break;
+            case 'allTime':
+                $dateStart = null;
+            break;
+            default:
+                $dateStart = null;
+            break;
+        }
 
-            if (null !== $dateStart) {
-                $query->where('date_add >= "' . $dateStart . '"');
-            }
+        if (null !== $dateStart) {
+            $query->where('date_add >= "' . $dateStart . '"');
         }
 
         $results = \Db::getInstance()->executeS($query);
@@ -108,14 +106,15 @@ class StatisticsCalculator
     /**
      * computeconversionRate
      *
-     * @param array $stats by reference
-     * @param string|null $statsKey
+     * @param array &$stats
+     * @param string|null $dateStart
      *
      * @return void
      */
     public function computeConversionRate(&$stats, $dateStart = null)
     {
         $position = 0;
+
         foreach ($stats as $idProductAndAttribute => $count) {
             // first ID is product, second one is product_attribute
             $ids = explode('.', $idProductAndAttribute);
@@ -125,6 +124,7 @@ class StatisticsCalculator
                 'id_product' => $id_product,
                 'id_product_attribute' => $id_product_attribute,
             ]);
+
             $imgDetails = $this->getProductImage($productDetails);
             $stats[$idProductAndAttribute] = [
                 'position' => $position,
@@ -140,7 +140,8 @@ class StatisticsCalculator
                 'quantity' => $productDetails['quantity'],
                 'conversionRate' => $this->computeConversionByProduct($id_product, $id_product_attribute, $dateStart),
             ];
-            $position++;
+
+            ++$position;
         }
     }
 

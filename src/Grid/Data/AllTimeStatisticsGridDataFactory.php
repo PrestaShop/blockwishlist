@@ -3,9 +3,9 @@
 namespace PrestaShop\Module\BlockWishList\Grid\Data;
 
 use PrestaShop\PrestaShop\Core\Grid\Data\Factory\GridDataFactoryInterface;
-use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteriaInterface;
-use PrestaShop\PrestaShop\Core\Grid\Record\RecordCollection;
 use PrestaShop\PrestaShop\Core\Grid\Data\GridData;
+use PrestaShop\PrestaShop\Core\Grid\Record\RecordCollection;
+use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteriaInterface;
 
 class AllTimeStatisticsGridDataFactory extends BaseGridDataFactory implements GridDataFactoryInterface
 {

@@ -21,9 +21,9 @@
 namespace PrestaShop\Module\BlockWishList\Controller;
 
 use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
+use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
-use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 
 class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminController
 {
@@ -53,7 +53,7 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
             'allTimeStatisticsGrid' => $this->presentGrid($allTimeStatisticsGrid),
             'currentYearStatisticsGrid' => $this->presentGrid($currentYearGrid),
             'currentMonthStatisticsGrid' => $this->presentGrid($currentMonthGrid),
-            'currentDayStatisticsGrid' => $this->presentGrid($currentDayGrid)
+            'currentDayStatisticsGrid' => $this->presentGrid($currentDayGrid),
         ]);
     }
 
