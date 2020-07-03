@@ -106,7 +106,7 @@ class StatisticsCalculator
     /**
      * computeconversionRate
      *
-     * @param array &$stats
+     * @param array $stats
      * @param string|null $dateStart
      *
      * @return void
