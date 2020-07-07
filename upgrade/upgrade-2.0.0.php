@@ -38,9 +38,7 @@ function upgrade_module_2_0_0($module)
         $newStat->id_product = $field['id_product'];
         $newStat->id_product_attribute = $field['id_product_attribute'];
         $newStat->save();
-
     }
-
 
     return $module->registerHook(BlockWishList::HOOKS)
         && Db::getInstance()->execute('DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'wishlist_email`');
