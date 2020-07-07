@@ -22,7 +22,7 @@ if (!defined('_PS_VERSION_')) {
 }
 
 /**
- * @param BlockWishList $module
+ * @param BlockWishList $moduleadd upgrade
  *
  * @return bool
  */
