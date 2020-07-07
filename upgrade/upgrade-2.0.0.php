@@ -28,6 +28,20 @@ if (!defined('_PS_VERSION_')) {
  */
 function upgrade_module_2_0_0($module)
 {
+    $products = Db::getInstance()->executeS(
+        'SELECT wp.`id_product`, wp.`id_product_attribute`
+        FROM `' . _DB_PREFIX_ . 'wishlist_product` wp'
+    );
+
+    foreach ($products as $k => $field) {
+        $newStat = new Statistics();
+        $newStat->id_product = $field['id_product'];
+        $newStat->id_product_attribute = $field['id_product_attribute'];
+        $newStat->save();
+
+    }
+
+
     return $module->registerHook(BlockWishList::HOOKS)
         && Db::getInstance()->execute('DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'wishlist_email`');
 }
