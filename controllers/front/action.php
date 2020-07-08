@@ -65,20 +65,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             $quantity = $product->minimal_quantity;
         }
 
-        if (0 === $idWishList) {
-            if (WishList::exists($idWishList, $this->context->customer->id) === false) {
-                $wishlist = new WishList();
-                $wishlist->id_shop = $this->context->shop->id;
-                $wishlist->id_shop_group = $this->context->shop->id_shop_group;
-                $wishlist->id_customer = $this->context->customer->id;
-                $wishlist->name = 'default';
-                $wishlist->token = $this->generateWishListToken();
-                $wishlist->default = 1;
-                $wishlist->add();
-            }
-        } else {
-            $wishlist = new WishList($idWishList);
-        }
+        $wishlist = new WishList($idWishList);
 
         $productIsAdded = $wishlist->addProduct(
             $idWishList,
