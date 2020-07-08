@@ -81,6 +81,14 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
             );
             $this->setTemplate('errors/forbidden');
         }
+        $this->context->smarty->assign(
+            [
+                'id' => $id_wishlist,
+                'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getProductsByWishlist']),
+                'wishlistsLink' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
+                'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            ]
+        );
 
         parent::init();
     }
@@ -93,7 +101,7 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
         parent::initContent();
 
         $this->doProductSearch(
-            'catalog/listing/product-list.tpl',
+            '../../../modules/blockwishlist/views/templates/pages/products-list.tpl',
             [
                 'entity' => 'wishlist_product',
                 'id_wishlist' => $this->wishlist->id,
