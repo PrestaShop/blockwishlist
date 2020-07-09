@@ -148,7 +148,8 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
     {
         return new WishListProductSearchProvider(
             Db::getInstance(),
-            $this->wishlist
+            $this->wishlist,
+            $this->context
         );
     }
 

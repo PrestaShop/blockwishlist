@@ -21,11 +21,17 @@
 namespace PrestaShop\Module\BlockWishList\Search;
 
 use Db;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
+use WishList;
+use ProductAssembler;
+use ProductPresenterFactory;
+use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
+use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
+use PrestaShop\PrestaShop\Core\Product\ProductListingPresenter;
+use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
-use WishList;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
 
 /**
  * Responsible of getting products for specific wishlist.
@@ -46,10 +52,11 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
      * @param Db $db
      * @param WishList $wishList
      */
-    public function __construct(Db $db, WishList $wishList)
+    public function __construct(Db $db, WishList $wishList, $contexts)
     {
         $this->db = $db;
         $this->wishList = $wishList;
+        $this->context = $contexts;
     }
 
     /**
@@ -85,6 +92,8 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
 
         if ('products' === $type) {
             $querySearch->select('p.*');
+            $querySearch->select('wp.`quantity` AS wishlist_quantity');
+            $querySearch->select('wp.`id_product_attribute`');
             $querySearch->select('product_shop.*');
             $querySearch->select('stock.out_of_stock, IFNULL(stock.quantity, 0) AS quantity');
             $querySearch->select('pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`, pl.`meta_keywords`,
@@ -145,7 +154,66 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 return [];
             }
 
-            return $products;
+            $products_for_template = [];
+
+            if (is_array($products)) {
+                foreach ($products as $rawProduct) {
+                    $rawProduct['show_availability'] = $rawProduct['show_price'] && \Configuration::get('PS_STOCK_MANAGEMENT');;
+
+                    if ($rawProduct['show_availability']) {
+                        $availableQuantity = $rawProduct['quantity'] - $rawProduct['wishlist_quantity'];
+                        if (isset($rawProduct['stock_quantity'])) {
+                            $availableQuantity = $rawProduct['stock_quantity'] - $rawProduct['wishlist_quantity'];
+                        }
+                        if ($availableQuantity >= 0) {
+                            $rawProduct['availability_date'] = $rawProduct['available_date'];
+
+                            if ($rawProduct['quantity'] < \Configuration::get('PS_LAST_QTIES')) {
+                                $this->applyLastItemsInStockDisplayRule();
+                            } else {
+                                $rawProduct['availability_message'] = $rawProduct['available_now'] ? $rawProduct['available_now']
+                                    : \Configuration::get('PS_LABEL_IN_STOCK_PRODUCTS', $this->context->language->id);
+                                $rawProduct['availability'] = 'available';
+                            }
+                        } elseif ($rawProduct['allow_oosp']) {
+                            $rawProduct['availability_message'] = $rawProduct['available_later'] ? $rawProduct['available_later']
+                                : \Configuration::get('PS_LABEL_OOS_PRODUCTS_BOA', $this->context->language->id);
+                            $rawProduct['availability_date'] = $rawProduct['available_date'];
+                            $rawProduct['availability'] = 'available';
+                        } elseif ($rawProduct['wishlist_quantity'] > 0 && $rawProduct['quantity'] > 0) {
+                            $rawProduct['availability_message'] = $this->translator->trans(
+                                'There are not enough products in stock',
+                                [],
+                                'Shop.Notifications.Error'
+                            );
+                            $rawProduct['availability'] = 'unavailable';
+                            $rawProduct['availability_date'] = null;
+                        } elseif (!empty($rawProduct['quantity_all_versions']) && $rawProduct['quantity_all_versions'] > 0) {
+                            $rawProduct['availability_message'] = $this->translator->trans(
+                                'Product available with different options',
+                                [],
+                                'Shop.Theme.Catalog'
+                            );
+                            $rawProduct['availability_date'] = $rawProduct['available_date'];
+                            $rawProduct['availability'] = 'unavailable';
+                        } else {
+                            $rawProduct['availability_message'] =
+                                \Configuration::get('PS_LABEL_OOS_PRODUCTS_BOD', $this->context->language->id);
+                            $rawProduct['availability_date'] = $rawProduct['available_date'];
+                            $rawProduct['availability'] = 'unavailable';
+                        }
+                        $rawProduct['customization_required'] = false;
+                    } else {
+                        $rawProduct['availability_message'] = null;
+                        $rawProduct['availability_date'] = null;
+                        $rawProduct['availability'] = null;
+                        $rawProduct['customization_required'] = false;
+                    }
+                    $products_for_template[] = $rawProduct;
+                }
+            }
+
+            return $products_for_template;
         }
 
         return (int) $this->db->getValue($querySearch);
