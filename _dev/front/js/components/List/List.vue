@@ -21,17 +21,14 @@
     <ul
       class="wishlist-list"
       v-if="items.length > 0 && items"
-      v-click-outside="event => emptyPopups()"
+      v-click-outside="(event) => emptyPopups()"
     >
       <li
         class="wishlist-list-item"
         :key="list.id_wishlist"
         v-for="list of items"
       >
-        <a
-          class="wishlist-list-item-title"
-          :href="list.listUrl"
-        >
+        <a class="wishlist-list-item-title" :href="list.listUrl">
           {{ list.name }}
           <span v-if="list.nbProducts">({{ list.nbProducts }})</span>
           <span v-else>(0)</span>
@@ -41,8 +38,16 @@
           <a
             class="wishlist-list-item-actions"
             @click="togglePopup(list.id_wishlist)"
+            v-if="!list.default"
           >
             <i class="material-icons">more_vert</i>
+          </a>
+
+          <a
+            @click="toggleShare(list.id_wishlist, list.shareUrl)"
+            v-if="list.default"
+          >
+            <i class="material-icons">share</i>
           </a>
 
           <div
@@ -57,62 +62,30 @@
             </a>
           </div>
 
-          <a @click="toggleDelete(list.id_wishlist, list.name)">
+          <a
+            @click="toggleDelete(list.id_wishlist, list.name)"
+            v-if="!list.default"
+          >
             <i class="material-icons">delete</i>
           </a>
         </div>
       </li>
     </ul>
 
-    <ContentLoader
-      v-if="loading"
-      class="wishlist-list-loader"
-      height="105"
-    >
-      <rect
-        x="0"
-        y="12"
-        rx="3"
-        ry="0"
-        width="100%"
-        height="11"
-      />
-      <rect
-        x="0"
-        y="36"
-        rx="3"
-        ry="0"
-        width="100%"
-        height="11"
-      />
-      <rect
-        x="0"
-        y="60"
-        rx="3"
-        ry="0"
-        width="100%"
-        height="11"
-      />
-      <rect
-        x="0"
-        y="84"
-        rx="3"
-        ry="0"
-        width="100%"
-        height="11"
-      />
+    <ContentLoader v-if="loading" class="wishlist-list-loader" height="105">
+      <rect x="0" y="12" rx="3" ry="0" width="100%" height="11" />
+      <rect x="0" y="36" rx="3" ry="0" width="100%" height="11" />
+      <rect x="0" y="60" rx="3" ry="0" width="100%" height="11" />
+      <rect x="0" y="84" rx="3" ry="0" width="100%" height="11" />
     </ContentLoader>
-    <p
-      class="wishlist-list-empty"
-      v-if="items.length <= 0 && !loading"
-    >
+    <p class="wishlist-list-empty" v-if="items.length <= 0 && !loading">
       {{ emptyText }}
     </p>
   </div>
 </template>
 
 <script>
-  import {ContentLoader} from 'vue-content-loader';
+  import { ContentLoader } from 'vue-content-loader';
   import EventBus from '@components/EventBus';
   import wishlistUrl from 'wishlistUrl';
   import vClickOutside from 'v-click-outside';
@@ -123,35 +96,35 @@
   export default {
     name: 'List',
     components: {
-      ContentLoader,
+      ContentLoader
     },
     data() {
       return {
         activeDropdowns: [],
-        listUrl: wishlistUrl,
+        listUrl: wishlistUrl
       };
     },
     props: {
       items: {
         type: Array,
-        default: () => [],
+        default: () => []
       },
       renameText: {
         type: String,
-        default: 'Rename',
+        default: 'Rename'
       },
       emptyText: {
         type: String,
-        default: '',
+        default: ''
       },
       shareText: {
         type: String,
-        default: 'Share',
+        default: 'Share'
       },
       loading: {
         type: Boolean,
-        default: true,
-      },
+        default: true
+      }
     },
     methods: {
       /**
@@ -178,7 +151,7 @@
        */
       toggleRename(id, title) {
         EventBus.$emit('showRenameWishlist', {
-          detail: {listId: id, title},
+          detail: { listId: id, title }
         });
       },
       /**
@@ -189,7 +162,7 @@
        */
       toggleShare(id, shareUrl) {
         EventBus.$emit('showShareWishlist', {
-          detail: {listId: id, shareUrl},
+          detail: { listId: id, shareUrl }
         });
       },
       /**
@@ -200,13 +173,13 @@
        */
       toggleDelete(id) {
         EventBus.$emit('showDeleteWishlist', {
-          detail: {listId: id, userId: 1},
+          detail: { listId: id, userId: 1 }
         });
-      },
+      }
     },
     directives: {
-      clickOutside: vClickOutside.directive,
-    },
+      clickOutside: vClickOutside.directive
+    }
   };
 </script>
 
