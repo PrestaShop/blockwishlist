@@ -40,9 +40,6 @@ export default `
 
   type ProductListResponse {
     datas: JSONObject
-    success: Boolean!
-    message: String!
-    name: String!
   }
 
   type Response {
