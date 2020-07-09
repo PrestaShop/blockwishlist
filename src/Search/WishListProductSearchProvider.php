@@ -44,6 +44,11 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
     private $wishList;
 
     /**
+     * @var contexts
+     */
+    private $contexts;
+
+    /**
      * @var SortOrderFactory
      */
     private $sortOrderFactory;
@@ -169,7 +174,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                             $rawProduct['availability_date'] = $rawProduct['available_date'];
 
                             if ($rawProduct['quantity'] < \Configuration::get('PS_LAST_QTIES')) {
-                                $this->applyLastItemsInStockDisplayRule();
+                                //$this->applyLastItemsInStockDisplayRule();
                             } else {
                                 $rawProduct['availability_message'] = $rawProduct['available_now'] ? $rawProduct['available_now']
                                     : \Configuration::get('PS_LABEL_IN_STOCK_PRODUCTS', $this->context->language->id);
@@ -181,11 +186,11 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                             $rawProduct['availability_date'] = $rawProduct['available_date'];
                             $rawProduct['availability'] = 'available';
                         } elseif ($rawProduct['wishlist_quantity'] > 0 && $rawProduct['quantity'] > 0) {
-                            $rawProduct['availability_message'] = $this->translator->trans(
-                                'There are not enough products in stock',
-                                [],
-                                'Shop.Notifications.Error'
-                            );
+                            // $rawProduct['availability_message'] = $this->translator->trans(
+                            //     'There are not enough products in stock',
+                            //     [],
+                            //     'Shop.Notifications.Error'
+                            // );
                             $rawProduct['availability'] = 'unavailable';
                             $rawProduct['availability_date'] = null;
                         } elseif (!empty($rawProduct['quantity_all_versions']) && $rawProduct['quantity_all_versions'] > 0) {
