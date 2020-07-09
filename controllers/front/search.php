@@ -20,6 +20,8 @@
 
 use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
 
 class BlockWishlistSearchModuleFrontController extends ProductListingFrontController
 {
@@ -136,7 +138,13 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
     protected function getProductSearchQuery()
     {
         $query = new ProductSearchQuery();
-        // @todo Adds filters criteria
+        $query->setSortOrder(
+            new SortOrder(
+                'product',
+                Tools::getProductsOrder('by'),
+                Tools::getProductsOrder('way')
+            )
+        );
 
         return $query;
     }
@@ -150,6 +158,9 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
             Db::getInstance(),
             $this->wishlist,
             $this->context
+
+            new SortOrderFactory($this->getTranslator())
+
         );
     }
 
@@ -158,9 +169,9 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
      */
     protected function getAjaxProductSearchVariables()
     {
-        $data = parent::getAjaxProductSearchVariables();
+        $search = parent::getAjaxProductSearchVariables();
         // @todo Adds custom data for ajax
 
-        return $data;
+        return $search;
     }
 }

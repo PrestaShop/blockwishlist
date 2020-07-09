@@ -1,14 +1,91 @@
 services:
-  _defaults:
-    public: true
-
+  # Controller
   PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController:
-    class: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController
-    arguments:
-      - '@doctrine.cache.provider'
-      - '@prestashop.adapter.legacy.context'
-
-  prestashop.module.blockwishlist.grid.statistics_grid_definition_factory:
-    class: 'PrestaShop\Module\BlockWishList\Grid\StatisticsGridDefinitionFactory'
-    parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
     public: true
+    class: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController
+
+  # Calculator
+  prestashop.module.blockwishlist.calculator.statistics_calculator:
+    public: true
+    class: PrestaShop\Module\BlockWishList\Calculator\StatisticsCalculator
+    arguments:
+      - '@prestashop.adapter.legacy.context' #used for product presenter
+
+  # Grid Definition
+  prestashop.module.blockwishlist.grid.all_time_statistics_grid_definition_factory:
+    public: true
+    class: 'PrestaShop\Module\BlockWishList\Grid\Definition\AllTimeStatisticsGridDefinitionFactory'
+    parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+
+  prestashop.module.blockwishlist.grid.current_year_statistics_grid_definition_factory:
+    public: true
+    class: 'PrestaShop\Module\BlockWishList\Grid\Definition\CurrentYearStatisticsGridDefinitionFactory'
+    parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+
+  prestashop.module.blockwishlist.grid.current_month_statistics_grid_definition_factory:
+    public: true
+    class: 'PrestaShop\Module\BlockWishList\Grid\Definition\CurrentMonthStatisticsGridDefinitionFactory'
+    parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+
+  prestashop.module.blockwishlist.grid.current_day_statistics_grid_definition_factory:
+    public: true
+    class: 'PrestaShop\Module\BlockWishList\Grid\Definition\CurrentDayStatisticsGridDefinitionFactory'
+    parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+
+  # Grid Data Factories
+  prestashop.module.blockwishlist.grid.all_time_statistics_data_factory:
+    class: 'PrestaShop\Module\BlockWishList\Grid\Data\AllTimeStatisticsGridDataFactory'
+    arguments:
+        - '@doctrine.cache.provider'
+        - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
+
+  prestashop.module.blockwishlist.grid.current_year_statistics_data_factory:
+    class: 'PrestaShop\Module\BlockWishList\Grid\Data\CurrentYearStatisticsGridDataFactory'
+    arguments:
+        - '@doctrine.cache.provider'
+        - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
+
+  prestashop.module.blockwishlist.grid.current_month_statistics_data_factory:
+    class: 'PrestaShop\Module\BlockWishList\Grid\Data\CurrentMonthStatisticsGridDataFactory'
+    arguments:
+        - '@doctrine.cache.provider'
+        - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
+
+  prestashop.module.blockwishlist.grid.current_day_statistics_data_factory:
+    class: 'PrestaShop\Module\BlockWishList\Grid\Data\CurrentDayStatisticsGridDataFactory'
+    arguments:
+        - '@doctrine.cache.provider'
+        - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
+
+  # Grid Factories
+  prestashop.module.blockwishlist.grid.all_time_stastistics_grid_factory:
+    class: 'PrestaShop\PrestaShop\Core\Grid\GridFactory'
+    arguments:
+        - '@prestashop.module.blockwishlist.grid.all_time_statistics_grid_definition_factory'
+        - '@prestashop.module.blockwishlist.grid.all_time_statistics_data_factory'
+        - '@prestashop.core.grid.filter.form_factory'
+        - '@prestashop.core.hook.dispatcher'
+
+  prestashop.module.blockwishlist.grid.current_year_stastistics_grid_factory:
+    class: 'PrestaShop\PrestaShop\Core\Grid\GridFactory'
+    arguments:
+        - '@prestashop.module.blockwishlist.grid.current_year_statistics_grid_definition_factory'
+        - '@prestashop.module.blockwishlist.grid.current_year_statistics_data_factory'
+        - '@prestashop.core.grid.filter.form_factory'
+        - '@prestashop.core.hook.dispatcher'
+
+  prestashop.module.blockwishlist.grid.current_month_stastistics_grid_factory:
+    class: 'PrestaShop\PrestaShop\Core\Grid\GridFactory'
+    arguments:
+        - '@prestashop.module.blockwishlist.grid.current_month_statistics_grid_definition_factory'
+        - '@prestashop.module.blockwishlist.grid.current_month_statistics_data_factory'
+        - '@prestashop.core.grid.filter.form_factory'
+        - '@prestashop.core.hook.dispatcher'
+
+  prestashop.module.blockwishlist.grid.current_day_stastistics_grid_factory:
+    class: 'PrestaShop\PrestaShop\Core\Grid\GridFactory'
+    arguments:
+        - '@prestashop.module.blockwishlist.grid.current_day_statistics_grid_definition_factory'
+        - '@prestashop.module.blockwishlist.grid.current_day_statistics_data_factory'
+        - '@prestashop.core.grid.filter.form_factory'
+        - '@prestashop.core.hook.dispatcher'

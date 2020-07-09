@@ -87,7 +87,6 @@
         });
 
         const {renameList: response} = data;
-        console.log(response);
 
         EventBus.$emit('refetchList');
 

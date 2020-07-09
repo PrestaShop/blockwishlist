@@ -32,6 +32,9 @@ use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
+use WishList;
+
 
 /**
  * Responsible of getting products for specific wishlist.
@@ -49,14 +52,21 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
     private $wishList;
 
     /**
+     * @var SortOrderFactory
+     */
+    private $sortOrderFactory;
+
+    /**
      * @param Db $db
      * @param WishList $wishList
      */
+
     public function __construct(Db $db, WishList $wishList, $contexts)
     {
         $this->db = $db;
         $this->wishList = $wishList;
         $this->context = $contexts;
+
     }
 
     /**
@@ -72,6 +82,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $result = new ProductSearchResult();
         $result->setProducts($this->getProductsOrCount($context, $query, 'products'));
         $result->setTotalProductsCount($this->getProductsOrCount($context, $query, 'count'));
+        $result->setAvailableSortOrders($this->sortOrderFactory->getDefaultSortOrders());
 
         return $result;
     }
@@ -145,7 +156,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $querySearch->groupBy('p.id_product');
 
         if ('products' === $type) {
-            $querySearch->orderBy($query->getSortOrder()->toLegacyOrderBy() . ' ' . $query->getSortOrder()->toLegacyOrderWay());
+            $querySearch->orderBy($query->getSortOrder()->toLegacyOrderBy(true) . ' ' . $query->getSortOrder()->toLegacyOrderWay());
             $querySearch->limit(((int) $query->getPage() - 1) * (int) $query->getResultsPerPage(), (int) $query->getResultsPerPage());
 
             $products = $this->db->executeS($querySearch);
