@@ -25,6 +25,7 @@ export default `
     name: String
     listUrl: String
     shareUrl: String
+    default: Int
     nbProducts: Int
   }
 
