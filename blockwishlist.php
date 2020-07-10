@@ -116,7 +116,7 @@ class BlockWishList extends Module implements WidgetInterface
      */
     public function hookActionFrontControllerSetMedia(array $params)
     {
-        $productsTagged = [];
+        $productsTagged = false;
 
         if (true === $this->context->customer->isLogged()) {
             $productsTagged = WishList::getAllProductByCustomer($this->context->customer->id);
@@ -130,7 +130,7 @@ class BlockWishList extends Module implements WidgetInterface
             'removeFromWishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
             'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'productslist'),
             'wishlistAddProductToCartUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToCart']),
-            'productsAlreadyTagged' => $productsTagged,
+            'productsAlreadyTagged' => $productsTagged ? $productsTagged : [],
         ]);
 
         $this->context->controller->registerStylesheet(
