@@ -73,8 +73,8 @@
       >
         <li
           class="wishlist-products-item"
-          v-for="product in products.datas.products"
-          :key="product.id_product_attribute"
+          v-for="(product, key) in products.datas.products"
+          :key="key"
         >
           <Product
             :product="product"
@@ -129,12 +129,13 @@
         variables() {
           return {
             listId: this.listId,
-            url: this.url
+            url: this.apiUrl
           };
         },
         skip() {
           return true;
-        }
+        },
+        fetchPolicy: 'network-only'
       }
     },
     props: {
@@ -171,6 +172,11 @@
         required: true,
         default: 'Add to cart'
       },
+      share: {
+        type: Boolean,
+        required: true,
+        default: false
+      },
       customizeText: {
         type: String,
         required: true,
@@ -206,6 +212,7 @@
       return {
         products: [],
         currentWishlist: {},
+        apiUrl: this.share ? this.url : window.location.href,
         selectedSort: ''
       };
     },
@@ -216,7 +223,7 @@
        */
       async changeSelectedSort(value) {
         this.selectedSort = value.label;
-        this.url = value.url;
+        this.apiUrl = value.url;
       }
     },
     mounted() {
@@ -246,7 +253,11 @@
         this.$apollo.queries.products.refetch();
       });
 
-      EventBus.$on('paginationNumbers', (payload) => payload);
+      EventBus.$on('updatePagination', (payload) => {
+        this.products = false;
+        console.log(payload);
+        this.apiUrl = payload.page.url;
+      });
     }
   };
 </script>
@@ -309,8 +320,7 @@
     }
   }
 
-  #module-blockwishlist-productslist,
-  #module-blockwishlist-view {
+  #search {
     #wrapper .container {
       width: 975px;
     }

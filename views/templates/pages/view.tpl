@@ -36,6 +36,7 @@
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-title="{l s='Gift ideas for Juliette' mod='blockwishlist'}"
     data-filter="{l s='Filter' mod='blockwishlist'}"
+    data-share="{if $isShare}true{else}false{/if}"
   >
   </div>
 {/block}

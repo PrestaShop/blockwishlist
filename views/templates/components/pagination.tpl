@@ -17,28 +17,29 @@
  * International Registered Trademark & Property of PrestaShop SA
  *}
 <nav class="wishlist-pagination pagination">
-  <div class="col-md-4">
-    {l s='Showing' mod='blockwishlist'} ((minShown)) - ((maxShown)) {l s='de' mod='blockwishlist'} ((total)) {l s='item(s)' mod='blockwishlist'}
-  </div>
+  <template v-if="display">
+    <div class="col-md-4">
+      {l s='Showing' mod='blockwishlist'} ((minShown)) - ((maxShown)) {l s='de' mod='blockwishlist'} ((total)) {l s='item(s)' mod='blockwishlist'}
+    </div>
 
-  <div class="col-md-6 offset-md-2 pr-0">
-    <ul class="page-list clearfix text-sm-center">
-      <li>
-        <a rel="prev" v-if="currentPage !== 1" @click="paginate(currentPage - 1)" class="previous js-search-link">
-          <i class="material-icons">keyboard_arrow_left</i> {l s='Previous' mod='blockwishlist'} 
-        </a>
-      </li>
+    <div class="col-md-6 offset-md-2 pr-0">
+      <ul class="page-list clearfix text-sm-center">
+        <li :class="{literal}{current: page.current}{/literal}" v-for="page of pages">
+          <a class="js-search-link" @click="paginate(page)" key="page.page" :class="{literal}{disabled: page.current, next: page.type === 'next', previous: page.type === 'previous'}{/literal}">
+            <span v-if="page.type === 'previous'">
+              <i class="material-icons">keyboard_arrow_left</i> {l s='Previous' mod='blockwishlist'} 
+            </span>
 
-      <li :class="{literal}{current: currentPage === page}{/literal}" v-for="page of pageNumber">
-        <a class="js-search-link" @click="paginate(page)" :class="{literal}{disabled: currentPage === page}{/literal}">
-          ((page))
-        </a>
-      </li>
-      <li>
-        <a rel="next" v-if="currentPage !== pageNumber" @click="paginate(currentPage + 1)" class="next js-search-link">
-          {l s='Next' mod='blockwishlist'} <i class="material-icons"></i>
-        </a>
-      </li>
-    </ul>
-  </div>
+            <template v-if="page.type !== 'previous' && page.type !== 'next'">
+              ((page.page))
+            </template>
+
+            <span v-if="page.type === 'next'">
+              {l s='Next' mod='blockwishlist'} <i class="material-icons"></i>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </template>
 </nav>

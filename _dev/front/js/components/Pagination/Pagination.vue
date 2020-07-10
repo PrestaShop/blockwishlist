@@ -30,17 +30,19 @@
         minShown: null,
         maxShown: null,
         pageNumber: 0,
+        pages: [],
         currentPage: null,
+        display: false
       };
     },
     methods: {
       paginate(page) {
         EventBus.$emit('updatePagination', {
-          page,
+          page
         });
 
         this.currentPage = page;
-      },
+      }
     },
     mounted() {
       EventBus.$on('paginate', (payload) => {
@@ -49,8 +51,10 @@
         this.maxShown = payload.detail.maxShown;
         this.pageNumber = payload.detail.pageNumber;
         this.currentPage = payload.detail.currentPage;
+        this.pages = payload.detail.pages;
+        this.display = payload.detail.display;
       });
-    },
+    }
   };
 </script>
 

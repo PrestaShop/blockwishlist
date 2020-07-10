@@ -89,6 +89,7 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
             [
                 'id' => $id_wishlist,
                 'wishlistName' => $this->wishlist->name,
+                'isShare' => false,
                 'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'search', ['id_wishlist' => $id_wishlist]),
                 'wishlistsLink' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
                 'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
