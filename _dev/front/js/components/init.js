@@ -31,7 +31,7 @@ export default function initApp(component, componentSelector, props) {
   Vue.use(VueApollo);
 
   const apolloProvider = new VueApollo({
-    defaultClient: apolloClient
+    defaultClient: apolloClient,
   });
 
   const componentElements = document.querySelectorAll(componentSelector);
@@ -39,7 +39,7 @@ export default function initApp(component, componentSelector, props) {
 
   const propsData = {};
 
-  componentElements.forEach(e => {
+  componentElements.forEach((e) => {
     /* eslint-disable */
     for (const prop of props) {
       if (e.dataset[prop.name]) {
@@ -57,7 +57,7 @@ export default function initApp(component, componentSelector, props) {
       el: e,
       delimiters: ['((', '))'],
       apolloProvider,
-      propsData
+      propsData,
     });
   });
 }

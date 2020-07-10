@@ -32,17 +32,17 @@
         pageNumber: 0,
         pages: [],
         currentPage: null,
-        display: false
+        display: false,
       };
     },
     methods: {
       paginate(page) {
         EventBus.$emit('updatePagination', {
-          page
+          page,
         });
 
         this.currentPage = page;
-      }
+      },
     },
     mounted() {
       EventBus.$on('paginate', (payload) => {
@@ -54,7 +54,7 @@
         this.pages = payload.detail.pages;
         this.display = payload.detail.display;
       });
-    }
+    },
   };
 </script>
 

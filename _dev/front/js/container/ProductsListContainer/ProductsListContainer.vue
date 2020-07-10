@@ -30,7 +30,10 @@
         </span>
       </h1>
 
-      <div class="sort-by-row" v-if="products.datas">
+      <div
+        class="sort-by-row"
+        v-if="products.datas"
+      >
         <span class="col-sm-3 col-md-3 hidden-sm-down sort-by">Sort by:</span>
         <div class="col-sm-9 col-xs-8 col-md-9 products-sort-order dropdown">
           <button
@@ -50,8 +53,8 @@
               rel="nofollow"
               @click="changeSelectedSort(sort)"
               class="select-list js-search-link"
-              v-for="sort in products.datas.sort_orders"
-              v-if="sort.label !== products.datas.sort_selected"
+              :key="key"
+              v-for="(sort, key) in productList"
             >
               {{ sort.label }}
             </a>
@@ -59,14 +62,20 @@
         </div>
 
         <div class="col-sm-3 col-xs-4 hidden-md-up filter-button">
-          <button id="search_filter_toggler" class="btn btn-secondary">
+          <button
+            id="search_filter_toggler"
+            class="btn btn-secondary"
+          >
             {{ filter }}
           </button>
         </div>
       </div>
     </div>
 
-    <section id="content" class="page-content card card-block">
+    <section
+      id="content"
+      class="page-content card card-block"
+    >
       <ul
         class="wishlist-products-list"
         v-if="products.datas && products.datas.products.length > 0"
@@ -92,10 +101,38 @@
         class="wishlist-list-loader"
         height="105"
       >
-        <rect x="0" y="12" rx="3" ry="0" width="100%" height="11" />
-        <rect x="0" y="36" rx="3" ry="0" width="100%" height="11" />
-        <rect x="0" y="60" rx="3" ry="0" width="100%" height="11" />
-        <rect x="0" y="84" rx="3" ry="0" width="100%" height="11" />
+        <rect
+          x="0"
+          y="12"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
+        <rect
+          x="0"
+          y="36"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
+        <rect
+          x="0"
+          y="60"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
+        <rect
+          x="0"
+          y="84"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
       </ContentLoader>
 
       <p
@@ -111,7 +148,7 @@
 <script>
   import Product from '@components/Product/Product';
   import getProducts from '@graphqlFiles/queries/getproducts';
-  import { ContentLoader } from 'vue-content-loader';
+  import {ContentLoader} from 'vue-content-loader';
   import EventBus from '@components/EventBus';
 
   /**
@@ -121,7 +158,7 @@
     name: 'ProductsListContainer',
     components: {
       Product,
-      ContentLoader
+      ContentLoader,
     },
     apollo: {
       products: {
@@ -129,91 +166,91 @@
         variables() {
           return {
             listId: this.listId,
-            url: this.apiUrl
+            url: this.apiUrl,
           };
         },
         skip() {
           return true;
         },
-        fetchPolicy: 'network-only'
-      }
+        fetchPolicy: 'network-only',
+      },
     },
     props: {
       url: {
         type: String,
         required: false,
-        default: '#'
+        default: '#',
       },
       title: {
         type: String,
         required: true,
-        default: 'Product name'
+        default: 'Product name',
       },
       defaultSort: {
         type: String,
         required: true,
-        default: 'All'
+        default: 'All',
       },
       listId: {
         type: Number,
         required: false,
-        default: 0
+        default: 0,
       },
       wishlistProducts: {
         type: Array,
-        required: false
+        required: false,
       },
       wishlist: {
         type: String,
-        required: false
+        required: false,
       },
       addToCart: {
         type: String,
         required: true,
-        default: 'Add to cart'
+        default: 'Add to cart',
       },
       share: {
         type: Boolean,
         required: true,
-        default: false
+        default: false,
       },
       customizeText: {
         type: String,
         required: true,
-        default: 'Customize'
+        default: 'Customize',
       },
       quantityText: {
         type: String,
         required: true,
-        defalut: 'Quantity'
+        defalut: 'Quantity',
       },
       lastAdded: {
         type: String,
         required: true,
-        default: 'Last added'
+        default: 'Last added',
       },
       priceLowHigh: {
         type: String,
         required: true,
-        default: 'Price low to high'
+        default: 'Price low to high',
       },
       priceHighLow: {
         type: String,
         required: true,
-        default: 'Price high to low'
+        default: 'Price high to low',
       },
       filter: {
         type: String,
         required: true,
-        default: 'Filter'
-      }
+        default: 'Filter',
+      },
     },
     data() {
       return {
         products: [],
         currentWishlist: {},
         apiUrl: this.share ? this.url : window.location.href,
-        selectedSort: ''
+        selectedSort: '',
       };
     },
     methods: {
@@ -224,7 +261,16 @@
       async changeSelectedSort(value) {
         this.selectedSort = value.label;
         this.apiUrl = value.url;
-      }
+      },
+    },
+    computed: {
+      productList() {
+        const productList = this.products.datas.sort_orders.filter(
+          (sort) => sort.label !== this.products.datas.sort_selected,
+        );
+
+        return productList;
+      },
     },
     mounted() {
       if (this.listId) {
@@ -240,7 +286,7 @@
         const products = JSON.parse(this.wishlistProducts);
 
         if (products.length > 0) {
-          this.products.datas = { products };
+          this.products.datas = {products};
         }
       }
 
@@ -258,7 +304,7 @@
         console.log(payload);
         this.apiUrl = payload.page.url;
       });
-    }
+    },
   };
 </script>
 
