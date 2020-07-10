@@ -18,11 +18,10 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
+use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
-use PrestaShop\PrestaShop\Core\Product\Search\FacetsRendererInterface;
-use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
 
 class BlockWishlistSearchModuleFrontController extends ProductListingFrontController
 {
