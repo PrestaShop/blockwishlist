@@ -21,6 +21,7 @@
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\PrestaShop\Core\Product\Search\FacetsRendererInterface;
 use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
 
 class BlockWishlistSearchModuleFrontController extends ProductListingFrontController
@@ -166,9 +167,104 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
      */
     protected function getAjaxProductSearchVariables()
     {
-        $search = parent::getAjaxProductSearchVariables();
-        // @todo Adds custom data for ajax
+        $data = parent::getAjaxProductSearchVariables();
 
-        return $search;
+        $context = parent::getProductSearchContext();
+        $query = $this->getProductSearchQuery();
+        $provider = $this->getDefaultProductSearchProvider();
+
+        $resultsPerPage = (int) Tools::getValue('resultsPerPage');
+        if ($resultsPerPage <= 0) {
+            $resultsPerPage = Configuration::get('PS_PRODUCTS_PER_PAGE');
+        }
+
+        // we need to set a few parameters from back-end preferences
+        $query
+            ->setResultsPerPage($resultsPerPage)
+            ->setPage(max((int) Tools::getValue('page'), 1))
+        ;
+
+        // set the sort order if provided in the URL
+        if (($encodedSortOrder = Tools::getValue('order'))) {
+            $query->setSortOrder(SortOrder::newFromString(
+                $encodedSortOrder
+            ));
+        }
+
+        // get the parameters containing the encoded facets from the URL
+        $encodedFacets = Tools::getValue('q');
+
+        $query->setEncodedFacets($encodedFacets);
+
+        /** @var ProductSearchResult $result */
+        $result = $provider->runQuery(
+            $context,
+            $query
+        );
+
+        if (!$result->getCurrentSortOrder()) {
+            $result->setCurrentSortOrder($query->getSortOrder());
+        }
+
+        // prepare the products
+        $products = $this->prepareMultipleProductsForTemplate(
+            $result->getProducts()
+        );
+
+        // render the facets
+        // with the core
+        $rendered_facets = $this->renderFacets(
+            $result
+        );
+        $rendered_active_filters = $this->renderActiveFilters(
+            $result
+        );
+
+
+        $pagination = $this->getTemplateVarPagination(
+            $query,
+            $result
+        );
+
+        // prepare the sort orders
+        // note that, again, the product controller is sort-orders
+        // agnostic
+        // a module can easily add specific sort orders that it needs
+        // to support (e.g. sort by "energy efficiency")
+        $sort_orders = $this->getTemplateVarSortOrders(
+            $result->getAvailableSortOrders(),
+            $query->getSortOrder()->toString()
+        );
+
+        $sort_selected = false;
+        if (!empty($sort_orders)) {
+            foreach ($sort_orders as $order) {
+                if (isset($order['current']) && true === $order['current']) {
+                    $sort_selected = $order['label'];
+
+                    break;
+                }
+            }
+        }
+
+        $searchVariables = [
+            'result' => $result,
+            'label' => $this->getListingLabel(),
+            'products' => $products,
+            'sort_orders' => $sort_orders,
+            'sort_selected' => $sort_selected,
+            'pagination' => $pagination,
+            'rendered_facets' => $rendered_facets,
+            'rendered_active_filters' => $rendered_active_filters,
+            'js_enabled' => $this->ajax,
+            'current_url' => $this->updateQueryString([
+                'q' => $result->getEncodedFacets(),
+            ]),
+        ];
+
+        Hook::exec('filterProductSearch', ['searchVariables' => &$searchVariables]);
+        Hook::exec('actionProductSearchAfter', $searchVariables);
+
+        return $searchVariables;
     }
 }
