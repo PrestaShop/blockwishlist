@@ -25,6 +25,7 @@ use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
 use WishList;
 
 /**
@@ -43,13 +44,22 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
     private $wishList;
 
     /**
+     * @var SortOrderFactory
+     */
+    private $sortOrderFactory;
+
+    /**
      * @param Db $db
      * @param WishList $wishList
      */
-    public function __construct(Db $db, WishList $wishList)
-    {
+    public function __construct(
+        Db $db,
+        WishList $wishList,
+        SortOrderFactory $sortOrderFactory
+    ) {
         $this->db = $db;
         $this->wishList = $wishList;
+        $this->sortOrderFactory = $sortOrderFactory;
     }
 
     /**
@@ -65,6 +75,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $result = new ProductSearchResult();
         $result->setProducts($this->getProductsOrCount($context, $query, 'products'));
         $result->setTotalProductsCount($this->getProductsOrCount($context, $query, 'count'));
+        $result->setAvailableSortOrders($this->sortOrderFactory->getDefaultSortOrders());
 
         return $result;
     }
@@ -85,6 +96,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
 
         if ('products' === $type) {
             $querySearch->select('p.*');
+            $querySearch->select('wp.quantity AS wishlist_quantity');
             $querySearch->select('product_shop.*');
             $querySearch->select('stock.out_of_stock, IFNULL(stock.quantity, 0) AS quantity');
             $querySearch->select('pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`, pl.`meta_keywords`,
@@ -110,14 +122,14 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $querySearch->from('product', 'p');
         $querySearch->join(\Shop::addSqlAssociation('product', 'p'));
         $querySearch->innerJoin('wishlist_product', 'wp', 'wp.`id_product` = p.`id_product`');
-        $querySearch->leftJoin('category_product', 'cp', 'p.id_product = cp.id_product');
+        $querySearch->leftJoin('category_product', 'cp', 'p.id_product = cp.id_product AND cp.id_category = product_shop.id_category_default');
 
         if (\Combination::isFeatureActive()) {
-            $querySearch->leftJoin('product_attribute_shop', 'product_attribute_shop', 'p.`id_product` = product_attribute_shop.`id_product` AND product_attribute_shop.`default_on` = 1 AND product_attribute_shop.id_shop=' . (int) $context->getIdShop());
+            $querySearch->leftJoin('product_attribute_shop', 'product_attribute_shop', 'p.`id_product` = product_attribute_shop.`id_product` AND product_attribute_shop.`id_product_attribute` = wp.id_product_attribute AND product_attribute_shop.id_shop=' . (int) $context->getIdShop());
         }
 
         if ('products' === $type) {
-            $querySearch->join(\Product::sqlStock('p', 0));
+            $querySearch->leftJoin('stock_available', 'stock', 'stock.id_product = `p`.id_product AND stock.id_product_attribute = wp.id_product_attribute' . \StockAvailable::addSqlShopRestriction(null, (int) $context->getIdShop(), 'stock'));
             $querySearch->leftJoin('product_lang', 'pl', 'p.`id_product` = pl.`id_product` AND pl.`id_lang` = ' . (int) $context->getIdLang() . \Shop::addSqlRestrictionOnLang('pl'));
             $querySearch->leftJoin('image_shop', 'image_shop', 'image_shop.`id_product` = p.`id_product` AND image_shop.cover=1 AND image_shop.id_shop = ' . (int) $context->getIdShop());
             $querySearch->leftJoin('image_lang', 'il', 'image_shop.`id_image` = il.`id_image` AND il.`id_lang` = ' . (int) $context->getIdLang());
@@ -133,10 +145,9 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $querySearch->where('wp.id_wishlist = ' . (int) $this->wishList->id);
         $querySearch->where('product_shop.active = 1');
         $querySearch->where('product_shop.visibility IN ("both", "catalog")');
-        $querySearch->groupBy('p.id_product');
 
         if ('products' === $type) {
-            $querySearch->orderBy($query->getSortOrder()->toLegacyOrderBy() . ' ' . $query->getSortOrder()->toLegacyOrderWay());
+            $querySearch->orderBy('ca.'.$query->getSortOrder()->toLegacyOrderBy() . ' ' . $query->getSortOrder()->toLegacyOrderWay());
             $querySearch->limit(((int) $query->getPage() - 1) * (int) $query->getResultsPerPage(), (int) $query->getResultsPerPage());
 
             $products = $this->db->executeS($querySearch);
@@ -145,7 +156,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 return [];
             }
 
-            return $products;
+            return \Product::getProductsProperties((int) $context->getIdLang(), $products);
         }
 
         return (int) $this->db->getValue($querySearch);

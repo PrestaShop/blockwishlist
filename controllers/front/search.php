@@ -18,8 +18,10 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
 
 class BlockWishlistSearchModuleFrontController extends ProductListingFrontController
 {
@@ -136,7 +138,13 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
     protected function getProductSearchQuery()
     {
         $query = new ProductSearchQuery();
-        // @todo Adds filters criteria
+        $query->setSortOrder(
+            new SortOrder(
+                'product',
+                Tools::getProductsOrder('by'),
+                Tools::getProductsOrder('way')
+            )
+        );
 
         return $query;
     }
@@ -148,7 +156,8 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
     {
         return new WishListProductSearchProvider(
             Db::getInstance(),
-            $this->wishlist
+            $this->wishlist,
+            new SortOrderFactory($this->getTranslator())
         );
     }
 
