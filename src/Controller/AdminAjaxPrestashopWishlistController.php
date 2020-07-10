@@ -20,32 +20,13 @@
 
 namespace PrestaShop\Module\BlockWishList\Controller;
 
-use Doctrine\Common\Cache\CacheProvider;
-use PrestaShop\Module\BlockWishList\Calculator\StatisticsCalculator;
 use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
-use PrestaShop\PrestaShop\Adapter\LegacyContext;
+use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminController
 {
-    const CACHE_LIFETIME_SECONDS = 86400;
-    const YEAR_CACHE_LIFETIME_SECONDS = 86400;
-    const MONTH_CACHE_LIFETIME_SECONDS = 86400;
-    const DAY_CACHE_LIFETIME_SECONDS = 86400;
-
-    /* @var CacheProvider $cache */
-    private $cache;
-
-    /* @var LegacyContext $cache */
-    private $context;
-
-    public function __construct(CacheProvider $cache, LegacyContext $context)
-    {
-        $this->cache = $cache;
-        $this->context = $context->getContext();
-    }
-
     public function homeAction(Request $request)
     {
         $datas = $this->getWishlistConfigurationDatas();
@@ -56,12 +37,33 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
             $resultHandleForm = $this->handleForm($configurationForm->getData());
         }
 
+        $searchCriteria = new SearchCriteria();
+        $allTimeStatsGridFactory = $this->get('prestashop.module.blockwishlist.grid.all_time_stastistics_grid_factory');
+        $currentYearGridFactory = $this->get('prestashop.module.blockwishlist.grid.current_year_stastistics_grid_factory');
+        $currentMonthGridFactory = $this->get('prestashop.module.blockwishlist.grid.current_month_stastistics_grid_factory');
+        $currentDayGridFactory = $this->get('prestashop.module.blockwishlist.grid.current_day_stastistics_grid_factory');
+        $allTimeStatisticsGrid = $allTimeStatsGridFactory->getGrid($searchCriteria);
+        $currentYearGrid = $currentYearGridFactory->getGrid($searchCriteria);
+        $currentMonthGrid = $currentMonthGridFactory->getGrid($searchCriteria);
+        $currentDayGrid = $currentDayGridFactory->getGrid($searchCriteria);
+
         return $this->render('@Modules/blockwishlist/views/templates/admin/home.html.twig', [
             'configurationForm' => $configurationForm->createView(),
             'resultHandleForm' => isset($resultHandleForm) ? $resultHandleForm : null,
+            'allTimeStatisticsGrid' => $this->presentGrid($allTimeStatisticsGrid),
+            'currentYearStatisticsGrid' => $this->presentGrid($currentYearGrid),
+            'currentMonthStatisticsGrid' => $this->presentGrid($currentMonthGrid),
+            'currentDayStatisticsGrid' => $this->presentGrid($currentDayGrid),
         ]);
     }
 
+    /**
+     * handleForm
+     *
+     * @param array $datas
+     *
+     * @return bool
+     */
     private function handleForm($datas)
     {
         $result = true;
@@ -86,6 +88,11 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
         return $result;
     }
 
+    /**
+     * getWishlistConfigurationDatas
+     *
+     * @return array
+     */
     private function getWishlistConfigurationDatas()
     {
         $languages = \Language::getLanguages(true);
@@ -107,53 +114,4 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
 
         return $datas;
     }
-
-    public function getStatisticsAction(Request $request)
-    {
-        if ($this->cache->contains('blockwishlist.stats.allTime')) {
-            $results = [
-                'allTime' => $this->cache->fetch('blockwishlist.stats.allTime'),
-                'currentYear' => $this->cache->fetch('blockwishlist.stats.currentYear'),
-                'currentMonth' => $this->cache->fetch('blockwishlist.stats.currentMonth'),
-                'currentDay' => $this->cache->fetch('blockwishlist.stats.currentDay'),
-            ];
-        } else {
-            $results = (new StatisticsCalculator($this->context))->computeAllStats();
-            $this->cache->save('blockwishlist.stats.allTime', $results['allTime'], self::CACHE_LIFETIME_SECONDS);
-            $this->cache->save('blockwishlist.stats.currentYear', $results['currentYear'], self::CACHE_LIFETIME_SECONDS);
-            $this->cache->save('blockwishlist.stats.currentMonth', $results['currentMonth'], self::CACHE_LIFETIME_SECONDS);
-            $this->cache->save('blockwishlist.stats.currentDay', $results['currentDay'], self::CACHE_LIFETIME_SECONDS);
-        }
-
-        return $this->json([
-            'success' => true,
-            'stats' => $results,
-        ]);
-    }
-
-    // this idea need some functional specification, it is not used ATM
-    // public function forceRefreshCacheStatsAction(Request $request)
-    // {
-    //     $cacheName = $request->request->get('cacheName');
-
-    //     $statsCalculator = new StatisticsCalculator($this->context);
-    //     switch ($cacheName) {
-    //         case 'year':
-    //             $results = $statsCalculator->computeYearStats();
-    //             break;
-    //         case 'month':
-    //             $results = $statsCalculator->computeMonthStats();
-    //             break;
-    //         case 'day':
-    //             $results = $statsCalculator->computeDayStats();
-    //         break;
-    //         default:
-    //             break;
-    //     }
-
-    //     return $this->json([
-    //         'success' => true,
-    //         'stats' => $results,
-    //     ]);
-    // }
 }

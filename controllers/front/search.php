@@ -23,6 +23,8 @@ use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\FacetsRendererInterface;
 use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
 
 class BlockWishlistSearchModuleFrontController extends ProductListingFrontController
 {
@@ -266,6 +268,5 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
         Hook::exec('actionProductSearchAfter', $searchVariables);
 
         return $searchVariables;
-
     }
 }

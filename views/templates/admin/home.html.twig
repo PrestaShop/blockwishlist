@@ -24,15 +24,18 @@
 {% endblock %}
 
 {% block content %}
+  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': allTimeStatisticsGrid} %}
+  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': currentYearStatisticsGrid} %}
+  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': currentMonthStatisticsGrid} %}
+  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': currentDayStatisticsGrid} %}
 
-{% if resultHandleForm != null %}
- saved = {{ resultHandleForm }}
-  {# resutHandleForm represent the save of every config (true/false/null) null = no #}
-{% endif %}
+  {% if resultHandleForm != null %}
+    {# resutHandleForm represent the save of every config (can be true/false/null) null = no submission #}
+  {% endif %}
 
-{{ form_start(configurationForm) }}
-{{ form_widget(configurationForm) }}
-    <button type="submit">Submit button</button>
-{{ form_end(configurationForm) }}
+  {{ form_start(configurationForm) }}
+  {{ form_widget(configurationForm) }}
+      <button type="submit">Submit button</button>
+  {{ form_end(configurationForm) }}
 {% endblock %}
 
