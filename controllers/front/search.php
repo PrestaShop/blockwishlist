@@ -18,10 +18,11 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\PrestaShop\Core\Product\Search\FacetsRendererInterface;
+use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
 
 class BlockWishlistSearchModuleFrontController extends ProductListingFrontController
 {
@@ -87,6 +88,7 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
         $this->context->smarty->assign(
             [
                 'id' => $id_wishlist,
+                'wishlistName' => $this->wishlist->name,
                 'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'search', ['id_wishlist' => $id_wishlist]),
                 'wishlistsLink' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
                 'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
