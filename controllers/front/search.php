@@ -18,11 +18,8 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
-use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
-use PrestaShop\PrestaShop\Core\Product\Search\FacetsRendererInterface;
 use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
 
@@ -198,7 +195,6 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
 
         $query->setEncodedFacets($encodedFacets);
 
-        /** @var ProductSearchResult $result */
         $result = $provider->runQuery(
             $context,
             $query
@@ -221,7 +217,6 @@ class BlockWishlistSearchModuleFrontController extends ProductListingFrontContro
         $rendered_active_filters = $this->renderActiveFilters(
             $result
         );
-
 
         $pagination = $this->getTemplateVarPagination(
             $query,
