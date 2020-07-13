@@ -102,9 +102,7 @@ class BlockWishList extends Module implements WidgetInterface
      */
     public function hookActionAdminControllerSetMedia(array $params)
     {
-        if ($this->context->controller->controller_name === 'AdminCustomers') {
-            $this->context->controller->addJs($this->getPathUri() . 'views/js/admin/displayAdminCustomers.js?v=' . $this->version);
-        }
+        $this->context->controller->addCss($this->getPathUri() . 'public/backoffice.css');
     }
 
     /**

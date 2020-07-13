@@ -18,24 +18,80 @@
  *#}
 {% extends '@PrestaShop/Admin/layout.html.twig' %}
 
-{% block javascripts %}
-  {{ parent() }}
-  <script src="{{ asset('../modules/blockwishlist/views/js/admin/adminConfiguration.js') }}"></script>
-{% endblock %}
-
 {% block content %}
-  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': allTimeStatisticsGrid} %}
-  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': currentYearStatisticsGrid} %}
-  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': currentMonthStatisticsGrid} %}
-  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': currentDayStatisticsGrid} %}
+  {{ form_start(configurationForm) }}
+    <div class="row justify-content-center">
+      <div class="col-xl-10">
+        <div class="card">
+          <h3 class="card-header">
+            <i class="material-icons">edit</i> {{ 'Wording'|trans({}, 'blockwishlist') }}
+          </h3>
+
+          <div class="card-block row">
+            <div class="card-text">
+              {{ form_widget(configurationForm) }}
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-primary">{{ 'Save'|trans({}, 'Admin.Actions') }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{ form_end(configurationForm) }}
+
+  <div class="row justify-content-center wishlist-stats">
+    <div class="col-xl-10">
+      <div class="card">
+        <h3 class="card-header">
+          <i class="material-icons">star</i> {{ 'Top 10 most added products'|trans({}, 'blockwishlist') }}
+        </h3>
+
+        <div class="card-block">
+          <div class="card-text">
+            <div class="row wishlist-stats-topbar">
+              <div class="btn-group">
+                <button class="btn btn-default active" data-tab="1">Day</button>
+                <button class="btn btn-default" data-tab="2">Month</button>
+                <button class="btn btn-default" data-tab="3">Year</button>
+                <button class="btn btn-default" data-tab="4">All time</button>
+              </div>
+
+              <button class="btn btn-default refresh">
+                <i class="material-icons">history</i> {{ 'Refresh'|trans({}, 'blockwishlist') }}
+              </button>
+            </div>
+
+            <div class="wishlist-tab active" data-tab="1">
+              {% include '@PrestaShop/Admin/Common/Grid/grid.html.twig' with {'grid': allTimeStatisticsGrid} %}
+            </div>
+
+            <div class="wishlist-tab" data-tab="2">
+              {% include '@PrestaShop/Admin/Common/Grid/grid.html.twig' with {'grid': currentYearStatisticsGrid} %}
+            </div>
+
+            <div class="wishlist-tab" data-tab="3">
+              {% include '@PrestaShop/Admin/Common/Grid/grid.html.twig' with {'grid': currentMonthStatisticsGrid} %}
+            </div>
+
+            <div class="wishlist-tab" data-tab="4">
+              {% include '@PrestaShop/Admin/Common/Grid/grid.html.twig' with {'grid': currentDayStatisticsGrid} %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   {% if resultHandleForm != null %}
     {# resutHandleForm represent the save of every config (can be true/false/null) null = no submission #}
   {% endif %}
-
-  {{ form_start(configurationForm) }}
-  {{ form_widget(configurationForm) }}
-      <button type="submit">Submit button</button>
-  {{ form_end(configurationForm) }}
 {% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('../modules/blockwishlist/public/backoffice.bundle.js') }}"></script>
+{% endblock %}
