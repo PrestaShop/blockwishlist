@@ -301,7 +301,6 @@
 
       EventBus.$on('updatePagination', (payload) => {
         this.products = false;
-        console.log(payload);
         this.apiUrl = payload.page.url;
       });
     },
