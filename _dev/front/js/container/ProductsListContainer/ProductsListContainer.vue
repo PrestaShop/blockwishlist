@@ -184,12 +184,10 @@
       title: {
         type: String,
         required: true,
-        default: 'Product name',
       },
       defaultSort: {
         type: String,
         required: true,
-        default: 'All',
       },
       listId: {
         type: Number,
@@ -207,42 +205,34 @@
       addToCart: {
         type: String,
         required: true,
-        default: 'Add to cart',
       },
       share: {
         type: Boolean,
         required: true,
-        default: false,
       },
       customizeText: {
         type: String,
         required: true,
-        default: 'Customize',
       },
       quantityText: {
         type: String,
         required: true,
-        defalut: 'Quantity',
       },
       lastAdded: {
         type: String,
         required: true,
-        default: 'Last added',
       },
       priceLowHigh: {
         type: String,
         required: true,
-        default: 'Price low to high',
       },
       priceHighLow: {
         type: String,
         required: true,
-        default: 'Price high to low',
       },
       filter: {
         type: String,
         required: true,
-        default: 'Filter',
       },
     },
     data() {

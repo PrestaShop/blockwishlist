@@ -21,7 +21,7 @@
     <ul
       class="wishlist-list"
       v-if="items.length > 0 && items"
-      v-click-outside="(event) => emptyPopups()"
+      v-click-outside="emptyPopups"
     >
       <li
         class="wishlist-list-item"
@@ -38,39 +38,39 @@
         </a>
 
         <div class="wishlist-list-item-right">
-          <a
+          <button
             class="wishlist-list-item-actions"
             @click="togglePopup(list.id_wishlist)"
             v-if="!list.default"
           >
             <i class="material-icons">more_vert</i>
-          </a>
+          </button>
 
-          <a
+          <button
             @click="toggleShare(list.id_wishlist, list.shareUrl)"
             v-if="list.default"
           >
             <i class="material-icons">share</i>
-          </a>
+          </button>
 
           <div
             class="dropdown-menu show"
             v-if="activeDropdowns.includes(list.id_wishlist)"
           >
-            <a @click="toggleRename(list.id_wishlist, list.name)">
+            <button @click="toggleRename(list.id_wishlist, list.name)">
               {{ renameText }}
-            </a>
-            <a @click="toggleShare(list.id_wishlist, list.shareUrl)">
+            </button>
+            <button @click="toggleShare(list.id_wishlist, list.shareUrl)">
               {{ shareText }}
-            </a>
+            </button>
           </div>
 
-          <a
+          <button
             @click="toggleDelete(list.id_wishlist, list.name)"
             v-if="!list.default"
           >
             <i class="material-icons">delete</i>
-          </a>
+          </button>
         </div>
       </li>
     </ul>
@@ -256,7 +256,7 @@
         &-right {
           position: relative;
 
-          > a {
+          > button {
             transition: 0.25s ease-out;
 
             &:hover {
@@ -277,7 +277,7 @@
             padding: 0;
             overflow: hidden;
 
-            > a {
+            > button {
               padding: 10px 20px;
               transition: 0.2s ease-out;
 
@@ -306,8 +306,14 @@
           }
         }
 
-        a {
+        button {
           cursor: pointer;
+          border: none;
+          background: none;
+
+          &:focus {
+            outline: 0;
+          }
         }
       }
     }
