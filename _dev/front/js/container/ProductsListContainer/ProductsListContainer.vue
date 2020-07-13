@@ -43,9 +43,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {{
-              selectedSort !== '' ? selectedSort : products.datas.sort_selected
-            }}
+            {{ currentSort }}
             <i class="material-icons float-xs-right">arrow_drop_down</i>
           </button>
           <div class="dropdown-menu">
@@ -260,6 +258,11 @@
         );
 
         return productList;
+      },
+      currentSort() {
+        return this.selectedSort !== ''
+          ? this.selectedSort
+          : this.products.datas.sort_selected;
       },
     },
     mounted() {
