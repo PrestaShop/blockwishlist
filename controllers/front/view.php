@@ -139,7 +139,7 @@ class BlockWishlistViewModuleFrontController extends ModuleFrontController
                     'token' => $token,
                     'ajax' => (($ajax == 1) ? '1' : '0'),
                     'wishlists' => $wishlists,
-                    'isShare' => true,
+                    'isShared' => true,
                     'products' => $products_for_template,
                 ]
             );
