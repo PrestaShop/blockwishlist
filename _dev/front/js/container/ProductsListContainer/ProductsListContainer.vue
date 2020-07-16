@@ -358,7 +358,7 @@
     }
   }
 
-  #search {
+  #view {
     #wrapper .container {
       width: 975px;
     }
