@@ -83,6 +83,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
                 'Modules.BlockWishList.Shop'
             );
             $this->setTemplate('errors/forbidden');
+
             return;
         }
 
@@ -96,7 +97,6 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
                 'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
             ]
         );
-
     }
 
     /**
@@ -274,7 +274,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
 
     /**
      * Depending on the parameters sent, checks if the current visitor may reach the page
-     * 
+     *
      * @return int|false
      */
     private function getWishlistId()
@@ -309,7 +309,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         return $this->checkWriteAccessToWishlist($wishlist);
     }
 
-        /**
+    /**
      * @return bool
      */
     private function checkWriteAccessToWishlist(WishList $wishlist)
@@ -332,6 +332,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         if (Tools::getIsset('id_wishlist')) {
             return ['id_wishlist' => Tools::getValue('id_wishlist')];
         }
+
         return [];
     }
 }
