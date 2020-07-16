@@ -278,7 +278,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
 
         foreach ($infos as $key => $wishlist) {
             $infos[$key]['shareUrl'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist['token']]);
-            $infos[$key]['listUrl'] = $this->context->link->getModuleLink('blockwishlist', 'productslist', ['id_wishlist' => $wishlist['id_wishlist']]);
+            $infos[$key]['listUrl'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['id_wishlist' => $wishlist['id_wishlist']]);
         }
 
         if (false === empty($infos)) {

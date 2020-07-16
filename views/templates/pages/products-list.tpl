@@ -28,7 +28,7 @@
     data-list-id="{$id}"
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-add-to-cart="{l s='Add to cart' mod='blockwishlist'}"
-    data-share="{if $isShared}true{else}false{/if}"
+    data-share="{if $isGuest}true{else}false{/if}"
     data-customize-text="{l s='Customize' mod='blockwishlist'}"
     data-quantity-text="{l s='Quantity' mod='blockwishlist'}"
     data-last-added="{l s='Last added' mod='blockwishlist'}"

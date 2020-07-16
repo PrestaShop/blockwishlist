@@ -126,7 +126,7 @@ class BlockWishList extends Module implements WidgetInterface
                 'action'
             ),
             'removeFromWishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
-            'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'productslist'),
+            'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'view'),
             'wishlistAddProductToCartUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToCart']),
             'productsAlreadyTagged' => $productsTagged ? $productsTagged : [],
         ]);
