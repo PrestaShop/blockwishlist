@@ -89,7 +89,7 @@
             :customize-text="customizeText"
             :quantity-text="quantityText"
             :list-id="listId ? listId : parseInt(currentWishlist.id_wishlist)"
-            :is-share="share ? true : false"
+            :is-share="share"
           />
         </li>
       </ul>
