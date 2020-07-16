@@ -40,6 +40,27 @@ class BlockWishList extends Module
         'displayMyAccountBlock',
     ];
 
+    const MODULE_ADMIN_CONTROLLERS = [
+        [
+            'class_name' => 'WishlistConfigurationAdminParentController',
+            'visible' => false,
+            'parent_class_name' => 'AdminParentCustomer',
+            'name' => 'Wishlist Module',
+        ],
+        [
+            'class_name' => 'WishlistConfigurationAdminController',
+            'visible' => true,
+            'parent_class_name' => 'WishlistConfigurationAdminParentController',
+            'name' => 'Configuration',
+        ],
+        [
+            'class_name' => 'WishlistStatisticsAdminController',
+            'visible' => true,
+            'parent_class_name' => 'WishlistConfigurationAdminParentController',
+            'name' => 'Statistics',
+        ],
+    ];
+
     /**
      * @var bool
      */
@@ -55,7 +76,7 @@ class BlockWishList extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->l('Wishlist block');
+        $this->displayName = $this->l('Wishlist');
         $this->description = $this->l('Adds a block containing the customer\'s wishlists.');
         $this->ps_versions_compliancy = [
             'min' => '1.7.6.0',
@@ -74,6 +95,7 @@ class BlockWishList extends Module
         }
 
         return parent::install()
+            && $this->installTabs()    
             && $this->registerHook(static::HOOKS);
     }
 
@@ -83,7 +105,46 @@ class BlockWishList extends Module
     public function uninstall()
     {
         return (new Install())->dropTables()
+            && $this->uninstallTabs()
             && parent::uninstall();
+    }
+
+    public function installTabs()
+    {
+        $installTabCompleted = true;
+
+        foreach (static::MODULE_ADMIN_CONTROLLERS as $controller) {
+            if (Tab::getIdFromClassName($controller['class_name'])) {
+                continue;
+            }
+
+            $tab = new Tab();
+            $tab->class_name = $controller['class_name'];
+            $tab->active = $controller['visible'];
+            foreach (Language::getLanguages() as $lang) {
+                $tab->name[$lang['id_lang']] = $this->trans($controller['name'], array(), 'Modules.BlockWishList.Admin', $lang['locale']);
+            }
+            $tab->id_parent = Tab::getIdFromClassName($controller['parent_class_name']);
+            $tab->module = $this->name;
+            $installTabCompleted = $installTabCompleted && $tab->add();
+        }
+
+        return $installTabCompleted;
+    }
+
+    public function uninstallTabs()
+    {
+        $uninstallTabCompleted = true;
+
+        foreach (static::MODULE_ADMIN_CONTROLLERS as $controller) {
+            $id_tab = (int) Tab::getIdFromClassName($controller['class_name']);
+            $tab = new Tab($id_tab);
+            if (Validate::isLoadedObject($tab)) {
+                $uninstallTabCompleted = $uninstallTabCompleted && $tab->delete();
+            }
+        }
+
+        return $uninstallTabCompleted;
     }
 
     public function getContent()
