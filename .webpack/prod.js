@@ -16,20 +16,20 @@ function prodConfig() {
           sourceMap: true,
           terserOptions: {
             output: {
-              comments: /@license/i
-            }
+              comments: /@license/i,
+            },
           },
-          extractComments: false
-        })
-      ]
-    }
+          extractComments: false,
+        }),
+      ],
+    },
   });
 
   // Required for Vue production environment
   prod.plugins.push(
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    })
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
   );
 
   return prod;
