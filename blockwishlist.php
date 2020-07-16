@@ -89,7 +89,7 @@ class BlockWishList extends Module
     public function getContent()
     {
         Tools::redirectAdmin(
-            SymfonyContainer::getInstance()->get('router')->generate('blockwishlist_home')
+            SymfonyContainer::getInstance()->get('router')->generate('blockwishlist_configuration')
         );
     }
 

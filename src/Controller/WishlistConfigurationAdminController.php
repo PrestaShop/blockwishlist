@@ -25,9 +25,9 @@ use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
 
-class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminController
+class WishlistConfigurationAdminController extends FrameworkBundleAdminController
 {
-    public function homeAction(Request $request)
+    public function configurationAction(Request $request)
     {
         $datas = $this->getWishlistConfigurationDatas();
         $configurationForm = $this->createForm(ConfigurationType::class, $datas);
@@ -37,6 +37,14 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
             $resultHandleForm = $this->handleForm($configurationForm->getData());
         }
 
+        return $this->render('@Modules/blockwishlist/views/templates/admin/home.html.twig', [
+            'configurationForm' => $configurationForm->createView(),
+            'resultHandleForm' => isset($resultHandleForm) ? $resultHandleForm : null
+        ]);
+    }
+
+    public function statisticsAction(Request $request)
+    {
         $searchCriteria = new SearchCriteria();
         $allTimeStatsGridFactory = $this->get('prestashop.module.blockwishlist.grid.all_time_stastistics_grid_factory');
         $currentYearGridFactory = $this->get('prestashop.module.blockwishlist.grid.current_year_stastistics_grid_factory');
@@ -47,9 +55,7 @@ class AdminAjaxPrestashopWishlistController extends FrameworkBundleAdminControll
         $currentMonthGrid = $currentMonthGridFactory->getGrid($searchCriteria);
         $currentDayGrid = $currentDayGridFactory->getGrid($searchCriteria);
 
-        return $this->render('@Modules/blockwishlist/views/templates/admin/home.html.twig', [
-            'configurationForm' => $configurationForm->createView(),
-            'resultHandleForm' => isset($resultHandleForm) ? $resultHandleForm : null,
+        return $this->render('@Modules/blockwishlist/views/templates/admin/statistics.html.twig', [
             'allTimeStatisticsGrid' => $this->presentGrid($allTimeStatisticsGrid),
             'currentYearStatisticsGrid' => $this->presentGrid($currentYearGrid),
             'currentMonthStatisticsGrid' => $this->presentGrid($currentMonthGrid),
