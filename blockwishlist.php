@@ -20,7 +20,6 @@
 
 use PrestaShop\Module\BlockWishList\Database\Install;
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
-use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -28,7 +27,7 @@ if (!defined('_PS_VERSION_')) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-class BlockWishList extends Module implements WidgetInterface
+class BlockWishList extends Module
 {
     const HOOKS = [
         'actionAdminControllerSetMedia',
@@ -38,7 +37,6 @@ class BlockWishList extends Module implements WidgetInterface
         'displayHeader',
         'displayAdminCustomers',
         'displayProductAdditionalInfo',
-        'displayTop',
         'displayMyAccountBlock',
     ];
 
@@ -200,22 +198,6 @@ class BlockWishList extends Module implements WidgetInterface
     }
 
     /**
-     * This hook displays additional elements at the top of your pages
-     *
-     * @param array $params
-     *
-     * @return string
-     */
-    public function hookDisplayTop(array $params)
-    {
-        $this->smarty->assign([
-            'blockwishlist' => $this->displayName,
-        ]);
-
-        return $this->fetch('module:blockwishlist/views/templates/hook/displayTop.tpl');
-    }
-
-    /**
      * Display additional information inside the "my account" block
      *
      * @param array $params
@@ -265,37 +247,5 @@ class BlockWishList extends Module implements WidgetInterface
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayHeader.tpl');
-    }
-
-    /**
-     * This is used to render Widget introduced in PrestaShop 1.7
-     *
-     * @param string $hookName
-     * @param array $configuration
-     *
-     * @return string
-     */
-    public function renderWidget($hookName, array $configuration)
-    {
-        $this->smarty->assign($this->getWidgetVariables($hookName, $configuration));
-
-        return $this->fetch('module:blockwishlist/views/templates/widget/blockwishlist.tpl');
-    }
-
-    /**
-     * This is used to get Smarty variables for Widget introduced in PrestaShop 1.7
-     *
-     * @see https://devdocs.prestashop.com/1.7/modules/concepts/widgets/
-     *
-     * @param string $hookName
-     * @param array $configuration
-     *
-     * @return array
-     */
-    public function getWidgetVariables($hookName, array $configuration)
-    {
-        return [
-            'blockwishlist' => $this->displayName,
-        ];
     }
 }
