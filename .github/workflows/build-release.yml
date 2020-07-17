@@ -18,6 +18,8 @@ jobs:
           git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/PrestaShop/PrestaShop.git ~/prestashop
           cd 
           rm -rf ~/prestashop/modules/blockwishlist
+          ls ~/
+          ls 
           cd ../
           mkdir ~/prestashop/modules/blockwishlist
           mv ./runner/ ~/prestashop/modules/blockwishlist
