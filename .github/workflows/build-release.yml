@@ -18,11 +18,8 @@ jobs:
           cd ../
           git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/PrestaShop/PrestaShop.git prestashop
           rm -rf ./prestashop/modules/blockwishlist
-          mkdir ./prestashop/modules/blockwishlist
-          pwd
-          mv ./runner/ ~/prestashop/modules/blockwishlist
-          mv ./prestashop ./runner/
-          cd ./runner/prestashop/modules/blockwishlist
+          mv ./blockwishlist ~/prestashop/modules/
+          cd ./prestashop/modules/blockwishlist
       - name: Build JS dependencies
         uses: PrestaShopCorp/github-action-build-js/12@v1.0
         with:
