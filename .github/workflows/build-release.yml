@@ -13,14 +13,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.0.0
-      - name: Check out my other private repo
+      - name: Checkout PrestaShop for core dependencies
         run: |
           cd ../
           git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/PrestaShop/PrestaShop.git prestashop
           rm -rf ./prestashop/modules/blockwishlist
           mv ./blockwishlist ./prestashop/modules/
           cd ./prestashop/modules/blockwishlist
-          npm install && npm run build
+      - name: Build JS dependencies
+        uses: PrestaShopCorp/github-action-build-js/12@v1.0
+        with:
+          cmd: yarn
+          path: ../prestashop/modules/blockwishlist
       - name: Install composer dependencies
         run: composer install --no-dev -o
       - name: Clean-up project
