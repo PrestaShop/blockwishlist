@@ -25,6 +25,7 @@ export default `
     name: String
     listUrl: String
     shareUrl: String
+    default: Int
     nbProducts: Int
   }
 
@@ -40,9 +41,6 @@ export default `
 
   type ProductListResponse {
     datas: JSONObject
-    success: Boolean!
-    message: String!
-    name: String!
   }
 
   type Response {

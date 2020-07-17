@@ -19,17 +19,21 @@
 <template>
   <div class="wishlist-products-container">
     <div class="wishlist-products-container-header">
-      <h1 v-if="products.name">
-        {{ products.name }}
+      <h1>
+        {{ title }}
+
         <span
           class="wishlist-products-count"
           v-if="products.datas && products.datas.products"
         >
-          ({{ products.datas.products.length }})
+          ({{ products.datas.pagination.total_items }})
         </span>
       </h1>
 
-      <div class="sort-by-row">
+      <div
+        class="sort-by-row"
+        v-if="products.datas"
+      >
         <span class="col-sm-3 col-md-3 hidden-sm-down sort-by">Sort by:</span>
         <div class="col-sm-9 col-xs-8 col-md-9 products-sort-order dropdown">
           <button
@@ -39,30 +43,18 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {{ selectedSort }}
+            {{ currentSort }}
             <i class="material-icons float-xs-right">arrow_drop_down</i>
           </button>
           <div class="dropdown-menu">
             <a
               rel="nofollow"
-              @click="changeSelectedSort(lastAdded)"
+              @click="changeSelectedSort(sort)"
               class="select-list js-search-link"
+              :key="key"
+              v-for="(sort, key) in productList"
             >
-              {{ lastAdded }}
-            </a>
-            <a
-              rel="nofollow"
-              @click="changeSelectedSort(priceLowHigh)"
-              class="select-list current js-search-link"
-            >
-              {{ priceLowHigh }}
-            </a>
-            <a
-              rel="nofollow"
-              @click="changeSelectedSort(priceHighLow)"
-              class="select-list js-search-link"
-            >
-              {{ priceHighLow }}
+              {{ sort.label }}
             </a>
           </div>
         </div>
@@ -88,8 +80,8 @@
       >
         <li
           class="wishlist-products-item"
-          v-for="product in products.datas.products"
-          :key="product.id_product_attribute"
+          v-for="(product, key) in products.datas.products"
+          :key="key"
         >
           <Product
             :product="product"
@@ -172,12 +164,13 @@
         variables() {
           return {
             listId: this.listId,
-            url: this.url,
+            url: this.apiUrl,
           };
         },
         skip() {
           return true;
         },
+        fetchPolicy: 'network-only',
       },
     },
     props: {
@@ -189,12 +182,10 @@
       title: {
         type: String,
         required: true,
-        default: 'Product name',
       },
       defaultSort: {
         type: String,
         required: true,
-        default: 'All',
       },
       listId: {
         type: Number,
@@ -212,43 +203,41 @@
       addToCart: {
         type: String,
         required: true,
-        default: 'Add to cart',
+      },
+      share: {
+        type: Boolean,
+        required: true,
       },
       customizeText: {
         type: String,
         required: true,
-        default: 'Customize',
       },
       quantityText: {
         type: String,
         required: true,
-        defalut: 'Quantity',
       },
       lastAdded: {
         type: String,
         required: true,
-        default: 'Last added',
       },
       priceLowHigh: {
         type: String,
         required: true,
-        default: 'Price low to high',
       },
       priceHighLow: {
         type: String,
         required: true,
-        default: 'Price high to low',
       },
       filter: {
         type: String,
         required: true,
-        default: 'Filter',
       },
     },
     data() {
       return {
         products: [],
         currentWishlist: {},
+        apiUrl: this.share ? this.url : window.location.href,
         selectedSort: '',
       };
     },
@@ -258,14 +247,28 @@
        * @param {String} value The value selected
        */
       async changeSelectedSort(value) {
-        this.selectedSort = value;
+        this.selectedSort = value.label;
+        this.apiUrl = value.url;
+      },
+    },
+    computed: {
+      productList() {
+        const productList = this.products.datas.sort_orders.filter(
+          (sort) => sort.label !== this.products.datas.sort_selected,
+        );
+
+        return productList;
+      },
+      currentSort() {
+        return this.selectedSort !== ''
+          ? this.selectedSort
+          : this.products.datas.sort_selected;
       },
     },
     mounted() {
       if (this.listId) {
         this.$apollo.queries.products.skip = false;
       }
-      this.selectedSort = this.defaultSort;
 
       if (this.wishlist) {
         this.currentWishlist = JSON.parse(this.wishlist);
@@ -289,7 +292,10 @@
         this.$apollo.queries.products.refetch();
       });
 
-      EventBus.$on('paginationNumbers', (payload) => payload);
+      EventBus.$on('updatePagination', (payload) => {
+        this.products = false;
+        this.apiUrl = payload.page.url;
+      });
     },
   };
 </script>
@@ -352,8 +358,7 @@
     }
   }
 
-  #module-blockwishlist-productslist,
-  #module-blockwishlist-view {
+  #view {
     #wrapper .container {
       width: 975px;
     }

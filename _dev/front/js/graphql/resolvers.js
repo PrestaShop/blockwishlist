@@ -30,22 +30,40 @@ export default {
     /**
      * Get product from a list
      */
-    products: async (root, {url, listId}) => {
-      const response = await fetch(`${url}&params[id_wishlist]=${listId}`);
+    products: async (root, {url}) => {
+      const response = await fetch(`${url}&from-xhr`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json, text/javascript, */*; q=0.01',
+        },
+      });
 
       const datas = await response.json();
 
       EventBus.$emit('paginate', {
         detail: {
-          total: 30,
-          minShown: 1,
-          maxShown: 20,
-          pageNumber: 2,
-          currentPage: 1,
+          total: datas.pagination.total_items,
+          minShown: datas.pagination.items_shown_from,
+          maxShown: datas.pagination.items_shown_to,
+          pageNumber: datas.pagination.pages_count,
+          pages: datas.pagination.pages,
+          display: datas.pagination.should_be_displayed,
+          currentPage: datas.pagination.current_page,
         },
       });
 
-      return datas;
+      window.history.pushState(datas, document.title, datas.current_url);
+      window.scrollTo(0, 0);
+
+      return {
+        datas: {
+          products: datas.products,
+          pagination: datas.pagination,
+          current_url: datas.current_url,
+          sort_orders: datas.sort_orders,
+          sort_selected: datas.sort_selected,
+        },
+      };
     },
     /**
      * Get every lists from User

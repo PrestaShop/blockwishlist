@@ -18,24 +18,37 @@
  *#}
 {% extends '@PrestaShop/Admin/layout.html.twig' %}
 
-{% block javascripts %}
-  {{ parent() }}
-  <script src="{{ asset('../modules/blockwishlist/views/js/admin/adminConfiguration.js') }}"></script>
-{% endblock %}
-
 {% block content %}
-  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': allTimeStatisticsGrid} %}
-  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': currentYearStatisticsGrid} %}
-  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': currentMonthStatisticsGrid} %}
-  {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': currentDayStatisticsGrid} %}
+  {{ form_start(configurationForm) }}
+    <div class="row justify-content-center">
+      <div class="col-xl-10">
+        <div class="card">
+          <h3 class="card-header">
+            <i class="material-icons">edit</i> {{ 'Wording'|trans({}, 'blockwishlist') }}
+          </h3>
+
+          <div class="card-block row">
+            <div class="card-text">
+              {{ form_widget(configurationForm) }}
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-primary">{{ 'Save'|trans({}, 'Admin.Actions') }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{ form_end(configurationForm) }}
 
   {% if resultHandleForm != null %}
     {# resutHandleForm represent the save of every config (can be true/false/null) null = no submission #}
   {% endif %}
-
-  {{ form_start(configurationForm) }}
-  {{ form_widget(configurationForm) }}
-      <button type="submit">Submit button</button>
-  {{ form_end(configurationForm) }}
 {% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('../modules/blockwishlist/public/backoffice.bundle.js') }}"></script>
+{% endblock %}

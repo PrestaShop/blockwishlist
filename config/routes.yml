@@ -1,11 +1,15 @@
-blockwishlist_home:
-  path: blockwishlist/home
+blockwishlist_configuration:
+  path: blockwishlist/configuration
   methods: [GET, POST]
   defaults:
-    _controller: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController::homeAction
+    _controller: PrestaShop\Module\BlockWishList\Controller\WishlistConfigurationAdminController::configurationAction
+    _legacy_controller: 'WishlistConfigurationAdminController'
+    _legacy_link: 'WishlistConfigurationAdminController'
 
 blockwishlist_statistics:
-  path: blockwishlist/getStatisticsAction
+  path: blockwishlist/statistics
   methods: [GET]
   defaults:
-    _controller: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController::getStatisticsAction
+    _controller: PrestaShop\Module\BlockWishList\Controller\WishlistConfigurationAdminController::statisticsAction
+    _legacy_controller: 'WishlistStatisticsAdminController'
+    _legacy_link: 'WishlistStatisticsAdminController'

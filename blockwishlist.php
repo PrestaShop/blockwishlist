@@ -20,7 +20,6 @@
 
 use PrestaShop\Module\BlockWishList\Database\Install;
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
-use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -28,7 +27,7 @@ if (!defined('_PS_VERSION_')) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-class BlockWishList extends Module implements WidgetInterface
+class BlockWishList extends Module
 {
     const HOOKS = [
         'actionAdminControllerSetMedia',
@@ -38,8 +37,28 @@ class BlockWishList extends Module implements WidgetInterface
         'displayHeader',
         'displayAdminCustomers',
         'displayProductAdditionalInfo',
-        'displayTop',
         'displayMyAccountBlock',
+    ];
+
+    const MODULE_ADMIN_CONTROLLERS = [
+        [
+            'class_name' => 'WishlistConfigurationAdminParentController',
+            'visible' => false,
+            'parent_class_name' => 'AdminParentCustomer',
+            'name' => 'Wishlist Module',
+        ],
+        [
+            'class_name' => 'WishlistConfigurationAdminController',
+            'visible' => true,
+            'parent_class_name' => 'WishlistConfigurationAdminParentController',
+            'name' => 'Configuration',
+        ],
+        [
+            'class_name' => 'WishlistStatisticsAdminController',
+            'visible' => true,
+            'parent_class_name' => 'WishlistConfigurationAdminParentController',
+            'name' => 'Statistics',
+        ],
     ];
 
     /**
@@ -57,7 +76,7 @@ class BlockWishList extends Module implements WidgetInterface
 
         parent::__construct();
 
-        $this->displayName = $this->l('Wishlist block');
+        $this->displayName = $this->l('Wishlist');
         $this->description = $this->l('Adds a block containing the customer\'s wishlists.');
         $this->ps_versions_compliancy = [
             'min' => '1.7.6.0',
@@ -76,6 +95,7 @@ class BlockWishList extends Module implements WidgetInterface
         }
 
         return parent::install()
+            && $this->installTabs()    
             && $this->registerHook(static::HOOKS);
     }
 
@@ -85,13 +105,52 @@ class BlockWishList extends Module implements WidgetInterface
     public function uninstall()
     {
         return (new Install())->dropTables()
+            && $this->uninstallTabs()
             && parent::uninstall();
+    }
+
+    public function installTabs()
+    {
+        $installTabCompleted = true;
+
+        foreach (static::MODULE_ADMIN_CONTROLLERS as $controller) {
+            if (Tab::getIdFromClassName($controller['class_name'])) {
+                continue;
+            }
+
+            $tab = new Tab();
+            $tab->class_name = $controller['class_name'];
+            $tab->active = $controller['visible'];
+            foreach (Language::getLanguages() as $lang) {
+                $tab->name[$lang['id_lang']] = $this->trans($controller['name'], array(), 'Modules.BlockWishList.Admin', $lang['locale']);
+            }
+            $tab->id_parent = Tab::getIdFromClassName($controller['parent_class_name']);
+            $tab->module = $this->name;
+            $installTabCompleted = $installTabCompleted && $tab->add();
+        }
+
+        return $installTabCompleted;
+    }
+
+    public function uninstallTabs()
+    {
+        $uninstallTabCompleted = true;
+
+        foreach (static::MODULE_ADMIN_CONTROLLERS as $controller) {
+            $id_tab = (int) Tab::getIdFromClassName($controller['class_name']);
+            $tab = new Tab($id_tab);
+            if (Validate::isLoadedObject($tab)) {
+                $uninstallTabCompleted = $uninstallTabCompleted && $tab->delete();
+            }
+        }
+
+        return $uninstallTabCompleted;
     }
 
     public function getContent()
     {
         Tools::redirectAdmin(
-            SymfonyContainer::getInstance()->get('router')->generate('blockwishlist_home')
+            SymfonyContainer::getInstance()->get('router')->generate('blockwishlist_configuration')
         );
     }
 
@@ -102,9 +161,7 @@ class BlockWishList extends Module implements WidgetInterface
      */
     public function hookActionAdminControllerSetMedia(array $params)
     {
-        if ($this->context->controller->controller_name === 'AdminCustomers') {
-            $this->context->controller->addJs($this->getPathUri() . 'views/js/admin/displayAdminCustomers.js?v=' . $this->version);
-        }
+        $this->context->controller->addCss($this->getPathUri() . 'public/backoffice.css');
     }
 
     /**
@@ -128,9 +185,9 @@ class BlockWishList extends Module implements WidgetInterface
                 'action'
             ),
             'removeFromWishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
-            'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'productslist'),
+            'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'view'),
             'wishlistAddProductToCartUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToCart']),
-            'productsAlreadyTagged' => $productsTagged,
+            'productsAlreadyTagged' => $productsTagged ? $productsTagged : [],
         ]);
 
         $this->context->controller->registerStylesheet(
@@ -202,22 +259,6 @@ class BlockWishList extends Module implements WidgetInterface
     }
 
     /**
-     * This hook displays additional elements at the top of your pages
-     *
-     * @param array $params
-     *
-     * @return string
-     */
-    public function hookDisplayTop(array $params)
-    {
-        $this->smarty->assign([
-            'blockwishlist' => $this->displayName,
-        ]);
-
-        return $this->fetch('module:blockwishlist/views/templates/hook/displayTop.tpl');
-    }
-
-    /**
      * Display additional information inside the "my account" block
      *
      * @param array $params
@@ -267,37 +308,5 @@ class BlockWishList extends Module implements WidgetInterface
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayHeader.tpl');
-    }
-
-    /**
-     * This is used to render Widget introduced in PrestaShop 1.7
-     *
-     * @param string $hookName
-     * @param array $configuration
-     *
-     * @return string
-     */
-    public function renderWidget($hookName, array $configuration)
-    {
-        $this->smarty->assign($this->getWidgetVariables($hookName, $configuration));
-
-        return $this->fetch('module:blockwishlist/views/templates/widget/blockwishlist.tpl');
-    }
-
-    /**
-     * This is used to get Smarty variables for Widget introduced in PrestaShop 1.7
-     *
-     * @see https://devdocs.prestashop.com/1.7/modules/concepts/widgets/
-     *
-     * @param string $hookName
-     * @param array $configuration
-     *
-     * @return array
-     */
-    public function getWidgetVariables($hookName, array $configuration)
-    {
-        return [
-            'blockwishlist' => $this->displayName,
-        ];
     }
 }

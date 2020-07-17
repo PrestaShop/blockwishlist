@@ -14,11 +14,11 @@ class CurrentMonthStatisticsGridDataFactory extends BaseGridDataFactory implemen
 
     public function getData(SearchCriteriaInterface $searchCriteria)
     {
-        if ($this->cache->contains('blockwishlist.stats.currentYear')) {
-            $results = $this->cache->fetch('blockwishlist.stats.currentYear');
+        if ($this->cache->contains('blockwishlist.stats.currentMonth')) {
+            $results = $this->cache->fetch('blockwishlist.stats.currentMonth');
         } else {
             $results = $this->calculator->computeStatsFor('currentMonth');
-            $this->cache->save('blockwishlist.stats.currentYear', $results, self::CACHE_LIFETIME_SECONDS);
+            $this->cache->save('blockwishlist.stats.currentMonth', $results, self::CACHE_LIFETIME_SECONDS);
         }
 
         return new GridData(new RecordCollection($results), count($results));

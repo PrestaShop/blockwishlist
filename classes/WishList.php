@@ -275,7 +275,7 @@ class WishList extends ObjectModel
         }
 
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
-            SELECT  w.`id_wishlist`, COUNT(wp.`id_product`) AS nbProducts, w.`name`, w.`token`
+            SELECT  w.`id_wishlist`, COUNT(wp.`id_product`) AS nbProducts, w.`name`, w.`default`, w.`token`
             FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
             RIGHT JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
             WHERE w.`id_customer` = ' . (int) $id_customer . '

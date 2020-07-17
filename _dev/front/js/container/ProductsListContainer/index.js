@@ -53,6 +53,10 @@ const props = [
     type: String,
   },
   {
+    name: 'share',
+    type: Boolean,
+  },
+  {
     name: 'quantityText',
     type: String,
   },

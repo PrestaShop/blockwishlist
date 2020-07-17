@@ -24,7 +24,7 @@
   {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/if}
 
-{if $context === "index" || $context === "category" || $context === "blockwishlist"}
+{if $context === "index" || $context === "category" || $context === "blockwishlist" || $context === 'search'}
   {include file="module:blockwishlist/views/templates/components/modals/add-to-wishlist.tpl" url=$url addUrl=$addUrl}
   {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url=$createUrl}
   {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" productUrl=$deleteProductUrl}

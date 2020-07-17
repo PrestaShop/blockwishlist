@@ -28,13 +28,14 @@
     data-list-id="{$id}"
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-add-to-cart="{l s='Add to cart' mod='blockwishlist'}"
+    data-share="{if $isGuest}true{else}false{/if}"
     data-customize-text="{l s='Customize' mod='blockwishlist'}"
     data-quantity-text="{l s='Quantity' mod='blockwishlist'}"
     data-last-added="{l s='Last added' mod='blockwishlist'}"
     data-price-low-high="{l s='Price, low to high' mod='blockwishlist'}"
     data-price-high-low="{l s='Price, high to low' mod='blockwishlist'}"
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
-    data-title="{l s='Gift ideas for Juliette' mod='blockwishlist'}"
+    data-title="{$wishlistName}"
     data-filter="{l s='Filter' mod='blockwishlist'}"
   >
   </div>

@@ -250,9 +250,6 @@
         }
       },
     },
-    mounted() {
-      console.log(this.product);
-    },
   };
 </script>
 
