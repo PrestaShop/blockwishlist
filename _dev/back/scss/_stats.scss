@@ -62,5 +62,15 @@
     &.active {
       display: block;
     }
+
+    .column-image {
+      img {
+        max-width: 50px;
+      }
+    }
+
+    .column-conversionRate {
+      font-weight: bold;
+    }
   }
 }
