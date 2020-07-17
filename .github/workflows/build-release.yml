@@ -18,7 +18,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Change directory to modules folders
         run: |
-          cd ~/prestashop/modules/
+          cd prestashop/modules/
           rm -rf blockwishlist
       - name: Checkout
         uses: actions/checkout@v2.0.0
