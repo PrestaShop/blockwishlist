@@ -27,11 +27,11 @@
     data-url="{$url}"
     data-return-link="#"
     data-home-link="#"
-    data-title="{l s='My Wishlists' mod='blockwishlist'}"
+    data-title="{$wishlistsTitlePage}"
     data-empty-text="{l s='No wishlist found.' mod='blockwishlist'}"
     data-rename-text="{l s='Rename' mod='blockwishlist'}"
     data-share-text="{l s='Share' mod='blockwishlist'}"
-    data-add-text="{l s='New wishlist' mod='blockwishlist'}"
+    data-add-text="{$newWishlistCTA}"
   ></div>
 
   {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url=$createUrl}

@@ -41,7 +41,7 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
 
         return $this->render('@Modules/blockwishlist/views/templates/admin/home.html.twig', [
             'configurationForm' => $configurationForm->createView(),
-            'resultHandleForm' => isset($resultHandleForm) ? $resultHandleForm : null
+            'resultHandleForm' => isset($resultHandleForm) ? $resultHandleForm : null,
         ]);
     }
 

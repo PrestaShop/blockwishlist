@@ -31,7 +31,7 @@ class Install
 {
     /**
      * @var Translator
-     */    
+     */
     protected $translator;
 
     public function __construct(TranslatorInterface $translator)
@@ -108,9 +108,9 @@ class Install
         $createButtonLabel = [];
 
         foreach (Language::getLanguages() as $lang) {
-            $pageName[$lang['id_lang']] = $this->translator->trans('My wishlists', array(), 'Modules.BlockWishList', $lang['locale']);
-            $defaultName[$lang['id_lang']] = $this->translator->trans('My wishlist', array(), 'Modules.BlockWishList', $lang['locale']);
-            $createButtonLabel[$lang['id_lang']] = $this->translator->trans('Create new list', array(), 'Modules.BlockWishList', $lang['locale']);
+            $pageName[$lang['id_lang']] = $this->translator->trans('My wishlists', [], 'Modules.BlockWishList', $lang['locale']);
+            $defaultName[$lang['id_lang']] = $this->translator->trans('My wishlist', [], 'Modules.BlockWishList', $lang['locale']);
+            $createButtonLabel[$lang['id_lang']] = $this->translator->trans('Create new list', [], 'Modules.BlockWishList', $lang['locale']);
         }
 
         return Configuration::updateValue('blockwishlist_WishlistPageName', $pageName)
@@ -131,7 +131,7 @@ class Install
             $tab->class_name = $controller['class_name'];
             $tab->active = $controller['visible'];
             foreach (Language::getLanguages() as $lang) {
-                $tab->name[$lang['id_lang']] = $this->translator->trans($controller['name'], array(), 'Modules.BlockWishList.Admin', $lang['locale']);
+                $tab->name[$lang['id_lang']] = $this->translator->trans($controller['name'], [], 'Modules.BlockWishList.Admin', $lang['locale']);
             }
             $tab->id_parent = Tab::getIdFromClassName($controller['parent_class_name']);
             $tab->module = 'blockwishlist';

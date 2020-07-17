@@ -145,9 +145,9 @@ class BlockWishList extends Module
                 $this->name,
                 'action'
             ),
-            'removeFromWishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
-            'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'view'),
-            'wishlistAddProductToCartUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToCart']),
+            'removeFromWishlistUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'wishlistUrl' => $this->context->link->getModuleLink('blockwishlist', 'view'),
+            'wishlistAddProductToCartUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToCart']),
             'productsAlreadyTagged' => $productsTagged ? $productsTagged : [],
         ]);
 
@@ -180,7 +180,7 @@ class BlockWishList extends Module
     {
         $this->smarty->assign([
           'blockwishlist' => $this->displayName,
-          'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+          'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/product/add-button.tpl');
@@ -196,7 +196,8 @@ class BlockWishList extends Module
     public function hookDisplayCustomerAccount(array $params)
     {
         $this->smarty->assign([
-            'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
+            'url' => $this->context->link->getModuleLink('blockwishlist', 'lists'),
+            'wishlistsTitlePage' => Configuration::get('blockwishlist_WishlistPageName', $this->context->language->id),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayCustomerAccount.tpl');
@@ -262,10 +263,11 @@ class BlockWishList extends Module
     {
         $this->smarty->assign([
             'context' => $this->context->controller->php_self,
-            'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
-            'createUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),
-            'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
-            'addUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
+            'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
+            'createUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),
+            'deleteProductUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'addUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
+            'newWishlistCTA' => Configuration::get('blockwishlist_CreateButtonLabel', $this->context->language->id),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayHeader.tpl');
