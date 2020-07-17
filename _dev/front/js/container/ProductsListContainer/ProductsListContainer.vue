@@ -135,9 +135,9 @@
 
       <p
         class="wishlist-list-empty"
-        v-if="products.datas && products.success === false"
+        v-if="products.datas && products.datas.products.length <= 0"
       >
-        {{ products.message }}
+        {{ noProductsMessage }}
       </p>
     </section>
   </div>
@@ -180,6 +180,10 @@
         default: '#',
       },
       title: {
+        type: String,
+        required: true,
+      },
+      noProductsMessage: {
         type: String,
         required: true,
       },
@@ -286,6 +290,15 @@
     &-list-loader {
       padding: 0 20px;
       width: 100%;
+    }
+
+    &-list-empty {
+      font-size: 30;
+      text-align: center;
+      padding: 30px;
+      padding-bottom: 20px;
+      font-weight: bold;
+      color: #000;
     }
 
     &-products-container {

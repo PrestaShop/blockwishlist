@@ -36,6 +36,7 @@
     data-price-high-low="{l s='Price, high to low' mod='blockwishlist'}"
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-title="{$wishlistName}"
+    data-no-products-message="{l s='No products found' mod='blockwishlist'}"
     data-filter="{l s='Filter' mod='blockwishlist'}"
   >
   </div>

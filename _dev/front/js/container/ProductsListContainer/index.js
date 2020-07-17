@@ -29,6 +29,10 @@ const props = [
     type: String,
   },
   {
+    name: 'noProductsMessage',
+    type: String,
+  },
+  {
     name: 'defaultSort',
     type: String,
   },
