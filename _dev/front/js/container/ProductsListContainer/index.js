@@ -22,64 +22,64 @@ import ProductsListContainer from './ProductsListContainer.vue';
 const props = [
   {
     name: 'url',
-    type: String
+    type: String,
   },
   {
     name: 'title',
-    type: String
+    type: String,
   },
   {
     name: 'noProductsMessage',
-    type: String
+    type: String,
   },
   {
     name: 'defaultSort',
-    type: String
+    type: String,
   },
   {
     name: 'lastAdded',
-    type: String
+    type: String,
   },
   {
     name: 'addToCart',
-    type: String
+    type: String,
   },
   {
     name: 'customizeText',
-    type: String
+    type: String,
   },
   {
     name: 'wishlistProducts',
-    type: String
+    type: String,
   },
   {
     name: 'wishlist',
-    type: String
+    type: String,
   },
   {
     name: 'share',
-    type: Boolean
+    type: Boolean,
   },
   {
     name: 'quantityText',
-    type: String
+    type: String,
   },
   {
     name: 'priceLowHigh',
-    type: String
+    type: String,
   },
   {
     name: 'priceHighLow',
-    type: String
+    type: String,
   },
   {
     name: 'filter',
-    type: String
+    type: String,
   },
   {
     name: 'listId',
-    type: Number
-  }
+    type: Number,
+  },
 ];
 
 initApp(ProductsListContainer, '.wishlist-products-container', props);
