@@ -15,7 +15,6 @@ jobs:
         uses: actions/checkout@v2.0.0
       - name: Check out my other private repo
         run: |
-          git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/PrestaShop/PrestaShop.git ~/prestashop
           ls ~/
       - name: Build JS dependencies
         uses: PrestaShopCorp/github-action-build-js/12@v1.0
