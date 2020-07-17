@@ -89,7 +89,7 @@
             :customize-text="customizeText"
             :quantity-text="quantityText"
             :list-id="listId ? listId : parseInt(currentWishlist.id_wishlist)"
-            :is-share="wishlistProducts ? true : false"
+            :is-share="share"
           />
         </li>
       </ul>
@@ -192,14 +192,6 @@
         required: false,
         default: 0,
       },
-      wishlistProducts: {
-        type: Array,
-        required: false,
-      },
-      wishlist: {
-        type: String,
-        required: false,
-      },
       addToCart: {
         type: String,
         required: true,
@@ -237,7 +229,7 @@
       return {
         products: [],
         currentWishlist: {},
-        apiUrl: this.share ? this.url : window.location.href,
+        apiUrl: window.location.href,
         selectedSort: '',
       };
     },
@@ -268,19 +260,6 @@
     mounted() {
       if (this.listId) {
         this.$apollo.queries.products.skip = false;
-      }
-
-      if (this.wishlist) {
-        this.currentWishlist = JSON.parse(this.wishlist);
-        this.products.name = this.currentWishlist.name;
-      }
-
-      if (this.wishlistProducts) {
-        const products = JSON.parse(this.wishlistProducts);
-
-        if (products.length > 0) {
-          this.products.datas = {products};
-        }
       }
 
       /**
