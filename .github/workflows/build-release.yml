@@ -15,15 +15,13 @@ jobs:
         uses: actions/checkout@v2.0.0
       - name: Check out my other private repo
         run: |
-          git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/PrestaShop/PrestaShop.git ~/prestashop
+          git clone https://${{ secrets.GITHUB_TOKEN }}@github.com/PrestaShop/PrestaShop.git ../prestashop
           cd 
-          rm -rf ~/prestashop/modules/blockwishlist
-          ls ~/
-          ls 
+          rm -rf ../prestashop/modules/blockwishlist
           cd ../
-          mkdir ~/prestashop/modules/blockwishlist
-          mv ./runner/ ~/prestashop/modules/blockwishlist
-          mv ~/prestashop/ ./runner
+          mkdir ./prestashop/modules/blockwishlist
+          mv ./runner ~/prestashop/modules/blockwishlist
+          mv ~/prestashop ./runner/
           cd ./runner/prestashop/modules/blockwishlist
       - name: Build JS dependencies
         uses: PrestaShopCorp/github-action-build-js/12@v1.0
