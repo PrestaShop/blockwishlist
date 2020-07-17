@@ -16,7 +16,6 @@ jobs:
         with:
           repository: PrestaShop/PrestaShop
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: master
           path: prestashop
       - name: Change directory to modules folders
         run: |
