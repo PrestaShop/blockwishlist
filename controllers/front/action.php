@@ -268,7 +268,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             $wishlist->id_shop = $this->context->shop->id;
             $wishlist->id_shop_group = $this->context->shop->id_shop_group;
             $wishlist->id_customer = $this->context->customer->id;
-            $wishlist->name = 'default';
+            $wishlist->name = Configuration::get('blockwishlist_WishlistDefaultTitle', $this->context->language->id);
             $wishlist->token = $this->generateWishListToken();
             $wishlist->default = 1;
             $wishlist->add();

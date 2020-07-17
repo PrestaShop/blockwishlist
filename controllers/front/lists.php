@@ -33,6 +33,8 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
             'shareUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getUrlByIdWishlist']),
             'addUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
             'accountLink' => '#',
+            'wishlistsTitlePage' => Configuration::get('blockwishlist_WishlistPageName', $this->context->language->id),
+            'newWishlistCTA' => Configuration::get('blockwishlist_CreateButtonLabel', $this->context->language->id),
         ]
       );
 

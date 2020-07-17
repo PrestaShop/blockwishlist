@@ -61,7 +61,7 @@
 
         <div class="modal-footer">
           <a @click="openNewWishlistModal" class="wishlist-add-to-new">
-            <i class="material-icons">add_circle_outline</i> {l s='New wishlist' mod='blockwishlist'}
+            <i class="material-icons">add_circle_outline</i> {$newWishlistCTA}
           </a>
         </div>
       </div>

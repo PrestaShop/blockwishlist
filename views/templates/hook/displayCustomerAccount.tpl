@@ -20,6 +20,6 @@
 <a class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="wishlist-link" href="{$url}">
   <span class="link-item">
     <i class="material-icons">favorite</i>
-    Wishlists
+    {$wishlistsTitlePage}
   </span>
 </a>

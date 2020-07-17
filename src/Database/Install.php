@@ -20,8 +20,32 @@
 
 namespace PrestaShop\Module\BlockWishList\Database;
 
+use BlockWishList;
+use Configuration;
+use Db;
+use Language;
+use Symfony\Component\Translation\TranslatorInterface;
+use Tab;
+
 class Install
 {
+    /**
+     * @var Translator
+     */
+    protected $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    public function run()
+    {
+        return $this->installTables()
+            && $this->installConfiguration()
+            && $this->installTabs();
+    }
+
     public function installTables()
     {
         $sql = [];
@@ -71,24 +95,49 @@ class Install
         $result = true;
 
         foreach ($sql as $query) {
-            $result = $result && \Db::getInstance()->execute($query);
+            $result = $result && Db::getInstance()->execute($query);
         }
 
         return $result;
     }
 
-    public function dropTables()
+    public function installConfiguration()
     {
-        $sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'wishlist`';
-        $sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'wishlist_product`';
-        $sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'wishlist_product_cart`';
-        $sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'blockwishlist_statistics`';
+        $pageName = [];
+        $defaultName = [];
+        $createButtonLabel = [];
 
-        $result = true;
-        foreach ($sql as $query) {
-            $result = $result && \Db::getInstance()->execute($query);
+        foreach (Language::getLanguages() as $lang) {
+            $pageName[$lang['id_lang']] = $this->translator->trans('My wishlists', [], 'Modules.BlockWishList', $lang['locale']);
+            $defaultName[$lang['id_lang']] = $this->translator->trans('My wishlist', [], 'Modules.BlockWishList', $lang['locale']);
+            $createButtonLabel[$lang['id_lang']] = $this->translator->trans('Create new list', [], 'Modules.BlockWishList', $lang['locale']);
         }
 
-        return $result;
+        return Configuration::updateValue('blockwishlist_WishlistPageName', $pageName)
+            && Configuration::updateValue('blockwishlist_WishlistDefaultTitle', $defaultName)
+            && Configuration::updateValue('blockwishlist_CreateButtonLabel', $createButtonLabel);
+    }
+
+    public function installTabs()
+    {
+        $installTabCompleted = true;
+
+        foreach (BlockWishList::MODULE_ADMIN_CONTROLLERS as $controller) {
+            if (Tab::getIdFromClassName($controller['class_name'])) {
+                continue;
+            }
+
+            $tab = new Tab();
+            $tab->class_name = $controller['class_name'];
+            $tab->active = $controller['visible'];
+            foreach (Language::getLanguages() as $lang) {
+                $tab->name[$lang['id_lang']] = $this->translator->trans($controller['name'], [], 'Modules.BlockWishList.Admin', $lang['locale']);
+            }
+            $tab->id_parent = Tab::getIdFromClassName($controller['parent_class_name']);
+            $tab->module = 'blockwishlist';
+            $installTabCompleted = $installTabCompleted && $tab->add();
+        }
+
+        return $installTabCompleted;
     }
 }

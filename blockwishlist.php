@@ -19,6 +19,7 @@
  */
 
 use PrestaShop\Module\BlockWishList\Database\Install;
+use PrestaShop\Module\BlockWishList\Database\Uninstall;
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 
 if (!defined('_PS_VERSION_')) {
@@ -44,7 +45,7 @@ class BlockWishList extends Module
         [
             'class_name' => 'WishlistConfigurationAdminParentController',
             'visible' => false,
-            'parent_class_name' => 'AdminParentCustomer',
+            'parent_class_name' => 'AdminModules',
             'name' => 'Wishlist Module',
         ],
         [
@@ -90,12 +91,11 @@ class BlockWishList extends Module
      */
     public function install()
     {
-        if (false === (new Install())->installTables()) {
+        if (false === (new Install($this->getTranslator()))->run()) {
             return false;
         }
 
         return parent::install()
-            && $this->installTabs()    
             && $this->registerHook(static::HOOKS);
     }
 
@@ -104,47 +104,8 @@ class BlockWishList extends Module
      */
     public function uninstall()
     {
-        return (new Install())->dropTables()
-            && $this->uninstallTabs()
+        return (new Uninstall())->run()
             && parent::uninstall();
-    }
-
-    public function installTabs()
-    {
-        $installTabCompleted = true;
-
-        foreach (static::MODULE_ADMIN_CONTROLLERS as $controller) {
-            if (Tab::getIdFromClassName($controller['class_name'])) {
-                continue;
-            }
-
-            $tab = new Tab();
-            $tab->class_name = $controller['class_name'];
-            $tab->active = $controller['visible'];
-            foreach (Language::getLanguages() as $lang) {
-                $tab->name[$lang['id_lang']] = $this->trans($controller['name'], array(), 'Modules.BlockWishList.Admin', $lang['locale']);
-            }
-            $tab->id_parent = Tab::getIdFromClassName($controller['parent_class_name']);
-            $tab->module = $this->name;
-            $installTabCompleted = $installTabCompleted && $tab->add();
-        }
-
-        return $installTabCompleted;
-    }
-
-    public function uninstallTabs()
-    {
-        $uninstallTabCompleted = true;
-
-        foreach (static::MODULE_ADMIN_CONTROLLERS as $controller) {
-            $id_tab = (int) Tab::getIdFromClassName($controller['class_name']);
-            $tab = new Tab($id_tab);
-            if (Validate::isLoadedObject($tab)) {
-                $uninstallTabCompleted = $uninstallTabCompleted && $tab->delete();
-            }
-        }
-
-        return $uninstallTabCompleted;
     }
 
     public function getContent()
@@ -184,9 +145,9 @@ class BlockWishList extends Module
                 $this->name,
                 'action'
             ),
-            'removeFromWishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
-            'wishlistUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'view'),
-            'wishlistAddProductToCartUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToCart']),
+            'removeFromWishlistUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'wishlistUrl' => $this->context->link->getModuleLink('blockwishlist', 'view'),
+            'wishlistAddProductToCartUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToCart']),
             'productsAlreadyTagged' => $productsTagged ? $productsTagged : [],
         ]);
 
@@ -219,7 +180,7 @@ class BlockWishList extends Module
     {
         $this->smarty->assign([
           'blockwishlist' => $this->displayName,
-          'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+          'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/product/add-button.tpl');
@@ -235,7 +196,8 @@ class BlockWishList extends Module
     public function hookDisplayCustomerAccount(array $params)
     {
         $this->smarty->assign([
-            'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
+            'url' => $this->context->link->getModuleLink('blockwishlist', 'lists'),
+            'wishlistsTitlePage' => Configuration::get('blockwishlist_WishlistPageName', $this->context->language->id),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayCustomerAccount.tpl');
@@ -301,10 +263,11 @@ class BlockWishList extends Module
     {
         $this->smarty->assign([
             'context' => $this->context->controller->php_self,
-            'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
-            'createUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),
-            'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
-            'addUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
+            'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
+            'createUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),
+            'deleteProductUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'addUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
+            'newWishlistCTA' => Configuration::get('blockwishlist_CreateButtonLabel', $this->context->language->id),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayHeader.tpl');
