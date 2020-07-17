@@ -18,6 +18,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
+use PrestaShop\Module\BlockWishList\Access\CustomerAccess;
 use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
@@ -39,9 +40,9 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
     protected $wishlist;
 
     /**
-     * @var string
+     * @var CustomerAccess
      */
-    private $page_name;
+    private $customerAccess;
 
     public function __construct()
     {
@@ -53,11 +54,10 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
             Tools::redirect('index');
         }
 
-        $this->page_name = 'module-' . $this->module->name . '-' . Dispatcher::getInstance()->getController();
-
         parent::__construct();
 
         $this->controller_type = 'modulefront';
+        $this->customerAccess = new CustomerAccess($this->context->customer);
     }
 
     /**
@@ -74,7 +74,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
 
         parent::init();
 
-        if (false === $this->checkReadAccessToWishlist($this->wishlist)) {
+        if (false === $this->customerAccess->hasReadAccessToWishlist($this->wishlist)) {
             header('HTTP/1.1 403 Forbidden');
             header('Status: 403 Forbidden');
             $this->errors[] = $this->trans(
@@ -91,7 +91,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
             [
                 'id' => $id_wishlist,
                 'wishlistName' => $this->wishlist->name,
-                'isGuest' => !$this->checkWriteAccessToWishlist($this->wishlist),
+                'isGuest' => !$this->customerAccess->hasWriteAccessToWishlist($this->wishlist),
                 'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'view', $this->getAccessParams()),
                 'wishlistsLink' => Context::getContext()->link->getModuleLink('blockwishlist', 'lists'),
                 'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
@@ -106,7 +106,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
     {
         parent::initContent();
 
-        if (false === $this->checkReadAccessToWishlist($this->wishlist)) {
+        if (false === $this->customerAccess->hasReadAccessToWishlist($this->wishlist)) {
             return;
         }
 
@@ -294,31 +294,6 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         }
 
         return false;
-    }
-
-    /**
-     * @return bool
-     */
-    private function checkReadAccessToWishlist(WishList $wishlist)
-    {
-        // Wishlist is shared
-        if (!empty($wishlist->token) && Tools::getIsset('token')) {
-            return true;
-        }
-
-        return $this->checkWriteAccessToWishlist($wishlist);
-    }
-
-    /**
-     * @return bool
-     */
-    private function checkWriteAccessToWishlist(WishList $wishlist)
-    {
-        if (false === Validate::isLoadedObject($this->context->customer)) {
-            return false;
-        }
-
-        return ((int) $wishlist->id_customer) === $this->context->customer->id;
     }
 
     /**

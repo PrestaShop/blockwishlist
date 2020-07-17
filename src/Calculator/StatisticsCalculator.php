@@ -145,7 +145,7 @@ class StatisticsCalculator
                 'reference' => $productDetails['reference'],
                 'price' => $this->locale->formatPrice($productDetails['price'], $this->context->currency->iso_code),
                 'quantity' => $productDetails['quantity'],
-                'conversionRate' => $this->computeConversionByProduct($id_product, $id_product_attribute, $dateStart),
+                'conversionRate' => $this->computeConversionByProduct($id_product, $id_product_attribute, $dateStart) . '%',
             ];
 
             ++$position;
