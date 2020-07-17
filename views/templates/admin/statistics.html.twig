@@ -65,5 +65,10 @@
 
 {% block javascripts %}
   {{ parent() }}
+  <script>
+    var blockwishlistModule = {
+      'resetCacheUrl': '{{ url('blockwishlist_statistics_reset')|e('js') }}',
+    };
+  </script>
   <script src="{{ asset('../modules/blockwishlist/public/backoffice.bundle.js') }}"></script>
 {% endblock %}

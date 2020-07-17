@@ -13,3 +13,9 @@ blockwishlist_statistics:
     _controller: PrestaShop\Module\BlockWishList\Controller\WishlistConfigurationAdminController::statisticsAction
     _legacy_controller: 'WishlistStatisticsAdminController'
     _legacy_link: 'WishlistStatisticsAdminController'
+
+blockwishlist_statistics_reset:
+  path: blockwishlist/statistics/reset
+  methods: [POST]
+  defaults:
+    _controller: PrestaShop\Module\BlockWishList\Controller\WishlistConfigurationAdminController::resetStatisticsCacheAction
