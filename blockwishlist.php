@@ -45,7 +45,7 @@ class BlockWishList extends Module
         [
             'class_name' => 'WishlistConfigurationAdminParentController',
             'visible' => false,
-            'parent_class_name' => 'AdminModules',
+            'parent_class_name' => 'AdminParentCustomer',
             'name' => 'Wishlist Module',
         ],
         [

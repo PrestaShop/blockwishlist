@@ -30,7 +30,7 @@ use Tab;
 class Install
 {
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     protected $translator;
 
