@@ -24,6 +24,7 @@ use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
+use PrestaShop\PrestaShop\Core\Localization\Locale;
 use PrestaShop\PrestaShop\Core\Product\ProductPresenter;
 
 class StatisticsCalculator
@@ -38,11 +39,17 @@ class StatisticsCalculator
     private $context;
     private $productAssembler;
 
-    public function __construct(LegacyContext $context)
+    /**
+     * @var Locale
+     */
+    private $locale;
+
+    public function __construct(LegacyContext $context, Locale $locale)
     {
         $this->context = $context->getContext();
         $this->context->customer = new \Customer(); // (╯°□°)╯︵ ┻━┻
         $this->productAssembler = new \ProductAssembler($this->context);
+        $this->locale = $locale;
     }
 
     /**
@@ -136,7 +143,7 @@ class StatisticsCalculator
                 'image_small_url' => $imgDetails['small']['url'],
                 'link' => $productDetails['link'],
                 'reference' => $productDetails['reference'],
-                'price' => $productDetails['price'],
+                'price' => $this->locale->formatPrice($productDetails['price'], $this->context->currency->iso_code),
                 'quantity' => $productDetails['quantity'],
                 'conversionRate' => $this->computeConversionByProduct($id_product, $id_product_attribute, $dateStart),
             ];
