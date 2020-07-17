@@ -20,11 +20,7 @@ jobs:
           rm -rf ./prestashop/modules/blockwishlist
           mv ./blockwishlist ./prestashop/modules/
           cd ./prestashop/modules/blockwishlist
-      - name: Build JS dependencies
-        uses: PrestaShopCorp/github-action-build-js/12@v1.0
-        with:
-          cmd: yarn
-          path: ../prestashop/modules/blockwishlist
+          npm install && npm run build
       - name: Install composer dependencies
         run: composer install --no-dev -o
       - name: Clean-up project
