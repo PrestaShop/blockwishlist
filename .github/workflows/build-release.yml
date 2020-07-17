@@ -11,6 +11,14 @@ jobs:
     name: build dependencies & create artifact
     runs-on: ubuntu-latest
     steps:
+      - name: Check out my other private repo
+        uses: actions/checkout@master
+        with:
+          repository: PrestaShop/PrestaShop
+          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd ~/PrestaShop/modules/
+          rm -rf blockwishlist
       - name: Checkout
         uses: actions/checkout@v2.0.0
       - name: Build JS dependencies
