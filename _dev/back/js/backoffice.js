@@ -17,11 +17,14 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
+import blockwishlistModule from 'blockwishlistModule';
 import TranslatableInput from '../../../../../admin-dev/themes/new-theme/js/components/translatable-input';
 
 new TranslatableInput();
 
 const tabButtons = document.querySelectorAll('.btn-group button');
+const refreshButton = document.querySelector('.js-refresh');
+let isLoading = false;
 
 tabButtons.forEach((button) => {
   button.addEventListener('click', () => {
@@ -45,4 +48,31 @@ tabButtons.forEach((button) => {
       });
     }
   });
+});
+
+refreshButton.addEventListener('click', async () => {
+  if (!isLoading) {
+    isLoading = true;
+
+    const cacheButton = refreshButton.innerHTML;
+
+    refreshButton.innerHTML = '<i class="material-icons">hourglass_empty</i>';
+
+    const response = await fetch(`${blockwishlistModule.resetCacheUrl}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json, text/javascript, */*; q=0.01',
+      },
+    });
+
+    const {success} = await response.json();
+
+    if (success) {
+      location.reload();
+    } else {
+      isLoading = false;
+      refreshButton.innerHTML = cacheButton;
+    }
+  }
 });

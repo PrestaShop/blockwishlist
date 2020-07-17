@@ -7,6 +7,11 @@ use PrestaShop\Module\BlockWishList\Calculator\StatisticsCalculator;
 
 class BaseGridDataFactory
 {
+    const CACHE_KEY_STATS_CURRENT_DAY = 'blockwishlist.stats.currentDay';
+    const CACHE_KEY_STATS_CURRENT_MONTH = 'blockwishlist.stats.currentMonth';
+    const CACHE_KEY_STATS_CURRENT_YEAR = 'blockwishlist.stats.currentYear';
+    const CACHE_KEY_STATS_ALL_TIME = 'blockwishlist.stats.allTime';
+
     /* @var CacheProvider $cache */
     protected $cache;
 

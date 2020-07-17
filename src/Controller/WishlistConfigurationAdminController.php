@@ -20,9 +20,11 @@
 
 namespace PrestaShop\Module\BlockWishList\Controller;
 
+use PrestaShop\Module\BlockWishList\Grid\Data\BaseGridDataFactory;
 use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
 use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class WishlistConfigurationAdminController extends FrameworkBundleAdminController
@@ -43,7 +45,7 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
         ]);
     }
 
-    public function statisticsAction(Request $request)
+    public function statisticsAction()
     {
         $searchCriteria = new SearchCriteria();
         $allTimeStatsGridFactory = $this->get('prestashop.module.blockwishlist.grid.all_time_stastistics_grid_factory');
@@ -61,6 +63,18 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
             'currentMonthStatisticsGrid' => $this->presentGrid($currentMonthGrid),
             'currentDayStatisticsGrid' => $this->presentGrid($currentDayGrid),
         ]);
+    }
+
+    public function resetStatisticsCacheAction()
+    {
+        $result = $this->get('doctrine.cache.provider')->deleteMultiple([
+            BaseGridDataFactory::CACHE_KEY_STATS_ALL_TIME,
+            BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_DAY,
+            BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_MONTH,
+            BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_YEAR,
+        ]);
+
+        return new JsonResponse(['success' => $result]);
     }
 
     /**

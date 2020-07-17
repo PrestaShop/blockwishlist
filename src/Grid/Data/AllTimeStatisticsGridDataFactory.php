@@ -14,11 +14,11 @@ class AllTimeStatisticsGridDataFactory extends BaseGridDataFactory implements Gr
 
     public function getData(SearchCriteriaInterface $searchCriteria)
     {
-        if ($this->cache->contains('blockwishlist.stats.allTime')) {
-            $results = $this->cache->fetch('blockwishlist.stats.allTime');
+        if ($this->cache->contains(self::CACHE_KEY_STATS_ALL_TIME)) {
+            $results = $this->cache->fetch(self::CACHE_KEY_STATS_ALL_TIME);
         } else {
             $results = $this->calculator->computeStatsFor('allTime');
-            $this->cache->save('blockwishlist.stats.allTime', $results, self::CACHE_LIFETIME_SECONDS);
+            $this->cache->save(self::CACHE_KEY_STATS_ALL_TIME, $results, self::CACHE_LIFETIME_SECONDS);
         }
 
         return new GridData(new RecordCollection($results), count($results));

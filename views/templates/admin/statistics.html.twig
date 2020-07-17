@@ -36,7 +36,7 @@
                 <button class="btn btn-default" data-tab="4">All time</button>
               </div>
 
-              <button class="btn btn-default refresh">
+              <button class="btn btn-default refresh js-refresh">
                 <i class="material-icons">history</i> {{ 'Refresh'|trans({}, 'blockwishlist') }}
               </button>
             </div>
@@ -65,5 +65,11 @@
 
 {% block javascripts %}
   {{ parent() }}
+
+  <script>
+    var blockwishlistModule = {
+      'resetCacheUrl': '{{ url('blockwishlist_statistics_reset')|e('js') }}',
+    };
+  </script>
   <script src="{{ asset('../modules/blockwishlist/public/backoffice.bundle.js') }}"></script>
 {% endblock %}

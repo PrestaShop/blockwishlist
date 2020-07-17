@@ -33,6 +33,7 @@ module.exports = {
   externals: {
     jquery: 'jQuery',
     prestashop: 'prestashop',
+    blockwishlistModule: 'blockwishlistModule',
     removeFromWishlistUrl: 'removeFromWishlistUrl',
     wishlistAddProductToCartUrl: 'wishlistAddProductToCartUrl',
     wishlistUrl: 'wishlistUrl',
