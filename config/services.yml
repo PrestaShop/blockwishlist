@@ -10,7 +10,7 @@ services:
     class: PrestaShop\Module\BlockWishList\Calculator\StatisticsCalculator
     arguments:
       - '@prestashop.adapter.legacy.context' #used for product presenter
-      - "@prestashop.core.localization.locale.context_locale"
+      - '@=service("prestashop.core.localization.locale.repository").getLocale(service("prestashop.adapter.legacy.context").getContext().language.getLocale())' # From PS 1.7.7: "@prestashop.core.localization.locale.context_locale"
 
 
   # Grid Definition
