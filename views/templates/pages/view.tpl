@@ -35,7 +35,6 @@
     data-price-high-low="{l s='Price, high to low' mod='blockwishlist'}"
     data-default-sort="{l s='Last added' mod='blockwishlist'}"
     data-title="{l s='Gift ideas for Juliette' mod='blockwishlist'}"
-    data-filter="{l s='Filter' mod='blockwishlist'}"
     data-share="{if $isGuest}true{else}false{/if}"
   >
   </div>
