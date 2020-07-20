@@ -17,7 +17,6 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-import blockwishlistModule from 'blockwishlistModule';
 import TranslatableInput from '../../../../../admin-dev/themes/new-theme/js/components/translatable-input';
 
 new TranslatableInput();
