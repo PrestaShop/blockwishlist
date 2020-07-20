@@ -18,6 +18,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
+use PrestaShop\Module\BlockWishList\Access\CustomerAccess;
 use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
@@ -66,6 +67,8 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
         }
 
         $wishlist = new WishList($idWishList);
+        // Exit if not owner of the wishlist
+        $this->assertWriteAccess($wishlist);
 
         $productIsAdded = $wishlist->addProduct(
             $idWishList,
@@ -142,6 +145,9 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
     {
         if (isset($params['idWishList'], $params['name'])) {
             $wishlist = new WishList($params['idWishList']);
+            // Exit if not owner of the wishlist
+            $this->assertWriteAccess($wishlist);
+
             $wishlist->name = $params['name'];
 
             if (true === $wishlist->save()) {
@@ -168,6 +174,9 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
     {
         if (isset($params['idWishList'])) {
             $wishlist = new WishList($params['idWishList']);
+
+            // Exit if not owner of the wishlist
+            $this->assertWriteAccess($wishlist);
 
             if (true === (bool) $wishlist->delete()) {
                 return $this->ajaxRender(
@@ -196,6 +205,11 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             && isset($params['id_product'])
             && isset($params['id_product_attribute'])
         ) {
+            // Exit if not owner of the wishlist
+            $this->assertWriteAccess(
+                new WishList($params['idWishList'])
+            );
+
             $isDeleted = WishList::removeProduct(
                 $params['idWishList'],
                 $this->context->customer->id,
@@ -232,6 +246,11 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             $params['priority'],
             $params['quantity']
         )) {
+            // Exit if not owner of the wishlist
+            $this->assertWriteAccess(
+                new WishList($params['idWishList'])
+            );
+
             $isDeleted = WishList::updateProduct(
                 $params['idWishList'],
                 $params['id_product'],
@@ -307,63 +326,6 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
         );
     }
 
-    private function getProductsByWishListAction($params)
-    {
-        $wishlistProducts = WishList::getProductByIdCustomer($params['id_wishlist'], $this->context->customer->id, $this->context->language->id);
-        $wishlist = new WishList($params['id_wishlist']);
-
-        if (empty($wishlistProducts)) {
-            return $this->ajaxRender(
-                json_encode([
-                    'success' => false,
-                    'name' => $wishlist->name,
-                    'message' => $this->module->l('No products found for this customer', 'mywishlist'),
-                    'datas' => [
-                      'products' => [],
-                    ],
-                ])
-            );
-        }
-
-        $assembler = new ProductAssembler($this->context);
-        $presenterFactory = new ProductPresenterFactory($this->context);
-        $presentationSettings = $presenterFactory->getPresentationSettings();
-        $presenter = new ProductListingPresenter(
-            new ImageRetriever(
-                $this->context->link
-            ),
-            $this->context->link,
-            new PriceFormatter(),
-            new ProductColorsRetriever(),
-            $this->context->getTranslator()
-        );
-
-        $products_for_template = [];
-
-        if (is_array($wishlistProducts)) {
-            foreach ($wishlistProducts as $rawProduct) {
-                $products_for_template[] = $presenter->present(
-                    $presentationSettings,
-                    $assembler->assembleProduct($rawProduct),
-                    $this->context->language
-                );
-            }
-        }
-
-        $wishlist = new WishList($params['id_wishlist']);
-
-        return $this->ajaxRender(
-            json_encode([
-                'success' => true,
-                'name' => $wishlist->name,
-                'message' => $this->module->l('The list has been properly created', 'mywishlist'),
-                'datas' => [
-                    'products' => $products_for_template,
-                ],
-            ])
-        );
-    }
-
     private function addProductToCartAction($params)
     {
         $productAdd = WishList::addBoughtProduct(
@@ -410,5 +372,25 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
                 'url' => $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist->token]),
             ])
         );
+    }
+
+    /**
+     * Stop the execution if the current customer isd not allowed to alter the wishlist
+     * 
+     * @param WishList $wishlist
+     */
+    private function assertWriteAccess(WishList $wishlist)
+    {
+        if ((new CustomerAccess($this->context->customer))->hasWriteAccessToWishlist($wishlist)) {
+            return;
+        }
+
+        $this->ajaxRender(
+            json_encode([
+                'success' => false,
+                'message' => $this->module->l('You\'re not allowed to manage this list.', 'mywishlist'),
+            ])
+        );
+        exit;
     }
 }
