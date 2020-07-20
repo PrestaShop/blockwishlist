@@ -19,10 +19,6 @@
  */
 
 use PrestaShop\Module\BlockWishList\Access\CustomerAccess;
-use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
-use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
-use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
-use PrestaShop\PrestaShop\Core\Product\ProductListingPresenter;
 
 class BlockWishListActionModuleFrontController extends ModuleFrontController
 {
@@ -376,7 +372,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
 
     /**
      * Stop the execution if the current customer isd not allowed to alter the wishlist
-     * 
+     *
      * @param WishList $wishlist
      */
     private function assertWriteAccess(WishList $wishlist)
