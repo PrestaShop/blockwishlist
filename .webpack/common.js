@@ -68,6 +68,7 @@ module.exports = {
       './_dev/front/js/components/AddToWishlist',
     ],
     backoffice: ['./_dev/back/js/backoffice.js', './_dev/back/scss/backoffice.scss'],
+    form: ['./_dev/back/js/form.js', './_dev/back/scss/backoffice.scss'],
   },
   output: {
     path: path.resolve(__dirname, '../public'),

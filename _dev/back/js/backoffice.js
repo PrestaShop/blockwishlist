@@ -18,9 +18,6 @@
  */
 
 import blockwishlistModule from 'blockwishlistModule';
-import TranslatableInput from '../../../../../admin-dev/themes/new-theme/js/components/translatable-input';
-
-new TranslatableInput();
 
 const tabButtons = document.querySelectorAll('.btn-group button');
 const refreshButton = document.querySelector('.js-refresh');
