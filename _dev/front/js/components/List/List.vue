@@ -27,103 +27,73 @@
         class="wishlist-list-item"
         :key="list.id_wishlist"
         v-for="list of items"
+        :class="{ 'wishlist-list-item-default': list.default }"
       >
         <a
-          class="wishlist-list-item-title"
-          :href="list.listUrl"
+          class="wishlist-list-item-link"
+          @click="redirectToList(list.listUrl)"
         >
-          {{ list.name }}
-          <span v-if="list.nbProducts">({{ list.nbProducts }})</span>
-          <span v-else>(0)</span>
-        </a>
+          <p class="wishlist-list-item-title">
+            {{ list.name }}
+            <span v-if="list.nbProducts">({{ list.nbProducts }})</span>
+            <span v-else>(0)</span>
+          </p>
 
-        <div class="wishlist-list-item-right">
-          <button
-            class="wishlist-list-item-actions"
-            @click="togglePopup(list.id_wishlist)"
-            v-if="!list.default"
-          >
-            <i class="material-icons">more_vert</i>
-          </button>
-
-          <button
-            @click="toggleShare(list.id_wishlist, list.shareUrl)"
-            v-if="list.default"
-          >
-            <i class="material-icons">share</i>
-          </button>
-
-          <div
-            class="dropdown-menu show"
-            v-if="activeDropdowns.includes(list.id_wishlist)"
-          >
-            <button @click="toggleRename(list.id_wishlist, list.name)">
-              {{ renameText }}
+          <div class="wishlist-list-item-right">
+            <button
+              class="wishlist-list-item-actions"
+              @click.stop="togglePopup(list.id_wishlist)"
+              v-if="!list.default"
+            >
+              <i class="material-icons">more_vert</i>
             </button>
-            <button @click="toggleShare(list.id_wishlist, list.shareUrl)">
-              {{ shareText }}
+
+            <button
+              @click.stop="toggleShare(list.id_wishlist, list.shareUrl)"
+              v-if="list.default"
+            >
+              <i class="material-icons">share</i>
+            </button>
+
+            <div
+              class="dropdown-menu show"
+              v-if="activeDropdowns.includes(list.id_wishlist)"
+            >
+              <button @click.stop="toggleRename(list.id_wishlist, list.name)">
+                {{ renameText }}
+              </button>
+              <button
+                @click.stop="toggleShare(list.id_wishlist, list.shareUrl)"
+              >
+                {{ shareText }}
+              </button>
+            </div>
+
+            <button
+              @click.stop="toggleDelete(list.id_wishlist, list.name)"
+              v-if="!list.default"
+            >
+              <i class="material-icons">delete</i>
             </button>
           </div>
-
-          <button
-            @click="toggleDelete(list.id_wishlist, list.name)"
-            v-if="!list.default"
-          >
-            <i class="material-icons">delete</i>
-          </button>
-        </div>
+        </a>
       </li>
     </ul>
 
-    <ContentLoader
-      v-if="loading"
-      class="wishlist-list-loader"
-      height="105"
-    >
-      <rect
-        x="0"
-        y="12"
-        rx="3"
-        ry="0"
-        width="100%"
-        height="11"
-      />
-      <rect
-        x="0"
-        y="36"
-        rx="3"
-        ry="0"
-        width="100%"
-        height="11"
-      />
-      <rect
-        x="0"
-        y="60"
-        rx="3"
-        ry="0"
-        width="100%"
-        height="11"
-      />
-      <rect
-        x="0"
-        y="84"
-        rx="3"
-        ry="0"
-        width="100%"
-        height="11"
-      />
+    <ContentLoader v-if="loading" class="wishlist-list-loader" height="105">
+      <rect x="0" y="12" rx="3" ry="0" width="100%" height="11" />
+      <rect x="0" y="36" rx="3" ry="0" width="100%" height="11" />
+      <rect x="0" y="60" rx="3" ry="0" width="100%" height="11" />
+      <rect x="0" y="84" rx="3" ry="0" width="100%" height="11" />
     </ContentLoader>
-    <p
-      class="wishlist-list-empty"
-      v-if="items.length <= 0 && !loading"
-    >
+    <p class="wishlist-list-empty" v-if="items.length <= 0 && !loading">
       {{ emptyText }}
     </p>
   </div>
 </template>
 
 <script>
-  import {ContentLoader} from 'vue-content-loader';
+  import { ContentLoader } from 'vue-content-loader';
   import EventBus from '@components/EventBus';
   import wishlistUrl from 'wishlistUrl';
   import vClickOutside from 'v-click-outside';
@@ -134,35 +104,35 @@
   export default {
     name: 'List',
     components: {
-      ContentLoader,
+      ContentLoader
     },
     data() {
       return {
         activeDropdowns: [],
-        listUrl: wishlistUrl,
+        listUrl: wishlistUrl
       };
     },
     props: {
       items: {
         type: Array,
-        default: () => [],
+        default: () => []
       },
       renameText: {
         type: String,
-        default: 'Rename',
+        default: 'Rename'
       },
       emptyText: {
         type: String,
-        default: '',
+        default: ''
       },
       shareText: {
         type: String,
-        default: 'Share',
+        default: 'Share'
       },
       loading: {
         type: Boolean,
-        default: true,
-      },
+        default: true
+      }
     },
     methods: {
       /**
@@ -172,7 +142,7 @@
        */
       togglePopup(id) {
         if (this.activeDropdowns.includes(id)) {
-          this.activeDropdowns = this.activeDropdowns.filter((e) => e !== id);
+          this.activeDropdowns = this.activeDropdowns.filter(e => e !== id);
         } else {
           this.activeDropdowns = [];
           this.activeDropdowns.push(id);
@@ -189,7 +159,7 @@
        */
       toggleRename(id, title) {
         EventBus.$emit('showRenameWishlist', {
-          detail: {listId: id, title},
+          detail: { listId: id, title }
         });
       },
       /**
@@ -200,7 +170,7 @@
        */
       toggleShare(id, shareUrl) {
         EventBus.$emit('showShareWishlist', {
-          detail: {listId: id, shareUrl},
+          detail: { listId: id, shareUrl }
         });
       },
       /**
@@ -211,17 +181,27 @@
        */
       toggleDelete(id) {
         EventBus.$emit('showDeleteWishlist', {
-          detail: {listId: id, userId: 1},
+          detail: { listId: id, userId: 1 }
         });
       },
+      /**
+       * Redirect to the list URI
+       *
+       * @param {String} listUrl The list url
+       */
+      redirectToList(listUrl) {
+        window.location.href = listUrl;
+      }
     },
     directives: {
-      clickOutside: vClickOutside.directive,
-    },
+      clickOutside: vClickOutside.directive
+    }
   };
 </script>
 
 <style lang="scss" type="text/scss">
+  @import '@scss/_variables';
+
   .wishlist {
     &-list {
       margin-bottom: 0;
@@ -241,10 +221,24 @@
       }
 
       &-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 24px 20px;
+        &-default {
+          border-bottom: 1px solid #0000002e;
+        }
+
+        &:hover {
+          cursor: pointer;
+
+          .wishlist-list-item-title {
+            color: $blue;
+          }
+        }
+
+        &-link {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 24px 20px;
+        }
 
         .dropdown-menu {
           right: 20px;
@@ -280,6 +274,7 @@
             > button {
               padding: 10px 20px;
               transition: 0.2s ease-out;
+              text-align: left;
 
               &:hover {
                 background-color: #f1f1f1;
