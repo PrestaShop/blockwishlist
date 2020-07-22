@@ -131,6 +131,22 @@
         <i class="material-icons">delete</i>
       </button>
     </div>
+
+    <p
+      class="wishlist-product-availability wishlist-product-availability-responsive"
+      v-if="product.show_availability"
+    >
+      <i class="material-icons" v-if="product.availability === 'unavailable'">
+        block
+      </i>
+      <i
+        class="material-icons"
+        v-if="product.availability === 'last_remaining_items'"
+      >
+        warning
+      </i>
+      {{ product.availability_message }}
+    </p>
   </div>
 </template>
 
@@ -309,6 +325,15 @@
           margin-right: 5px;
           font-size: 18px;
         }
+
+        &-responsive {
+          display: none;
+          position: inherit;
+          transform: inherit;
+          bottom: inherit;
+          margin-top: 10px;
+          left: inherit;
+        }
       }
 
       &-link {
@@ -466,7 +491,7 @@
         margin-bottom: 30px;
 
         &:not(:last-child) {
-          margin-bottom: 62px;
+          margin-bottom: 30px;
         }
       }
 
@@ -494,9 +519,13 @@
         }
 
         &-availability {
-          bottom: -30px;
-          min-width: 100%;
-          justify-content: flex-start;
+          display: none;
+
+          &-responsive {
+            display: block;
+            min-width: 100%;
+            justify-content: flex-start;
+          }
         }
 
         &-image {
