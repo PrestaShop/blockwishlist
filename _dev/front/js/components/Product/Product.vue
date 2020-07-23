@@ -233,7 +233,7 @@
               `${this.product.add_to_cart_url}&action=update`,
               {
                 headers: {
-                  Accept: 'application/json, text/javascript, */*; q=0.01'
+                  Accept: 'application/json, text/javascript'
                 }
               }
             );
