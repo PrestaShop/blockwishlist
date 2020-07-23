@@ -26,9 +26,9 @@
     class="wishlist-container"
     data-url="{$url}"
     data-title="{$wishlistsTitlePage}"
-    data-empty-text="{l s='No wishlist found.' mod='Modules.Blockwishlist.Shop'}"
-    data-rename-text="{l s='Rename' mod='Modules.Blockwishlist.Shop'}"
-    data-share-text="{l s='Share' mod='Modules.Blockwishlist.Shop'}"
+    data-empty-text="{l s='No wishlist found.' d='Modules.Blockwishlist.Shop'}"
+    data-rename-text="{l s='Rename' d='Modules.Blockwishlist.Shop'}"
+    data-share-text="{l s='Share' d='Modules.Blockwishlist.Shop'}"
     data-add-text="{$newWishlistCTA}"
   ></div>
 
@@ -42,7 +42,7 @@
 
 {block name='page_footer_container'}
   <div class="wishlist-footer-links">
-    <a href="{$link->getPageLink('my-account', true)|escape:'html'}"><i class="material-icons">chevron_left</i>{l s='Return to your account' mod='Modules.Blockwishlist.Shop'}</a>
-    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' mod='Modules.Blockwishlist.Shop'}</a>
+    <a href="{$link->getPageLink('my-account', true)|escape:'html'}"><i class="material-icons">chevron_left</i>{l s='Return to your account' d='Modules.Blockwishlist.Shop'}</a>
+    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' d='Modules.Blockwishlist.Shop'}</a>
   </div>
 {/block}
