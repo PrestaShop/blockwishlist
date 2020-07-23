@@ -22,36 +22,32 @@ import WishlistContainer from './WishlistContainer';
 const props = [
   {
     name: 'url',
-    type: String,
+    type: String
   },
   {
     name: 'title',
-    type: String,
+    type: String
   },
   {
     name: 'addText',
-    type: String,
+    type: String
   },
   {
     name: 'renameText',
-    type: String,
-  },
-  {
-    name: 'returnLink',
-    type: String,
+    type: String
   },
   {
     name: 'emptyText',
-    type: String,
+    type: String
   },
   {
     name: 'homeLink',
-    type: String,
+    type: String
   },
   {
     name: 'shareText',
-    type: String,
-  },
+    type: String
+  }
 ];
 
 initApp(WishlistContainer, '.wishlist-container', props);

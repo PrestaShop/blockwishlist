@@ -26,18 +26,18 @@
     class="wishlist-products-container"
     data-url="{$url}"
     data-list-id="{$id}"
-    data-default-sort="{l s='Last added' mod='blockwishlist'}"
-    data-add-to-cart="{l s='Add to cart' mod='blockwishlist'}"
+    data-default-sort="{l s='Last added' mod='Modules.Blockwishlist.Shop'}"
+    data-add-to-cart="{l s='Add to cart' mod='Modules.Blockwishlist.Shop'}"
     data-share="{if $isGuest}true{else}false{/if}"
-    data-customize-text="{l s='Customize' mod='blockwishlist'}"
-    data-quantity-text="{l s='Quantity' mod='blockwishlist'}"
-    data-last-added="{l s='Last added' mod='blockwishlist'}"
-    data-price-low-high="{l s='Price, low to high' mod='blockwishlist'}"
-    data-price-high-low="{l s='Price, high to low' mod='blockwishlist'}"
-    data-default-sort="{l s='Last added' mod='blockwishlist'}"
+    data-customize-text="{l s='Customize' mod='Modules.Blockwishlist.Shop'}"
+    data-quantity-text="{l s='Quantity' mod='Modules.Blockwishlist.Shop'}"
+    data-last-added="{l s='Last added' mod='Modules.Blockwishlist.Shop'}"
+    data-price-low-high="{l s='Price, low to high' mod='Modules.Blockwishlist.Shop'}"
+    data-price-high-low="{l s='Price, high to low' mod='Modules.Blockwishlist.Shop'}"
+    data-default-sort="{l s='Last added' mod='Modules.Blockwishlist.Shop'}"
     data-title="{$wishlistName}"
-    data-no-products-message="{l s='No products found' mod='blockwishlist'}"
-    data-filter="{l s='Filter' mod='blockwishlist'}"
+    data-no-products-message="{l s='No products found' mod='Modules.Blockwishlist.Shop'}"
+    data-filter="{l s='Filter' mod='Modules.Blockwishlist.Shop'}"
   >
   </div>
 
@@ -49,7 +49,7 @@
 
 {block name='page_footer_container'}
   <div class="wishlist-footer-links">
-    <a href="{$wishlistsLink}"><i class="material-icons">chevron_left</i>{l s='Return to wishlists' mod='blockwishlist'}</a>
-    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' mod='blockwishlist'}</a>
+    <a href="{$wishlistsLink}"><i class="material-icons">chevron_left</i>{l s='Return to wishlists' mod='Modules.Blockwishlist.Shop'}</a>
+    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' mod='Modules.Blockwishlist.Shop'}</a>
   </div>
 {/block}

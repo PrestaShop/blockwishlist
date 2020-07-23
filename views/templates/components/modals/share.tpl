@@ -20,11 +20,11 @@
 <div
   class="wishlist-share"
   data-url="{$url}"
-  data-title="{l s='Share wishlist' mod='blockwishlist'}"
-  data-copied-text="{l s='Copied!' mod='blockwishlist'}"
-  data-label="{l s='Share link' mod='blockwishlist'}"
-  data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
-  data-copy-text="{l s='Copy text' mod='blockwishlist'}"
+  data-title="{l s='Share wishlist' mod='Modules.Blockwishlist.Shop'}"
+  data-copied-text="{l s='Copied!' mod='Modules.Blockwishlist.Shop'}"
+  data-label="{l s='Share link' mod='Modules.Blockwishlist.Shop'}"
+  data-cancel-text="{l s='Cancel' mod='Modules.Blockwishlist.Shop'}"
+  data-copy-text="{l s='Copy text' mod='Modules.Blockwishlist.Shop'}"
 >
   <div
     class="wishlist-modal modal fade"

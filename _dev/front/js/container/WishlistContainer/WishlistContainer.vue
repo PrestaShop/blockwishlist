@@ -21,19 +21,13 @@
     <div class="wishlist-container-header">
       <h1>{{ title }}</h1>
 
-      <a
-        @click="openNewWishlistModal"
-        class="wishlist-add-to-new"
-      >
+      <a @click="openNewWishlistModal" class="wishlist-add-to-new">
         <i class="material-icons">add_circle_outline</i>
         {{ addText }}
       </a>
     </div>
 
-    <section
-      id="content"
-      class="page-content card card-block"
-    >
+    <section id="content" class="page-content card card-block">
       <list
         :items="lists"
         :rename-text="renameText"
@@ -56,47 +50,47 @@
   export default {
     name: 'WishlistContainer',
     components: {
-      List,
+      List
     },
     apollo: {
       lists: {
         query: getLists,
         variables() {
           return {
-            url: this.url,
+            url: this.url
           };
-        },
-      },
+        }
+      }
     },
     props: {
       url: {
         type: String,
-        required: true,
+        required: true
       },
       title: {
         type: String,
-        required: true,
+        required: true
       },
       addText: {
         type: String,
-        required: true,
+        required: true
       },
       renameText: {
         type: String,
-        required: true,
+        required: true
       },
       emptyText: {
         type: String,
-        required: true,
+        required: true
       },
       shareText: {
         type: String,
-        required: true,
-      },
+        required: true
+      }
     },
     data() {
       return {
-        lists: [],
+        lists: []
       };
     },
     methods: {
@@ -105,7 +99,7 @@
        */
       openNewWishlistModal() {
         EventBus.$emit('showCreateWishlist');
-      },
+      }
     },
     mounted() {
       /**
@@ -116,7 +110,7 @@
       EventBus.$on('refetchList', () => {
         this.$apollo.queries.lists.refetch();
       });
-    },
+    }
   };
 </script>
 

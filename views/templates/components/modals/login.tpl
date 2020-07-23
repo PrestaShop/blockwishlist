@@ -19,8 +19,8 @@
 
 <div
   class="wishlist-login"
-  data-login-text="{l s='Sign in' mod='blockwishlist'}"
-  data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
+  data-login-text="{l s='Sign in' mod='Modules.Blockwishlist.Shop'}"
+  data-cancel-text="{l s='Cancel' mod='Modules.Blockwishlist.Shop'}"
 >
   <div
     class="wishlist-modal modal fade"
@@ -34,7 +34,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">{l s='Sign in' mod='blockwishlist'}</h5>
+          <h5 class="modal-title" id="exampleModalLabel">{l s='Sign in' mod='Modules.Blockwishlist.Shop'}</h5>
           <button
             type="button"
             class="close"
@@ -46,7 +46,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p class="modal-text">{l s='You need to be logged in to save products in your wishlist.' mod='blockwishlist'}</p>
+          <p class="modal-text">{l s='You need to be logged in to save products in your wishlist.' mod='Modules.Blockwishlist.Shop'}</p>
         </div>
         <div class="modal-footer">
           <button
