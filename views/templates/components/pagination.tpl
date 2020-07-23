@@ -19,7 +19,7 @@
 <nav class="wishlist-pagination pagination">
   <template v-if="display">
     <div class="col-md-4">
-      {l s='Showing' d='Modules.Blockwishlist.Shop'} ((minShown)) - ((maxShown)) {l s='de' mod='blockwishlist'} ((total)) {l s='item(s)' mod='blockwishlist'}
+      {l s='Showing' d='Modules.Blockwishlist.Shop'} ((minShown)) - ((maxShown)) {l s='de' d='Modules.Blockwishlist.Shop'} ((total)) {l s='item(s)' d='Modules.Blockwishlist.Shop'}
     </div>
 
     <div class="col-md-6 offset-md-2 pr-0">
