@@ -30,7 +30,10 @@
         </span>
       </h1>
 
-      <div class="sort-by-row" v-if="products.datas">
+      <div
+        class="sort-by-row"
+        v-if="products.datas"
+      >
         <span class="col-sm-3 col-md-3 hidden-sm-down sort-by">Sort by:</span>
         <div class="col-sm-9 col-xs-8 col-md-9 products-sort-order dropdown">
           <button
@@ -58,7 +61,10 @@
       </div>
     </div>
 
-    <section id="content" class="page-content card card-block">
+    <section
+      id="content"
+      class="page-content card card-block"
+    >
       <ul
         class="wishlist-products-list"
         v-if="products.datas && products.datas.products.length > 0"
@@ -84,10 +90,38 @@
         class="wishlist-list-loader"
         height="105"
       >
-        <rect x="0" y="12" rx="3" ry="0" width="100%" height="11" />
-        <rect x="0" y="36" rx="3" ry="0" width="100%" height="11" />
-        <rect x="0" y="60" rx="3" ry="0" width="100%" height="11" />
-        <rect x="0" y="84" rx="3" ry="0" width="100%" height="11" />
+        <rect
+          x="0"
+          y="12"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
+        <rect
+          x="0"
+          y="36"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
+        <rect
+          x="0"
+          y="60"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
+        <rect
+          x="0"
+          y="84"
+          rx="3"
+          ry="0"
+          width="100%"
+          height="11"
+        />
       </ContentLoader>
 
       <p
@@ -103,7 +137,7 @@
 <script>
   import Product from '@components/Product/Product';
   import getProducts from '@graphqlFiles/queries/getproducts';
-  import { ContentLoader } from 'vue-content-loader';
+  import {ContentLoader} from 'vue-content-loader';
   import EventBus from '@components/EventBus';
 
   /**
@@ -113,7 +147,7 @@
     name: 'ProductsListContainer',
     components: {
       Product,
-      ContentLoader
+      ContentLoader,
     },
     apollo: {
       products: {
@@ -121,57 +155,57 @@
         variables() {
           return {
             listId: this.listId,
-            url: this.apiUrl
+            url: this.apiUrl,
           };
         },
         skip() {
           return true;
         },
-        fetchPolicy: 'network-only'
-      }
+        fetchPolicy: 'network-only',
+      },
     },
     props: {
       url: {
         type: String,
         required: false,
-        default: '#'
+        default: '#',
       },
       title: {
         type: String,
-        required: true
+        required: true,
       },
       noProductsMessage: {
         type: String,
-        required: true
+        required: true,
       },
       listId: {
         type: Number,
         required: false,
-        default: 0
+        default: 0,
       },
       addToCart: {
         type: String,
-        required: true
+        required: true,
       },
       share: {
         type: Boolean,
-        required: true
+        required: true,
       },
       customizeText: {
         type: String,
-        required: true
+        required: true,
       },
       quantityText: {
         type: String,
-        required: true
-      }
+        required: true,
+      },
     },
     data() {
       return {
         products: [],
         currentWishlist: {},
         apiUrl: window.location.href,
-        selectedSort: ''
+        selectedSort: '',
       };
     },
     methods: {
@@ -182,12 +216,12 @@
       async changeSelectedSort(value) {
         this.selectedSort = value.label;
         this.apiUrl = value.url;
-      }
+      },
     },
     computed: {
       productList() {
         const productList = this.products.datas.sort_orders.filter(
-          sort => sort.label !== this.products.datas.sort_selected
+          (sort) => sort.label !== this.products.datas.sort_selected,
         );
 
         return productList;
@@ -196,7 +230,7 @@
         return this.selectedSort !== ''
           ? this.selectedSort
           : this.products.datas.sort_selected;
-      }
+      },
     },
     mounted() {
       if (this.listId) {
@@ -212,11 +246,11 @@
         this.$apollo.queries.products.refetch();
       });
 
-      EventBus.$on('updatePagination', payload => {
+      EventBus.$on('updatePagination', (payload) => {
         this.products = false;
         this.apiUrl = payload.page.url;
       });
-    }
+    },
   };
 </script>
 
