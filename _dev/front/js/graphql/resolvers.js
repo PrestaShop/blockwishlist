@@ -18,6 +18,7 @@
  */
 
 import EventBus from '@components/EventBus';
+import headers from '@constants/headers';
 import GraphQLJSON, {GraphQLJSONObject} from 'graphql-type-json';
 
 /**
@@ -32,10 +33,7 @@ export default {
      */
     products: async (root, {url}) => {
       const response = await fetch(`${url}&from-xhr`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json, text/javascript, */*; q=0.01',
-        },
+        headers: headers.products
       });
 
       const datas = await response.json();
@@ -48,8 +46,8 @@ export default {
           pageNumber: datas.pagination.pages_count,
           pages: datas.pagination.pages,
           display: datas.pagination.should_be_displayed,
-          currentPage: datas.pagination.current_page,
-        },
+          currentPage: datas.pagination.current_page
+        }
       });
 
       window.history.pushState(datas, document.title, datas.current_url);
@@ -61,8 +59,8 @@ export default {
           pagination: datas.pagination,
           current_url: datas.current_url,
           sort_orders: datas.sort_orders,
-          sort_selected: datas.sort_selected,
-        },
+          sort_selected: datas.sort_selected
+        }
       };
     },
     /**
@@ -74,7 +72,7 @@ export default {
       const datas = await response.json();
 
       return datas.wishlists;
-    },
+    }
   },
   Mutation: {
     /**
@@ -85,7 +83,7 @@ export default {
      */
     createList: async (root, {name, url}) => {
       const response = await fetch(`${url}&params[name]=${name}`, {
-        method: 'POST',
+        method: 'POST'
       });
 
       const datas = await response.json();
@@ -101,7 +99,7 @@ export default {
      */
     renameList: async (root, {name, listId, url}) => {
       const response = await fetch(`${url}&params[name]=${name}&params[idWishList]=${listId}`, {
-        method: 'POST',
+        method: 'POST'
       });
 
       const datas = await response.json();
@@ -117,9 +115,7 @@ export default {
      *
      * @returns {JSON} A success or failed response
      */
-    addToList: async (root, {
-      listId, url, productId, quantity, productAttributeId,
-    }) => {
+    addToList: async (root, {listId, url, productId, quantity, productAttributeId}) => {
       /* eslint-disable */
       const response = await fetch(
         `${url}&params[id_product]=${productId}&params[idWishList]=${listId}&params[quantity]=${quantity}&params[id_product_attribute]=${productAttributeId}`,
@@ -137,7 +133,7 @@ export default {
           id_product: productId.toString(),
           id_wishlist: listId.toString(),
           quantity: quantity.toString(),
-          id_product_attribute: productAttributeId.toString(),
+          id_product_attribute: productAttributeId.toString()
         });
       }
 
@@ -152,9 +148,7 @@ export default {
      *
      * @returns {JSON} A success or failed response
      */
-    removeFromList: async (root, {
-      listId, productId, url, productAttributeId,
-    }) => {
+    removeFromList: async (root, {listId, productId, url, productAttributeId}) => {
       /* eslint-disable */
       const response = await fetch(
         `${url}&params[id_product]=${productId}&params[idWishList]=${listId}&params[id_product_attribute]=${productAttributeId}`,
@@ -169,9 +163,10 @@ export default {
       if (datas.success) {
         // eslint-disable-next-line
         productsAlreadyTagged = productsAlreadyTagged.filter(
-          (e) => e.id_product !== productId.toString()
-            || (e.id_product_attribute !== productAttributeId.toString() && e.id_product === productId.toString())
-            || e.id_wishlist !== listId.toString(),
+          e =>
+            e.id_product !== productId.toString() ||
+            (e.id_product_attribute !== productAttributeId.toString() && e.id_product === productId.toString()) ||
+            e.id_wishlist !== listId.toString()
         );
       }
 
@@ -186,12 +181,12 @@ export default {
      */
     deleteList: async (root, {listId, url}) => {
       const response = await fetch(`${url}&params[idWishList]=${listId}`, {
-        method: 'POST',
+        method: 'POST'
       });
 
       const datas = await response.json();
 
       return datas;
-    },
-  },
+    }
+  }
 };
