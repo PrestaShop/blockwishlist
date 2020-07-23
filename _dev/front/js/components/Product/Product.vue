@@ -18,7 +18,10 @@
  *-->
 <template>
   <div class="wishlist-product">
-    <a class="wishlist-product-link" :href="product.canonical_url">
+    <a
+      class="wishlist-product-link"
+      :href="product.canonical_url"
+    >
       <div class="wishlist-product-image">
         <img
           v-if="product.cover"
@@ -28,11 +31,11 @@
           :class="{
             'wishlist-product-unavailable': !product.add_to_cart_url
           }"
-        />
+        >
         <img
           v-else
           :src="prestashop.urls.no_picture_image.bySize.home_default.url"
-        />
+        >
 
         <p
           class="wishlist-product-availability"
@@ -74,7 +77,7 @@
                 :key="key"
                 v-if="
                   index < Object.keys(product.attributes).length - 1 ||
-                  index == Object.keys(product.attributes).length - 1
+                    index == Object.keys(product.attributes).length - 1
                 "
               >
                 -
@@ -93,7 +96,10 @@
             </span>
           </p>
 
-          <a :href="product.canonical_url" v-if="!isShare">
+          <a
+            :href="product.canonical_url"
+            v-if="!isShare"
+          >
             <i class="material-icons">create</i>
           </a>
         </div>
@@ -136,7 +142,10 @@
       class="wishlist-product-availability wishlist-product-availability-responsive"
       v-if="product.show_availability"
     >
-      <i class="material-icons" v-if="product.availability === 'unavailable'">
+      <i
+        class="material-icons"
+        v-if="product.availability === 'unavailable'"
+      >
         block
       </i>
       <i
@@ -161,47 +170,47 @@
       product: {
         type: Object,
         required: true,
-        default: null
+        default: null,
       },
       listId: {
         type: Number,
         required: true,
-        default: null
+        default: null,
       },
       isShare: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
       },
       customizeText: {
         type: String,
         required: true,
-        default: 'Customize'
+        default: 'Customize',
       },
       quantityText: {
         type: String,
         required: true,
-        default: 'Quantity'
+        default: 'Quantity',
       },
       addToCart: {
         type: String,
         required: true,
-        default: 'Add to cart'
+        default: 'Add to cart',
       },
       status: {
         type: Number,
         required: false,
-        default: 0
+        default: 0,
       },
       hasControls: {
         type: Boolean,
         required: false,
-        default: true
-      }
+        default: true,
+      },
     },
     data() {
       return {
-        prestashop
+        prestashop,
       };
     },
     computed: {
@@ -211,7 +220,7 @@
         }
 
         return !this.product.add_to_cart_url;
-      }
+      },
     },
     methods: {
       /**
@@ -222,8 +231,8 @@
           detail: {
             listId: this.listId,
             productId: this.product.id,
-            productAttributeId: this.product.id_product_attribute
-          }
+            productAttributeId: this.product.id_product_attribute,
+          },
         });
       },
       async addToCartAction() {
@@ -233,9 +242,9 @@
               `${this.product.add_to_cart_url}&action=update`,
               {
                 headers: {
-                  Accept: 'application/json, text/javascript'
-                }
-              }
+                  Accept: 'application/json, text/javascript',
+                },
+              },
             );
 
             const resp = await response.json();
@@ -245,9 +254,9 @@
                 idProduct: this.product.id_product,
                 idProductAttribute: this.product.id_product_attribute,
                 idCustomization: this.product.id_customization,
-                linkAction: 'add-to-cart'
+                linkAction: 'add-to-cart',
               },
-              resp
+              resp,
             });
 
             /* eslint-disable */
@@ -267,14 +276,14 @@
           } catch (error) {
             prestashop.emit('handleError', {
               eventType: 'addProductToCart',
-              resp: error
+              resp: error,
             });
           }
         } else {
           window.location.href = this.product.canonical_url;
         }
-      }
-    }
+      },
+    },
   };
 </script>
 
