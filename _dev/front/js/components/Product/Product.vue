@@ -239,10 +239,17 @@
       async addToCartAction() {
         if (this.product.add_to_cart_url) {
           try {
+            const datas = new FormData();
+            datas.append('qty', this.product.wishlist_quantity);
+            datas.append('id_product', this.product.id_product);
+            datas.append('id_customization', this.product.id_customization);
+
             const response = await fetch(
               `${this.product.add_to_cart_url}&action=update`,
               {
+                method: 'POST',
                 headers: headers.addToCart,
+                body: datas,
               },
             );
 
