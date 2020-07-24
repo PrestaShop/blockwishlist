@@ -17,6 +17,9 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
+
+use PrestaShop\Module\BlockWishList\Database\Install;
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -28,6 +31,10 @@ if (!defined('_PS_VERSION_')) {
  */
 function upgrade_module_2_0_0($module)
 {
+    if (false === (new Install($module->getTranslator()))->run()) {
+        return false;
+    }
+
     $products = Db::getInstance()->executeS(
         'SELECT wp.`id_product`, wp.`id_product_attribute`
         FROM `' . _DB_PREFIX_ . 'wishlist_product` wp'
