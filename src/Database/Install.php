@@ -86,8 +86,6 @@ class Install
             `id_cart` int(10) unsigned default NULL,
             `id_product` int(10) unsigned NOT NULL,
             `id_product_attribute` int(10) unsigned NOT NULL,
-            `is_adding_product` TINYINT(1) NOT NULL,
-            `is_removing_product` TINYINT(1) NOT NULL,
             `date_add` datetime NOT NULL,
             PRIMARY KEY  (`id_statistics`)
         ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
