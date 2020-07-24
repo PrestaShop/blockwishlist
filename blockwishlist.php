@@ -62,11 +62,6 @@ class BlockWishList extends Module
         ],
     ];
 
-    /**
-     * @var bool
-     */
-    public $isPrestaShopVersionLessThan176;
-
     public function __construct()
     {
         $this->name = 'blockwishlist';
@@ -83,7 +78,6 @@ class BlockWishList extends Module
             'min' => '1.7.6.0',
             'max' => _PS_VERSION_,
         ];
-        $this->isPrestaShopVersionLessThan176 = (bool) version_compare(_PS_VERSION_, '1.7.6', '<');
     }
 
     /**
@@ -214,7 +208,6 @@ class BlockWishList extends Module
     {
         $this->smarty->assign([
             'blockwishlist' => $this->displayName,
-            'isPrestaShopVersionLessThan176' => $this->isPrestaShopVersionLessThan176,
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayAdminCustomers.tpl');
