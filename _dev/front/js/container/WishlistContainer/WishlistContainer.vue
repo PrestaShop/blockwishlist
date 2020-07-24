@@ -162,4 +162,16 @@
       }
     }
   }
+
+  @media screen and (max-width: 768px) {
+    .wishlist {
+      &-container {
+        .page-content.card {
+          box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.2);
+          background-color: #fff;
+          margin-top: 20px;
+        }
+      }
+    }
+  }
 </style>

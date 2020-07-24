@@ -86,6 +86,7 @@ module.exports = {
       '@graphqlFiles': path.resolve(__dirname, '../_dev/front/js/graphql'),
       '@components': path.resolve(__dirname, '../_dev/front/js/components'),
       '@containers': path.resolve(__dirname, '../_dev/front/js/container'),
+      '@constants': path.resolve(__dirname, '../_dev/front/js/constants'),
       '@scss': path.resolve(__dirname, '../_dev/front/scss'),
       '@node_modules': path.resolve(__dirname, '../node_modules'),
       vue: 'vue/dist/vue.esm.js',

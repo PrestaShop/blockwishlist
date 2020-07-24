@@ -27,51 +27,56 @@
         class="wishlist-list-item"
         :key="list.id_wishlist"
         v-for="list of items"
+        :class="{ 'wishlist-list-item-default': list.default }"
       >
         <a
-          class="wishlist-list-item-title"
-          :href="list.listUrl"
+          class="wishlist-list-item-link"
+          @click="redirectToList(list.listUrl)"
         >
-          {{ list.name }}
-          <span v-if="list.nbProducts">({{ list.nbProducts }})</span>
-          <span v-else>(0)</span>
-        </a>
+          <p class="wishlist-list-item-title">
+            {{ list.name }}
+            <span v-if="list.nbProducts">({{ list.nbProducts }})</span>
+            <span v-else>(0)</span>
+          </p>
 
-        <div class="wishlist-list-item-right">
-          <button
-            class="wishlist-list-item-actions"
-            @click="togglePopup(list.id_wishlist)"
-            v-if="!list.default"
-          >
-            <i class="material-icons">more_vert</i>
-          </button>
-
-          <button
-            @click="toggleShare(list.id_wishlist, list.shareUrl)"
-            v-if="list.default"
-          >
-            <i class="material-icons">share</i>
-          </button>
-
-          <div
-            class="dropdown-menu show"
-            v-if="activeDropdowns.includes(list.id_wishlist)"
-          >
-            <button @click="toggleRename(list.id_wishlist, list.name)">
-              {{ renameText }}
+          <div class="wishlist-list-item-right">
+            <button
+              class="wishlist-list-item-actions"
+              @click.stop="togglePopup(list.id_wishlist)"
+              v-if="!list.default"
+            >
+              <i class="material-icons">more_vert</i>
             </button>
-            <button @click="toggleShare(list.id_wishlist, list.shareUrl)">
-              {{ shareText }}
+
+            <button
+              @click.stop="toggleShare(list.id_wishlist, list.shareUrl)"
+              v-if="list.default"
+            >
+              <i class="material-icons">share</i>
+            </button>
+
+            <div
+              class="dropdown-menu show"
+              v-if="activeDropdowns.includes(list.id_wishlist)"
+            >
+              <button @click.stop="toggleRename(list.id_wishlist, list.name)">
+                {{ renameText }}
+              </button>
+              <button
+                @click.stop="toggleShare(list.id_wishlist, list.shareUrl)"
+              >
+                {{ shareText }}
+              </button>
+            </div>
+
+            <button
+              @click.stop="toggleDelete(list.id_wishlist, list.name)"
+              v-if="!list.default"
+            >
+              <i class="material-icons">delete</i>
             </button>
           </div>
-
-          <button
-            @click="toggleDelete(list.id_wishlist, list.name)"
-            v-if="!list.default"
-          >
-            <i class="material-icons">delete</i>
-          </button>
-        </div>
+        </a>
       </li>
     </ul>
 
@@ -214,6 +219,14 @@
           detail: {listId: id, userId: 1},
         });
       },
+      /**
+       * Redirect to the list URI
+       *
+       * @param {String} listUrl The list url
+       */
+      redirectToList(listUrl) {
+        window.location.href = listUrl;
+      },
     },
     directives: {
       clickOutside: vClickOutside.directive,
@@ -222,6 +235,8 @@
 </script>
 
 <style lang="scss" type="text/scss">
+  @import '@scss/_variables';
+
   .wishlist {
     &-list {
       margin-bottom: 0;
@@ -241,10 +256,24 @@
       }
 
       &-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 24px 20px;
+        &-default {
+          border-bottom: 1px solid #0000002e;
+        }
+
+        &:hover {
+          cursor: pointer;
+
+          .wishlist-list-item-title {
+            color: $blue;
+          }
+        }
+
+        &-link {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 24px 20px;
+        }
 
         .dropdown-menu {
           right: 20px;
@@ -280,6 +309,7 @@
             > button {
               padding: 10px 20px;
               transition: 0.2s ease-out;
+              text-align: left;
 
               &:hover {
                 background-color: #f1f1f1;

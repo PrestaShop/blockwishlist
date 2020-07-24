@@ -113,8 +113,12 @@
           'btn-secondary': product.customization_required,
           'btn-primary': !product.customization_required
         }"
-        :disabled="!product.add_to_cart_url ? true : false"
-        @click="product.add_to_cart_url ? addToCartAction() : null"
+        :disabled="isDisabled"
+        @click="
+          product.add_to_cart_url || product.customization_required
+            ? addToCartAction()
+            : null
+        "
       >
         <i
           class="material-icons shopping-cart"
@@ -133,11 +137,31 @@
         <i class="material-icons">delete</i>
       </button>
     </div>
+
+    <p
+      class="wishlist-product-availability wishlist-product-availability-responsive"
+      v-if="product.show_availability"
+    >
+      <i
+        class="material-icons"
+        v-if="product.availability === 'unavailable'"
+      >
+        block
+      </i>
+      <i
+        class="material-icons"
+        v-if="product.availability === 'last_remaining_items'"
+      >
+        warning
+      </i>
+      {{ product.availability_message }}
+    </p>
   </div>
 </template>
 
 <script>
   import EventBus from '@components/EventBus';
+  import headers from '@constants/headers';
   import prestashop from 'prestashop';
   import wishlistAddProductToCartUrl from 'wishlistAddProductToCartUrl';
 
@@ -190,6 +214,15 @@
         prestashop,
       };
     },
+    computed: {
+      isDisabled() {
+        if (this.product.customization_required) {
+          return false;
+        }
+
+        return !this.product.add_to_cart_url;
+      },
+    },
     methods: {
       /**
        * Remove the product from the wishlist
@@ -204,49 +237,49 @@
         });
       },
       async addToCartAction() {
-        try {
-          const response = await fetch(
-            `${this.product.add_to_cart_url}&action=update`,
-            {
-              headers: {
-                'Content-Type':
-                  'application/x-www-form-urlencoded; charset=UTF-8',
-                Accept: 'application/json, text/javascript, */*; q=0.01',
+        if (this.product.add_to_cart_url) {
+          try {
+            const response = await fetch(
+              `${this.product.add_to_cart_url}&action=update`,
+              {
+                headers: headers.addToCart,
               },
-            },
-          );
+            );
 
-          const resp = await response.json();
+            const resp = await response.json();
 
-          prestashop.emit('updateCart', {
-            reason: {
-              idProduct: this.product.id_product,
-              idProductAttribute: this.product.id_product_attribute,
-              idCustomization: this.product.id_customization,
-              linkAction: 'add-to-cart',
-            },
-            resp,
-          });
+            prestashop.emit('updateCart', {
+              reason: {
+                idProduct: this.product.id_product,
+                idProductAttribute: this.product.id_product_attribute,
+                idCustomization: this.product.id_customization,
+                linkAction: 'add-to-cart',
+              },
+              resp,
+            });
 
-          /* eslint-disable */
-          const statResponse = await fetch(
-            `${wishlistAddProductToCartUrl}&params[idWishlist]=${this.listId}&params[id_product]=${this.product.id_product}&params[id_product_attribute]=${this.product.id_product_attribute}&params[quantity]=${this.product.wishlist_quantity}`,
-            {
-              headers: {
-                'Content-Type':
-                  'application/x-www-form-urlencoded; charset=UTF-8',
-                Accept: 'application/json, text/javascript, */*; q=0.01'
+            /* eslint-disable */
+            const statResponse = await fetch(
+              `${wishlistAddProductToCartUrl}&params[idWishlist]=${this.listId}&params[id_product]=${this.product.id_product}&params[id_product_attribute]=${this.product.id_product_attribute}&params[quantity]=${this.product.wishlist_quantity}`,
+              {
+                headers: {
+                  'Content-Type':
+                    'application/x-www-form-urlencoded; charset=UTF-8',
+                  Accept: 'application/json, text/javascript, */*; q=0.01'
+                }
               }
-            }
-          );
-          /* eslint-enable */
+            );
+            /* eslint-enable */
 
-          await statResponse.json();
-        } catch (error) {
-          prestashop.emit('handleError', {
-            eventType: 'addProductToCart',
-            resp: error,
-          });
+            await statResponse.json();
+          } catch (error) {
+            prestashop.emit('handleError', {
+              eventType: 'addProductToCart',
+              resp: error,
+            });
+          }
+        } else {
+          window.location.href = this.product.canonical_url;
         }
       },
     },
@@ -295,6 +328,15 @@
           color: #ff4c4c;
           margin-right: 5px;
           font-size: 18px;
+        }
+
+        &-responsive {
+          display: none;
+          position: inherit;
+          transform: inherit;
+          bottom: inherit;
+          margin-top: 10px;
+          left: inherit;
         }
       }
 
@@ -449,10 +491,11 @@
 
       &-products-item {
         width: 100%;
+        margin: 0;
         margin-bottom: 30px;
 
         &:not(:last-child) {
-          margin-bottom: 62px;
+          margin-bottom: 30px;
         }
       }
 
@@ -480,9 +523,13 @@
         }
 
         &-availability {
-          bottom: -30px;
-          min-width: 100%;
-          justify-content: flex-start;
+          display: none;
+
+          &-responsive {
+            display: block;
+            min-width: 100%;
+            justify-content: flex-start;
+          }
         }
 
         &-image {

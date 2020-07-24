@@ -18,6 +18,7 @@
  */
 
 import EventBus from '@components/EventBus';
+import headers from '@constants/headers';
 import GraphQLJSON, {GraphQLJSONObject} from 'graphql-type-json';
 
 /**
@@ -32,10 +33,7 @@ export default {
      */
     products: async (root, {url}) => {
       const response = await fetch(`${url}&from-xhr`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json, text/javascript, */*; q=0.01',
-        },
+        headers: headers.products,
       });
 
       const datas = await response.json();
