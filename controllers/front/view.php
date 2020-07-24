@@ -164,7 +164,8 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         return new WishListProductSearchProvider(
             Db::getInstance(),
             $this->wishlist,
-            new SortOrderFactory($this->getTranslator())
+            new SortOrderFactory($this->getTranslator()),
+            $this->getTranslator()
         );
     }
 
@@ -173,8 +174,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
      */
     protected function getAjaxProductSearchVariables()
     {
-        $data = parent::getAjaxProductSearchVariables();
-
+        parent::getAjaxProductSearchVariables();
         $context = parent::getProductSearchContext();
         $query = $this->getProductSearchQuery();
         $provider = $this->getDefaultProductSearchProvider();
@@ -192,16 +192,12 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
 
         // set the sort order if provided in the URL
         if (($encodedSortOrder = Tools::getValue('order'))) {
-            $query->setSortOrder(SortOrder::newFromString(
-                $encodedSortOrder
-            ));
+            $query->setSortOrder(SortOrder::newFromString($encodedSortOrder));
         }
 
         // get the parameters containing the encoded facets from the URL
         $encodedFacets = Tools::getValue('q');
-
         $query->setEncodedFacets($encodedFacets);
-
         $result = $provider->runQuery(
             $context,
             $query
@@ -212,29 +208,16 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         }
 
         // prepare the products
-        $products = $this->prepareMultipleProductsForTemplate(
-            $result->getProducts()
-        );
+        $products = $this->prepareMultipleProductsForTemplate($result->getProducts());
 
-        // render the facets
-        // with the core
-        $rendered_facets = $this->renderFacets(
-            $result
-        );
-        $rendered_active_filters = $this->renderActiveFilters(
-            $result
-        );
-
-        $pagination = $this->getTemplateVarPagination(
-            $query,
-            $result
-        );
+        // render the facets with the core
+        $rendered_facets = $this->renderFacets($result);
+        $rendered_active_filters = $this->renderActiveFilters($result);
+        $pagination = $this->getTemplateVarPagination($query, $result);
 
         // prepare the sort orders
-        // note that, again, the product controller is sort-orders
-        // agnostic
-        // a module can easily add specific sort orders that it needs
-        // to support (e.g. sort by "energy efficiency")
+        // note that, again, the product controller is sort-orders agnostic
+        // a module can easily add specific sort orders that it needs to support (e.g. sort by "energy efficiency")
         $sort_orders = $this->getTemplateVarSortOrders(
             $result->getAvailableSortOrders(),
             $query->getSortOrder()->toString()
@@ -256,7 +239,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
             'label' => $this->getListingLabel(),
             'products' => $products,
             'sort_orders' => $sort_orders,
-            'sort_selected' => $sort_selected,
+            'sort_selected' => $sort_selected ? $sort_selected : 'labelneu',
             'pagination' => $pagination,
             'rendered_facets' => $rendered_facets,
             'rendered_active_filters' => $rendered_active_filters,
