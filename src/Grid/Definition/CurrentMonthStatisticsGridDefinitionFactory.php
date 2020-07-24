@@ -29,6 +29,6 @@ class CurrentMonthStatisticsGridDefinitionFactory extends BaseStatisticsGridDefi
 
     protected function getName()
     {
-        return $this->trans('Current Month Statistics', [], 'Admin.Advparameters.Feature');
+        return $this->trans('Current Month Statistics', [], 'Modules.Blockwishlist.Admin');
     }
 }

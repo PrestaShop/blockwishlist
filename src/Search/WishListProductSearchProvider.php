@@ -85,7 +85,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $result->setProducts($this->getProductsOrCount($context, $query, 'products'));
         $result->setTotalProductsCount($this->getProductsOrCount($context, $query, 'count'));
         $sortOrders = $this->sortOrderFactory->getDefaultSortOrders();
-        $sortOrders[] = (new SortOrder('wishlist', 'date_add'))->setLabel($this->translator->trans('Last added', [], 'prestashop.module.blockwishlist.sort.lastadded'));
+        $sortOrders[] = (new SortOrder('wishlist', 'date_add', 'DESC'))->setLabel($this->translator->trans('Last added', [], 'Modules.Blockwishlist.Shop'));
         $result->setAvailableSortOrders($sortOrders);
 
         return $result;

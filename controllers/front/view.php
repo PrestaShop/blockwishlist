@@ -226,6 +226,9 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         $sort_selected = false;
         if (!empty($sort_orders)) {
             foreach ($sort_orders as $order) {
+                if ($order['field'] == 'date_add') {
+                    $labelDefaultSort = $order['label'];
+                }
                 if (isset($order['current']) && true === $order['current']) {
                     $sort_selected = $order['label'];
 
@@ -239,7 +242,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
             'label' => $this->getListingLabel(),
             'products' => $products,
             'sort_orders' => $sort_orders,
-            'sort_selected' => $sort_selected ? $sort_selected : 'labelneu',
+            'sort_selected' => $sort_selected ? $sort_selected : $labelDefaultSort,
             'pagination' => $pagination,
             'rendered_facets' => $rendered_facets,
             'rendered_active_filters' => $rendered_active_filters,

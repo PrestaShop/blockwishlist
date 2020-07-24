@@ -29,6 +29,6 @@ class CurrentDayStatisticsGridDefinitionFactory extends BaseStatisticsGridDefini
 
     protected function getName()
     {
-        return $this->trans('Current Day Statistics', [], 'Admin.Advparameters.Feature');
+        return $this->trans('Current Day Statistics', [], 'Modules.Blockwishlist.Admin');
     }
 }
