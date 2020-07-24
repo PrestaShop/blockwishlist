@@ -226,7 +226,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         $sort_selected = false;
         if (!empty($sort_orders)) {
             foreach ($sort_orders as $order) {
-                if ($order['field'] == 'date_add') {
+                if ($order['field'] == 'id_wishlist_product') {
                     $labelDefaultSort = $order['label'];
                 }
                 if (isset($order['current']) && true === $order['current']) {

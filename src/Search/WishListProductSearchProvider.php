@@ -85,7 +85,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $result->setProducts($this->getProductsOrCount($context, $query, 'products'));
         $result->setTotalProductsCount($this->getProductsOrCount($context, $query, 'count'));
         $sortOrders = $this->sortOrderFactory->getDefaultSortOrders();
-        $sortOrders[] = (new SortOrder('wishlist', 'date_add', 'DESC'))->setLabel($this->translator->trans('Last added', [], 'Modules.Blockwishlist.Shop'));
+        $sortOrders[] = (new SortOrder('wishlist_product', 'id_wishlist_product', 'DESC'))->setLabel($this->translator->trans('Last added', [], 'Modules.Blockwishlist.Shop'));
         $result->setAvailableSortOrders($sortOrders);
 
         return $result;
@@ -159,10 +159,6 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
 
         if ('products' === $type) {
             $sortOrder =  $query->getSortOrder()->toLegacyOrderBy(true);
-            if ($query->getSortOrder()->toLegacyOrderBy(true) == 'date_add') {
-                $sortOrder = '"wp.date_add"';
-            }
-
             $querySearch->orderBy($sortOrder . ' ' . $query->getSortOrder()->toLegacyOrderWay());
             $querySearch->limit(((int) $query->getPage() - 1) * (int) $query->getResultsPerPage(), (int) $query->getResultsPerPage());
             $products = $this->db->executeS($querySearch);
