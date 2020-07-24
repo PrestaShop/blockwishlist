@@ -25,8 +25,8 @@ use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
-use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
 use Symfony\Component\Translation\TranslatorInterface;
 use WishList;
 
@@ -158,7 +158,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $querySearch->where('product_shop.visibility IN ("both", "catalog")');
 
         if ('products' === $type) {
-            $sortOrder =  $query->getSortOrder()->toLegacyOrderBy(true);
+            $sortOrder = $query->getSortOrder()->toLegacyOrderBy(true);
             $querySearch->orderBy($sortOrder . ' ' . $query->getSortOrder()->toLegacyOrderWay());
             $querySearch->limit(((int) $query->getPage() - 1) * (int) $query->getResultsPerPage(), (int) $query->getResultsPerPage());
             $products = $this->db->executeS($querySearch);

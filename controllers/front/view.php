@@ -198,10 +198,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         // get the parameters containing the encoded facets from the URL
         $encodedFacets = Tools::getValue('q');
         $query->setEncodedFacets($encodedFacets);
-        $result = $provider->runQuery(
-            $context,
-            $query
-        );
+        $result = $provider->runQuery($context, $query);
 
         if (!$result->getCurrentSortOrder()) {
             $result->setCurrentSortOrder($query->getSortOrder());
@@ -224,6 +221,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         );
 
         $sort_selected = false;
+        $labelDefaultSort = '';
         if (!empty($sort_orders)) {
             foreach ($sort_orders as $order) {
                 if ($order['field'] == 'id_wishlist_product') {
