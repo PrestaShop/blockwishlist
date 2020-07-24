@@ -33,14 +33,6 @@ const props = [
     type: String,
   },
   {
-    name: 'defaultSort',
-    type: String,
-  },
-  {
-    name: 'lastAdded',
-    type: String,
-  },
-  {
     name: 'addToCart',
     type: String,
   },
@@ -62,14 +54,6 @@ const props = [
   },
   {
     name: 'quantityText',
-    type: String,
-  },
-  {
-    name: 'priceLowHigh',
-    type: String,
-  },
-  {
-    name: 'priceHighLow',
     type: String,
   },
   {

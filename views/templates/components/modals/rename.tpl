@@ -19,11 +19,11 @@
 <div
   class="wishlist-rename"
   data-url="{$url}"
-  data-title="{l s='Rename wishlist' mod='blockwishlist'}"
-  data-label="{l s='Wishlist name' mod='blockwishlist'}"
-  data-placeholder="{l s='Wishlist name' mod='blockwishlist'}"
-  data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
-  data-rename-text="{l s='Rename wishlist' mod='blockwishlist'}"
+  data-title="{l s='Rename wishlist' d='Modules.Blockwishlist.Shop'}"
+  data-label="{l s='Wishlist name' d='Modules.Blockwishlist.Shop'}"
+  data-placeholder="{l s='Wishlist name' d='Modules.Blockwishlist.Shop'}"
+  data-cancel-text="{l s='Cancel' d='Modules.Blockwishlist.Shop'}"
+  data-rename-text="{l s='Rename wishlist' d='Modules.Blockwishlist.Shop'}"
 >
   <div
     class="wishlist-modal modal fade"

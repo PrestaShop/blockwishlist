@@ -19,7 +19,7 @@
 <nav class="wishlist-pagination pagination">
   <template v-if="display">
     <div class="col-md-4">
-      {l s='Showing' mod='blockwishlist'} ((minShown)) - ((maxShown)) {l s='de' mod='blockwishlist'} ((total)) {l s='item(s)' mod='blockwishlist'}
+      {l s='Showing' d='Modules.Blockwishlist.Shop'} ((minShown)) - ((maxShown)) {l s='de' d='Modules.Blockwishlist.Shop'} ((total)) {l s='item(s)' d='Modules.Blockwishlist.Shop'}
     </div>
 
     <div class="col-md-6 offset-md-2 pr-0">
@@ -27,7 +27,7 @@
         <li :class="{literal}{current: page.current}{/literal}" v-for="page of pages">
           <a class="js-search-link" @click="paginate(page)" key="page.page" :class="{literal}{disabled: page.current, next: page.type === 'next', previous: page.type === 'previous'}{/literal}">
             <span v-if="page.type === 'previous'">
-              <i class="material-icons">keyboard_arrow_left</i> {l s='Previous' mod='blockwishlist'} 
+              <i class="material-icons">keyboard_arrow_left</i> {l s='Previous' d='Modules.Blockwishlist.Shop'} 
             </span>
 
             <template v-if="page.type !== 'previous' && page.type !== 'next'">
@@ -35,7 +35,7 @@
             </template>
 
             <span v-if="page.type === 'next'">
-              {l s='Next' mod='blockwishlist'} <i class="material-icons"></i>
+              {l s='Next' d='Modules.Blockwishlist.Shop'} <i class="material-icons"></i>
             </span>
           </a>
         </li>

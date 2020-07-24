@@ -178,10 +178,6 @@
         type: String,
         required: true,
       },
-      defaultSort: {
-        type: String,
-        required: true,
-      },
       listId: {
         type: Number,
         required: false,
@@ -200,18 +196,6 @@
         required: true,
       },
       quantityText: {
-        type: String,
-        required: true,
-      },
-      lastAdded: {
-        type: String,
-        required: true,
-      },
-      priceLowHigh: {
-        type: String,
-        required: true,
-      },
-      priceHighLow: {
         type: String,
         required: true,
       },

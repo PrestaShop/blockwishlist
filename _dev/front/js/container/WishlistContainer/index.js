@@ -37,10 +37,6 @@ const props = [
     type: String,
   },
   {
-    name: 'returnLink',
-    type: String,
-  },
-  {
     name: 'emptyText',
     type: String,
   },

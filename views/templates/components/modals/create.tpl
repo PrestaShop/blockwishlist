@@ -20,12 +20,12 @@
 <div
   class="wishlist-create"
   data-url="{$url}"
-  data-title="{l s='Create wishlist' mod='blockwishlist'}"
-  data-label="{l s='Wishlist name' mod='blockwishlist'}"
-  data-placeholder="{l s='Add name' mod='blockwishlist'}"
-  data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
-  data-create-text="{l s='Create wishlist' mod='blockwishlist'}"
-  data-length-text="{l s='List title is too short' mod='blockwishlist'}"
+  data-title="{l s='Create wishlist' d='Modules.Blockwishlist.Shop'}"
+  data-label="{l s='Wishlist name' d='Modules.Blockwishlist.Shop'}"
+  data-placeholder="{l s='Add name' d='Modules.Blockwishlist.Shop'}"
+  data-cancel-text="{l s='Cancel' d='Modules.Blockwishlist.Shop'}"
+  data-create-text="{l s='Create wishlist' d='Modules.Blockwishlist.Shop'}"
+  data-length-text="{l s='List title is too short' d='Modules.Blockwishlist.Shop'}"
 >
   <div
     class="wishlist-modal modal fade"

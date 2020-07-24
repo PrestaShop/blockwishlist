@@ -34,7 +34,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
-            {l s='Add to wishlist' mod='blockwishlist'}
+            {l s='Add to wishlist' d='Modules.Blockwishlist.Shop'}
           </h5>
           <button
             type="button"
@@ -55,7 +55,7 @@
             :quantity="quantity"
             url="{$url}"
             add-url="{$addUrl}"
-            empty-text="{l s='No list found.' mod='blockwishlist'}"
+            empty-text="{l s='No list found.' d='Modules.Blockwishlist.Shop'}"
           ></choose-list>
         </div>
 

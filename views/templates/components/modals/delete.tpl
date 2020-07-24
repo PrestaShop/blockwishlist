@@ -25,10 +25,10 @@
   {if isset($deleteProductUrl)}
     data-delete-product-url="{$deleteProductUrl}"
   {/if}
-  data-title="{l s='Delete' mod='blockwishlist'}"
-  data-placeholder="{l s='This action is irreversible' mod='blockwishlist'}"
-  data-cancel-text="{l s='Cancel' mod='blockwishlist'}"
-  data-delete-text="{l s='Delete' mod='blockwishlist'}"
+  data-title="{l s='Delete' d='Modules.Blockwishlist.Shop'}"
+  data-placeholder="{l s='This action is irreversible' d='Modules.Blockwishlist.Shop'}"
+  data-cancel-text="{l s='Cancel' d='Modules.Blockwishlist.Shop'}"
+  data-delete-text="{l s='Delete' d='Modules.Blockwishlist.Shop'}"
 >
   <div
     class="wishlist-modal modal fade"
