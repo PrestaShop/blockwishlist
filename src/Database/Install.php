@@ -109,8 +109,8 @@ class Install
 
         foreach (Language::getLanguages() as $lang) {
             $pageName[$lang['id_lang']] = $this->translator->trans('My wishlists', [], 'Modules.Blockwishlist.Admin', $lang['locale']);
-            $defaultName[$lang['id_lang']] = $this->translator->trans('My wishlist', [], 'Modules.BlockWishList.Admin', $lang['locale']);
-            $createButtonLabel[$lang['id_lang']] = $this->translator->trans('Create new list', [], 'Modules.BlockWishList.Admin', $lang['locale']);
+            $defaultName[$lang['id_lang']] = $this->translator->trans('My wishlist', [], 'Modules.Blockwishlist.Admin', $lang['locale']);
+            $createButtonLabel[$lang['id_lang']] = $this->translator->trans('Create new list', [], 'Modules.Blockwishlist.Admin', $lang['locale']);
         }
 
         return Configuration::updateValue('blockwishlist_WishlistPageName', $pageName)
