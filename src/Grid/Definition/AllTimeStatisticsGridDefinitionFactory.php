@@ -29,6 +29,6 @@ class AllTimeStatisticsGridDefinitionFactory extends BaseStatisticsGridDefinitio
 
     protected function getName()
     {
-        return $this->trans('All Time Statistics', [], 'Admin.Advparameters.Feature');
+        return $this->trans('All Time Statistics', [], 'Modules.Blockwishlist.Admin');
     }
 }

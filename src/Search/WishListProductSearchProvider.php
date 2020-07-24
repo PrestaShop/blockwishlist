@@ -25,7 +25,9 @@ use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
+use Symfony\Component\Translation\TranslatorInterface;
 use WishList;
 
 /**
@@ -49,17 +51,24 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
     private $sortOrderFactory;
 
     /**
+     * @var TranslatorInterface the translator
+     */
+    private $translator;
+
+    /**
      * @param Db $db
      * @param WishList $wishList
      */
     public function __construct(
         Db $db,
         WishList $wishList,
-        SortOrderFactory $sortOrderFactory
+        SortOrderFactory $sortOrderFactory,
+        TranslatorInterface $translator
     ) {
         $this->db = $db;
         $this->wishList = $wishList;
         $this->sortOrderFactory = $sortOrderFactory;
+        $this->translator = $translator;
     }
 
     /**
@@ -75,7 +84,9 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $result = new ProductSearchResult();
         $result->setProducts($this->getProductsOrCount($context, $query, 'products'));
         $result->setTotalProductsCount($this->getProductsOrCount($context, $query, 'count'));
-        $result->setAvailableSortOrders($this->sortOrderFactory->getDefaultSortOrders());
+        $sortOrders = $this->sortOrderFactory->getDefaultSortOrders();
+        $sortOrders[] = (new SortOrder('wishlist_product', 'id_wishlist_product', 'DESC'))->setLabel($this->translator->trans('Last added', [], 'Modules.Blockwishlist.Shop'));
+        $result->setAvailableSortOrders($sortOrders);
 
         return $result;
     }
@@ -147,9 +158,9 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $querySearch->where('product_shop.visibility IN ("both", "catalog")');
 
         if ('products' === $type) {
-            $querySearch->orderBy($query->getSortOrder()->toLegacyOrderBy(true) . ' ' . $query->getSortOrder()->toLegacyOrderWay());
+            $sortOrder = $query->getSortOrder()->toLegacyOrderBy(true);
+            $querySearch->orderBy($sortOrder . ' ' . $query->getSortOrder()->toLegacyOrderWay());
             $querySearch->limit(((int) $query->getPage() - 1) * (int) $query->getResultsPerPage(), (int) $query->getResultsPerPage());
-
             $products = $this->db->executeS($querySearch);
 
             if (empty($products)) {

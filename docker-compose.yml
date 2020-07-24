@@ -4,7 +4,7 @@ services:
   php:
     image: phpdockerio/php72-cli
     volumes:
-      - ./:/var/www/html/modules/
+      - ./:/var/www/html/modules/blockwishlist
 
     working_dir: /var/www/html/modules/blockwishlist
     environment:

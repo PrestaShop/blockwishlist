@@ -29,6 +29,6 @@ class CurrentYearStatisticsGridDefinitionFactory extends BaseStatisticsGridDefin
 
     protected function getName()
     {
-        return $this->trans('Current Year Statistics', [], 'Admin.Advparameters.Feature');
+        return $this->trans('Current Year Statistics', [], 'Modules.Blockwishlist.Admin');
     }
 }

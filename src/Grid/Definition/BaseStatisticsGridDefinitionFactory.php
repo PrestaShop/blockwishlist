@@ -43,7 +43,7 @@ class BaseStatisticsGridDefinitionFactory extends AbstractGridDefinitionFactory
     {
         return (new ColumnCollection())
                 ->add((new PositionColumn('position'))
-                ->setName($this->trans('Product', [], 'prestashop.module.blockwishlist.statistics.image'))
+                ->setName($this->trans('Product', [], 'Modules.Blockwishlist.Admin'))
                 ->setOptions([
                     'id_field' => 'position',
                     'position_field' => 'position',
@@ -64,31 +64,31 @@ class BaseStatisticsGridDefinitionFactory extends AbstractGridDefinitionFactory
                 ])
             )
             ->add((new DataColumn('reference'))
-                ->setName($this->trans('Reference', [], 'prestashop.module.blockwishlist.statistics.reference'))
+                ->setName($this->trans('Reference', [], 'Modules.Blockwishlist.Admin'))
                 ->setOptions([
                     'field' => 'reference',
                 ])
             )
             ->add((new DataColumn('category_name'))
-                ->setName($this->trans('Category', [], 'prestashop.module.blockwishlist.statistics.category_name'))
+                ->setName($this->trans('Category', [], 'Modules.Blockwishlist.Admin'))
                 ->setOptions([
                     'field' => 'category_name',
                 ])
             )
             ->add((new DataColumn('price'))
-                ->setName($this->trans('Price (tax excl.)', [], 'prestashop.module.blockwishlist.statistics.price'))
+                ->setName($this->trans('Price (tax excl.)', [], 'Modules.Blockwishlist.Admin'))
                 ->setOptions([
                     'field' => 'price',
                 ])
             )
             ->add((new DataColumn('quantity'))
-                ->setName($this->trans('Available Qty', [], 'prestashop.module.blockwishlist.statistics.quantity'))
+                ->setName($this->trans('Available Qty', [], 'Modules.Blockwishlist.Admin'))
                 ->setOptions([
                     'field' => 'quantity',
                 ])
             )
             ->add((new DataColumn('conversionRate'))
-                ->setName($this->trans('Conversion rate', [], 'prestashop.module.blockwishlist.statistics.conversionRate'))
+                ->setName($this->trans('Conversion rate', [], 'Modules.Blockwishlist.Admin'))
                 ->setOptions([
                     'field' => 'conversionRate',
                 ])
