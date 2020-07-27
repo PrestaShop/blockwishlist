@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 class WishlistConfigurationAdminController extends FrameworkBundleAdminController
 {
     /**
-     * @var CacheProvider $cache
+     * @var CacheProvider
      */
     private $cache;
 
