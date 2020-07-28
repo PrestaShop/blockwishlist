@@ -30,9 +30,12 @@ use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
 class BlockWishlistViewModuleFrontController extends ProductListingFrontController
 {
     /**
+     * Made public as the core considers this class as an ModuleFrontController
+     * and other modules expects to find the $module property.
+     *
      * @var BlockWishList
      */
-    private $module;
+    public $module;
 
     /**
      * @var WishList
