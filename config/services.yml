@@ -1,8 +1,10 @@
 services:
   # Controller
-  PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController:
+  PrestaShop\Module\BlockWishList\Controller\WishlistConfigurationAdminController:
     public: true
-    class: PrestaShop\Module\BlockWishList\Controller\AdminAjaxPrestashopWishlistController
+    class: PrestaShop\Module\BlockWishList\Controller\WishlistConfigurationAdminController
+    arguments:
+      - '@doctrine.cache.provider'
 
   # Calculator
   prestashop.module.blockwishlist.calculator.statistics_calculator:
@@ -11,7 +13,6 @@ services:
     arguments:
       - '@prestashop.adapter.legacy.context' #used for product presenter
       - '@=service("prestashop.core.localization.locale.repository").getLocale(service("prestashop.adapter.legacy.context").getContext().language.getLocale())' # From PS 1.7.7: "@prestashop.core.localization.locale.context_locale"
-
 
   # Grid Definition
   prestashop.module.blockwishlist.grid.all_time_statistics_grid_definition_factory:

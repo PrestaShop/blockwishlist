@@ -20,6 +20,7 @@
 
 namespace PrestaShop\Module\BlockWishList\Controller;
 
+use Doctrine\Common\Cache\CacheProvider;
 use PrestaShop\Module\BlockWishList\Grid\Data\BaseGridDataFactory;
 use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
 use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
@@ -29,6 +30,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 class WishlistConfigurationAdminController extends FrameworkBundleAdminController
 {
+    /**
+     * @var CacheProvider
+     */
+    private $cache;
+
+    public function __construct(CacheProvider $cache)
+    {
+        $this->cache = $cache;
+    }
+
     public function configurationAction(Request $request)
     {
         $datas = $this->getWishlistConfigurationDatas();
@@ -67,12 +78,10 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
 
     public function resetStatisticsCacheAction()
     {
-        $result = $this->get('doctrine.cache.provider')->deleteMultiple([
-            BaseGridDataFactory::CACHE_KEY_STATS_ALL_TIME,
-            BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_DAY,
-            BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_MONTH,
-            BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_YEAR,
-        ]);
+        $result = $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_ALL_TIME)
+            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_DAY)
+            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_MONTH)
+            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_YEAR);
 
         return new JsonResponse(['success' => $result]);
     }
