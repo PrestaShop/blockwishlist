@@ -281,7 +281,7 @@ class WishList extends ObjectModel
             WHERE w.`id_customer` = ' . (int) $id_customer . '
             ' . $shop_restriction . '
             GROUP BY w.`id_wishlist`
-            ORDER BY w.`name` ASC'
+            ORDER BY w.`default` DESC, w.`name` ASC'
         );
     }
 
