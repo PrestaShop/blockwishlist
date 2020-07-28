@@ -28,7 +28,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('You aren\'t logged in', 'mywishlist'),
+                    'message' => $this->trans('You aren\'t logged in', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
             exit;
@@ -45,7 +45,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
         $this->ajaxRender(
             json_encode([
                 'success' => false,
-                'message' => $this->module->l('Unknow action', 'mywishlist'),
+                'message' => $this->trans('Unknown action', [], 'Modules.Blockwishlist.Shop'),
             ])
         );
         exit;
@@ -83,7 +83,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('There was an error adding the product', 'mywishlist'),
+                    'message' => $this->trans('There was an error adding the product', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
         }
@@ -93,7 +93,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
         return $this->ajaxRender(
             json_encode([
                 'success' => true,
-                'message' => $this->module->l('Product added', 'mywishlist'),
+                'message' => $this->trans('Product added', [], 'Modules.Blockwishlist.Shop'),
             ])
         );
     }
@@ -112,7 +112,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->module->l('The list has been properly created', 'mywishlist'),
+                        'message' => $this->trans('The list has been properly created', [], 'Modules.Blockwishlist.Shop'),
                         'datas' => [
                             'name' => $wishlist->name,
                             'id_wishlist' => $wishlist->id,
@@ -124,14 +124,14 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('Error saving the new wishlist', 'mywishlist'),
+                    'message' => $this->trans('Error saving the new list', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
         } else {
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('Missing name parameter', 'mywishlist'),
+                    'message' => $this->trans('Missing name parameter', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
         }
@@ -150,7 +150,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->module->l('WishList has been renamed', 'mywishlist'),
+                        'message' => $this->trans('List has been renamed', [], 'Modules.Blockwishlist.Shop'),
                     ])
                 );
             }
@@ -158,7 +158,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l("WishList couldn't been renamed", 'mywishlist'),
+                    'message' => $this->trans('List could not be renamed', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
         }
@@ -178,7 +178,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->module->l('WishList has been removed', 'mywishlist'),
+                        'message' => $this->trans('List has been removed', [], 'Modules.Blockwishlist.Shop'),
                     ])
                 );
             }
@@ -186,7 +186,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l("WishList couldn't been removed", 'mywishlist'),
+                    'message' => $this->trans('List deletion was unsuccessful', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
         }
@@ -217,7 +217,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->module->l('Product succesfully removed', 'mywishlist'),
+                        'message' => $this->trans('Product succesfully removed', [], 'Modules.Blockwishlist.Shop'),
                     ])
                 );
             }
@@ -225,7 +225,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('Unable to remove product from wishlist', 'mywishlist'),
+                    'message' => $this->trans('Unable to remove product from list', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
         }
@@ -259,7 +259,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->module->l('Product succesfully updated', 'mywishlist'),
+                        'message' => $this->trans('Product succesfully updated', [], 'Modules.Blockwishlist.Shop'),
                     ])
                 );
             }
@@ -267,7 +267,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('Unable to update product from wishlist', 'mywishlist'),
+                    'message' => $this->trans('Unable to update product from wishlist', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
         }
@@ -317,7 +317,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
         return $this->ajaxRender(
             json_encode([
                 'success' => false,
-                'message' => $this->module->l('Request is missing one or multiple parameters', 'mywishlist'),
+                'message' => $this->trans('Request is missing one or multiple parameters', [], 'Modules.Blockwishlist.Shop'),
             ])
         );
     }
@@ -345,14 +345,14 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => true,
-                    'message' => $this->module->l('Product added to cart'),
+                    'message' => $this->trans('Product added to cart', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
         } else {
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->module->l('error when adding product to cart'),
+                    'message' => $this->trans('Error when adding product to cart', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
         }
@@ -384,7 +384,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
         $this->ajaxRender(
             json_encode([
                 'success' => false,
-                'message' => $this->module->l('You\'re not allowed to manage this list.', 'mywishlist'),
+                'message' => $this->trans('You\'re not allowed to manage this list.', [], 'Modules.Blockwishlist.Shop'),
             ])
         );
         exit;
