@@ -83,7 +83,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
             $this->errors[] = $this->trans(
                 'You do not have access to this wishlist.',
                 [],
-                'Modules.BlockWishList.Shop'
+                'Modules.Blockwishlist.Shop'
             );
             $this->setTemplate('errors/forbidden');
 
@@ -138,7 +138,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         return $this->trans(
             'WishList: %wishlist_name%',
             ['%wishlist_name%' => $this->wishlist->name],
-            'Modules.BlockWishList.Shop'
+            'Modules.Blockwishlist.Shop'
         );
     }
 
