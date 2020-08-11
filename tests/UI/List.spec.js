@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import {shallowMount, mount} from '@vue/test-utils';
+import { shallowMount, mount } from '@vue/test-utils';
 import List from '@components/List/List.vue';
 import EventBus from '@components/EventBus';
 
@@ -78,7 +78,7 @@ describe('List.vue', () => {
     list.find('.wishlist-list-item-actions').trigger('click');
     await Vue.nextTick();
 
-    list.find('.dropdown-menu a:last-child').trigger('click');
+    list.find('.dropdown-menu button:last-child').trigger('click');
     await Vue.nextTick();
 
     expect(wrapper.vm.activeDropdowns.length).toBe(1);
@@ -104,7 +104,7 @@ describe('List.vue', () => {
     list.find('.wishlist-list-item-actions').trigger('click');
     await Vue.nextTick();
 
-    list.find('.dropdown-menu a:first-child').trigger('click');
+    list.find('.dropdown-menu button:first-child').trigger('click');
     await Vue.nextTick();
 
     expect(wrapper.vm.activeDropdowns.length).toBe(1);
