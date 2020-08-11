@@ -167,31 +167,31 @@ class WishList extends ObjectModel
             AND wp.`id_product_attribute` = ' . (int) ($id_product_attribute)
         );
 
-        if (false === empty($result)) {
+        if (!empty($result)) {
             if ((int) $result['quantity'] + (int) $quantity <= 0) {
                 return WishList::removeProduct($id_wishlist, $id_customer, $id_product, $id_product_attribute);
-            } else {
-                // TODO: use a method for this like updateProduct ?
-                return Db::getInstance()->update(
-                    'wishlist_product',
-                    [
-                        'quantity' => (int) $quantity + (int) $result['quantity'],
-                    ],
-                    '`id_wishlist` = ' . (int) $id_wishlist . ' AND `id_product` = ' . (int) $id_product . ' AND `id_product_attribute` = ' . (int) $id_product_attribute
-                );
             }
-        } else {
-            return Db::getInstance()->insert(
+
+            // TODO: use a method for this like updateProduct ?
+            return Db::getInstance()->update(
                 'wishlist_product',
                 [
-                    'id_wishlist' => (int) $id_wishlist,
-                    'id_product' => (int) $id_product,
-                    'id_product_attribute' => (int) $id_product_attribute,
-                    'quantity' => (int) $quantity,
-                    'priority' => 1,
-                ]
+                    'quantity' => (int) $quantity + (int) $result['quantity'],
+                ],
+                '`id_wishlist` = ' . (int) $id_wishlist . ' AND `id_product` = ' . (int) $id_product . ' AND `id_product_attribute` = ' . (int) $id_product_attribute
             );
         }
+
+        return Db::getInstance()->insert(
+            'wishlist_product',
+            [
+                'id_wishlist' => (int) $id_wishlist,
+                'id_product' => (int) $id_product,
+                'id_product_attribute' => (int) $id_product_attribute,
+                'quantity' => (int) $quantity,
+                'priority' => 1,
+            ]
+        );
     }
 
     /**
@@ -214,7 +214,7 @@ class WishList extends ObjectModel
             AND w.`id_wishlist` = ' . (int) $id_wishlist
         );
 
-        if (true === empty($result)) {
+        if (empty($result)) {
             return false;
         }
 
@@ -301,7 +301,7 @@ class WishList extends ObjectModel
             And quantity > 0'
         );
 
-        if (false === empty($wishlistProducts)) {
+        if (!empty($wishlistProducts)) {
             return $wishlistProducts;
         }
 
@@ -337,7 +337,7 @@ class WishList extends ObjectModel
             GROUP BY p.id_product, wp.id_product_attribute'
         );
 
-        if (true === empty($products)) {
+        if (empty($products)) {
             return [];
         }
 
@@ -492,7 +492,7 @@ class WishList extends ObjectModel
         WHERE (wp.id_wishlist=' . (int) $id_wishlist . ' AND o.id_cart IS NULL)
         HAVING timecart  >= 3600*6');
 
-        if (false === empty($old_carts)) {
+        if (!empty($old_carts)) {
             foreach ($old_carts as $old_cart) {
                 Db::getInstance()->execute('
                     DELETE FROM `' . _DB_PREFIX_ . 'cart_product`
@@ -518,7 +518,7 @@ class WishList extends ObjectModel
             WHERE wp.id_wishlist=' . (int) $id_wishlist
         );
 
-        if (false === empty($res)) {
+        if (!empty($res)) {
             foreach ($res as $refresh) {
                 if ($refresh['wish_quantity'] > $refresh['cart_quantity']) {
                     Db::getInstance()->execute('
@@ -534,7 +534,7 @@ class WishList extends ObjectModel
                 }
             }
         }
-        if (false === empty($freshwish)) {
+        if (!empty($freshwish)) {
             foreach ($freshwish as $prodcustomer) {
                 Db::getInstance()->execute('
                     UPDATE `' . _DB_PREFIX_ . 'wishlist_product` SET `quantity`=`quantity` +

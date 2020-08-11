@@ -53,12 +53,21 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
 
     private function addProductToWishListAction($params)
     {
-        $idWishList = (int) $params['idWishList'];
         $id_product = (int) $params['id_product'];
+        $product = new Product($id_product);
+        if (!Validate::isLoadedObject($product)) {
+            return $this->ajaxRender(
+                json_encode([
+                    'success' => false,
+                    'message' => $this->trans('There was an error adding the product', [], 'Modules.Blockwishlist.Shop'),
+                ])
+            );
+        }
+
+        $idWishList = (int) $params['idWishList'];
         $id_product_attribute = (int) $params['id_product_attribute'];
         $quantity = (int) $params['quantity'];
         if (0 === $quantity) {
-            $product = new Product($id_product);
             $quantity = $product->minimal_quantity;
         }
 
