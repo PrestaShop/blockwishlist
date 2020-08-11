@@ -41,9 +41,9 @@ class Statistics extends ObjectModel
         'table' => 'blockwishlist_statistics',
         'primary' => 'id_statistics',
         'fields' => [
-            'id_cart' => ['type' => self::TYPE_INT, 'required' => false],
-            'id_product' => ['type' => self::TYPE_INT, 'required' => true],
-            'id_product_attribute' => ['type' => self::TYPE_INT, 'required' => true],
+            'id_cart' => ['type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => false],
+            'id_product' => ['type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true],
+            'id_product_attribute' => ['type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true],
             'date_add' => ['type' => self::TYPE_DATE, 'required' => true],
         ],
     ];
