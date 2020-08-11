@@ -24,7 +24,7 @@ class CurrentMonthStatisticsGridDefinitionFactory extends BaseStatisticsGridDefi
 {
     protected function getId()
     {
-        return 'statistics_all_time';
+        return 'statistics_current_month';
     }
 
     protected function getName()

@@ -24,7 +24,7 @@ class CurrentDayStatisticsGridDefinitionFactory extends BaseStatisticsGridDefini
 {
     protected function getId()
     {
-        return 'statistics_all_time';
+        return 'statistics_current_day';
     }
 
     protected function getName()
