@@ -43,12 +43,13 @@ export default function initApp(component, componentSelector, props) {
     /* eslint-disable */
     for (const prop of props) {
       if (e.dataset[prop.name]) {
-        propsData[prop.name] =
-          prop.type === Number
-            ? parseInt(e.dataset[prop.name], 10)
-            : prop.type === Boolean
-            ? e.dataset[prop.name] === 'true'
-            : e.dataset[prop.name];
+        if (prop.type === Number) {
+          propsData[prop.name] = parseInt(e.dataset[prop.name], 10);
+        } else if (prop.type === Boolean) {
+          propsData[prop.name] = e.dataset[prop.name] === 'true';
+        } else {
+          propsData[prop.name] = e.dataset[prop.name];
+        }
       }
     }
     /* eslint-enable */
