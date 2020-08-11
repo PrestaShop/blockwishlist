@@ -79,9 +79,9 @@
        * Launch a createList mutation to create a Wishlist
        */
       async createWishlist() {
-        const valueTrimmed = this.value.replace(/ /g, '');
+        const titleWithoutSpaces = this.value.replace(/ /g, '');
 
-        if (valueTrimmed.length < 1) {
+        if (titleWithoutSpaces < 1) {
           EventBus.$emit('showToast', {
             detail: {
               type: 'error',
