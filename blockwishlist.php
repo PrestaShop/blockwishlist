@@ -230,22 +230,6 @@ class BlockWishList extends Module
     }
 
     /**
-     * This hook adds additional information on the product page
-     *
-     * @param array $params
-     *
-     * @return string
-     */
-    public function hookDisplayProductAdditionalInfo(array $params)
-    {
-        $this->smarty->assign([
-            'blockwishlist' => $this->displayName,
-        ]);
-
-        return $this->fetch('module:blockwishlist/views/templates/hook/product/additional-infos.tpl');
-    }
-
-    /**
      * This hook adds additional elements in the head section of your pages (head section of html)
      *
      * @param array $params
