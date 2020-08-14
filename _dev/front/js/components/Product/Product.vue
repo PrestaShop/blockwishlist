@@ -256,16 +256,6 @@
               resp
             });
 
-            prestashop.emit('productAddedFromWishlist', {
-              reason: {
-                idProduct: this.product.id_product,
-                idProductAttribute: this.product.id_product_attribute,
-                idCustomization: this.product.id_customization,
-                linkAction: 'add-to-cart'
-              },
-              resp
-            });
-
             /* eslint-disable */
             const statResponse = await fetch(
               `${wishlistAddProductToCartUrl}&params[idWishlist]=${this.listId}&params[id_product]=${this.product.id_product}&params[id_product_attribute]=${this.product.id_product_attribute}&params[quantity]=${this.product.wishlist_quantity}`,
