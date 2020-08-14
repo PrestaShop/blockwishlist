@@ -17,9 +17,12 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 import Vue from 'vue';
+import prestashop from 'prestashop';
 
 const EventBus = new Vue();
 
 window.WishlistEventBus = EventBus;
+
+prestashop.emit('wishlistEventBusInit');
 
 export default EventBus;
