@@ -39,6 +39,7 @@ class BlockWishList extends Module
         'displayAdminCustomers',
         'displayProductAdditionalInfo',
         'displayMyAccountBlock',
+        'actionWishlistAddProducts',
     ];
 
     const MODULE_ADMIN_CONTROLLERS = [
@@ -248,5 +249,19 @@ class BlockWishList extends Module
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayHeader.tpl');
+    }
+
+    /**
+     * This hook return idproduct and idProductAttribute when set into a wishlist
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    public function hookActionWishlistAddProducts(array $params)
+    {
+        if (!empty($params)) {
+            Media::addJsDef($params);
+        }
     }
 }
