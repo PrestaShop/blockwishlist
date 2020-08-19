@@ -255,7 +255,6 @@ class BlockWishList extends Module
      * This hook return idproduct and idProductAttribute when set into a wishlist
      *
      * @param array $params
-     *
      */
     public function hookActionWishlistAddProducts(array $params)
     {
