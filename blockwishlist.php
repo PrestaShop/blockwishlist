@@ -250,16 +250,4 @@ class BlockWishList extends Module
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayHeader.tpl');
     }
-
-    /**
-     * This hook return idproduct and idProductAttribute when set into a wishlist
-     *
-     * @param array $params
-     */
-    public function hookActionWishlistAddProducts(array $params)
-    {
-        if (!empty($params)) {
-            Media::addJsDef($params);
-        }
-    }
 }
