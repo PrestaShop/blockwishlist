@@ -256,7 +256,6 @@ class BlockWishList extends Module
      *
      * @param array $params
      *
-     * @return array
      */
     public function hookActionWishlistAddProducts(array $params)
     {
