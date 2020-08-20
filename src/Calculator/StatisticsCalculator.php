@@ -201,44 +201,19 @@ class StatisticsCalculator
      */
     public function computeConversionByProduct($id_product, $id_product_attribute, $dateStart = null)
     {
-        $queryCarts = new \DbQuery();
-        $queryCarts->select('id_cart');
-        $queryCarts->from('blockwishlist_statistics');
-        $queryCarts->where('id_cart != 0');
-        $queryCarts->where('id_product = ' . $id_product);
-        $queryCarts->where('id_product_attribute = ' . $id_product_attribute);
-
+        $queryOrders = '
+            SELECT count(os.id_order_state)
+            FROM ' . _DB_PREFIX_ . 'orders o
+            LEFT JOIN ' . _DB_PREFIX_ . 'order_history oh ON (o.`id_order` = oh.`id_order`)
+            LEFT JOIN ' . _DB_PREFIX_ . 'order_state os ON (os.`id_order_state` = oh.`id_order_state` AND os.`paid` = 1 AND os.`shipped` = 1)
+            LEFT JOIN ' . _DB_PREFIX_ . 'blockwishlist_statistics bws ON (o.id_cart = bws.id_cart AND bws.`id_product` = ' . (int) $id_product . ' AND bws.`id_product_attribute` = ' . (int) $id_product_attribute . ')
+            LEFT JOIN ' . _DB_PREFIX_ . 'order_detail od ON (od.`id_order` = o.`id_order`)
+        ';
         if (null != $dateStart) {
-            $queryCarts->where('date_add >= "' . $dateStart . '"');
+            $queryOrders .= 'WHERE bws.date_add >= "' . $dateStart . '"';
         }
 
-        $carts = \Db::getInstance()->executeS($queryCarts);
-        $nbCartPaidAndShipped = 0;
-
-        foreach ($carts as $cart) {
-            $queryOrder = new \DbQuery();
-            $queryOrder->select('id_order');
-            $queryOrder->from('orders');
-            $queryOrder->where('id_cart = ' . $cart['id_cart']);
-            $orderID = \Db::getInstance()->getRow($queryOrder);
-
-            if (empty($orderID)) {
-                continue;
-            }
-
-            $order = new \Order($orderID['id_order']);
-
-            if ($order->hasBeenPaid() >= 1) {
-                foreach ($order->getProducts() as $product) {
-                    // if product/attribute combination is still in the order
-                    if ($product['product_id'] == $id_product
-                        && $product['product_attribute_id'] == $id_product_attribute
-                    ) {
-                        ++$nbCartPaidAndShipped;
-                    }
-                }
-            }
-        }
+        $nbOrderPaidAndShipped = Db::getInstance()->getRow($queryOrders);
 
         $queryCountAll = new \DbQuery();
         $queryCountAll->select('COUNT(id_statistics)');
@@ -252,6 +227,6 @@ class StatisticsCalculator
 
         $countAddedToWishlist = \Db::getInstance()->getValue($queryCountAll);
 
-        return round(($nbCartPaidAndShipped / $countAddedToWishlist) * 100, 2);
+        return round(($nbOrderPaidAndShipped / $countAddedToWishlist) * 100, 2);
     }
 }
