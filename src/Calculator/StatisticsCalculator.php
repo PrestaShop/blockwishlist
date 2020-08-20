@@ -213,7 +213,7 @@ class StatisticsCalculator
             $queryOrders .= 'WHERE bws.date_add >= "' . $dateStart . '"';
         }
 
-        $nbOrderPaidAndShipped = Db::getInstance()->getRow($queryOrders);
+        $nbOrderPaidAndShipped = \Db::getInstance()->getRow($queryOrders);
 
         $queryCountAll = new \DbQuery();
         $queryCountAll->select('COUNT(id_statistics)');
