@@ -71,6 +71,15 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             $quantity = $product->minimal_quantity;
         }
 
+        if (false === $product->productAttributeExists($id_product_attribute)) {
+            return $this->ajaxRender(
+                json_encode([
+                    'success' => false,
+                    'message' => $this->trans('There was an error adding the product attributes', [], 'Modules.Blockwishlist.Shop'),
+                ])
+            );
+        }
+
         $wishlist = new WishList($idWishList);
         // Exit if not owner of the wishlist
         $this->assertWriteAccess($wishlist);
