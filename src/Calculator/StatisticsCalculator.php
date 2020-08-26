@@ -133,12 +133,12 @@ class StatisticsCalculator
                 'id_product_attribute' => $id_product_attribute,
             ]);
 
-            if(!empty($productDetails['attributes'])) {
+            if (!empty($productDetails['attributes'])) {
                 $combinationArr = [];
                 foreach ($productDetails['attributes'] as $attribute) {
                     $combinationArr[] = $attribute['group'] . ' : ' . $attribute['name'];
                 }
-                $combination = implode(",", $combinationArr);
+                $combination = implode(',', $combinationArr);
             }
 
             $imgDetails = $this->getProductImage($productDetails);
