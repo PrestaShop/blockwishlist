@@ -218,6 +218,10 @@ class StatisticsCalculator
 
         $nbOrderPaidAndShipped = \Db::getInstance()->getRow($queryOrders);
 
+        if(empty($nbOrderPaidAndShipped['nb'])) {
+            return 0;
+        }
+
         $queryCountAll = new \DbQuery();
         $queryCountAll->select('COUNT(id_statistics)');
         $queryCountAll->from('blockwishlist_statistics');
