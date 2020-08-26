@@ -218,7 +218,7 @@ class StatisticsCalculator
 
         $nbOrderPaidAndShipped = \Db::getInstance()->getRow($queryOrders);
 
-        if(empty($nbOrderPaidAndShipped['nb'])) {
+        if (empty($nbOrderPaidAndShipped['nb'])) {
             return 0;
         }
 
