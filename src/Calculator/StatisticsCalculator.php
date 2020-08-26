@@ -124,6 +124,7 @@ class StatisticsCalculator
 
         foreach ($stats as $idProductAndAttribute => $count) {
             // first ID is product, second one is product_attribute
+            $combination = '';
             $ids = explode('.', $idProductAndAttribute);
             $id_product = $ids[0];
             $id_product_attribute = $ids[1];
@@ -132,6 +133,14 @@ class StatisticsCalculator
                 'id_product_attribute' => $id_product_attribute,
             ]);
 
+            if(!empty($productDetails['attributes'])) {
+                $combinationArr = [];
+                foreach ($productDetails['attributes'] as $attribute) {
+                    $combinationArr[] = $attribute['group'] . ' : ' . $attribute['name'];
+                }
+                $combination = implode(",", $combinationArr);
+            }
+
             $imgDetails = $this->getProductImage($productDetails);
             $stats[$idProductAndAttribute] = [
                 'position' => $position,
@@ -139,6 +148,7 @@ class StatisticsCalculator
                 'id_product' => $id_product,
                 'id_product_attribute' => $id_product_attribute,
                 'name' => $productDetails['name'],
+                'combination' => $combination,
                 'category_name' => $productDetails['category_name'],
                 'image_small_url' => $imgDetails['small']['url'],
                 'link' => $productDetails['link'],

@@ -69,6 +69,12 @@ class BaseStatisticsGridDefinitionFactory extends AbstractGridDefinitionFactory
                     'field' => 'reference',
                 ])
             )
+            ->add((new DataColumn('combination'))
+                ->setName($this->trans('Combination', [], 'Modules.Blockwishlist.Admin'))
+                ->setOptions([
+                    'field' => 'combination',
+                ])
+            )
             ->add((new DataColumn('category_name'))
                 ->setName($this->trans('Category', [], 'Modules.Blockwishlist.Admin'))
                 ->setOptions([
