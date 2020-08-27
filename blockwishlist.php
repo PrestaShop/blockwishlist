@@ -39,7 +39,6 @@ class BlockWishList extends Module
         'displayAdminCustomers',
         'displayProductAdditionalInfo',
         'displayMyAccountBlock',
-        'actionWishlistAddProducts',
     ];
 
     const MODULE_ADMIN_CONTROLLERS = [
