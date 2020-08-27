@@ -211,43 +211,25 @@ class StatisticsCalculator
      */
     public function computeConversionByProduct($id_product, $id_product_attribute, $dateStart = null)
     {
-        $queryCarts = new \DbQuery();
-        $queryCarts->select('id_cart');
-        $queryCarts->from('blockwishlist_statistics');
-        $queryCarts->where('id_cart != 0');
-        $queryCarts->where('id_product = ' . $id_product);
-        $queryCarts->where('id_product_attribute = ' . $id_product_attribute);
+        $nbOrderPaidAndShipped = [];
+        $queryOrders = '
+            SELECT count(distinct(o.id_order)) as nb
+            FROM ' . _DB_PREFIX_ . 'orders o
+            INNER JOIN ' . _DB_PREFIX_ . 'blockwishlist_statistics bws ON (o.id_cart = bws.id_cart )
+            LEFT JOIN ' . _DB_PREFIX_ . 'order_history oh ON (o.`id_order` = oh.`id_order`)
+            LEFT JOIN ' . _DB_PREFIX_ . 'order_state os ON (os.`id_order_state` = oh.`id_order_state` AND os.`paid` = 1 AND os.`shipped` = 1)
+            LEFT JOIN ' . _DB_PREFIX_ . 'order_detail od ON (od.`id_order` = o.`id_order` AND od.`product_id` = bws.`id_product` AND od.`product_attribute_id` = bws.`id_product_attribute`
+            WHERE bws.`id_cart` <> 0 AND bws.`id_product` = ' . (int) $id_product . ' AND bws.`id_product_attribute` = ' . (int) $id_product_attribute . '
+        ';
 
         if (null != $dateStart) {
-            $queryCarts->where('date_add >= "' . $dateStart . '"');
+            $queryOrders .= 'AND bws.date_add >= "' . $dateStart . '"';
         }
 
-        $carts = \Db::getInstance()->executeS($queryCarts);
-        $nbCartPaidAndShipped = 0;
+        $nbOrderPaidAndShipped = \Db::getInstance()->getRow($queryOrders);
 
-        foreach ($carts as $cart) {
-            $queryOrder = new \DbQuery();
-            $queryOrder->select('id_order');
-            $queryOrder->from('orders');
-            $queryOrder->where('id_cart = ' . $cart['id_cart']);
-            $orderID = \Db::getInstance()->getRow($queryOrder);
-
-            if (empty($orderID)) {
-                continue;
-            }
-
-            $order = new \Order($orderID['id_order']);
-
-            if ($order->hasBeenPaid() >= 1) {
-                foreach ($order->getProducts() as $product) {
-                    // if product/attribute combination is still in the order
-                    if ($product['product_id'] == $id_product
-                        && $product['product_attribute_id'] == $id_product_attribute
-                    ) {
-                        ++$nbCartPaidAndShipped;
-                    }
-                }
-            }
+        if (empty($nbOrderPaidAndShipped['nb'])) {
+            return 0;
         }
 
         $queryCountAll = new \DbQuery();
@@ -262,6 +244,6 @@ class StatisticsCalculator
 
         $countAddedToWishlist = \Db::getInstance()->getValue($queryCountAll);
 
-        return round(($nbCartPaidAndShipped / $countAddedToWishlist) * 100, 2);
+        return round(($nbOrderPaidAndShipped['nb'] / $countAddedToWishlist) * 100, 2);
     }
 }
