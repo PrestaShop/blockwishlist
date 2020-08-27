@@ -99,7 +99,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
 
         // TODO: add product to stats
 
-        Hook::exec('ActionWishlistAddProducts', [
+        Hook::exec('ActionWishlistAddProduct', [
             'idWishlist' => $idWishList,
             'customerId' => $this->context->customer->id,
             'idProduct' => $id_product,
