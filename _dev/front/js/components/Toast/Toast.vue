@@ -17,10 +17,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  *-->
 <template>
-  <div
-    class="wishlist-toast"
-    :class="[{ isActive: active }, type]"
-  >
+  <div class="wishlist-toast" :class="[{ isActive: active }, type]">
     <p class="wishlist-toast-text">
       {{ text }}
     </p>
@@ -35,42 +32,42 @@
     props: {
       renameWishlistText: {
         type: String,
-        required: true,
+        required: true
       },
       addedWishlistText: {
         type: String,
-        required: true,
+        required: true
       },
       deleteWishlistText: {
         type: String,
-        required: true,
+        required: true
       },
       createWishlistText: {
         type: String,
-        required: true,
+        required: true
       },
       deleteProductText: {
         type: String,
-        required: true,
+        required: true
       },
       copyText: {
         type: String,
-        required: true,
-      },
+        required: true
+      }
     },
     data() {
       return {
         text: '',
         active: false,
         timeout: null,
-        type: 'basic',
+        type: 'basic'
       };
     },
     mounted() {
       /**
        * Register to an even so every components can show toast
        */
-      EventBus.$on('showToast', (event) => {
+      EventBus.$on('showToast', event => {
         if (event.detail.message) {
           if (this[event.detail.message]) {
             this.text = this[event.detail.message];
@@ -83,7 +80,6 @@
 
         if (this.timeout) {
           clearTimeout(this.timeout);
-          this.timeout = null;
         }
 
         this.timeout = setTimeout(() => {
@@ -93,7 +89,7 @@
 
         this.type = event.detail.type ? event.detail.type : 'basic';
       });
-    },
+    }
   };
 </script>
 
