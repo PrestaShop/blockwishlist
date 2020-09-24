@@ -32,7 +32,6 @@ use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
-use PrestaShopBundle\Entity\Shop;
 use Product;
 use Symfony\Component\Translation\TranslatorInterface;
 use WishList;
@@ -138,7 +137,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         }
 
         $querySearch->from('product', 'p');
-        $querySearch->join(Shop::addSqlAssociation('product', 'p'));
+        $querySearch->join(\Shop::addSqlAssociation('product', 'p'));
         $querySearch->innerJoin('wishlist_product', 'wp', 'wp.`id_product` = p.`id_product`');
         $querySearch->leftJoin('category_product', 'cp', 'p.id_product = cp.id_product AND cp.id_category = product_shop.id_category_default');
 
