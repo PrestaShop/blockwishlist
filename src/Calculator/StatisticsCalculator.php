@@ -20,18 +20,18 @@
 
 namespace PrestaShop\Module\BlockWishList\Calculator;
 
-use Db;
-use DbQuery;
 use Customer;
 use DateTime;
-use ProductAssembler;
-use ProductPresenterFactory;
-use PrestaShop\PrestaShop\Adapter\LegacyContext;
-use PrestaShop\PrestaShop\Core\Localization\Locale;
+use Db;
+use DbQuery;
 use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
-use PrestaShop\PrestaShop\Core\Product\ProductPresenter;
+use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
+use PrestaShop\PrestaShop\Core\Localization\Locale;
+use PrestaShop\PrestaShop\Core\Product\ProductPresenter;
+use ProductAssembler;
+use ProductPresenterFactory;
 
 class StatisticsCalculator
 {

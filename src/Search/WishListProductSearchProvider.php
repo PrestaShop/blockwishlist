@@ -20,22 +20,22 @@
 
 namespace PrestaShop\Module\BlockWishList\Search;
 
-use Db;
-use Group;
-use DbQuery;
-use Product;
-use WishList;
 use Combination;
+use Db;
+use DbQuery;
 use FrontController;
-use PrestaShopBundle\Entity\Shop;
+use Group;
 use PrestaShop\PrestaShop\Adapter\Configuration;
-use Symfony\Component\Translation\TranslatorInterface;
-use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
-use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
+use PrestaShopBundle\Entity\Shop;
+use Product;
+use Symfony\Component\Translation\TranslatorInterface;
+use WishList;
 
 /**
  * Responsible of getting products for specific wishlist.

@@ -20,15 +20,15 @@
 
 namespace PrestaShop\Module\BlockWishList\Controller;
 
-use PrestaShopBundle\Install\Language;
 use Doctrine\Common\Cache\CacheProvider;
-use Symfony\Component\HttpFoundation\Request;
-use PrestaShop\PrestaShop\Adapter\Configuration;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
-use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
 use PrestaShop\Module\BlockWishList\Grid\Data\BaseGridDataFactory;
+use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
+use PrestaShop\PrestaShop\Adapter\Configuration;
+use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
+use PrestaShopBundle\Install\Language;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class WishlistConfigurationAdminController extends FrameworkBundleAdminController
 {
