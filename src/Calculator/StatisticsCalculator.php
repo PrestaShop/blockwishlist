@@ -250,7 +250,7 @@ class StatisticsCalculator
 
         $countAddedToWishlist = Db::getInstance()->getValue($queryCountAll);
 
-        if (0 === $countAddedToWishlist) {
+        if (0 != $countAddedToWishlist) {
             return round(($nbOrderPaidAndShipped['nb'] / $countAddedToWishlist) * 100, 2);
         }
 

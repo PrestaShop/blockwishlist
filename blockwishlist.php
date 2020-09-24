@@ -30,7 +30,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 class BlockWishList extends Module
 {
-    public const HOOKS = [
+    const HOOKS = [
         'actionAdminControllerSetMedia',
         'actionFrontControllerSetMedia',
         'displayProductActions',
@@ -41,7 +41,7 @@ class BlockWishList extends Module
         'displayMyAccountBlock',
     ];
 
-    public const MODULE_ADMIN_CONTROLLERS = [
+    const MODULE_ADMIN_CONTROLLERS = [
         [
             'class_name' => 'WishlistConfigurationAdminParentController',
             'visible' => false,

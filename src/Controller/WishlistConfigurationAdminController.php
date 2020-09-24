@@ -20,10 +20,10 @@
 
 namespace PrestaShop\Module\BlockWishList\Controller;
 
+use Configuration;
 use Doctrine\Common\Cache\CacheProvider;
 use PrestaShop\Module\BlockWishList\Grid\Data\BaseGridDataFactory;
 use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
-use PrestaShop\PrestaShop\Adapter\Configuration;
 use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Install\Language;
