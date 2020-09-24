@@ -22,11 +22,11 @@ namespace PrestaShop\Module\BlockWishList\Controller;
 
 use Configuration;
 use Doctrine\Common\Cache\CacheProvider;
+use Language;
 use PrestaShop\Module\BlockWishList\Grid\Data\BaseGridDataFactory;
 use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
 use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
-use Language;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
