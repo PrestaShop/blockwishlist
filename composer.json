@@ -38,5 +38,4 @@
             "@php ./vendor/bin/header-stamp --license=\"assets/afl.txt\" --exclude=\".github,.webpack,node_modules,vendor\""
         ]
     },
-    "author": "PrestaShop"
 }

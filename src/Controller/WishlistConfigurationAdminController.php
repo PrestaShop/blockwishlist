@@ -20,13 +20,15 @@
 
 namespace PrestaShop\Module\BlockWishList\Controller;
 
+use PrestaShopBundle\Install\Language;
 use Doctrine\Common\Cache\CacheProvider;
-use PrestaShop\Module\BlockWishList\Grid\Data\BaseGridDataFactory;
-use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
-use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
-use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use PrestaShop\PrestaShop\Adapter\Configuration;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
+use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
+use PrestaShop\Module\BlockWishList\Grid\Data\BaseGridDataFactory;
+use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 
 class WishlistConfigurationAdminController extends FrameworkBundleAdminController
 {
@@ -45,6 +47,7 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
         $datas = $this->getWishlistConfigurationDatas();
         $configurationForm = $this->createForm(ConfigurationType::class, $datas);
         $configurationForm->handleRequest($request);
+        $resultHandleForm = null;
 
         if ($configurationForm->isSubmitted() && $configurationForm->isValid()) {
             $resultHandleForm = $this->handleForm($configurationForm->getData());
@@ -52,7 +55,7 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
 
         return $this->render('@Modules/blockwishlist/views/templates/admin/home.html.twig', [
             'configurationForm' => $configurationForm->createView(),
-            'resultHandleForm' => isset($resultHandleForm) ? $resultHandleForm : null,
+            'resultHandleForm' => $resultHandleForm,
         ]);
     }
 
@@ -98,19 +101,19 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
         $result = true;
         if (isset($datas['WishlistPageName'])) {
             foreach ($datas['WishlistPageName'] as $langID => $value) {
-                $result &= \Configuration::updateValue('blockwishlist_WishlistPageName', [$langID => $value]);
+                $result &= Configuration::updateValue('blockwishlist_WishlistPageName', [$langID => $value]);
             }
         }
 
         if (isset($datas['WishlistDefaultTitle'])) {
             foreach ($datas['WishlistDefaultTitle'] as $langID => $value) {
-                $result &= \Configuration::updateValue('blockwishlist_WishlistDefaultTitle', [$langID => $value]);
+                $result &= Configuration::updateValue('blockwishlist_WishlistDefaultTitle', [$langID => $value]);
             }
         }
 
         if (isset($datas['CreateButtonLabel'])) {
             foreach ($datas['CreateButtonLabel'] as $langID => $value) {
-                $result &= \Configuration::updateValue('blockwishlist_CreateButtonLabel', [$langID => $value]);
+                $result &= Configuration::updateValue('blockwishlist_CreateButtonLabel', [$langID => $value]);
             }
         }
 
@@ -124,15 +127,13 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
      */
     private function getWishlistConfigurationDatas()
     {
-        $languages = \Language::getLanguages(true);
-        $wishlistNames = [];
-        $wishlistDefaultTitles = [];
-        $wishlistCreateNewButtonsLabel = [];
+        $languages = Language::getLanguages(true);
+        $wishlistNames = $wishlistDefaultTitles = $wishlistCreateNewButtonsLabel = [];
 
         foreach ($languages as $lang) {
-            $wishlistNames[$lang['id_lang']] = \Configuration::get('blockwishlist_WishlistPageName', $lang['id_lang']);
-            $wishlistDefaultTitles[$lang['id_lang']] = \Configuration::get('blockwishlist_WishlistDefaultTitle', $lang['id_lang']);
-            $wishlistCreateNewButtonsLabel[$lang['id_lang']] = \Configuration::get('blockwishlist_CreateButtonLabel', $lang['id_lang']);
+            $wishlistNames[$lang['id_lang']] = Configuration::get('blockwishlist_WishlistPageName', $lang['id_lang']);
+            $wishlistDefaultTitles[$lang['id_lang']] = Configuration::get('blockwishlist_WishlistDefaultTitle', $lang['id_lang']);
+            $wishlistCreateNewButtonsLabel[$lang['id_lang']] = Configuration::get('blockwishlist_CreateButtonLabel', $lang['id_lang']);
         }
 
         $datas = [

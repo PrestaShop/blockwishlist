@@ -21,14 +21,21 @@
 namespace PrestaShop\Module\BlockWishList\Search;
 
 use Db;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
-use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
+use Group;
+use DbQuery;
+use Product;
+use WishList;
+use Combination;
+use FrontController;
+use PrestaShopBundle\Entity\Shop;
+use PrestaShop\PrestaShop\Adapter\Configuration;
+use Symfony\Component\Translation\TranslatorInterface;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
-use Symfony\Component\Translation\TranslatorInterface;
-use WishList;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
 
 /**
  * Responsible of getting products for specific wishlist.
@@ -103,7 +110,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         ProductSearchQuery $query,
         $type = 'products'
     ) {
-        $querySearch = new \DbQuery();
+        $querySearch = new DbQuery();
 
         if ('products' === $type) {
             $querySearch->select('p.*');
@@ -119,11 +126,11 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 product_shop.`date_add`,
                 DATE_SUB(
                     "' . date('Y-m-d') . ' 00:00:00",
-                    INTERVAL ' . (0 <= (int) \Configuration::get('PS_NB_DAYS_NEW_PRODUCT') ? \Configuration::get('PS_NB_DAYS_NEW_PRODUCT') : 20) . ' DAY
+                    INTERVAL ' . (0 <= (int) Configuration::get('PS_NB_DAYS_NEW_PRODUCT') ? Configuration::get('PS_NB_DAYS_NEW_PRODUCT') : 20) . ' DAY
                 )
             ) > 0 AS new'
             );
-            if (\Combination::isFeatureActive()) {
+            if (Combination::isFeatureActive()) {
                 $querySearch->select('product_attribute_shop.minimal_quantity AS product_attribute_minimal_quantity, IFNULL(product_attribute_shop.`id_product_attribute`,0) AS id_product_attribute');
             }
         } else {
@@ -131,11 +138,11 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         }
 
         $querySearch->from('product', 'p');
-        $querySearch->join(\Shop::addSqlAssociation('product', 'p'));
+        $querySearch->join(Shop::addSqlAssociation('product', 'p'));
         $querySearch->innerJoin('wishlist_product', 'wp', 'wp.`id_product` = p.`id_product`');
         $querySearch->leftJoin('category_product', 'cp', 'p.id_product = cp.id_product AND cp.id_category = product_shop.id_category_default');
 
-        if (\Combination::isFeatureActive()) {
+        if (Combination::isFeatureActive()) {
             $querySearch->leftJoin('product_attribute_shop', 'product_attribute_shop', 'p.`id_product` = product_attribute_shop.`id_product` AND product_attribute_shop.`id_product_attribute` = wp.id_product_attribute AND product_attribute_shop.id_shop=' . (int) $context->getIdShop());
         }
 
@@ -147,9 +154,9 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
             $querySearch->leftJoin('category', 'ca', 'cp.`id_category` = ca.`id_category` AND ca.`active` = 1');
         }
 
-        if (\Group::isFeatureActive()) {
-            $groups = \FrontController::getCurrentCustomerGroups();
-            $sqlGroups = false === empty($groups) ? 'IN (' . implode(',', $groups) . ')' : '=' . (int) \Group::getCurrent()->id;
+        if (Group::isFeatureActive()) {
+            $groups = FrontController::getCurrentCustomerGroups();
+            $sqlGroups = false === empty($groups) ? 'IN (' . implode(',', $groups) . ')' : '=' . (int) Group::getCurrent()->id;
             $querySearch->leftJoin('category_group', 'cg', 'cp.`id_category` = cg.`id_category` AND cg.`id_group`' . $sqlGroups);
         }
 
@@ -167,7 +174,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 return [];
             }
 
-            return \Product::getProductsProperties((int) $context->getIdLang(), $products);
+            return Product::getProductsProperties((int) $context->getIdLang(), $products);
         }
 
         return (int) $this->db->getValue($querySearch);

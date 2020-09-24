@@ -101,9 +101,7 @@ class Install
 
     public function installConfiguration()
     {
-        $pageName = [];
-        $defaultName = [];
-        $createButtonLabel = [];
+        $pageName = $defaultName = $createButtonLabel = [];
 
         foreach (Language::getLanguages() as $lang) {
             $pageName[$lang['id_lang']] = $this->translator->trans('My wishlists', [], 'Modules.Blockwishlist.Admin', $lang['locale']);

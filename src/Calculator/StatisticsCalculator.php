@@ -20,12 +20,18 @@
 
 namespace PrestaShop\Module\BlockWishList\Calculator;
 
-use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
+use Db;
+use DbQuery;
+use Customer;
+use DateTime;
+use ProductAssembler;
+use ProductPresenterFactory;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
+use PrestaShop\PrestaShop\Core\Localization\Locale;
+use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
+use PrestaShop\PrestaShop\Core\Product\ProductPresenter;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
-use PrestaShop\PrestaShop\Core\Localization\Locale;
-use PrestaShop\PrestaShop\Core\Product\ProductPresenter;
 
 class StatisticsCalculator
 {
@@ -47,8 +53,8 @@ class StatisticsCalculator
     public function __construct(LegacyContext $context, Locale $locale)
     {
         $this->context = $context->getContext();
-        $this->context->customer = new \Customer(); // (╯°□°)╯︵ ┻━┻
-        $this->productAssembler = new \ProductAssembler($this->context);
+        $this->context->customer = new Customer();
+        $this->productAssembler = new ProductAssembler($this->context);
         $this->locale = $locale;
     }
 
@@ -61,7 +67,7 @@ class StatisticsCalculator
      */
     public function computeStatsFor($statsRange = null)
     {
-        $query = new \DbQuery();
+        $query = new DbQuery();
         $query->select('id_product');
         $query->select('id_product_attribute');
         $query->select('date_add');
@@ -70,13 +76,13 @@ class StatisticsCalculator
 
         switch ($statsRange) {
             case 'currentYear':
-                $dateStart = (new \DateTime('now'))->modify('-1 year')->format('Y-m-d H:i:s');
+                $dateStart = (new DateTime('now'))->modify('-1 year')->format('Y-m-d H:i:s');
             break;
             case 'currentMonth':
-                $dateStart = (new \DateTime('now'))->modify('-1 month')->format('Y-m-d H:i:s');
+                $dateStart = (new DateTime('now'))->modify('-1 month')->format('Y-m-d H:i:s');
             break;
             case 'currentDay':
-                $dateStart = (new \DateTime('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+                $dateStart = (new DateTime('now'))->modify('-1 day')->format('Y-m-d H:i:s');
             break;
             case 'allTime':
                 $dateStart = null;
@@ -90,7 +96,7 @@ class StatisticsCalculator
             $query->where('date_add >= "' . $dateStart . '"');
         }
 
-        $results = \Db::getInstance()->executeS($query);
+        $results = Db::getInstance()->executeS($query);
         $stats = [];
 
         foreach ($results as $result) {
@@ -173,7 +179,7 @@ class StatisticsCalculator
     {
         $imgDetails = [];
 
-        $presenterFactory = new \ProductPresenterFactory($this->context);
+        $presenterFactory = new ProductPresenterFactory($this->context);
         $presentationSettings = $presenterFactory->getPresentationSettings();
         $presenter = new ProductPresenter(
             new ImageRetriever(
@@ -226,13 +232,13 @@ class StatisticsCalculator
             $queryOrders .= 'AND bws.date_add >= "' . $dateStart . '"';
         }
 
-        $nbOrderPaidAndShipped = \Db::getInstance()->getRow($queryOrders);
+        $nbOrderPaidAndShipped = Db::getInstance()->getRow($queryOrders);
 
         if (empty($nbOrderPaidAndShipped['nb'])) {
             return 0;
         }
 
-        $queryCountAll = new \DbQuery();
+        $queryCountAll = new DbQuery();
         $queryCountAll->select('COUNT(id_statistics)');
         $queryCountAll->from('blockwishlist_statistics');
         $queryCountAll->where('id_product = ' . $id_product);
@@ -242,8 +248,12 @@ class StatisticsCalculator
             $queryCountAll->where('date_add >= "' . $dateStart . '"');
         }
 
-        $countAddedToWishlist = \Db::getInstance()->getValue($queryCountAll);
+        $countAddedToWishlist = Db::getInstance()->getValue($queryCountAll);
 
-        return round(($nbOrderPaidAndShipped['nb'] / $countAddedToWishlist) * 100, 2);
+        if (0 === $countAddedToWishlist) {
+            return round(($nbOrderPaidAndShipped['nb'] / $countAddedToWishlist) * 100, 2);
+        }
+
+        return 0;
     }
 }
