@@ -26,7 +26,7 @@ use PrestaShop\Module\BlockWishList\Grid\Data\BaseGridDataFactory;
 use PrestaShop\Module\BlockWishList\Type\ConfigurationType;
 use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
-use PrestaShopBundle\Install\Language;
+use Language;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
