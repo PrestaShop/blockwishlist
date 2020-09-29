@@ -375,7 +375,6 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             );
         }
 
-
         return $this->ajaxRender(
             json_encode([
                 'success' => false,
@@ -433,6 +432,5 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             'WHERE pas.id_shop =' . (int) $this->context->shop->id . ' AND pa.`id_product` = ' . (int) $id_product . ' ' .
             'AND pas.id_product_attribute = ' . (int) $id_product_attribute
         );
-
     }
 }
