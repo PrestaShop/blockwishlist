@@ -128,11 +128,9 @@ class BlockWishList extends Module
      */
     public function hookActionFrontControllerSetMedia(array $params)
     {
-        $productsTagged = false;
-
-        if (true === $this->context->customer->isLogged()) {
-            $productsTagged = WishList::getAllProductByCustomer($this->context->customer->id);
-        }
+        $productsTagged = true === $this->context->customer->isLogged()
+            ? WishList::getAllProductByCustomer($this->context->customer->id)
+            : false;
 
         Media::addJsDef([
             'blockwishlistController' => $this->context->link->getModuleLink(
@@ -142,7 +140,7 @@ class BlockWishList extends Module
             'removeFromWishlistUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
             'wishlistUrl' => $this->context->link->getModuleLink('blockwishlist', 'view'),
             'wishlistAddProductToCartUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToCart']),
-            'productsAlreadyTagged' => $productsTagged ? $productsTagged : [],
+            'productsAlreadyTagged' => $productsTagged ?: [],
         ]);
 
         $this->context->controller->registerStylesheet(

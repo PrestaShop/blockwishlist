@@ -35,7 +35,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
         }
 
         $params = Tools::getValue('params');
-        // Here we call all methods dinamically given by the path
+        // Here we call all methods dynamically given by the path
 
         if (method_exists($this, Tools::getValue('action') . 'Action')) {
             call_user_func([$this, Tools::getValue('action') . 'Action'], $params);
@@ -71,7 +71,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             $quantity = $product->minimal_quantity;
         }
 
-        if (false === $product->productAttributeExists($id_product_attribute)) {
+        if (false === $product->productAttributeExists([$id_product_attribute])) {
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
