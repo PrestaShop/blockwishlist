@@ -71,7 +71,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             $quantity = $product->minimal_quantity;
         }
 
-        if (false === $product->productAttributeExists([$id_product_attribute])) {
+        if (false === $this->assertProductAttributeExists($id_product, $id_product_attribute)) {
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
@@ -373,14 +373,15 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
                     'message' => $this->trans('Product added to cart', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
-        } else {
-            return $this->ajaxRender(
-                json_encode([
-                    'success' => false,
-                    'message' => $this->trans('Error when adding product to cart', [], 'Modules.Blockwishlist.Shop'),
-                ])
-            );
         }
+
+
+        return $this->ajaxRender(
+            json_encode([
+                'success' => false,
+                'message' => $this->trans('Error when adding product to cart', [], 'Modules.Blockwishlist.Shop'),
+            ])
+        );
     }
 
     private function getUrlByIdWishListAction($params)
@@ -413,5 +414,25 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             ])
         );
         exit;
+    }
+
+    /**
+     * Check if product attribute id is related to the product
+     *
+     * @param int $id_product
+     * @param int $id_product_attribute
+     *
+     * @return bool
+     */
+    private function assertProductAttributeExists($id_product, $id_product_attribute)
+    {
+        return Db::getInstance()->getValue(
+            'SELECT pas.`id_product_attribute` ' .
+            'FROM `' . _DB_PREFIX_ . 'product_attribute` pa ' .
+            'INNER JOIN `' . _DB_PREFIX_ . 'product_attribute_shop` pas ON (pas.id_product_attribute = pa.id_product_attribute) ' .
+            'WHERE pas.id_shop =' . (int) $this->context->shop->id . ' AND pa.`id_product` = ' . (int) $id_product . ' ' .
+            'AND pas.id_product_attribute = ' . (int) $id_product_attribute
+        );
+
     }
 }
