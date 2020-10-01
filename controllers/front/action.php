@@ -71,7 +71,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             $quantity = $product->minimal_quantity;
         }
 
-        if (false === $this->assertProductAttributeExists($id_product, $id_product_attribute)) {
+        if (false === $this->assertProductAttributeExists($id_product, $id_product_attribute) && $id_product_attribute !== 0) {
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
