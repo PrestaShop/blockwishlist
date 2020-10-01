@@ -224,7 +224,7 @@ class StatisticsCalculator
             INNER JOIN ' . _DB_PREFIX_ . 'blockwishlist_statistics bws ON (o.id_cart = bws.id_cart )
             LEFT JOIN ' . _DB_PREFIX_ . 'order_history oh ON (o.`id_order` = oh.`id_order`)
             LEFT JOIN ' . _DB_PREFIX_ . 'order_state os ON (os.`id_order_state` = oh.`id_order_state` AND os.`paid` = 1 AND os.`shipped` = 1)
-            LEFT JOIN ' . _DB_PREFIX_ . 'order_detail od ON (od.`id_order` = o.`id_order` AND od.`product_id` = bws.`id_product` AND od.`product_attribute_id` = bws.`id_product_attribute`
+            LEFT JOIN ' . _DB_PREFIX_ . 'order_detail od ON (od.`id_order` = o.`id_order` AND od.`product_id` = bws.`id_product` AND od.`product_attribute_id` = bws.`id_product_attribute`)
             WHERE bws.`id_cart` <> 0 AND bws.`id_product` = ' . (int) $id_product . ' AND bws.`id_product_attribute` = ' . (int) $id_product_attribute . '
         ';
 
