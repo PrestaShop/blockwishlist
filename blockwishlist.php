@@ -129,7 +129,7 @@ class BlockWishList extends Module
     public function hookActionFrontControllerSetMedia(array $params)
     {
         $productsTagged = true === $this->context->customer->isLogged()
-            ? WishList::getAllProductByCustomer($this->context->customer->id)
+            ? WishList::getAllProductByCustomer($this->context->customer->id, $this->context->shop->id)
             : false;
 
         Media::addJsDef([

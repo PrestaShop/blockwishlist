@@ -441,13 +441,14 @@ class WishList extends ObjectModel
      *
      * @return array|false
      */
-    public static function getAllProductByCustomer($id_customer)
+    public static function getAllProductByCustomer($id_customer, $idShop)
     {
         $result = Db::getInstance()->executeS('
             SELECT  `id_product`, `id_product_attribute`, w.`id_wishlist`, wp.`quantity`
             FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
             LEFT JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
             WHERE w.`id_customer` = ' . (int) $id_customer . '
+            AND w.id_shop = ' . (int) $idShop . '
             AND wp.`quantity` > 0 ');
 
         if (empty($result)) {
