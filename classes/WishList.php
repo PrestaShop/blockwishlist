@@ -438,6 +438,7 @@ class WishList extends ObjectModel
 
     /**
      * @param int $id_customer
+     * @param int $idShop
      *
      * @return array|false
      */
