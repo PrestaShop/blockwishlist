@@ -240,7 +240,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->trans('Product succesfully removed', [], 'Modules.Blockwishlist.Shop'),
+                        'message' => $this->trans('Product successfully removed', [], 'Modules.Blockwishlist.Shop'),
                     ])
                 );
             }
@@ -282,7 +282,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
                 return $this->ajaxRender(
                     json_encode([
                         'success' => true,
-                        'message' => $this->trans('Product succesfully updated', [], 'Modules.Blockwishlist.Shop'),
+                        'message' => $this->trans('Product successfully updated', [], 'Modules.Blockwishlist.Shop'),
                     ])
                 );
             }
