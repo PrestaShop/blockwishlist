@@ -193,7 +193,6 @@
       addToCart: {
         type: String,
         required: true,
-        default: 'Add to cart',
       },
       status: {
         type: Number,
