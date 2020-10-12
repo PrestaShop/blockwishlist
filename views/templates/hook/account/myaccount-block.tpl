@@ -16,4 +16,11 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
-<p>{$blockwishlist|escape:'html':'UTF-8'}</p>
+
+{if $customer.is_logged}
+  <li>
+    <a href="{$url}" title="{$wishlistsTitlePage}" rel="nofollow">
+      {$blockwishlist|escape:'html':'UTF-8'}
+    <a>
+  </li>
+{/if}

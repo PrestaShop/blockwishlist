@@ -222,6 +222,8 @@ class BlockWishList extends Module
     {
         $this->smarty->assign([
             'blockwishlist' => $this->displayName,
+            'url' => $this->context->link->getModuleLink('blockwishlist', 'lists'),
+            'wishlistsTitlePage' => Configuration::get('blockwishlist_WishlistPageName', $this->context->language->id),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/account/myaccount-block.tpl');
