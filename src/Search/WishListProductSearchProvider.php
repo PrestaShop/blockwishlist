@@ -174,6 +174,19 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 return [];
             }
 
+            $products = array_map(
+                function ($product) {
+                    if (0 < $product['id_product_attribute']) {
+                        $combinationImages = Product::_getAttributeImageAssociations($product['id_product_attribute']);
+                        if (count($combinationImages)) {
+                            $product['cover_image_id'] = $combinationImages[0];
+                        }
+                    }
+                    return $product;
+                },
+                $products
+            );
+
             return Product::getProductsProperties((int) $context->getIdLang(), $products);
         }
 
