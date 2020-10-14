@@ -182,6 +182,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                             $product['cover_image_id'] = $combinationImages[0];
                         }
                     }
+
                     return $product;
                 },
                 $products
