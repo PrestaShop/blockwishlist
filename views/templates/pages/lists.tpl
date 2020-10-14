@@ -43,6 +43,6 @@
 {block name='page_footer_container'}
   <div class="wishlist-footer-links">
     <a href="{$link->getPageLink('my-account', true)|escape:'html'}"><i class="material-icons">chevron_left</i>{l s='Return to your account' d='Modules.Blockwishlist.Shop'}</a>
-    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' d='Modules.Blockwishlist.Shop'}</a>
+    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' d='Shop.Theme.Global'}</a>
   </div>
 {/block}
