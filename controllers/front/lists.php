@@ -21,6 +21,9 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
 {
     public function initContent()
     {
+        if (false === $this->context->customer->isLogged()) {
+            Tools::redirect('index');
+        }
         parent::initContent();
 
         $this->context->smarty->assign(
