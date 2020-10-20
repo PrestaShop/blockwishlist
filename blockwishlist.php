@@ -65,7 +65,7 @@ class BlockWishList extends Module
     public function __construct()
     {
         $this->name = 'blockwishlist';
-        $this->tab = 'front_office_features';
+        $this->tab = 'administration';
         $this->version = '2.0.0';
         $this->author = 'PrestaShop';
         $this->need_instance = 0;
