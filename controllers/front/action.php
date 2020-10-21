@@ -95,6 +95,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
         $newStat = new Statistics();
         $newStat->id_product = $id_product;
         $newStat->id_product_attribute = $id_product_attribute;
+        $newStat->id_shop = $this->context->shop->id;
         $newStat->save();
 
         if (false === $productIsAdded) {
@@ -361,7 +362,8 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             SET `id_cart` = ' . (int) $this->context->cart->id . '
             WHERE `id_cart` = 0
             AND `id_product` = ' . (int) $params['id_product'] . '
-            AND `id_product_attribute` = ' . (int) $params['id_product_attribute']
+            AND `id_product_attribute` = ' . (int) $params['id_product_attribute'] . '
+            AND `id_shop`= ' . $this->context->shop->id
         );
 
         if (true === $productAdd) {
