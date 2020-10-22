@@ -73,6 +73,7 @@ class StatisticsCalculator
         $query->select('date_add');
         $query->select('id_statistics');
         $query->from('blockwishlist_statistics');
+        $query->where('id_shop = "' . (int) $this->context->shop->id . '"');
 
         switch ($statsRange) {
             case 'currentYear':
@@ -226,7 +227,8 @@ class StatisticsCalculator
             LEFT JOIN ' . _DB_PREFIX_ . 'order_state os ON (os.`id_order_state` = oh.`id_order_state` AND os.`paid` = 1 AND os.`shipped` = 1)
             LEFT JOIN ' . _DB_PREFIX_ . 'order_detail od ON (od.`id_order` = o.`id_order` AND od.`product_id` = bws.`id_product` AND od.`product_attribute_id` = bws.`id_product_attribute`)
             WHERE bws.`id_cart` <> 0 AND bws.`id_product` = ' . (int) $id_product . ' AND bws.`id_product_attribute` = ' . (int) $id_product_attribute . '
-        ';
+            AND bws.`id_shop` = ' . (int) $this->context->shop->id . '
+            ';
 
         if (null != $dateStart) {
             $queryOrders .= 'AND bws.date_add >= "' . $dateStart . '"';
@@ -243,6 +245,7 @@ class StatisticsCalculator
         $queryCountAll->from('blockwishlist_statistics');
         $queryCountAll->where('id_product = ' . $id_product);
         $queryCountAll->where('id_product_attribute = ' . $id_product_attribute);
+        $queryCountAll->where('id_shop = ' . (int) $this->context->shop->id);
 
         if (null != $dateStart) {
             $queryCountAll->where('date_add >= "' . $dateStart . '"');

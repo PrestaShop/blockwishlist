@@ -44,6 +44,7 @@ function upgrade_module_2_0_0($module)
         $newStat = new Statistics();
         $newStat->id_product = $field['id_product'];
         $newStat->id_product_attribute = $field['id_product_attribute'];
+        $newStat->id_shop = $this->context->shop->id;
         $newStat->save();
     }
 
