@@ -19,11 +19,13 @@
  */
 class BlockWishlistListsModuleFrontController extends ModuleFrontController
 {
+    /**
+     * @var bool If set to true, will be redirected to authentication page
+     */
+    public $auth = true;
+
     public function initContent()
     {
-        if (false === $this->context->customer->isLogged()) {
-            Tools::redirect('index');
-        }
         parent::initContent();
 
         $this->context->smarty->assign(
