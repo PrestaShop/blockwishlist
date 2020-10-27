@@ -297,4 +297,21 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
 
         return [];
     }
+
+    public function getBreadcrumbLinks()
+    {
+        $breadcrumb = parent::getBreadcrumbLinks();
+
+        $breadcrumb['links'][] = $this->addMyAccountToBreadcrumb();
+        $breadcrumb['links'][] = [
+            'title' => Configuration::get('blockwishlist_WishlistPageName', $this->context->language->id),
+            'url' => $this->context->link->getModuleLink('blockwishlist', 'lists'),
+        ];
+        $breadcrumb['links'][] = [
+            'title' => $this->wishlist->name,
+            'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'view', $this->getAccessParams()),
+        ];
+
+        return $breadcrumb;
+    }
 }

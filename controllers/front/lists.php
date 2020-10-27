@@ -30,13 +30,13 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
 
         $this->context->smarty->assign(
         [
-            'url' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
-            'createUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),
-            'deleteListUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteWishlist']),
-            'deleteProductUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
-            'renameUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'renameWishlist']),
-            'shareUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'getUrlByIdWishlist']),
-            'addUrl' => Context::getContext()->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
+            'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
+            'createUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),
+            'deleteListUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteWishlist']),
+            'deleteProductUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'renameUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'renameWishlist']),
+            'shareUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'getUrlByIdWishlist']),
+            'addUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),
             'accountLink' => '#',
             'wishlistsTitlePage' => Configuration::get('blockwishlist_WishlistPageName', $this->context->language->id),
             'newWishlistCTA' => Configuration::get('blockwishlist_CreateButtonLabel', $this->context->language->id),
@@ -52,5 +52,18 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
       );
 
         $this->setTemplate('module:blockwishlist/views/templates/pages/lists.tpl');
+    }
+
+    public function getBreadcrumbLinks()
+    {
+        $breadcrumb = parent::getBreadcrumbLinks();
+
+        $breadcrumb['links'][] = $this->addMyAccountToBreadcrumb();
+        $breadcrumb['links'][] = [
+          'title' => Configuration::get('blockwishlist_WishlistPageName', $this->context->language->id),
+          'url' => $this->context->link->getModuleLink('blockwishlist', 'lists'),
+        ];
+
+        return $breadcrumb;
     }
 }

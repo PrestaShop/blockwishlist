@@ -27,13 +27,13 @@
     data-url="{$url}"
     data-list-id="{$id}"
     data-default-sort="{l s='Last added' d='Modules.Blockwishlist.Shop'}"
-    data-add-to-cart="{l s='Add to cart' d='Modules.Blockwishlist.Shop'}"
+    data-add-to-cart="{l s='Add to cart' d='Shop.Theme.Actions'}"
     data-share="{if $isGuest}true{else}false{/if}"
     data-customize-text="{l s='Customize' d='Modules.Blockwishlist.Shop'}"
-    data-quantity-text="{l s='Quantity' d='Modules.Blockwishlist.Shop'}"
+    data-quantity-text="{l s='Quantity' d='Shop.Theme.Catalog'}"
     data-title="{$wishlistName}"
     data-no-products-message="{l s='No products found' d='Modules.Blockwishlist.Shop'}"
-    data-filter="{l s='Filter' d='Modules.Blockwishlist.Shop'}"
+    data-filter="{l s='Filter' d='Shop.Theme.Actions'}"
   >
   </div>
 
@@ -46,6 +46,6 @@
 {block name='page_footer_container'}
   <div class="wishlist-footer-links">
     <a href="{$wishlistsLink}"><i class="material-icons">chevron_left</i>{l s='Return to wishlists' d='Modules.Blockwishlist.Shop'}</a>
-    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' d='Modules.Blockwishlist.Shop'}</a>
+    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' d='Shop.Theme.Global'}</a>
   </div>
 {/block}
