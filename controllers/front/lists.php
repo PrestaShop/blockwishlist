@@ -19,6 +19,11 @@
  */
 class BlockWishlistListsModuleFrontController extends ModuleFrontController
 {
+    /**
+     * @var bool If set to true, will be redirected to authentication page
+     */
+    public $auth = true;
+
     public function initContent()
     {
         parent::initContent();
