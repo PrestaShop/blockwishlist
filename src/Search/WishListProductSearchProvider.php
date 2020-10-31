@@ -130,6 +130,9 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 )
             ) > 0 AS new'
             );
+            $querySearch->select('
+                (SELECT `id_image` FROM `' . _DB_PREFIX_ . 'product_attribute_image` WHERE `id_product_attribute` = product_attribute_shop.`id_product_attribute`) cover_image_id'
+            );
             if (Combination::isFeatureActive()) {
                 $querySearch->select('product_attribute_shop.minimal_quantity AS product_attribute_minimal_quantity, IFNULL(product_attribute_shop.`id_product_attribute`,0) AS id_product_attribute');
             }
@@ -169,24 +172,10 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
             $querySearch->orderBy($sortOrder . ' ' . $query->getSortOrder()->toLegacyOrderWay());
             $querySearch->limit(((int) $query->getPage() - 1) * (int) $query->getResultsPerPage(), (int) $query->getResultsPerPage());
             $products = $this->db->executeS($querySearch);
-
+            
             if (empty($products)) {
                 return [];
             }
-
-            $products = array_map(
-                function ($product) {
-                    if (0 < (int) $product['id_product_attribute']) {
-                        $combinationImages = Product::_getAttributeImageAssociations($product['id_product_attribute']);
-                        if ($combinationImages && isset($combinationImages[0])) {
-                            $product['cover_image_id'] = $combinationImages[0];
-                        }
-                    }
-
-                    return $product;
-                },
-                $products
-            );
 
             return Product::getProductsProperties((int) $context->getIdLang(), $products);
         }
