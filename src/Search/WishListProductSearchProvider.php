@@ -178,7 +178,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 function ($product) {
                     if (0 < (int) $product['id_product_attribute']) {
                         $combinationImages = Product::_getAttributeImageAssociations($product['id_product_attribute']);
-                        if (count($combinationImages)) {
+                        if ($combinationImages && isset($combinationImages[0])) {
                             $product['cover_image_id'] = $combinationImages[0];
                         }
                     }
