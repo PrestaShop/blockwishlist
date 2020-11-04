@@ -130,6 +130,9 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 )
             ) > 0 AS new'
             );
+            $querySearch->select('
+                (SELECT `id_image` FROM `' . _DB_PREFIX_ . 'product_attribute_image` WHERE `id_product_attribute` = product_attribute_shop.`id_product_attribute`) cover_image_id'
+            );
             if (Combination::isFeatureActive()) {
                 $querySearch->select('product_attribute_shop.minimal_quantity AS product_attribute_minimal_quantity, IFNULL(product_attribute_shop.`id_product_attribute`,0) AS id_product_attribute');
             }
