@@ -107,23 +107,23 @@
       <button
         class="btn wishlist-product-addtocart"
         :class="{
-          'btn-secondary': Boolean(product.customizable),
-          'btn-primary': !Boolean(product.customizable)
+          'btn-secondary': product.customizable,
+          'btn-primary': !product.customizable
         }"
         :disabled="isDisabled"
         @click="
-          product.add_to_cart_url || Boolean(product.customizable)
+          product.add_to_cart_url || product.customizable
             ? addToCartAction()
             : null
         "
       >
         <i
           class="material-icons shopping-cart"
-          v-if="!Boolean(product.customizable)"
+          v-if="!product.customizable"
         >
           shopping_cart
         </i>
-        {{ Boolean(product.customizable) ? customizeText : addToCart }}
+        {{ product.customizable ? customizeText : addToCart }}
       </button>
 
       <button
