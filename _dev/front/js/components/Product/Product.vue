@@ -107,23 +107,23 @@
       <button
         class="btn wishlist-product-addtocart"
         :class="{
-          'btn-secondary': product.customizable,
-          'btn-primary': !product.customizable
+          'btn-secondary': product.customizable === '1',
+          'btn-primary': product.customizable === '0'
         }"
         :disabled="isDisabled"
         @click="
-          product.add_to_cart_url || product.customizable
+          product.add_to_cart_url || product.customizable === '1'
             ? addToCartAction()
             : null
         "
       >
         <i
           class="material-icons shopping-cart"
-          v-if="!product.customizable"
+          v-if="product.customizable === '0'"
         >
           shopping_cart
         </i>
-        {{ product.customizable ? customizeText : addToCart }}
+        {{ product.customizable === '1' ? customizeText : addToCart }}
       </button>
 
       <button
@@ -212,7 +212,7 @@
     },
     computed: {
       isDisabled() {
-        if (this.product.customizable) {
+        if (this.product.customizable === '1') {
           return false;
         }
 
