@@ -312,6 +312,7 @@
         flex-wrap: wrap;
         margin: -25px;
         padding: 20px 45px;
+        margin-top: 0;
       }
 
       &-count {
