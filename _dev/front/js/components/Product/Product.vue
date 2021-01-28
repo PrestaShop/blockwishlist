@@ -233,7 +233,7 @@
         });
       },
       async addToCartAction() {
-        if (this.product.add_to_cart_url) {
+        if (this.product.add_to_cart_url && this.product.customizable !== '1') {
           try {
             const datas = new FormData();
             datas.append('qty', this.product.wishlist_quantity);
