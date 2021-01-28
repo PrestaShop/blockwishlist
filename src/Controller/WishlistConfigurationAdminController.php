@@ -83,10 +83,11 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
 
     public function resetStatisticsCacheAction()
     {
-        $result = $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_ALL_TIME)
-            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_DAY)
-            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_MONTH)
-            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_YEAR);
+        $shop_id = (int) \Context::getContext()->shop->id;
+        $result = $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_ALL_TIME . $shop_id)
+            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_DAY . $shop_id)
+            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_MONTH . $shop_id)
+            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_YEAR . $shop_id);
 
         return new JsonResponse(['success' => $result]);
     }

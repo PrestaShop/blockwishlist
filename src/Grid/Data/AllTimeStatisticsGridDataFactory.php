@@ -14,11 +14,12 @@ class AllTimeStatisticsGridDataFactory extends BaseGridDataFactory implements Gr
 
     public function getData(SearchCriteriaInterface $searchCriteria)
     {
-        if ($this->cache->contains(self::CACHE_KEY_STATS_ALL_TIME)) {
-            $results = $this->cache->fetch(self::CACHE_KEY_STATS_ALL_TIME);
+        $shop_id = (int) \Context::getContext()->shop->id;
+        if ($this->cache->contains(self::CACHE_KEY_STATS_ALL_TIME . $shop_id)) {
+            $results = $this->cache->fetch(self::CACHE_KEY_STATS_ALL_TIME . $shop_id);
         } else {
             $results = $this->calculator->computeStatsFor('allTime');
-            $this->cache->save(self::CACHE_KEY_STATS_ALL_TIME, $results, self::CACHE_LIFETIME_SECONDS);
+            $this->cache->save(self::CACHE_KEY_STATS_ALL_TIME . $shop_id, $results, self::CACHE_LIFETIME_SECONDS);
         }
 
         return new GridData(new RecordCollection($results), count($results));
