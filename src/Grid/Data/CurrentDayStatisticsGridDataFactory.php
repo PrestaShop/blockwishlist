@@ -14,7 +14,7 @@ class CurrentDayStatisticsGridDataFactory extends BaseGridDataFactory implements
 
     public function getData(SearchCriteriaInterface $searchCriteria)
     {
-        $shop_id = (int) \Context::getContext()->shop->id;
+        $shop_id = current($this->listShopId);
         if ($this->cache->contains(self::CACHE_KEY_STATS_CURRENT_DAY . $shop_id)) {
             $results = $this->cache->fetch(self::CACHE_KEY_STATS_CURRENT_DAY . $shop_id);
         } else {
