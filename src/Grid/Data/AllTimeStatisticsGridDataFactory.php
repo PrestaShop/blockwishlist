@@ -14,7 +14,7 @@ class AllTimeStatisticsGridDataFactory extends BaseGridDataFactory implements Gr
 
     public function getData(SearchCriteriaInterface $searchCriteria)
     {
-        $shop_id = current($this->listShopId);
+        $shop_id = $this->shopId;
         if ($this->cache->contains(self::CACHE_KEY_STATS_ALL_TIME . $shop_id)) {
             $results = $this->cache->fetch(self::CACHE_KEY_STATS_ALL_TIME . $shop_id);
         } else {

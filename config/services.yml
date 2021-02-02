@@ -5,7 +5,7 @@ services:
     class: PrestaShop\Module\BlockWishList\Controller\WishlistConfigurationAdminController
     arguments:
       - '@doctrine.cache.provider'
-      - '@=service("prestashop.adapter.shop.context").getContextListShopID()'
+      - '@=service("prestashop.adapter.shop.context").getContextShopID()'
 
   # Calculator
   prestashop.module.blockwishlist.calculator.statistics_calculator:
@@ -42,28 +42,28 @@ services:
     arguments:
         - '@doctrine.cache.provider'
         - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
-        - '@=service("prestashop.adapter.shop.context").getContextListShopID()'
+        - '@=service("prestashop.adapter.shop.context").getContextShopID()'
 
   prestashop.module.blockwishlist.grid.current_year_statistics_data_factory:
     class: 'PrestaShop\Module\BlockWishList\Grid\Data\CurrentYearStatisticsGridDataFactory'
     arguments:
         - '@doctrine.cache.provider'
         - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
-        - '@=service("prestashop.adapter.shop.context").getContextListShopID()'
+        - '@=service("prestashop.adapter.shop.context").getContextShopID()'
 
   prestashop.module.blockwishlist.grid.current_month_statistics_data_factory:
     class: 'PrestaShop\Module\BlockWishList\Grid\Data\CurrentMonthStatisticsGridDataFactory'
     arguments:
         - '@doctrine.cache.provider'
         - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
-        - '@=service("prestashop.adapter.shop.context").getContextListShopID()'
+        - '@=service("prestashop.adapter.shop.context").getContextShopID()'
 
   prestashop.module.blockwishlist.grid.current_day_statistics_data_factory:
     class: 'PrestaShop\Module\BlockWishList\Grid\Data\CurrentDayStatisticsGridDataFactory'
     arguments:
         - '@doctrine.cache.provider'
         - '@prestashop.module.blockwishlist.calculator.statistics_calculator'
-        - '@=service("prestashop.adapter.shop.context").getContextListShopID()'
+        - '@=service("prestashop.adapter.shop.context").getContextShopID()'
 
   # Grid Factories
   prestashop.module.blockwishlist.grid.all_time_stastistics_grid_factory:
