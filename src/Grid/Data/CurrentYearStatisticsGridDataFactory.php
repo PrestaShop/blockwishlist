@@ -14,8 +14,8 @@ class CurrentYearStatisticsGridDataFactory extends BaseGridDataFactory implement
 
     public function getData(SearchCriteriaInterface $searchCriteria)
     {
-        if ($this->cache->contains(self::CACHE_KEY_STATS_CURRENT_YEAR . $shop_id)) {
-            $results = $this->cache->fetch(self::CACHE_KEY_STATS_CURRENT_YEAR . $shop_id);
+        if ($this->cache->contains(self::CACHE_KEY_STATS_CURRENT_YEAR . $this->shopId)) {
+            $results = $this->cache->fetch(self::CACHE_KEY_STATS_CURRENT_YEAR . $this->shopId);
         } else {
             $results = $this->calculator->computeStatsFor('currentYear');
             $this->cache->save(self::CACHE_KEY_STATS_CURRENT_YEAR . $this->shopId, $results, self::CACHE_LIFETIME_SECONDS);
