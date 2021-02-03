@@ -19,7 +19,7 @@ class AllTimeStatisticsGridDataFactory extends BaseGridDataFactory implements Gr
             $results = $this->cache->fetch(self::CACHE_KEY_STATS_ALL_TIME . $shop_id);
         } else {
             $results = $this->calculator->computeStatsFor('allTime');
-            $this->cache->save(self::CACHE_KEY_STATS_ALL_TIME . $shop_id, $results, self::CACHE_LIFETIME_SECONDS);
+            $this->cache->save(self::CACHE_KEY_STATS_ALL_TIME . $this->shopId, $results, self::CACHE_LIFETIME_SECONDS);
         }
 
         return new GridData(new RecordCollection($results), count($results));
