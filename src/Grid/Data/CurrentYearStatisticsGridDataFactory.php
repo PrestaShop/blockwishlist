@@ -18,7 +18,7 @@ class CurrentYearStatisticsGridDataFactory extends BaseGridDataFactory implement
             $results = $this->cache->fetch(self::CACHE_KEY_STATS_CURRENT_YEAR . $shop_id);
         } else {
             $results = $this->calculator->computeStatsFor('currentYear');
-            $this->cache->save(self::CACHE_KEY_STATS_CURRENT_YEAR . $shop_id, $results, self::CACHE_LIFETIME_SECONDS);
+            $this->cache->save(self::CACHE_KEY_STATS_CURRENT_YEAR . $this->shopId, $results, self::CACHE_LIFETIME_SECONDS);
         }
 
         return new GridData(new RecordCollection($results), count($results));
