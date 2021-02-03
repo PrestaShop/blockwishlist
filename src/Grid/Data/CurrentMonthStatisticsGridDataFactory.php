@@ -14,9 +14,8 @@ class CurrentMonthStatisticsGridDataFactory extends BaseGridDataFactory implemen
 
     public function getData(SearchCriteriaInterface $searchCriteria)
     {
-        $shop_id = $this->shopId;
-        if ($this->cache->contains(self::CACHE_KEY_STATS_CURRENT_MONTH . $shop_id)) {
-            $results = $this->cache->fetch(self::CACHE_KEY_STATS_CURRENT_MONTH . $shop_id);
+        if ($this->cache->contains(self::CACHE_KEY_STATS_CURRENT_MONTH . $this->shopId)) {
+            $results = $this->cache->fetch(self::CACHE_KEY_STATS_CURRENT_MONTH . $this->shopId);
         } else {
             $results = $this->calculator->computeStatsFor('currentMonth');
             $this->cache->save(self::CACHE_KEY_STATS_CURRENT_MONTH . $shop_id, $results, self::CACHE_LIFETIME_SECONDS);
