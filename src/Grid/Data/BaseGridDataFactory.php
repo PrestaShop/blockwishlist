@@ -18,9 +18,15 @@ class BaseGridDataFactory
     /* @var StatisticsCalculator $calculator */
     protected $calculator;
 
-    public function __construct(CacheProvider $cache, StatisticsCalculator $calculator)
+    /**
+     * @var int
+     */
+    protected $shopId;
+
+    public function __construct(CacheProvider $cache, StatisticsCalculator $calculator, int $shopId)
     {
         $this->cache = $cache;
         $this->calculator = $calculator;
+        $this->shopId = $shopId;
     }
 }

@@ -37,9 +37,15 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
      */
     private $cache;
 
-    public function __construct(CacheProvider $cache)
+    /**
+     * @var int
+     */
+    private $shopId;
+
+    public function __construct(CacheProvider $cache, int $shopId)
     {
         $this->cache = $cache;
+        $this->shopId = $shopId;
     }
 
     public function configurationAction(Request $request)
@@ -83,10 +89,10 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
 
     public function resetStatisticsCacheAction()
     {
-        $result = $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_ALL_TIME)
-            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_DAY)
-            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_MONTH)
-            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_YEAR);
+        $result = $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_ALL_TIME . $this->shopId)
+            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_DAY . $this->shopId)
+            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_MONTH . $this->shopId)
+            && $this->cache->delete(BaseGridDataFactory::CACHE_KEY_STATS_CURRENT_YEAR . $this->shopId);
 
         return new JsonResponse(['success' => $result]);
     }

@@ -14,11 +14,11 @@ class CurrentDayStatisticsGridDataFactory extends BaseGridDataFactory implements
 
     public function getData(SearchCriteriaInterface $searchCriteria)
     {
-        if ($this->cache->contains(self::CACHE_KEY_STATS_CURRENT_DAY)) {
-            $results = $this->cache->fetch(self::CACHE_KEY_STATS_CURRENT_DAY);
+        if ($this->cache->contains(self::CACHE_KEY_STATS_CURRENT_DAY . $this->shopId)) {
+            $results = $this->cache->fetch(self::CACHE_KEY_STATS_CURRENT_DAY . $this->shopId);
         } else {
             $results = $this->calculator->computeStatsFor('currentDay');
-            $this->cache->save(self::CACHE_KEY_STATS_CURRENT_DAY, $results, self::CACHE_LIFETIME_SECONDS);
+            $this->cache->save(self::CACHE_KEY_STATS_CURRENT_DAY . $this->shopId, $results, self::CACHE_LIFETIME_SECONDS);
         }
 
         return new GridData(new RecordCollection($results), count($results));
