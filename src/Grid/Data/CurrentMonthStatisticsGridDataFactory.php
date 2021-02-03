@@ -18,7 +18,7 @@ class CurrentMonthStatisticsGridDataFactory extends BaseGridDataFactory implemen
             $results = $this->cache->fetch(self::CACHE_KEY_STATS_CURRENT_MONTH . $this->shopId);
         } else {
             $results = $this->calculator->computeStatsFor('currentMonth');
-            $this->cache->save(self::CACHE_KEY_STATS_CURRENT_MONTH . $shop_id, $results, self::CACHE_LIFETIME_SECONDS);
+            $this->cache->save(self::CACHE_KEY_STATS_CURRENT_MONTH . $this->shopId, $results, self::CACHE_LIFETIME_SECONDS);
         }
 
         return new GridData(new RecordCollection($results), count($results));
