@@ -38,11 +38,11 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
     private $cache;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $shopId;
 
-    public function __construct(CacheProvider $cache, int $shopId)
+    public function __construct(CacheProvider $cache, ?int $shopId)
     {
         $this->cache = $cache;
         $this->shopId = $shopId;
@@ -84,6 +84,7 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
             'currentYearStatisticsGrid' => $this->presentGrid($currentYearGrid),
             'currentMonthStatisticsGrid' => $this->presentGrid($currentMonthGrid),
             'currentDayStatisticsGrid' => $this->presentGrid($currentDayGrid),
+            'shopId' => $this->shopId,
         ]);
     }
 

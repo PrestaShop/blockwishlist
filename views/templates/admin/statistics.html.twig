@@ -19,6 +19,14 @@
 {% extends '@PrestaShop/Admin/layout.html.twig' %}
 
 {% block content %}
+  {% if shopId == null %}
+    <div class="alert medium-alert alert-warning" role="alert">
+      <p class="alert-text">
+        {{ 'You need to choose a specific shop to display the top 10 most added products'|trans({}, 'Modules.Blockwishlist.Admin') }}
+      </p>
+    </div>
+  {% endif %}
+
   <div class="row justify-content-center wishlist-stats">
     <div class="col-xl-10">
       <div class="card">
