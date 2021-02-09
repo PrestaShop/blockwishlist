@@ -42,7 +42,7 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
      */
     private $shopId;
 
-    public function __construct(CacheProvider $cache, ?int $shopId)
+    public function __construct(CacheProvider $cache, $shopId)
     {
         $this->cache = $cache;
         $this->shopId = $shopId;
