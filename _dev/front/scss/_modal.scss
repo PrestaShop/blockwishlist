@@ -1,0 +1,114 @@
+.wishlist-modal {
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  &.show {
+    opacity: 1;
+    pointer-events: all;
+    z-index: 1051;
+
+    + .modal-backdrop {
+      pointer-events: all;
+    }
+  }
+
+  &.fade .modal-dialog {
+    max-width: 550px;
+    transform: translateY(0);
+  }
+
+  .close {
+    font-weight: 400;
+    color: #7a7a7a;
+    opacity: 1;
+    font-size: 2.25rem;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  .modal {
+    &-header {
+      padding: 0.625rem 1.875rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: none;
+
+      h5 {
+        color: #232323;
+        font-size: 22px;
+        font-weight: bold;
+        letter-spacing: 0;
+        line-height: 30px;
+      }
+
+      &::after {
+        content: none;
+      }
+    }
+
+    &-text {
+      color: #232323;
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 19px;
+    }
+
+    &-body {
+      padding: 15px 30px;
+
+      .form-group {
+        margin-bottom: 0;
+
+        .form-control {
+          border-radius: 0;
+          background: none;
+          color: black;
+        }
+      }
+    }
+
+    &-content {
+      width: 100%;
+    }
+
+    &-cancel {
+      background: #dddddd;
+      margin-right: 10px;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    &-footer {
+      padding: 12px 30px;
+      border: none;
+      padding-bottom: 30px;
+
+      .btn {
+        text-transform: none;
+      }
+    }
+
+    &-backdrop {
+      pointer-events: none;
+
+      &.in {
+        pointer-events: all;
+      }
+    }
+  }
+
+  + .modal-backdrop {
+    pointer-events: none;
+
+    &.in {
+      pointer-events: all;
+    }
+  }
+}

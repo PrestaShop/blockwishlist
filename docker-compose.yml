@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  php:
+    image: phpdockerio/php72-cli
+    volumes:
+      - ./:/var/www/html/modules/blockwishlist
+
+    working_dir: /var/www/html/modules/blockwishlist
+    environment:
+      _PS_ROOT_DIR_: /var/www/html
+  node:
+    image: node:10
+    volumes:
+      - ./:/var/www/html/modules/blockwishlist
+    working_dir: /var/www/html/modules/blockwishlist
+    environment:
+      PATH: /var/www/html/_dev/node_modules/.bin/:$PATH
