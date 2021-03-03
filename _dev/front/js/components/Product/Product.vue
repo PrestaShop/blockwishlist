@@ -24,10 +24,10 @@
     >
       <div class="wishlist-product-image">
         <img
-          v-if="product.cover"
-          :src="product.cover.large.url"
-          :alt="product.cover.legend"
-          :title="product.cover.legend"
+          v-if="product.default_image"
+          :src="product.default_image.large.url"
+          :alt="product.default_image.legend"
+          :title="product.default_image.legend"
           :class="{
             'wishlist-product-unavailable': !product.add_to_cart_url
           }"
