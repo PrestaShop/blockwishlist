@@ -13,9 +13,5 @@ vendor
 
 node_modules
 
-# assets
-
-public/
-
 # mac
 .DS_Store
