@@ -1,0 +1,15 @@
+name: JS tests
+on: [push, pull_request]
+jobs:
+  js-linter:
+    name: JS linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+
+      - name: lint js dependencies
+        uses: PrestaShopCorp/github-action-lint-js/12@v1.0
+        with:
+          cmd: yarn
+          path: .

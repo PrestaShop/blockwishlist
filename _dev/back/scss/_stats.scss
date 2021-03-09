@@ -1,0 +1,76 @@
+.wishlist-stats {
+  .card {
+    &-text {
+      width: 100%;
+      padding: 10px 30px;
+    }
+  }
+
+  & &-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+
+    .btn-group {
+      border: 1px solid #b7ced3;
+      border-radius: 3px;
+
+      button {
+        color: #363a41;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: 19px;
+        background: none;
+        font-weight: 500;
+        transition: 0.25s ease-out;
+
+        &:not(:last-child) {
+          border-right: 1px solid #b7ced3;
+        }
+
+        &:hover,
+        &.active {
+          background-color: #25b9d7;
+          color: #fff;
+        }
+      }
+    }
+
+    .refresh {
+      color: #6c868e;
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 0;
+      line-height: 19px;
+      border: 1px solid #6c868e;
+      border-radius: 4px;
+      transition: 0.25s ease-out;
+      background: none;
+
+      &:hover {
+        background: #6c868e;
+        color: white;
+      }
+    }
+  }
+
+  .wishlist-tab {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+
+    .column-image {
+      img {
+        max-width: 50px;
+      }
+    }
+
+    .column-conversionRate {
+      font-weight: bold;
+    }
+  }
+}

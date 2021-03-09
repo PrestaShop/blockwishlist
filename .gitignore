@@ -1,0 +1,17 @@
+# php
+
+vendor
+.php_cs.cache
+
+# vim
+
+*.swp
+*.swo
+*.swn
+
+# npm
+
+node_modules
+
+# mac
+.DS_Store
