@@ -33,7 +33,7 @@
           }"
         >
         <img
-          v-if="product.cover"
+          v-else-if="product.cover"
           :src="product.cover.large.url"
           :alt="product.cover.legend"
           :title="product.cover.legend"
