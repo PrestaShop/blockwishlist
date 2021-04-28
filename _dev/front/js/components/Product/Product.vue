@@ -33,6 +33,15 @@
           }"
         >
         <img
+          v-else-if="product.cover"
+          :src="product.cover.large.url"
+          :alt="product.cover.legend"
+          :title="product.cover.legend"
+          :class="{
+            'wishlist-product-unavailable': !product.add_to_cart_url
+          }"
+        >
+        <img
           v-else
           :src="prestashop.urls.no_picture_image.bySize.home_default.url"
         >
