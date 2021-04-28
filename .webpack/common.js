@@ -75,7 +75,7 @@ module.exports = {
     libraryTarget: 'window',
     library: '[name]',
     sourceMapFilename: '[name].[hash:8].map',
-    chunkFilename: '[id].[hash:8].js',
+    chunkFilename: '[name].js',
   },
   resolve: {
     extensions: ['.js', '.vue', '.json', '.mjs'],
@@ -161,6 +161,22 @@ module.exports = {
         loader: 'file-loader?name=[hash].[ext]',
       },
     ],
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        graphql: {
+          test: /[\\/]node_modules[\\/](graphql|graphql-tag|graphql-tools|graphql-type-json)[\\/]/,
+          name: 'graphql',
+          chunks: 'all',
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/](core-js|apollo-utilities|apollo-client|apollo-link|apollo-cache-inmemory|apollo-link-http|apollo-link-schema|vue|vue-apollo)[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
   plugins: [
     new FixStyleOnlyEntriesPlugin(),

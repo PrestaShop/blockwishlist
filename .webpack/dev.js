@@ -1,12 +1,12 @@
 const path = require('path');
 const common = require('./common.js');
+const { merge } = require('webpack-merge');
 
 /**
  * Returns the development webpack config,
  * by merging development specific configuration with the common one.
  */
-function devConfig() {
-  const dev = Object.assign(
+const devConfig = () => (merge(
     common,
     {
       devtool: 'inline-source-map',
@@ -16,9 +16,7 @@ function devConfig() {
         publicPath: '/',
       },
     },
-  );
-
-  return dev;
-}
+  )
+);
 
 module.exports = devConfig;

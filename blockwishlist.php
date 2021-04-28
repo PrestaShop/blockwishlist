@@ -162,6 +162,20 @@ class BlockWishList extends Module
               'priority' => 200,
             ]
         );
+        $this->context->controller->registerJavascript(
+            'blockwishlistGraphql',
+            'modules/' . $this->name . '/public/graphql.js',
+            [
+              'priority' => 190,
+            ]
+        );
+        $this->context->controller->registerJavascript(
+            'blockwishlistVendors',
+            'modules/' . $this->name . '/public/vendors.js',
+            [
+              'priority' => 190,
+            ]
+        );
     }
 
     /**

@@ -1,14 +1,18 @@
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const common = require('./common.js');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { merge } = require('webpack-merge');
 
 /**
  * Returns the production webpack config,
  * by merging production specific configuration with the common one.
  *
  */
-function prodConfig() {
-  const prod = Object.assign(common, {
+
+const prodConfig = () => (merge(
+  common,
+  {
     stats: 'minimal',
     optimization: {
       minimizer: [
@@ -23,16 +27,14 @@ function prodConfig() {
         }),
       ],
     },
-  });
-
-  // Required for Vue production environment
-  prod.plugins.push(
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
-  );
-
-  return prod;
-}
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify('production'),
+      }),
+      new BundleAnalyzerPlugin()
+    ]
+  },
+)
+);
 
 module.exports = prodConfig;
