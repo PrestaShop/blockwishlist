@@ -171,6 +171,7 @@ module.exports = {
           chunks: 'all',
         },
         vendors: {
+          // eslint-disable-next-line max-len
           test: /[\\/]node_modules[\\/](core-js|apollo-utilities|apollo-client|apollo-link|apollo-cache-inmemory|apollo-link-http|apollo-link-schema|vue|vue-apollo)[\\/]/,
           name: 'vendors',
           chunks: 'all',
