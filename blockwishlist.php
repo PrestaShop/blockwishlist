@@ -151,7 +151,7 @@ class BlockWishList extends Module
             'modules/' . $this->name . '/public/wishlist.css',
             [
               'media' => 'all',
-              'priority' => 200,
+              'priority' => 100,
             ]
         );
 
@@ -159,7 +159,7 @@ class BlockWishList extends Module
             'blockwishlistController',
             'modules/' . $this->name . '/public/product.bundle.js',
             [
-              'priority' => 200,
+              'priority' => 100,
             ]
         );
     }
