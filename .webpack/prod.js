@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
-const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const {merge} = require('webpack-merge');
 const common = require('./common.js');
 
@@ -10,9 +9,8 @@ const common = require('./common.js');
  *
  */
 
-const prodConfig = () => (merge(
-  common,
-  {
+const prodConfig = () =>
+  merge(common, {
     stats: 'minimal',
     optimization: {
       minimizer: [
@@ -20,21 +18,18 @@ const prodConfig = () => (merge(
           sourceMap: true,
           terserOptions: {
             output: {
-              comments: /@license/i,
-            },
+              comments: /@license/i
+            }
           },
-          extractComments: false,
-        }),
-      ],
+          extractComments: false
+        })
+      ]
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify('production'),
-      }),
-      new BundleAnalyzerPlugin(),
-    ],
-  },
-)
-);
+        'process.env.NODE_ENV': JSON.stringify('production')
+      })
+    ]
+  });
 
 module.exports = prodConfig;

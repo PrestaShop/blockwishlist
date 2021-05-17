@@ -79,7 +79,6 @@
     "vue-loader": "^15",
     "vue-style-loader": "^4.1.2",
     "webpack": "^4.41",
-    "webpack-bundle-analyzer": "^4.4.1",
     "webpack-cli": "^3.3.10",
     "webpack-fix-style-only-entries": "^0.4.0",
     "webpack-merge": "^5.7.3"
