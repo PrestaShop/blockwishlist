@@ -157,7 +157,7 @@
   };
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="scss" type="text/scss">
   .wishlist {
     &-delete {
       .wishlist-modal {

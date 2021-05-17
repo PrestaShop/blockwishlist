@@ -64,7 +64,7 @@
   .wishlist {
     &-pagination {
       .previous {
-        margin-right: 30px;
+        margin-right: 1.875rem;
       }
 
       .js-search-link {
