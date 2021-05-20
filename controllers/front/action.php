@@ -75,7 +75,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
             return $this->ajaxRender(
                 json_encode([
                     'success' => false,
-                    'message' => $this->trans('There was an error adding the product attributes', [], 'Modules.Blockwishlist.Shop'),
+                    'message' => $this->trans('There was an error while adding the product attributes', [], 'Modules.Blockwishlist.Shop'),
                 ])
             );
         }
