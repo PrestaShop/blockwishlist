@@ -79,6 +79,7 @@
             :add-to-cart="addToCart"
             :customize-text="customizeText"
             :quantity-text="quantityText"
+            :list-name="title"
             :list-id="
               listId ? listId : parseInt(currentWishlist.id_wishlist, 10)
             "

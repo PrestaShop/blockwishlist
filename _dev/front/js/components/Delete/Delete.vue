@@ -63,9 +63,18 @@
         value: '',
         isHidden: true,
         listId: null,
+        listName: '',
         productId: null,
         productAttributeId: null,
       };
+    },
+    computed: {
+      confirmMessage() {
+        return this.placeholder.replace(
+          '%nameofthewishlist%',
+          `"${this.listName}"`,
+        );
+      },
     },
     methods: {
       /**
@@ -120,6 +129,7 @@
       EventBus.$on('showDeleteWishlist', (event) => {
         this.value = '';
         this.listId = event.detail.listId;
+        this.listName = event.detail.listName;
         this.productId = null;
         this.productAttributeId = null;
 
