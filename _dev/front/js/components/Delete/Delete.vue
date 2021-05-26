@@ -42,6 +42,11 @@
         required: true,
         default: 'Delete',
       },
+      titleList: {
+        type: String,
+        required: true,
+        default: 'Delete',
+      },
       placeholder: {
         type: String,
         required: true,
@@ -53,6 +58,11 @@
         default: 'Cancel',
       },
       deleteText: {
+        type: String,
+        required: true,
+        default: 'Delete',
+      },
+      deleteTextList: {
         type: String,
         required: true,
         default: 'Delete',
@@ -71,6 +81,12 @@
     computed: {
       confirmMessage() {
         return this.placeholder.replace('%nameofthewishlist%', this.listName);
+      },
+      modalTitle() {
+        return this.productId ? this.title : this.titleList;
+      },
+      modalDeleteText() {
+        return this.productId ? this.deleteText : this.deleteTextList;
       },
     },
     methods: {
