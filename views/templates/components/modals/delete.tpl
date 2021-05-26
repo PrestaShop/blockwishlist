@@ -17,6 +17,8 @@
  * International Registered Trademark & Property of PrestaShop SA
  *}
 
+ {assign var='placeholder' value='The product will be removed from "%nameofthewishlist%".'}
+
 <div
   class="wishlist-delete"
   {if isset($listUrl)}
@@ -26,7 +28,7 @@
     data-delete-product-url="{$deleteProductUrl}"
   {/if}
   data-title="{l s='Remove product from wishlist' d='Modules.Blockwishlist.Shop'}"
-  data-placeholder="{l s='The product will be removed from %nameofthewishlist%.' d='Modules.Blockwishlist.Shop'}"
+  data-placeholder='{l s=$placeholder d='Modules.Blockwishlist.Shop'}'
   data-cancel-text="{l s='Cancel' d='Modules.Blockwishlist.Shop'}"
   data-delete-text="{l s='Remove' d='Modules.Blockwishlist.Shop'}"
 >

@@ -70,10 +70,7 @@
     },
     computed: {
       confirmMessage() {
-        return this.placeholder.replace(
-          '%nameofthewishlist%',
-          `"${this.listName}"`,
-        );
+        return this.placeholder.replace('%nameofthewishlist%', this.listName);
       },
     },
     methods: {
