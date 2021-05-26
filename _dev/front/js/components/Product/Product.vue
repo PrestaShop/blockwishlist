@@ -184,6 +184,11 @@
         required: true,
         default: null,
       },
+      listName: {
+        type: String,
+        required: true,
+        default: '',
+      },
       isShare: {
         type: Boolean,
         required: false,
@@ -236,6 +241,7 @@
         EventBus.$emit('showDeleteWishlist', {
           detail: {
             listId: this.listId,
+            listName: this.listName,
             productId: this.product.id,
             productAttributeId: this.product.id_product_attribute,
           },
