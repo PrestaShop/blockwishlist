@@ -25,10 +25,12 @@
   {if isset($deleteProductUrl)}
     data-delete-product-url="{$deleteProductUrl}"
   {/if}
-  data-title="{l s='Delete' d='Modules.Blockwishlist.Shop'}"
-  data-placeholder="{l s='This action is irreversible' d='Modules.Blockwishlist.Shop'}"
+  data-title="{l s='Remove product from wishlist' d='Modules.Blockwishlist.Shop'}"
+  data-title-list="{l s='Delete wishlist' d='Modules.Blockwishlist.Shop'}"
+  data-placeholder='{l s='The product will be removed from "%nameofthewishlist%".' d='Modules.Blockwishlist.Shop'}'
   data-cancel-text="{l s='Cancel' d='Modules.Blockwishlist.Shop'}"
-  data-delete-text="{l s='Delete' d='Modules.Blockwishlist.Shop'}"
+  data-delete-text="{l s='Remove' d='Modules.Blockwishlist.Shop'}"
+  data-delete-text-list="{l s='Delete' d='Modules.Blockwishlist.Shop'}"
 >
   <div
     class="wishlist-modal modal fade"
@@ -42,7 +44,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">((title))</h5>
+          <h5 class="modal-title">((modalTitle))</h5>
           <button
             type="button"
             class="close"
@@ -53,8 +55,8 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">
-          <p class="modal-text">((placeholder))</p> 
+        <div class="modal-body" v-if="productId">
+          <p class="modal-text">((confirmMessage))</p> 
         </div>
         <div class="modal-footer">
           <button
@@ -71,7 +73,7 @@
             class="btn btn-primary"
             @click="deleteWishlist"
           >
-            ((deleteText))
+            ((modalDeleteText))
           </button>
         </div>
       </div>

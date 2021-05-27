@@ -42,6 +42,11 @@
         required: true,
         default: 'Delete',
       },
+      titleList: {
+        type: String,
+        required: true,
+        default: 'Delete',
+      },
       placeholder: {
         type: String,
         required: true,
@@ -57,15 +62,32 @@
         required: true,
         default: 'Delete',
       },
+      deleteTextList: {
+        type: String,
+        required: true,
+        default: 'Delete',
+      },
     },
     data() {
       return {
         value: '',
         isHidden: true,
         listId: null,
+        listName: '',
         productId: null,
         productAttributeId: null,
       };
+    },
+    computed: {
+      confirmMessage() {
+        return this.placeholder.replace('%nameofthewishlist%', this.listName);
+      },
+      modalTitle() {
+        return this.productId ? this.title : this.titleList;
+      },
+      modalDeleteText() {
+        return this.productId ? this.deleteText : this.deleteTextList;
+      },
     },
     methods: {
       /**
@@ -120,6 +142,7 @@
       EventBus.$on('showDeleteWishlist', (event) => {
         this.value = '';
         this.listId = event.detail.listId;
+        this.listName = event.detail.listName;
         this.productId = null;
         this.productAttributeId = null;
 

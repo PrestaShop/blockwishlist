@@ -33,6 +33,10 @@ const props = [
     type: String,
   },
   {
+    name: 'titleList',
+    type: String,
+  },
+  {
     name: 'placeholder',
     type: String,
   },
@@ -42,6 +46,10 @@ const props = [
   },
   {
     name: 'deleteText',
+    type: String,
+  },
+  {
+    name: 'deleteTextList',
     type: String,
   },
 ];
