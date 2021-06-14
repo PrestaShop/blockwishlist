@@ -76,7 +76,7 @@ class BlockWishList extends Module
         parent::__construct();
 
         $this->displayName = $this->trans('Wishlist', [], 'Modules.Blockwishlist.Admin');
-        $this->description = $this->trans('Adds a block containing the customer\'s wishlists.', [], 'Modules.Blockwishlist.Admin');
+        $this->description = $this->trans('Allow customers to create wishlists to save their favorite products for later.', [], 'Modules.Blockwishlist.Admin');
         $this->ps_versions_compliancy = [
             'min' => '1.7.6.0',
             'max' => _PS_VERSION_,
