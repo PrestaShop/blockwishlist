@@ -6,6 +6,11 @@
         top: 10px;
         right: 10px;
         z-index: 10;
+
+        @at-root .lang-rtl & {
+          right: inherit;
+          left: 10px;
+        }
       }
     }
   }
