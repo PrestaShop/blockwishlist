@@ -24,7 +24,7 @@
  */
 const path = require('path');
 const webpack = require('webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
@@ -36,7 +36,7 @@ module.exports = {
     blockwishlistModule: 'blockwishlistModule',
     removeFromWishlistUrl: 'removeFromWishlistUrl',
     wishlistAddProductToCartUrl: 'wishlistAddProductToCartUrl',
-    wishlistUrl: 'wishlistUrl'
+    wishlistUrl: 'wishlistUrl',
   },
   entry: {
     button: ['./_dev/front/js/components/Button'],
@@ -47,7 +47,7 @@ module.exports = {
       './_dev/front/js/container/ProductsListContainer',
       './_dev/front/js/components/Pagination',
       './_dev/front/js/components/Toast',
-      './_dev/front/js/components/Delete'
+      './_dev/front/js/components/Delete',
     ],
     wishlistcontainer: [
       './_dev/front/js/container/WishlistContainer',
@@ -55,7 +55,7 @@ module.exports = {
       './_dev/front/js/components/Delete',
       './_dev/front/js/components/Toast',
       './_dev/front/js/components/Share',
-      './_dev/front/js/components/Rename'
+      './_dev/front/js/components/Rename',
     ],
     wishlist: ['./_dev/front/scss/common.scss'],
     product: [
@@ -64,13 +64,13 @@ module.exports = {
       './_dev/front/js/components/Toast',
       './_dev/front/js/components/Login',
       './_dev/front/js/components/Create',
-      './_dev/front/js/components/AddToWishlist'
+      './_dev/front/js/components/AddToWishlist',
     ],
     backoffice: [
       './_dev/back/js/backoffice.js',
-      './_dev/back/scss/backoffice.scss'
+      './_dev/back/scss/backoffice.scss',
     ],
-    form: ['./_dev/back/js/form.js', './_dev/back/scss/backoffice.scss']
+    form: ['./_dev/back/js/form.js', './_dev/back/scss/backoffice.scss'],
   },
   output: {
     path: path.resolve(__dirname, '../public'),
@@ -78,7 +78,7 @@ module.exports = {
     libraryTarget: 'window',
     library: '[name]',
     sourceMapFilename: '[name].[hash:8].map',
-    chunkFilename: '[id].[hash:8].js'
+    chunkFilename: '[id].[hash:8].js',
   },
   resolve: {
     extensions: ['.js', '.vue', '.json', '.mjs', '.ts'],
@@ -92,18 +92,18 @@ module.exports = {
       '@scss': path.resolve(__dirname, '../_dev/front/scss'),
       '@PSJs': path.resolve(
         __dirname,
-        '../../../admin-dev/themes/new-theme/js'
+        '../../../admin-dev/themes/new-theme/js',
       ),
       '@node_modules': path.resolve(__dirname, '../node_modules'),
-      vue: 'vue/dist/vue.esm.js'
-    }
+      vue: 'vue/dist/vue.esm.js',
+    },
   },
   module: {
     rules: [
       {
         test: /\.mjs$/,
         include: /node_modules/,
-        type: 'javascript/auto'
+        type: 'javascript/auto',
       },
       {
         test: /\.js$/,
@@ -112,29 +112,29 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [['env', { useBuiltIns: 'usage', modules: false }]],
-              plugins: ['transform-object-rest-spread', 'transform-runtime']
-            }
-          }
-        ]
+              presets: [['env', {useBuiltIns: 'usage', modules: false}]],
+              plugins: ['transform-object-rest-spread', 'transform-runtime'],
+            },
+          },
+        ],
       },
       {
         test: /\.ts?$/,
         use: 'ts-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: 'vue-loader',
       },
       {
         test: /\.css$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader
+            loader: MiniCssExtractPlugin.loader,
           },
-          'css-loader'
-        ]
+          'css-loader',
+        ],
       },
       {
         test: /\.scss$/,
@@ -145,47 +145,47 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: 'postcss-loader',
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: true
-            }
-          }
-        ]
+              sourceMap: true,
+            },
+          },
+        ],
       },
       {
         test: /\.scss$/,
         include: /js/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader']
+        use: ['vue-style-loader', 'css-loader', 'sass-loader'],
       },
       // FILES
       {
         test: /.(jpg|png|woff2?|eot|otf|ttf|svg|gif)$/,
-        loader: 'file-loader?name=[hash].[ext]'
-      }
-    ]
+        loader: 'file-loader?name=[hash].[ext]',
+      },
+    ],
   },
   plugins: [
     new FixStyleOnlyEntriesPlugin(),
     new CleanWebpackPlugin({
       root: path.resolve(__dirname, '../'),
-      exclude: ['theme.rtlfix']
+      exclude: ['theme.rtlfix'],
     }),
-    new MiniCssExtractPlugin({ filename: '[name].css' }),
+    new MiniCssExtractPlugin({filename: '[name].css'}),
     new webpack.ProvidePlugin({
       moment: 'moment', // needed for bootstrap datetime picker
       $: 'jquery', // needed for jquery-ui
-      jQuery: 'jquery'
+      jQuery: 'jquery',
     }),
-    new VueLoaderPlugin()
-  ]
+    new VueLoaderPlugin(),
+  ],
 };
