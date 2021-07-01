@@ -23,10 +23,10 @@ const tabButtons = document.querySelectorAll('.btn-group button');
 const refreshButton = document.querySelector('.js-refresh');
 let isLoading = false;
 
-tabButtons.forEach((button) => {
+tabButtons.forEach(button => {
   button.addEventListener('click', () => {
     if (!button.classList.contains('active')) {
-      tabButtons.forEach((elem) => {
+      tabButtons.forEach(elem => {
         elem.classList.remove('active');
       });
 
@@ -34,8 +34,11 @@ tabButtons.forEach((button) => {
 
       const tabs = document.querySelectorAll('.wishlist-tab');
 
-      tabs.forEach((tab) => {
-        if (tab.classList.contains('active') && tab.dataset.tab !== button.dataset.tab) {
+      tabs.forEach(tab => {
+        if (
+          tab.classList.contains('active') &&
+          tab.dataset.tab !== button.dataset.tab
+        ) {
           tab.classList.remove('active');
         }
 
@@ -59,11 +62,11 @@ refreshButton.addEventListener('click', async () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json, text/javascript, */*; q=0.01',
-      },
+        Accept: 'application/json, text/javascript, */*; q=0.01'
+      }
     });
 
-    const {success} = await response.json();
+    const { success } = await response.json();
 
     if (success) {
       location.reload();
