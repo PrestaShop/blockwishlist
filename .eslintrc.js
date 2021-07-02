@@ -22,12 +22,7 @@ module.exports = {
   rules: {
     'class-methods-use-this': 0,
     'func-names': 0,
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: ['tests/**/*.js', '.webpack/**/*.js'],
-      },
-    ],
+    'import/no-extraneous-dependencies': 0,
     'max-len': ['error', {code: 120}],
     'no-alert': 0,
     'no-bitwise': 0,
