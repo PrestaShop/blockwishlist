@@ -66,7 +66,10 @@ module.exports = {
       './_dev/front/js/components/Create',
       './_dev/front/js/components/AddToWishlist',
     ],
-    backoffice: ['./_dev/back/js/backoffice.js', './_dev/back/scss/backoffice.scss'],
+    backoffice: [
+      './_dev/back/js/backoffice.js',
+      './_dev/back/scss/backoffice.scss',
+    ],
     form: ['./_dev/back/js/form.js', './_dev/back/scss/backoffice.scss'],
   },
   output: {
@@ -78,7 +81,7 @@ module.exports = {
     chunkFilename: '[id].[hash:8].js',
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json', '.mjs'],
+    extensions: ['.js', '.vue', '.json', '.mjs', '.ts'],
     alias: {
       '@js': path.resolve(__dirname, '../_dev/front/js'),
       '@pages': path.resolve(__dirname, '../_dev/front/js/pages'),
@@ -87,6 +90,10 @@ module.exports = {
       '@containers': path.resolve(__dirname, '../_dev/front/js/container'),
       '@constants': path.resolve(__dirname, '../_dev/front/js/constants'),
       '@scss': path.resolve(__dirname, '../_dev/front/scss'),
+      '@PSJs': path.resolve(
+        __dirname,
+        '../../../admin-dev/themes/new-theme/js',
+      ),
       '@node_modules': path.resolve(__dirname, '../node_modules'),
       vue: 'vue/dist/vue.esm.js',
     },
@@ -110,6 +117,11 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.ts?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
       {
         test: /\.vue$/,
