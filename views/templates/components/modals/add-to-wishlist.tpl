@@ -60,7 +60,7 @@
         </div>
 
         <div class="modal-footer">
-          <a @click="openNewWishlistModal" class="wishlist-add-to-new">
+          <a @click="openNewWishlistModal" class="wishlist-add-to-new text-primary">
             <i class="material-icons">add_circle_outline</i> {$newWishlistCTA}
           </a>
         </div>

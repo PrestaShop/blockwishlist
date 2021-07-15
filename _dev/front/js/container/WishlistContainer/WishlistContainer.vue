@@ -23,7 +23,7 @@
 
       <a
         @click="openNewWishlistModal"
-        class="wishlist-add-to-new"
+        class="wishlist-add-to-new text-primary"
       >
         <i class="material-icons">add_circle_outline</i>
         {{ addText }}
@@ -120,7 +120,7 @@
   };
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="scss" type="text/scss">
   @import '@scss/_variables';
 
   .wishlist {
@@ -129,36 +129,31 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 20px;
+        margin-bottom: 1.25rem;
       }
 
       @at-root #main & .card.page-content {
         padding: 0;
-        margin-bottom: 12px;
+        margin-bottom: 0.75rem;
       }
     }
 
     &-add-to-new {
       cursor: pointer;
       transition: 0.2s ease-out;
-      font-size: 14px;
+      font-size: 0.875rem;
       letter-spacing: 0;
-      line-height: 16px;
-
-      &:not([href]):not([tabindex]) {
-        color: $blue;
-      }
+      line-height: 1rem;
 
       &:hover {
         opacity: 0.7;
       }
 
       i {
-        margin-right: 5px;
+        margin-right: 0.3125rem;
         vertical-align: middle;
-        color: $blue;
-        margin-top: -2px;
-        font-size: 20px;
+        margin-top: -0.125rem;
+        font-size: 1.25rem;
       }
     }
   }
@@ -167,9 +162,9 @@
     .wishlist {
       &-container {
         .page-content.card {
-          box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.2);
+          box-shadow: 0.125rem 0.125rem 0.5rem 0 rgba(0, 0, 0, 0.2);
           background-color: #fff;
-          margin-top: 20px;
+          margin-top: 1.25rem;
         }
       }
     }

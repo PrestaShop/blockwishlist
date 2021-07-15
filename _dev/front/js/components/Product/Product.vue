@@ -309,11 +309,11 @@
 
   .wishlist {
     &-products-item {
-      margin: 25px;
+      margin: 1.5625rem;
     }
 
     &-product {
-      max-width: 250px;
+      max-width: 15.625rem;
       width: 100%;
       position: relative;
       height: 100%;
@@ -330,22 +330,22 @@
         align-items: flex-start;
         margin-bottom: 0;
         color: #232323;
-        font-size: 12px;
+        font-size: 0.75rem;
         font-weight: bold;
         letter-spacing: 0;
-        line-height: 17px;
+        line-height: 1.0625rem;
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: 17px;
+        bottom: 1.0625rem;
         z-index: 5;
         min-width: 80%;
         justify-content: center;
 
         i {
           color: #ff4c4c;
-          margin-right: 5px;
-          font-size: 18px;
+          margin-right: 0.3125rem;
+          font-size: 1.125rem;
         }
 
         &-responsive {
@@ -353,7 +353,7 @@
           position: inherit;
           transform: inherit;
           bottom: inherit;
-          margin-top: 10px;
+          margin-top: 0.625rem;
           left: inherit;
         }
       }
@@ -371,17 +371,17 @@
       }
 
       &-title {
-        margin-top: 10px;
-        margin-bottom: 5px;
+        margin-top: 0.625rem;
+        margin-bottom: 0.315rem;
         color: #737373;
-        font-size: 14px;
+        font-size: 0.875rem;
         letter-spacing: 0;
-        line-height: 19px;
+        line-height: 1.875rem;
       }
 
       &-image {
-        width: 250px;
-        height: 250px;
+        width: 15.625rem;
+        height: 15.625rem;
         position: relative;
         overflow: hidden;
 
@@ -398,22 +398,22 @@
 
       &-price {
         color: #232323;
-        font-size: 16px;
+        font-size: 1rem;
         font-weight: bold;
         letter-spacing: 0;
-        line-height: 22px;
+        line-height: 1.375rem;
 
         &-promo {
           text-decoration: line-through;
           color: #737373;
-          font-size: 14px;
+          font-size: 0.875rem;
           font-weight: bold;
           letter-spacing: 0;
-          line-height: 19px;
-          margin-right: 5px;
+          line-height: 1.1875rem;
+          margin-right: 0.3125rem;
           vertical-align: middle;
           display: inline-block;
-          margin-top: -3px;
+          margin-top: -0.1875rem;
         }
       }
 
@@ -433,10 +433,10 @@
 
         &-text {
           color: #7a7a7a;
-          font-size: 13px;
+          font-size: 0.8125rem;
           letter-spacing: 0;
-          line-height: 20px;
-          min-height: 50px;
+          line-height: 1.25rem;
+          min-height: 3.125rem;
           margin: 0;
         }
       }
@@ -444,7 +444,7 @@
       &-addtocart {
         width: 100%;
         text-transform: inherit;
-        padding-left: 10px;
+        padding-left: 0.625rem;
 
         &.btn-secondary {
           background-color: #dddddd;
@@ -456,7 +456,7 @@
         }
 
         i {
-          margin-top: -3px;
+          margin-top: -0.1875rem;
         }
       }
     }
@@ -464,17 +464,17 @@
     &-button {
       &-add {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 0.625rem;
+        right: 0.625rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 40px;
-        width: 40px;
-        min-width: 40px;
-        padding-top: 3px;
+        height: 2.5rem;
+        width: 2.5rem;
+        min-width: 2.5rem;
+        padding-top: 0.1875rem;
         background-color: #ffffff;
-        box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: 0.125rem 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.2);
         border-radius: 50%;
         cursor: pointer;
         transition: 0.2s ease-out;
@@ -494,7 +494,7 @@
 
         i {
           color: #7a7a7a;
-          margin-top: -2px;
+          margin-top: -0.125rem;
         }
       }
     }
@@ -504,16 +504,16 @@
     .wishlist {
       &-button-add {
         position: inherit;
-        margin-left: 10px;
+        margin-left: 0.625rem;
       }
 
       &-products-item {
         width: 100%;
         margin: 0;
-        margin-bottom: 30px;
+        margin-bottom: 1.875rem;
 
         &:not(:last-child) {
-          margin-bottom: 30px;
+          margin-bottom: 1.875rem;
         }
       }
 
@@ -553,7 +553,7 @@
         &-image {
           width: 100px;
           height: 100px;
-          margin-right: 20px;
+          margin-right: 1.25rem;
           position: inherit;
 
           img {

@@ -262,22 +262,22 @@
 
   .wishlist {
     &-list-loader {
-      padding: 0 20px;
+      padding: 0 1.25rem;
       width: 100%;
     }
 
     &-list-empty {
       font-size: 30;
       text-align: center;
-      padding: 30px;
-      padding-bottom: 20px;
+      padding: 1.875rem;
+      padding-bottom: 1.25rem;
       font-weight: bold;
       color: #000;
     }
 
     &-products-container {
       .sort-by-row {
-        min-width: 315px;
+        min-width: 19.6875rem;
         display: flex;
         align-items: center;
 
@@ -298,12 +298,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 20px;
+        margin-bottom: 1.25rem;
       }
 
       @at-root #main & .card.page-content {
         padding: 0;
-        margin-bottom: 12px;
+        margin-bottom: 0.75rem;
       }
     }
 
@@ -311,23 +311,23 @@
       &-list {
         display: flex;
         flex-wrap: wrap;
-        margin: -25px;
-        padding: 20px 45px;
+        margin: -1.5625rem;
+        padding: 1.25rem 2.8125rem;
         margin-top: 0;
       }
 
       &-count {
         color: #7a7a7a;
-        font-size: 22px;
+        font-size: 1.375rem;
         font-weight: normal;
-        line-height: 30px;
+        line-height: 1.875rem;
       }
     }
   }
 
   #view {
     #wrapper .container {
-      width: 975px;
+      width: 60.9375rem;
     }
   }
 
@@ -352,15 +352,15 @@
         }
 
         .page-content.card {
-          box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.2);
+          box-shadow: 0.125rem 0.125rem 0.5rem 0 rgba(0, 0, 0, 0.2);
           background-color: #fff;
-          margin-top: 20px;
+          margin-top: 1.25rem;
         }
 
         .wishlist-products-list {
           justify-content: center;
           margin: 0;
-          padding: 15px;
+          padding: 0.9375rem;
         }
       }
     }

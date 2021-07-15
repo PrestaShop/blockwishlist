@@ -206,13 +206,13 @@
         font-size: 30;
         text-align: center;
         padding: 30px;
-        padding-bottom: 20px;
+        padding-bottom: 1.25rem;
         font-weight: bold;
         color: #000;
       }
 
       &-item {
-        padding: 14px 0;
+        padding: 0.875rem 0;
         transition: 0.25s ease-out;
         cursor: pointer;
 
@@ -221,12 +221,12 @@
         }
 
         p {
-          font-size: 14px;
+          font-size: 0.875rem;
           letter-spacing: 0;
           color: #232323;
           margin-bottom: 0;
-          line-height: 16px;
-          padding: 0 40px;
+          line-height: 1rem;
+          padding: 0 2.5rem;
         }
       }
     }
