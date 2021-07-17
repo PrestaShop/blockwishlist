@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
+const {merge} = require('webpack-merge');
 const common = require('./common.js');
 
 /**
@@ -7,32 +8,27 @@ const common = require('./common.js');
  * by merging production specific configuration with the common one.
  *
  */
-function prodConfig() {
-  const prod = Object.assign(common, {
-    stats: 'minimal',
-    optimization: {
-      minimizer: [
-        new TerserPlugin({
-          sourceMap: true,
-          terserOptions: {
-            output: {
-              comments: /@license/i,
-            },
-          },
-          extractComments: false,
-        }),
-      ],
-    },
-  });
 
-  // Required for Vue production environment
-  prod.plugins.push(
+const prodConfig = () => merge(common, {
+  stats: 'minimal',
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        sourceMap: true,
+        terserOptions: {
+          output: {
+            comments: /@license/i,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
+  },
+  plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-  );
-
-  return prod;
-}
+  ],
+});
 
 module.exports = prodConfig;
