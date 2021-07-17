@@ -35,7 +35,10 @@ tabButtons.forEach((button) => {
       const tabs = document.querySelectorAll('.wishlist-tab');
 
       tabs.forEach((tab) => {
-        if (tab.classList.contains('active') && tab.dataset.tab !== button.dataset.tab) {
+        if (
+          tab.classList.contains('active')
+          && tab.dataset.tab !== button.dataset.tab
+        ) {
           tab.classList.remove('active');
         }
 

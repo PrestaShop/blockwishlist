@@ -69,14 +69,14 @@ class BlockWishList extends Module
     {
         $this->name = 'blockwishlist';
         $this->tab = 'front_office_features';
-        $this->version = '2.0.0';
+        $this->version = '2.0.1';
         $this->author = 'PrestaShop';
         $this->need_instance = 0;
 
         parent::__construct();
 
         $this->displayName = $this->trans('Wishlist', [], 'Modules.Blockwishlist.Admin');
-        $this->description = $this->trans('Adds a block containing the customer\'s wishlists.', [], 'Modules.Blockwishlist.Admin');
+        $this->description = $this->trans('Allow customers to create wishlists to save their favorite products for later.', [], 'Modules.Blockwishlist.Admin');
         $this->ps_versions_compliancy = [
             'min' => '1.7.6.0',
             'max' => _PS_VERSION_,
@@ -153,7 +153,7 @@ class BlockWishList extends Module
             'modules/' . $this->name . '/public/wishlist.css',
             [
               'media' => 'all',
-              'priority' => 200,
+              'priority' => 100,
             ]
         );
 
@@ -161,7 +161,7 @@ class BlockWishList extends Module
             'blockwishlistController',
             'modules/' . $this->name . '/public/product.bundle.js',
             [
-              'priority' => 200,
+              'priority' => 100,
             ]
         );
 
