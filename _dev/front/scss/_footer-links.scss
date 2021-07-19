@@ -1,21 +1,20 @@
 .wishlist {
   &-footer {
     &-links {
-      margin-bottom: 50px;
+      margin-bottom: 3.125rem;
 
       > a {
-        color: $blue;
-        font-size: 14px;
+        font-size: 0.875rem;
         letter-spacing: 0;
-        line-height: 19px;
+        line-height: 1.1875rem;
 
         &:not(:first-child) {
-          margin-left: 20px;
+          margin-left: 1.25rem;
         }
 
         i {
-          font-size: 20px;
-          margin-right: 4px;
+          font-size: 1.25rem;
+          margin-right: 0.25rem;
           vertical-align: middle;
         }
       }
