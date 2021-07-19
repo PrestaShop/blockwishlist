@@ -66,7 +66,7 @@
   };
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="scss" type="text/scss">
   .wishlist {
     &-login {
       .wishlist-modal {
