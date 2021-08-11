@@ -48,7 +48,10 @@ module.exports = {
     'vue/require-default-prop': 0,
   },
   settings: {
-    'import/resolver': 'webpack',
+    'import/resolver': {
+      node: {},
+      webpack: 'webpack.config.js',
+    },
   },
   overrides: [
     {
