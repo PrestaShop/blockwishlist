@@ -119,13 +119,17 @@ module.exports = {
         ],
       },
       {
-        test: /\.ts?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-      {
         test: /\.vue$/,
         loader: 'vue-loader',
+      },
+      {
+        test: /\.ts?$/,
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+          onlyCompileBundledFiles: true,
+        },
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
