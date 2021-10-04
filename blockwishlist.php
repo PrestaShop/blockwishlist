@@ -38,7 +38,7 @@ class BlockWishList extends Module
         'actionFrontControllerSetMedia',
         'displayProductActions',
         'displayCustomerAccount',
-        'displayHeader',
+        'displayFooter',
         'displayAdminCustomers',
         'displayProductAdditionalInfo',
         'displayMyAccountBlock',
