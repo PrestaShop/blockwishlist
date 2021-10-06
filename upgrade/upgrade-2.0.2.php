@@ -26,6 +26,6 @@
  */
 function upgrade_module_2_0_2($module)
 {
-    return $module->registerHook('DisplayFooter') &&
-        $module->unregisterHook('DisplayHeader');
+    return $module->registerHook('displayFooter') &&
+        $module->unregisterHook('displayHeader');
 }
