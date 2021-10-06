@@ -18,7 +18,6 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-
 /**
  * @param BlockWishList $moduleadd upgrade
  *
