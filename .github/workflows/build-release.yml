@@ -28,8 +28,8 @@ jobs:
 
       - name: Build PrestaShop assets
         run: |
-          yarn --cwd ~/PrestaShop/admin-dev/themes/new-theme install
-          yarn --cwd ~/PrestaShop/admin-dev/themes/new-theme run build
+          npm --prefix ~/PrestaShop/admin-dev/themes/new-theme install
+          npm --prefix ~/PrestaShop/admin-dev/themes/new-theme run build
 
       - name: Build JS dependencies
         run: |
