@@ -15,7 +15,7 @@ module.exports = {
     window: true,
   },
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
   },
   extends: ['prestashop', 'plugin:vue/strongly-recommended'],
   plugins: ['import', 'vue'],
