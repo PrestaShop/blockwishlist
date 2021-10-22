@@ -22,18 +22,18 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 14.x
 
-      - run: yarn install
+      - run: npm install
 
       - name: Build PrestaShop assets
         run: |
-          yarn --cwd ~/PrestaShop/admin-dev/themes/new-theme install
-          yarn --cwd ~/PrestaShop/admin-dev/themes/new-theme run build
+          npm --prefix ~/PrestaShop/admin-dev/themes/new-theme install
+          npm --prefix ~/PrestaShop/admin-dev/themes/new-theme run build
 
       - name: Build JS dependencies
         run: |
-          yarn --cwd ~/PrestaShop/modules/blockwishlist run build
+          npm --prefix ~/PrestaShop/modules/blockwishlist run build
           rm -rf node_modules
 
       - name: Install composer dependencies
