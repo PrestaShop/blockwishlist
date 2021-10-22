@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 14.x
 
-      - run: yarn install
+      - run: npm install
 
       - name: Build PrestaShop assets
         run: |
@@ -33,7 +33,7 @@ jobs:
 
       - name: Build JS dependencies
         run: |
-          yarn --cwd ~/PrestaShop/modules/blockwishlist run build
+          npm --prefix ~/PrestaShop/modules/blockwishlist run build
           rm -rf node_modules
 
       - name: Install composer dependencies
