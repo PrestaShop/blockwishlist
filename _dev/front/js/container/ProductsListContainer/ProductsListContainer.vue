@@ -325,12 +325,6 @@
     }
   }
 
-  #view {
-    #wrapper .container {
-      width: 60.9375rem;
-    }
-  }
-
   @media screen and (max-width: 768px) {
     .wishlist {
       &-products-container {
