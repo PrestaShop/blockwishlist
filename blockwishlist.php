@@ -38,7 +38,7 @@ class BlockWishList extends Module
         'actionFrontControllerSetMedia',
         'displayProductActions',
         'displayCustomerAccount',
-        'displayHeader',
+        'displayFooter',
         'displayAdminCustomers',
         'displayProductAdditionalInfo',
         'displayMyAccountBlock',
@@ -251,13 +251,13 @@ class BlockWishList extends Module
     }
 
     /**
-     * This hook adds additional elements in the head section of your pages (head section of html)
+     * This hook adds additional elements in the footer section of your pages
      *
      * @param array $params
      *
      * @return string
      */
-    public function hookDisplayHeader(array $params)
+    public function hookDisplayFooter(array $params)
     {
         $this->smarty->assign([
             'context' => $this->context->controller->php_self,
