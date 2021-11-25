@@ -25,7 +25,7 @@ if (!defined('_PS_VERSION_')) {
 }
 
 /**
- * @param BlockWishList $moduleadd upgrade
+ * @param BlockWishList $module
  *
  * @return bool
  */
@@ -35,19 +35,13 @@ function upgrade_module_2_0_0($module)
         return false;
     }
 
-    $products = Db::getInstance()->executeS(
-        'SELECT wp.`id_product`, wp.`id_product_attribute`
-        FROM `' . _DB_PREFIX_ . 'wishlist_product` wp'
-    );
-
-    foreach ($products as $k => $field) {
-        $newStat = new Statistics();
-        $newStat->id_product = $field['id_product'];
-        $newStat->id_product_attribute = $field['id_product_attribute'];
-        $newStat->id_shop = $this->context->shop->id;
-        $newStat->save();
-    }
+    $db = Db::getInstance();
+    $now = date('Y-m-d H:i:s');
 
     return $module->registerHook(BlockWishList::HOOKS)
-        && Db::getInstance()->execute('DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'wishlist_email`');
+        && $db->execute('DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'wishlist_email`')
+        && $db->execute('
+        INSERT INTO `' . _DB_PREFIX_ . 'blockwishlist_statistics` (`id_product`, `id_product_attribute`, `date_add`, `id_shop`)
+        SELECT `id_product`, `id_product_attribute`, "' . pSQL($now) . '", ' . (int) Configuration::get('PS_SHOP_DEFAULT') . ' FROM `' . _DB_PREFIX_ . 'wishlist_product`
+    ');
 }
