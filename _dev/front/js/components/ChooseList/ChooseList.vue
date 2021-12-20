@@ -174,7 +174,11 @@
          * Send an event to the Heart the user previously clicked on
          */
         EventBus.$emit('addedToWishlist', {
-          detail: {productId: this.productId, listId},
+          detail: {
+            productId: this.productId,
+            listId,
+            productAttributeId: this.productAttributeId,
+          },
         });
       },
     },

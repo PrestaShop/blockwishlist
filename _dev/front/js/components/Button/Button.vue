@@ -137,7 +137,7 @@
        * Register to event addedToWishlist to toggle the heart if the product has been added correctly
        */
       EventBus.$on('addedToWishlist', (event) => {
-        if (event.detail.productId === this.productId) {
+        if (event.detail.productId === this.productId && event.detail.productAttributeId === this.productAttributeId) {
           this.isChecked = true;
           this.idList = event.detail.listId;
         }
