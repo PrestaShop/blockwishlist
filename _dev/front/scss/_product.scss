@@ -6,11 +6,6 @@
         top: 0.635rem;
         right: 0.635rem;
         z-index: 10;
-
-        @at-root .lang-rtl & {
-          right: inherit;
-          left: 10px;
-        }
       }
     }
   }
