@@ -23,7 +23,7 @@
  *
  * @return bool
  */
-function upgrade_module_2_0_2($module)
+function upgrade_module_2_1_0($module)
 {
     return $module->registerHook('displayFooter') &&
         $module->unregisterHook('displayHeader');
