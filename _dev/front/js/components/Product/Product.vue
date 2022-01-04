@@ -231,6 +231,20 @@
           return false;
         }
 
+        if (this.product.wishlist_quantity > this.product.available_for_order) {
+          return true;
+        }
+
+        if (this.product.cart_quantity >= this.product.available_for_order) {
+          return true;
+        }
+
+        if (this.product.cart_quantity
+          && this.product.cart_quantity + this.product.wishlist_quantity > this.product.available_for_order
+        ) {
+          return true;
+        }
+
         return !this.product.add_to_cart_url;
       },
     },
@@ -267,6 +281,8 @@
             );
 
             const resp = await response.json();
+
+            EventBus.$emit('refetchList');
 
             prestashop.emit('updateCart', {
               reason: {
