@@ -1,5 +1,4 @@
 name: Build & Release draft
-
 on: [push, pull_request]
 
 jobs:
@@ -41,8 +40,14 @@ jobs:
 
       - name: Clean-up project
         uses: PrestaShopCorp/github-action-clean-before-deploy@v1.0
-        with: 
+        with:
           paths: node_modules
+
+      - name: Prepare auto-index tool
+        run: composer global require prestashop/autoindex
+
+      - name: Generate index.php
+        run: ~/.composer/vendor/bin/autoindex
 
       - name: Create & upload artifact
         uses: actions/upload-artifact@v1
@@ -77,7 +82,7 @@ jobs:
           assets=`bin/hub api -t repos/${{ github.repository }}/releases/${{ steps.release_info.outputs.id }}/assets | awk '/\].url/ { print $2 }'`
           for asset in $assets
           do
-            bin/hub api -X DELETE $asset
+              bin/hub api -X DELETE $asset
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
