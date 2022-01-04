@@ -1,0 +1,48 @@
+.lang-rtl {
+
+  .products {
+
+    article {
+
+      .wishlist {
+
+        &-button-add {
+          right: inherit;
+          left: 0.635rem;
+        }
+      }
+    }
+  }
+
+  .wishlist {
+
+    &-button {
+
+      &-product {
+        margin-left: 0;
+        margin-right: 1.25rem;
+      }
+    }
+
+    &-list {
+
+      &-item {
+
+        .dropdown-menu {
+          right: inherit;
+          left: 1.25rem;
+        }
+
+        &-right {
+
+          .dropdown-menu {
+
+            > button {
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+  }
+}
