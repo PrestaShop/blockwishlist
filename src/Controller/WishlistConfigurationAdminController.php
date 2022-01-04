@@ -85,6 +85,8 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
             'currentMonthStatisticsGrid' => $this->presentGrid($currentMonthGrid),
             'currentDayStatisticsGrid' => $this->presentGrid($currentDayGrid),
             'shopId' => $this->shopId,
+            'enableSidebar' => true,
+            'help_link' => $this->generateSidebarLink('WishlistConfigurationAdminController'),
         ]);
     }
 
