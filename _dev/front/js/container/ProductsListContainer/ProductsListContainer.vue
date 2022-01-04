@@ -50,7 +50,7 @@
             <a
               rel="nofollow"
               @click="changeSelectedSort(sort)"
-              class="select-list js-search-link"
+              class="select-list"
               :key="key"
               v-for="(sort, key) in productList"
             >
