@@ -215,10 +215,11 @@
         color: #000;
       }
 
-      &-item {
+      & .wishlist-list-item {
         padding: 0.875rem 0;
         transition: 0.25s ease-out;
         cursor: pointer;
+        margin-bottom: 0;
 
         &:hover {
           background: lighten($blue, 45%);
