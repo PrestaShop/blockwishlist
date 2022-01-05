@@ -127,7 +127,7 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
         }
 
         if ($result == true) {
-            $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success')); 
+            $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
         }
 
         return $result;
