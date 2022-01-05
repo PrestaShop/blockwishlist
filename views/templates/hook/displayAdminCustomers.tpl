@@ -17,15 +17,13 @@
   * International Registered Trademark & Property of PrestaShop SA
   *}
 
-<div class="col">
-  <div class="card">
-    <h3 class="card-header">
-      <i class="material-icons">remove_red_eye</i>
-      {$blockwishlist|escape:'html':'UTF-8'}
-      <span class="badge badge-primary rounded">0</span>
-    </h3>
-    <div class="card-body">
-      {$blockwishlist|escape:'html':'UTF-8'}
-    </div>
+<div class="card">
+  <h3 class="card-header">
+    <i class="material-icons">remove_red_eye</i>
+    {$blockwishlist|escape:'html':'UTF-8'}
+    <span class="badge badge-primary rounded">0</span>
+  </h3>
+  <div class="card-body">
+    {$blockwishlist|escape:'html':'UTF-8'}
   </div>
 </div>
