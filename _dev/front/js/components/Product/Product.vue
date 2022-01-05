@@ -227,20 +227,21 @@
     },
     computed: {
       isDisabled() {
+        console.log(this.product);
         if (this.product.customizable === '1') {
           return false;
         }
 
-        if (this.product.wishlist_quantity > this.product.available_for_order) {
+        if (this.product.wishlist_quantity > this.product.quantity_available) {
           return true;
         }
 
-        if (this.product.cart_quantity >= this.product.available_for_order) {
+        if (this.product.cart_quantity >= this.product.quantity_available) {
           return true;
         }
 
         if (this.product.cart_quantity
-          && this.product.cart_quantity + this.product.wishlist_quantity > this.product.available_for_order
+          && this.product.cart_quantity + this.product.wishlist_quantity > this.product.quantity_available
         ) {
           return true;
         }
