@@ -33,7 +33,7 @@
     data-quantity-text="{l s='Quantity' d='Shop.Theme.Catalog'}"
     data-title="{$wishlistName}"
     data-no-products-message="{l s='No products found' d='Modules.Blockwishlist.Shop'}"
-    data-filter="{l s='Filter' d='Shop.Theme.Actions'}"
+    data-filter="{l s='Sort by:' d='Shop.Theme.Global'}"
   >
   </div>
 
