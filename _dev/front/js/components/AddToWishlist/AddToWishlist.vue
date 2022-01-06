@@ -74,7 +74,7 @@
           this.productId = event.detail.productId;
         }
 
-        if (event.detail.productAttributeId) {
+        if (typeof event.detail.productAttributeId === 'number') {
           this.productAttributeId = event.detail.productAttributeId;
         }
 
