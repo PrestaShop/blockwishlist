@@ -227,7 +227,6 @@
     },
     computed: {
       isDisabled() {
-        console.log(this.product);
         if (this.product.customizable === '1') {
           return false;
         }
