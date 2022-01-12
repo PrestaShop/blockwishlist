@@ -177,7 +177,7 @@
 
           if (itemsFiltered.length > 0) {
             this.isChecked = true;
-            this.idList = parseInt(items[0].id_wishlist, 10);
+            this.idList = parseInt(itemsFiltered[0].id_wishlist, 10);
           } else {
             this.isChecked = false;
           }
