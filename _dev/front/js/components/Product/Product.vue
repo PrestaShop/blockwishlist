@@ -119,7 +119,7 @@
           'btn-secondary': product.customizable === '1',
           'btn-primary': product.customizable === '0'
         }"
-        :disabled="isDisabled"
+        :disabled="isDisabled || forceDisable"
         @click="
           product.add_to_cart_url || product.customizable === '1'
             ? addToCartAction()
@@ -222,6 +222,7 @@
     data() {
       return {
         prestashop,
+        forceDisable: false,
       };
     },
     computed: {
@@ -250,6 +251,7 @@
       async addToCartAction() {
         if (this.product.add_to_cart_url && this.product.customizable !== '1') {
           try {
+            this.forceDisable = true;
             const datas = new FormData();
             datas.append('qty', this.product.wishlist_quantity);
             datas.append('id_product', this.product.id_product);
@@ -274,6 +276,10 @@
                 linkAction: 'add-to-cart',
               },
               resp,
+            });
+
+            $('body').on('hide.bs.modal', '#blockcart-modal', () => {
+              this.forceDisable = false;
             });
 
             /* eslint-disable */
