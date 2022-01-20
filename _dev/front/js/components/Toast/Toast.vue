@@ -101,6 +101,7 @@
     &-toast {
       padding: 0.875rem 1.25rem;
       box-sizing: border-box;
+      width: auto;
       border: 1px solid #e5e5e5;
       border-radius: 4px;
       background-color: #ffffff;
