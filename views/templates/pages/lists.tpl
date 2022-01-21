@@ -16,7 +16,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
-{extends file='page.tpl'}
+{extends file='customer/page.tpl'}
 
 {block name='page_header_container'}
 {/block}
