@@ -19,7 +19,7 @@
  */
 
 /**
- * @param BlockWishList $moduleadd upgrade
+ * @param BlockWishList $module
  *
  * @return bool
  */
