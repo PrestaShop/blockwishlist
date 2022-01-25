@@ -74,7 +74,7 @@ class WishList extends ObjectModel
         $cache_id = 'WishList::getCustomers';
 
         if (false === Cache::isStored($cache_id)) {
-            $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+            $result = Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS('
                 SELECT c.`id_customer`, c.`firstname`, c.`lastname`
                     FROM `' . _DB_PREFIX_ . 'wishlist` w
                 INNER JOIN `' . _DB_PREFIX_ . 'customer` c ON c.`id_customer` = w.`id_customer`
@@ -274,7 +274,7 @@ class WishList extends ObjectModel
             $shop_restriction = 'AND id_shop_group = ' . (int) Shop::getContextShopGroupID();
         }
 
-        return Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+        return Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS('
             SELECT  w.`id_wishlist`, COUNT(wp.`id_product`) AS nbProducts, w.`name`, w.`default`, w.`token`
             FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
             RIGHT JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
@@ -474,7 +474,7 @@ class WishList extends ObjectModel
             throw new PrestaShopException('Invalid token');
         }
 
-        return Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow('
+        return Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->getRow('
             SELECT w.`id_wishlist`, w.`name`, w.`id_customer`, c.`firstname`, c.`lastname`
             FROM `' . _DB_PREFIX_ . 'wishlist` w
             INNER JOIN `' . _DB_PREFIX_ . 'customer` c ON c.`id_customer` = w.`id_customer`
@@ -484,7 +484,7 @@ class WishList extends ObjectModel
 
     public static function refreshWishList($id_wishlist)
     {
-        $old_carts = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+        $old_carts = Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS('
         SELECT wp.id_product, wp.id_product_attribute, wpc.id_cart, UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(wpc.date_add) AS timecart
         FROM `' . _DB_PREFIX_ . 'wishlist_product_cart` wpc
         JOIN `' . _DB_PREFIX_ . 'wishlist_product` wp ON (wp.id_wishlist_product = wpc.id_wishlist_product)
@@ -629,7 +629,11 @@ class WishList extends ObjectModel
     private static function getMinimalProductQuantity($idProduct, $idAttribute)
     {
         if ($idAttribute) {
-            $minimalQuantity = Attribute::getAttributeMinimalQty($idAttribute);
+            if (version_compare(_PS_VERSION_, '8.0.0', '>=')) {
+                $minimalQuantity = ProductAttribute::getAttributeMinimalQty($idAttribute);
+            } else {
+                $minimalQuantity = Attribute::getAttributeMinimalQty($idAttribute);
+            }
             if (false !== $minimalQuantity) {
                 return (int) $minimalQuantity;
             }
