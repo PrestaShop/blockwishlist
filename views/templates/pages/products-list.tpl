@@ -38,8 +38,6 @@
   </div>
 
   {include file="module:blockwishlist/views/templates/components/pagination.tpl"}
-  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" deleteProductUrl=$deleteProductUrl}
-  {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/block}
 
 
