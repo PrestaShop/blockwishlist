@@ -201,7 +201,7 @@
   .wishlist {
     &-list {
       max-height: 55vh;
-      overflow-y: scroll;
+      overflow-y: auto;
       border-top: 1px solid #e5e5e5;
       border-bottom: 1px solid #e5e5e5;
       margin: 0;
@@ -215,10 +215,11 @@
         color: #000;
       }
 
-      &-item {
+      & .wishlist-list-item {
         padding: 0.875rem 0;
         transition: 0.25s ease-out;
         cursor: pointer;
+        margin-bottom: 0;
 
         &:hover {
           background: lighten($blue, 45%);
