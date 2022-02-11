@@ -67,7 +67,7 @@
     "mini-css-extract-plugin": "^0.8.0",
     "mocha": "^7.1.2",
     "mochapack": "^2.0.2",
-    "node-sass": "^5.0.0",
+    "node-sass": "^7.0.0",
     "path": "^0.12.7",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
