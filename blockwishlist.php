@@ -40,7 +40,6 @@ class BlockWishList extends Module
         'displayCustomerAccount',
         'displayFooter',
         'displayAdminCustomers',
-        'displayProductAdditionalInfo',
         'displayMyAccountBlock',
     ];
 
