@@ -269,15 +269,17 @@ class WishList extends ObjectModel
         $shop_restriction = '';
 
         if (Shop::getContextShopID()) {
-            $shop_restriction = 'AND id_shop = ' . (int) Shop::getContextShopID();
+            $shop_restriction = 'AND w.id_shop = ' . (int) Shop::getContextShopID();
         } elseif (Shop::getContextShopGroupID()) {
-            $shop_restriction = 'AND id_shop_group = ' . (int) Shop::getContextShopGroupID();
+            $shop_restriction = 'AND w.id_shop_group = ' . (int) Shop::getContextShopGroupID();
         }
 
         return Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS('
             SELECT  w.`id_wishlist`, COUNT(wp.`id_product`) AS nbProducts, w.`name`, w.`default`, w.`token`
             FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
             RIGHT JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
+            INNER JOIN `' . _DB_PREFIX_ . 'product` p ON p.`id_product` = wp.`id_product`
+            ' . Shop::addSqlAssociation('product', 'p', true, 'product_shop.active = 1') . '
             WHERE w.`id_customer` = ' . (int) $id_customer . '
             ' . $shop_restriction . '
             GROUP BY w.`id_wishlist`
