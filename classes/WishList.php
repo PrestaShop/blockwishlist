@@ -424,6 +424,8 @@ class WishList extends ObjectModel
         if ($result2 === false) {
             return false;
         }
+
+        return true;
     }
 
     /**
