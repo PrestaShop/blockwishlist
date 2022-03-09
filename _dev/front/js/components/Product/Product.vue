@@ -227,20 +227,28 @@
     },
     computed: {
       isDisabled() {
+        const wishlistQuantity = parseInt(this.product.wishlist_quantity, 10);
+        const quantityAvailable = parseInt(this.product.quantity_available, 10);
+        const cartQuantity = parseInt(this.product.cart_quantity, 10);
+
+        if (this.product.allow_oosp) {
+          return false;
+        }
+
         if (this.product.customizable === '1') {
           return false;
         }
 
-        if (this.product.wishlist_quantity > this.product.quantity_available) {
+        if (wishlistQuantity > quantityAvailable) {
           return true;
         }
 
-        if (this.product.cart_quantity >= this.product.quantity_available) {
+        if (cartQuantity >= quantityAvailable) {
           return true;
         }
 
-        if (this.product.cart_quantity
-          && this.product.cart_quantity + this.product.wishlist_quantity > this.product.quantity_available
+        if (cartQuantity
+          && cartQuantity + wishlistQuantity > quantityAvailable
         ) {
           return true;
         }
