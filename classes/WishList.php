@@ -609,26 +609,4 @@ class WishList extends ObjectModel
 
         return Cache::retrieve($cache_id);
     }
-
-    /**
-     * @param int $idProduct
-     * @param int $idAttribute
-     *
-     * @return int
-     */
-    private static function getMinimalProductQuantity($idProduct, $idAttribute)
-    {
-        if ($idAttribute) {
-            if (version_compare(_PS_VERSION_, '8.0.0', '>=')) {
-                $minimalQuantity = ProductAttribute::getAttributeMinimalQty($idAttribute);
-            } else {
-                $minimalQuantity = Attribute::getAttributeMinimalQty($idAttribute);
-            }
-            if (false !== $minimalQuantity) {
-                return (int) $minimalQuantity;
-            }
-        }
-
-        return (int) (new Product($idProduct))->minimal_quantity;
-    }
 }
