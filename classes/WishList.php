@@ -424,16 +424,6 @@ class WishList extends ObjectModel
         if ($result2 === false) {
             return false;
         }
-
-        $newQuantity = (int) $result['quantity'] - (int) $quantity;
-        $minimalQuantity = self::getMinimalProductQuantity($id_product, $id_product_attribute);
-
-        return Db::getInstance()->execute('
-            UPDATE `' . _DB_PREFIX_ . 'wishlist_product` SET
-            `quantity` = ' . (int) max($minimalQuantity, $newQuantity) . '
-            WHERE `id_wishlist` = ' . (int) $id_wishlist . '
-            AND `id_product` = ' . (int) $id_product . '
-            AND `id_product_attribute` = ' . (int) $id_product_attribute);
     }
 
     /**
