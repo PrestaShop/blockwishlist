@@ -28,6 +28,15 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
     {
         parent::initContent();
 
+        $this->context->smarty->assign(
+        [
+            'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
+            'accountLink' => '#',
+            'wishlistsTitlePage' => Configuration::get('blockwishlist_WishlistPageName', $this->context->language->id),
+            'newWishlistCTA' => Configuration::get('blockwishlist_CreateButtonLabel', $this->context->language->id),
+        ]
+      );
+
         $this->context->controller->registerJavascript(
           'blockwishlistController',
           'modules/blockwishlist/public/wishlistcontainer.bundle.js',
