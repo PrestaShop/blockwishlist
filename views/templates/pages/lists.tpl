@@ -31,6 +31,9 @@
     data-share-text="{l s='Share' d='Modules.Blockwishlist.Shop'}"
     data-add-text="{$newWishlistCTA}"
   ></div>
+
+  {include file="module:blockwishlist/views/templates/components/modals/share.tpl" url=$shareUrl}
+  {include file="module:blockwishlist/views/templates/components/modals/rename.tpl" url=$renameUrl}
 {/block}
 
 
