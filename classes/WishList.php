@@ -274,17 +274,24 @@ class WishList extends ObjectModel
             $shop_restriction = 'AND w.id_shop_group = ' . (int) Shop::getContextShopGroupID();
         }
 
-        return Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS('
-            SELECT  w.`id_wishlist`, COUNT(wp.`id_product`) AS nbProducts, w.`name`, w.`default`, w.`token`
-            FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
-            RIGHT JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
-            INNER JOIN `' . _DB_PREFIX_ . 'product` p ON p.`id_product` = wp.`id_product`
-            ' . Shop::addSqlAssociation('product', 'p', true, 'product_shop.active = 1') . '
-            WHERE w.`id_customer` = ' . (int) $id_customer . '
-            ' . $shop_restriction . '
-            GROUP BY w.`id_wishlist`
-            ORDER BY w.`default` DESC, w.`name` ASC'
+        $sql = sprintf(
+            'SELECT w.`id_wishlist`, (
+                SELECT COUNT(wp.id_wishlist_product)
+                FROM `%1$swishlist_product` wp
+                    INNER JOIN `%1$sproduct` p ON p.`id_product` = wp.`id_product`
+                    %2$s
+                WHERE wp.id_wishlist = w.id_wishlist
+            ) AS nbProducts, w.`name`, w.`default`, w.`token`
+            FROM `%1$swishlist` w
+            WHERE w.`id_customer` = %3$d %4$s
+            ORDER BY w.`default` DESC, w.`name` ASC',
+            _DB_PREFIX_,
+            Shop::addSqlAssociation('product', 'p', true, 'product_shop.active = 1'),
+            (int) $id_customer,
+            $shop_restriction
         );
+
+        return Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS($sql);
     }
 
     /**
