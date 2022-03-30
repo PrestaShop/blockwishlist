@@ -32,11 +32,8 @@
     data-add-text="{$newWishlistCTA}"
   ></div>
 
-  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url=$createUrl}
-  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" listUrl=$deleteListUrl productUrl=$deleteProductUrl}
   {include file="module:blockwishlist/views/templates/components/modals/share.tpl" url=$shareUrl}
   {include file="module:blockwishlist/views/templates/components/modals/rename.tpl" url=$renameUrl}
-  {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/block}
 
 
