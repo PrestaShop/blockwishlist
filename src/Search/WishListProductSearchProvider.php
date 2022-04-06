@@ -168,7 +168,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         if ('products' === $type) {
             $sortOrder = $query->getSortOrder()->toLegacyOrderBy(true);
             $querySearch->orderBy($sortOrder . ' ' . $query->getSortOrder()->toLegacyOrderWay());
-            $querySearch->limit(((int) $query->getPage() - 1) * (int) $query->getResultsPerPage(), (int) $query->getResultsPerPage());
+            $querySearch->limit((int) $query->getResultsPerPage(), ((int) $query->getPage() - 1) * (int) $query->getResultsPerPage());
             $products = $this->db->executeS($querySearch);
 
             if (empty($products)) {
