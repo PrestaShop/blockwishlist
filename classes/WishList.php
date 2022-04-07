@@ -434,15 +434,7 @@ class WishList extends ObjectModel
             return false;
         }
 
-        $newQuantity = (int) $result['quantity'] - (int) $quantity;
-        $minimalQuantity = self::getMinimalProductQuantity($id_product, $id_product_attribute);
-
-        return Db::getInstance()->execute('
-            UPDATE `' . _DB_PREFIX_ . 'wishlist_product` SET
-            `quantity` = ' . (int) max($minimalQuantity, $newQuantity) . '
-            WHERE `id_wishlist` = ' . (int) $id_wishlist . '
-            AND `id_product` = ' . (int) $id_product . '
-            AND `id_product_attribute` = ' . (int) $id_product_attribute);
+        return true;
     }
 
     /**
@@ -627,27 +619,5 @@ class WishList extends ObjectModel
         }
 
         return Cache::retrieve($cache_id);
-    }
-
-    /**
-     * @param int $idProduct
-     * @param int $idAttribute
-     *
-     * @return int
-     */
-    private static function getMinimalProductQuantity($idProduct, $idAttribute)
-    {
-        if ($idAttribute) {
-            if (version_compare(_PS_VERSION_, '8.0.0', '>=')) {
-                $minimalQuantity = ProductAttribute::getAttributeMinimalQty($idAttribute);
-            } else {
-                $minimalQuantity = Attribute::getAttributeMinimalQty($idAttribute);
-            }
-            if (false !== $minimalQuantity) {
-                return (int) $minimalQuantity;
-            }
-        }
-
-        return (int) (new Product($idProduct))->minimal_quantity;
     }
 }

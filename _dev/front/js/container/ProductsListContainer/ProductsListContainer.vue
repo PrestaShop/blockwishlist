@@ -34,7 +34,7 @@
         class="sort-by-row"
         v-if="products.datas"
       >
-        <span class="col-sm-3 col-md-3 hidden-sm-down sort-by">{{filter}}</span>
+        <span class="col-sm-3 col-md-3 hidden-sm-down sort-by">{{ filter }}</span>
         <div class="col-sm-9 col-xs-8 col-md-9 products-sort-order dropdown">
           <button
             class="btn-unstyle select-title"

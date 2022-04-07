@@ -227,8 +227,30 @@
     },
     computed: {
       isDisabled() {
+        const wishlistQuantity = parseInt(this.product.wishlist_quantity, 10);
+        const quantityAvailable = parseInt(this.product.quantity_available, 10);
+        const cartQuantity = parseInt(this.product.cart_quantity, 10);
+
+        if (this.product.allow_oosp) {
+          return false;
+        }
+
         if (this.product.customizable === '1') {
           return false;
+        }
+
+        if (wishlistQuantity > quantityAvailable) {
+          return true;
+        }
+
+        if (cartQuantity >= quantityAvailable) {
+          return true;
+        }
+
+        if (cartQuantity
+          && cartQuantity + wishlistQuantity > quantityAvailable
+        ) {
+          return true;
         }
 
         return !this.product.add_to_cart_url;
@@ -267,6 +289,8 @@
             );
 
             const resp = await response.json();
+
+            EventBus.$emit('refetchList');
 
             prestashop.emit('updateCart', {
               reason: {
