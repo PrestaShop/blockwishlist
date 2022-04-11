@@ -137,7 +137,10 @@
        * Register to event addedToWishlist to toggle the heart if the product has been added correctly
        */
       EventBus.$on('addedToWishlist', (event) => {
-        if (event.detail.productId === this.productId && event.detail.productAttributeId === this.productAttributeId) {
+        if (
+          event.detail.productId === this.productId
+          && parseInt(event.detail.productAttributeId, 10) === this.productAttributeId
+        ) {
           this.isChecked = true;
           this.idList = event.detail.listId;
         }
@@ -145,8 +148,8 @@
 
       // eslint-disable-next-line
       const items = productsAlreadyTagged.filter(
-        (e) => e.id_product === this.productId.toString()
-          && e.id_product_attribute === this.productAttributeId.toString(),
+        (e) => parseInt(e.id_product, 10) === this.productId
+          && parseInt(e.id_product_attribute, 10) === this.productAttributeId,
       );
 
       if (items.length > 0) {
@@ -166,13 +169,13 @@
             '.product-quantity input#quantity_wanted',
           );
 
-          this.productAttributeId = args.id_product_attribute;
+          this.productAttributeId = parseInt(args.id_product_attribute, 10);
 
           // eslint-disable-next-line
           const itemsFiltered = productsAlreadyTagged.filter(
             (e) => e.id_product === this.productId.toString()
               && e.quantity === quantity.value
-              && e.id_product_attribute === this.productAttributeId.toString(),
+              && parseInt(e.id_product_attribute, 10) === this.productAttributeId,
           );
 
           if (itemsFiltered.length > 0) {
