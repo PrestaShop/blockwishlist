@@ -26,6 +26,10 @@
 function upgrade_module_2_1_0($module)
 {
     return $module->registerHook('displayFooter')
+        && $module->registerHook('actionAttributeDelete')
+        && $module->registerHook('actionProductDelete')
+        && $module->registerHook('actionProductAttributeDelete')
+        && $module->registerHook('deleteProductAttribute')
         && $module->unregisterHook('displayHeader')
         && $module->unregisterHook('displayProductAdditionalInfo');
 }
