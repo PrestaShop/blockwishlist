@@ -231,6 +231,26 @@ class WishList extends ObjectModel
     }
 
     /**
+     * @param int|null $id_product
+     * @param int|null $id_product_attribute
+     *
+     * @return bool
+     */
+    public static function removeProductFromWishlist($id_product = null, $id_product_attribute = null)
+    {
+        if ($id_product === null && $id_product_attribute === null) {
+            return false;
+        }
+
+        return Db::getInstance()->delete(
+            'wishlist_product',
+            ($id_product ? 'id_product = ' . (int) $id_product : '')
+            . ($id_product && $id_product_attribute ? ' AND ' : '')
+            . ($id_product_attribute ? ' id_product_attribute = ' . (int) $id_product_attribute : '')
+        );
+    }
+
+    /**
      * Update product to wishlist
      *
      * @param int $id_wishlist

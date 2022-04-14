@@ -36,6 +36,10 @@ class BlockWishList extends Module
     const HOOKS = [
         'actionAdminControllerSetMedia',
         'actionFrontControllerSetMedia',
+        'actionAttributeDelete',
+        'actionProductDelete',
+        'actionProductAttributeDelete',
+        'deleteProductAttribute',
         'displayProductActions',
         'displayCustomerAccount',
         'displayFooter',
@@ -196,6 +200,48 @@ class BlockWishList extends Module
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/product/add-button.tpl');
+    }
+
+    public function hookActionProductDelete(array $params)
+    {
+        if (!isset($params['id_product'])) {
+            return;
+        }
+
+        WishList::removeProductFromWishlist($params['id_product']);
+        Statistics::removeProductFromStatistics($params['id_product']);
+    }
+
+    public function hookActionProductAttributeDelete(array $params)
+    {
+        if (!isset($params['id_product']) || !isset($params['id_product_attribute'])) {
+            return;
+        }
+
+        // Remove all attributes from a product
+        if (!empty($params['deleteAllAttributes'])) {
+            $this->hookActionProductDelete($params);
+
+            return;
+        }
+
+        WishList::removeProductFromWishlist($params['id_product'], $params['id_product_attribute']);
+        Statistics::removeProductFromStatistics($params['id_product'], $params['id_product_attribute']);
+    }
+
+    public function hookActionAttributeDelete(array $params)
+    {
+        if (!isset($params['id_attribute'])) {
+            return;
+        }
+
+        WishList::removeProductFromWishlist(null, $params['id_product_attribute']);
+        Statistics::removeProductFromStatistics(null, $params['id_product_attribute']);
+    }
+
+    public function hookDeleteProductAttribute(array $params)
+    {
+        $this->hookActionProductAttributeDelete($params);
     }
 
     /**
