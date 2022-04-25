@@ -57,6 +57,9 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
 
         if ($configurationForm->isSubmitted() && $configurationForm->isValid()) {
             $resultHandleForm = $this->handleForm($configurationForm->getData());
+            if ($resultHandleForm) {
+                return $this->redirectToRoute('blockwishlist_configuration');
+            }
         }
 
         return $this->render('@Modules/blockwishlist/views/templates/admin/home.html.twig', [
@@ -85,6 +88,8 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
             'currentMonthStatisticsGrid' => $this->presentGrid($currentMonthGrid),
             'currentDayStatisticsGrid' => $this->presentGrid($currentDayGrid),
             'shopId' => $this->shopId,
+            'enableSidebar' => true,
+            'help_link' => $this->generateSidebarLink('WishlistConfigurationAdminController'),
         ]);
     }
 
@@ -108,22 +113,37 @@ class WishlistConfigurationAdminController extends FrameworkBundleAdminControlle
     private function handleForm($datas)
     {
         $result = true;
+        $defaultLanguageId = (int) Configuration::get('PS_LANG_DEFAULT');
+
         if (isset($datas['WishlistPageName'])) {
             foreach ($datas['WishlistPageName'] as $langID => $value) {
-                $result &= Configuration::updateValue('blockwishlist_WishlistPageName', [$langID => $value]);
+                if (empty($value) && $langID != $defaultLanguageId) {
+                    $value = $datas['WishlistPageName'][$defaultLanguageId];
+                }
+                $result = $result && Configuration::updateValue('blockwishlist_WishlistPageName', [$langID => $value]);
             }
         }
 
         if (isset($datas['WishlistDefaultTitle'])) {
             foreach ($datas['WishlistDefaultTitle'] as $langID => $value) {
-                $result &= Configuration::updateValue('blockwishlist_WishlistDefaultTitle', [$langID => $value]);
+                if (empty($value) && $langID != $defaultLanguageId) {
+                    $value = $datas['WishlistDefaultTitle'][$defaultLanguageId];
+                }
+                $result = $result && Configuration::updateValue('blockwishlist_WishlistDefaultTitle', [$langID => $value]);
             }
         }
 
         if (isset($datas['CreateButtonLabel'])) {
             foreach ($datas['CreateButtonLabel'] as $langID => $value) {
-                $result &= Configuration::updateValue('blockwishlist_CreateButtonLabel', [$langID => $value]);
+                if (empty($value) && $langID != $defaultLanguageId) {
+                    $value = $datas['CreateButtonLabel'][$defaultLanguageId];
+                }
+                $result = $result && Configuration::updateValue('blockwishlist_CreateButtonLabel', [$langID => $value]);
             }
+        }
+
+        if ($result === true) {
+            $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
         }
 
         return $result;

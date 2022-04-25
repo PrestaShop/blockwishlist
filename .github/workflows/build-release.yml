@@ -1,5 +1,4 @@
 name: Build & Release draft
-
 on: [push, pull_request]
 
 jobs:
@@ -22,13 +21,18 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 14.x
 
-      - run: yarn install
+      - run: npm install
+
+      - name: Build PrestaShop assets
+        run: |
+          npm --prefix ~/PrestaShop/admin-dev/themes/new-theme install
+          npm --prefix ~/PrestaShop/admin-dev/themes/new-theme run build
 
       - name: Build JS dependencies
         run: |
-          yarn --cwd ~/PrestaShop/modules/blockwishlist run build
+          npm --prefix ~/PrestaShop/modules/blockwishlist run build
           rm -rf node_modules
 
       - name: Install composer dependencies
@@ -36,8 +40,14 @@ jobs:
 
       - name: Clean-up project
         uses: PrestaShopCorp/github-action-clean-before-deploy@v1.0
-        with: 
+        with:
           paths: node_modules
+
+      - name: Prepare auto-index tool
+        run: composer global require prestashop/autoindex
+
+      - name: Generate index.php
+        run: ~/.composer/vendor/bin/autoindex
 
       - name: Create & upload artifact
         uses: actions/upload-artifact@v1
@@ -72,7 +82,7 @@ jobs:
           assets=`bin/hub api -t repos/${{ github.repository }}/releases/${{ steps.release_info.outputs.id }}/assets | awk '/\].url/ { print $2 }'`
           for asset in $assets
           do
-            bin/hub api -X DELETE $asset
+              bin/hub api -X DELETE $asset
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

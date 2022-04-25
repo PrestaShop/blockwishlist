@@ -1,0 +1,11 @@
+includes:
+	- %currentWorkingDirectory%/tests/phpstan/phpstan.neon
+
+parameters:
+  ignoreErrors:
+    - '#Call to an undefined static method Attribute\:\:getAttributeMinimalQty\(\).#'
+    - '#Call to static method getAttributeMinimalQty\(\) on an unknown class ProductAttribute.#'
+    - '#Parameter \#1 \$hook_name of method ModuleCore\:\:registerHook\(\) expects string, array<int, string> given.#'
+    - '#Parameter \#1 \$value of method ControllerCore\:\:ajaxRender\(\) expects null, string\|false given.#'
+    - '#Parameter \#2 \$value of static method CacheCore\:\:store\(\) expects string, array\|mysqli_result\|PDOStatement\|resource\|false\|null given.#'
+    - '#Property ModuleCore\:\:\$version \(float\) does not accept string.#'

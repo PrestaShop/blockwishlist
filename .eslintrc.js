@@ -15,19 +15,14 @@ module.exports = {
     window: true,
   },
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
   },
   extends: ['prestashop', 'plugin:vue/strongly-recommended'],
   plugins: ['import', 'vue'],
   rules: {
     'class-methods-use-this': 0,
     'func-names': 0,
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: ['tests/**/*.js', '.webpack/**/*.js'],
-      },
-    ],
+    'import/no-extraneous-dependencies': 0,
     'max-len': ['error', {code: 120}],
     'no-alert': 0,
     'no-bitwise': 0,
@@ -53,7 +48,10 @@ module.exports = {
     'vue/require-default-prop': 0,
   },
   settings: {
-    'import/resolver': 'webpack',
+    'import/resolver': {
+      node: {},
+      webpack: 'webpack.config.js',
+    },
   },
   overrides: [
     {

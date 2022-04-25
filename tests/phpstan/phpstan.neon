@@ -2,25 +2,13 @@ includes:
 	- %currentWorkingDirectory%/vendor/prestashop/php-dev-tools/phpstan/ps-module-extension.neon
 
 parameters:
-	paths:
-		# From PHPStan 0.12, paths to check are relative to the neon file
-		- ../../classes
-		- ../../controllers
-		- ../../blockwishlist.php
-		- ../../src
-	reportUnmatchedIgnoredErrors: false
-	ignoreErrors:
-		- '#Property ModuleCore::\$version \(float\) does not accept string.#'
-		- '#Parameter \#1 \$master of static method DbCore::getInstance\(\) expects bool, int given.#'
-		- '#Parameter \#2 \$value of static method CacheCore::store\(\) expects string, array\|mysqli_result\|PDOStatement\|resource\|false\|null given.#'
-		- '#Iterating over an object of an unknown class mysqli_result.#'
-		- '#Iterating over an object of an unknown class mysqli_result.#'
-		- '#Access to offset 0 on an unknown class mysqli_result.#'
-		- '#Access to offset 0 on an unknown class mysqli_result.#'
-		- '#Parameter \#1 \$value of method ControllerCore::ajaxRender\(\) expects null, string\|false given.#'
-		- '#Variable \$wishlist might not be defined.#'
-		- '#Call to an undefined method BlockWishlistActionModuleFrontController::ajaxRender\(\).#'
-		- '#Parameter \#1 \$idCategory of class Category constructor expects null, int given.#'
-		- '#Parameter \#2 \$idLang of class Category constructor expects null, int given.#'
-
-	level: 5
+  paths:
+    # From PHPStan 0.12, paths to check are relative to the neon file
+    - ../../blockwishlist.php
+    - ../../classes/
+    - ../../controllers/
+    - ../../src/
+    - ../../upgrade/
+  ignoreErrors:
+  reportUnmatchedIgnoredErrors: false
+  level: 5

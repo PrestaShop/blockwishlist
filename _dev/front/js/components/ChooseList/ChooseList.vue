@@ -174,7 +174,11 @@
          * Send an event to the Heart the user previously clicked on
          */
         EventBus.$emit('addedToWishlist', {
-          detail: {productId: this.productId, listId},
+          detail: {
+            productId: this.productId,
+            listId,
+            productAttributeId: this.productAttributeId,
+          },
         });
       },
     },
@@ -197,7 +201,7 @@
   .wishlist {
     &-list {
       max-height: 55vh;
-      overflow-y: scroll;
+      overflow-y: auto;
       border-top: 1px solid #e5e5e5;
       border-bottom: 1px solid #e5e5e5;
       margin: 0;
@@ -206,27 +210,28 @@
         font-size: 30;
         text-align: center;
         padding: 30px;
-        padding-bottom: 20px;
+        padding-bottom: 1.25rem;
         font-weight: bold;
         color: #000;
       }
 
-      &-item {
-        padding: 14px 0;
+      & .wishlist-list-item {
+        padding: 0.875rem 0;
         transition: 0.25s ease-out;
         cursor: pointer;
+        margin-bottom: 0;
 
         &:hover {
           background: lighten($blue, 45%);
         }
 
         p {
-          font-size: 14px;
+          font-size: 0.875rem;
           letter-spacing: 0;
           color: #232323;
           margin-bottom: 0;
-          line-height: 16px;
-          padding: 0 40px;
+          line-height: 1rem;
+          padding: 0 2.5rem;
         }
       }
     }

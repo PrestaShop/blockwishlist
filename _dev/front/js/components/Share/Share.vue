@@ -112,9 +112,9 @@
   };
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="scss" type="text/scss">
   .wishlist {
-    &-create {
+    &-share {
       .wishlist-modal {
         display: block;
         opacity: 0;

@@ -25,7 +25,7 @@
     <div class="col-md-6 offset-md-2 pr-0">
       <ul class="page-list clearfix text-sm-center">
         <li :class="{literal}{current: page.current}{/literal}" v-for="page of pages">
-          <a class="js-search-link" @click="paginate(page)" key="page.page" :class="{literal}{disabled: page.current, next: page.type === 'next', previous: page.type === 'previous'}{/literal}">
+          <a class="js-wishlist-search-link" @click="paginate(page)" key="page.page" :class="{literal}{disabled: page.current, next: page.type === 'next', previous: page.type === 'previous'}{/literal}">
             <span v-if="page.type === 'previous'">
               <i class="material-icons">keyboard_arrow_left</i> {l s='Previous' d='Modules.Blockwishlist.Shop'} 
             </span>

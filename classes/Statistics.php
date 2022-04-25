@@ -51,4 +51,24 @@ class Statistics extends ObjectModel
             'id_shop' => ['type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true],
         ],
     ];
+
+    /**
+     * @param int|null $id_product
+     * @param int|null $id_product_attribute
+     *
+     * @return bool
+     */
+    public static function removeProductFromStatistics($id_product = null, $id_product_attribute = null)
+    {
+        if ($id_product === null && $id_product_attribute === null) {
+            return false;
+        }
+
+        return Db::getInstance()->delete(
+            'blockwishlist_statistics',
+            ($id_product ? 'id_product = ' . (int) $id_product : '')
+            . ($id_product && $id_product_attribute ? ' AND ' : '')
+            . ($id_product_attribute ? ' id_product_attribute = ' . (int) $id_product_attribute : '')
+        );
+    }
 }

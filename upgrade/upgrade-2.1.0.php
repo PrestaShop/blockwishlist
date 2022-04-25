@@ -1,3 +1,4 @@
+<?php
 /**
  * 2007-2020 PrestaShop and Contributors
  *
@@ -17,6 +18,18 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-import TranslatableInput from '@PSJs/components/translatable-input';
-
-new TranslatableInput();
+/**
+ * @param BlockWishList $module
+ *
+ * @return bool
+ */
+function upgrade_module_2_1_0($module)
+{
+    return $module->registerHook('displayFooter')
+        && $module->registerHook('actionAttributeDelete')
+        && $module->registerHook('actionProductDelete')
+        && $module->registerHook('actionProductAttributeDelete')
+        && $module->registerHook('deleteProductAttribute')
+        && $module->unregisterHook('displayHeader')
+        && $module->unregisterHook('displayProductAdditionalInfo');
+}

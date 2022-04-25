@@ -66,7 +66,10 @@ module.exports = {
       './_dev/front/js/components/Create',
       './_dev/front/js/components/AddToWishlist',
     ],
-    backoffice: ['./_dev/back/js/backoffice.js', './_dev/back/scss/backoffice.scss'],
+    backoffice: [
+      './_dev/back/js/backoffice.js',
+      './_dev/back/scss/backoffice.scss',
+    ],
     form: ['./_dev/back/js/form.js', './_dev/back/scss/backoffice.scss'],
   },
   output: {
@@ -75,10 +78,10 @@ module.exports = {
     libraryTarget: 'window',
     library: '[name]',
     sourceMapFilename: '[name].[hash:8].map',
-    chunkFilename: '[id].[hash:8].js',
+    chunkFilename: '[name].js',
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json', '.mjs'],
+    extensions: ['.js', '.vue', '.json', '.mjs', '.ts'],
     alias: {
       '@js': path.resolve(__dirname, '../_dev/front/js'),
       '@pages': path.resolve(__dirname, '../_dev/front/js/pages'),
@@ -87,6 +90,10 @@ module.exports = {
       '@containers': path.resolve(__dirname, '../_dev/front/js/container'),
       '@constants': path.resolve(__dirname, '../_dev/front/js/constants'),
       '@scss': path.resolve(__dirname, '../_dev/front/scss'),
+      '@PSJs': path.resolve(
+        __dirname,
+        '../../../admin-dev/themes/new-theme/js',
+      ),
       '@node_modules': path.resolve(__dirname, '../node_modules'),
       vue: 'vue/dist/vue.esm.js',
     },
@@ -114,6 +121,15 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
+      },
+      {
+        test: /\.ts?$/,
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+          onlyCompileBundledFiles: true,
+        },
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
@@ -161,6 +177,23 @@ module.exports = {
         loader: 'file-loader?name=[hash].[ext]',
       },
     ],
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        graphql: {
+          test: /[\\/]node_modules[\\/](graphql|graphql-tag|graphql-tools|graphql-type-json)[\\/]/,
+          name: 'graphql',
+          chunks: 'all',
+        },
+        vendors: {
+          // eslint-disable-next-line max-len
+          test: /[\\/]node_modules[\\/](core-js|apollo-utilities|apollo-client|apollo-link|apollo-cache-inmemory|apollo-link-http|apollo-link-schema|vue|vue-apollo)[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
   plugins: [
     new FixStyleOnlyEntriesPlugin(),

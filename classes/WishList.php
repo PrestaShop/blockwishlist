@@ -74,7 +74,7 @@ class WishList extends ObjectModel
         $cache_id = 'WishList::getCustomers';
 
         if (false === Cache::isStored($cache_id)) {
-            $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+            $result = Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS('
                 SELECT c.`id_customer`, c.`firstname`, c.`lastname`
                     FROM `' . _DB_PREFIX_ . 'wishlist` w
                 INNER JOIN `' . _DB_PREFIX_ . 'customer` c ON c.`id_customer` = w.`id_customer`
@@ -231,6 +231,26 @@ class WishList extends ObjectModel
     }
 
     /**
+     * @param int|null $id_product
+     * @param int|null $id_product_attribute
+     *
+     * @return bool
+     */
+    public static function removeProductFromWishlist($id_product = null, $id_product_attribute = null)
+    {
+        if ($id_product === null && $id_product_attribute === null) {
+            return false;
+        }
+
+        return Db::getInstance()->delete(
+            'wishlist_product',
+            ($id_product ? 'id_product = ' . (int) $id_product : '')
+            . ($id_product && $id_product_attribute ? ' AND ' : '')
+            . ($id_product_attribute ? ' id_product_attribute = ' . (int) $id_product_attribute : '')
+        );
+    }
+
+    /**
      * Update product to wishlist
      *
      * @param int $id_wishlist
@@ -269,20 +289,29 @@ class WishList extends ObjectModel
         $shop_restriction = '';
 
         if (Shop::getContextShopID()) {
-            $shop_restriction = 'AND id_shop = ' . (int) Shop::getContextShopID();
+            $shop_restriction = 'AND w.id_shop = ' . (int) Shop::getContextShopID();
         } elseif (Shop::getContextShopGroupID()) {
-            $shop_restriction = 'AND id_shop_group = ' . (int) Shop::getContextShopGroupID();
+            $shop_restriction = 'AND w.id_shop_group = ' . (int) Shop::getContextShopGroupID();
         }
 
-        return Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
-            SELECT  w.`id_wishlist`, COUNT(wp.`id_product`) AS nbProducts, w.`name`, w.`default`, w.`token`
-            FROM `' . _DB_PREFIX_ . 'wishlist_product` wp
-            RIGHT JOIN `' . _DB_PREFIX_ . 'wishlist` w ON (w.`id_wishlist` = wp.`id_wishlist`)
-            WHERE w.`id_customer` = ' . (int) $id_customer . '
-            ' . $shop_restriction . '
-            GROUP BY w.`id_wishlist`
-            ORDER BY w.`default` DESC, w.`name` ASC'
+        $sql = sprintf(
+            'SELECT w.`id_wishlist`, (
+                SELECT COUNT(wp.id_wishlist_product)
+                FROM `%1$swishlist_product` wp
+                    INNER JOIN `%1$sproduct` p ON p.`id_product` = wp.`id_product`
+                    %2$s
+                WHERE wp.id_wishlist = w.id_wishlist
+            ) AS nbProducts, w.`name`, w.`default`, w.`token`
+            FROM `%1$swishlist` w
+            WHERE w.`id_customer` = %3$d %4$s
+            ORDER BY w.`default` DESC, w.`name` ASC',
+            _DB_PREFIX_,
+            Shop::addSqlAssociation('product', 'p', true, 'product_shop.active = 1'),
+            (int) $id_customer,
+            $shop_restriction
         );
+
+        return Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS($sql);
     }
 
     /**
@@ -425,15 +454,7 @@ class WishList extends ObjectModel
             return false;
         }
 
-        $newQuantity = (int) $result['quantity'] - (int) $quantity;
-        $minimalQuantity = self::getMinimalProductQuantity($id_product, $id_product_attribute);
-
-        return Db::getInstance()->execute('
-            UPDATE `' . _DB_PREFIX_ . 'wishlist_product` SET
-            `quantity` = ' . (int) max($minimalQuantity, $newQuantity) . '
-            WHERE `id_wishlist` = ' . (int) $id_wishlist . '
-            AND `id_product` = ' . (int) $id_product . '
-            AND `id_product_attribute` = ' . (int) $id_product_attribute);
+        return true;
     }
 
     /**
@@ -474,7 +495,7 @@ class WishList extends ObjectModel
             throw new PrestaShopException('Invalid token');
         }
 
-        return Db::getInstance(_PS_USE_SQL_SLAVE_)->getRow('
+        return Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->getRow('
             SELECT w.`id_wishlist`, w.`name`, w.`id_customer`, c.`firstname`, c.`lastname`
             FROM `' . _DB_PREFIX_ . 'wishlist` w
             INNER JOIN `' . _DB_PREFIX_ . 'customer` c ON c.`id_customer` = w.`id_customer`
@@ -484,7 +505,7 @@ class WishList extends ObjectModel
 
     public static function refreshWishList($id_wishlist)
     {
-        $old_carts = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+        $old_carts = Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS('
         SELECT wp.id_product, wp.id_product_attribute, wpc.id_cart, UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(wpc.date_add) AS timecart
         FROM `' . _DB_PREFIX_ . 'wishlist_product_cart` wpc
         JOIN `' . _DB_PREFIX_ . 'wishlist_product` wp ON (wp.id_wishlist_product = wpc.id_wishlist_product)
@@ -618,23 +639,5 @@ class WishList extends ObjectModel
         }
 
         return Cache::retrieve($cache_id);
-    }
-
-    /**
-     * @param int $idProduct
-     * @param int $idAttribute
-     *
-     * @return int
-     */
-    private static function getMinimalProductQuantity($idProduct, $idAttribute)
-    {
-        if ($idAttribute) {
-            $minimalQuantity = Attribute::getAttributeMinimalQty($idAttribute);
-            if (false !== $minimalQuantity) {
-                return (int) $minimalQuantity;
-            }
-        }
-
-        return (int) (new Product($idProduct))->minimal_quantity;
     }
 }

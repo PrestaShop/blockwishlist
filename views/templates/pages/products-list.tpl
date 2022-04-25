@@ -33,13 +33,11 @@
     data-quantity-text="{l s='Quantity' d='Shop.Theme.Catalog'}"
     data-title="{$wishlistName}"
     data-no-products-message="{l s='No products found' d='Modules.Blockwishlist.Shop'}"
-    data-filter="{l s='Filter' d='Shop.Theme.Actions'}"
+    data-filter="{l s='Sort by:' d='Shop.Theme.Global'}"
   >
   </div>
 
   {include file="module:blockwishlist/views/templates/components/pagination.tpl"}
-  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" deleteProductUrl=$deleteProductUrl}
-  {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/block}
 
 

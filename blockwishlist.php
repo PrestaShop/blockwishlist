@@ -36,11 +36,14 @@ class BlockWishList extends Module
     const HOOKS = [
         'actionAdminControllerSetMedia',
         'actionFrontControllerSetMedia',
+        'actionAttributeDelete',
+        'actionProductDelete',
+        'actionProductAttributeDelete',
+        'deleteProductAttribute',
         'displayProductActions',
         'displayCustomerAccount',
-        'displayHeader',
+        'displayFooter',
         'displayAdminCustomers',
-        'displayProductAdditionalInfo',
         'displayMyAccountBlock',
     ];
 
@@ -69,14 +72,14 @@ class BlockWishList extends Module
     {
         $this->name = 'blockwishlist';
         $this->tab = 'front_office_features';
-        $this->version = '2.0.1';
+        $this->version = '2.1.0';
         $this->author = 'PrestaShop';
         $this->need_instance = 0;
 
         parent::__construct();
 
         $this->displayName = $this->trans('Wishlist', [], 'Modules.Blockwishlist.Admin');
-        $this->description = $this->trans('Adds a block containing the customer\'s wishlists.', [], 'Modules.Blockwishlist.Admin');
+        $this->description = $this->trans('Allow customers to create wishlists to save their favorite products for later.', [], 'Modules.Blockwishlist.Admin');
         $this->ps_versions_compliancy = [
             'min' => '1.7.6.0',
             'max' => _PS_VERSION_,
@@ -120,6 +123,8 @@ class BlockWishList extends Module
     public function hookActionAdminControllerSetMedia(array $params)
     {
         $this->context->controller->addCss($this->getPathUri() . 'public/backoffice.css');
+
+        $this->context->controller->addJs($this->getPathUri() . 'public/vendors.js');
     }
 
     /**
@@ -162,6 +167,22 @@ class BlockWishList extends Module
               'priority' => 100,
             ]
         );
+
+        $this->context->controller->registerJavascript(
+            'blockwishlistGraphql',
+            'modules/' . $this->name . '/public/graphql.js',
+            [
+              'priority' => 190,
+            ]
+        );
+
+        $this->context->controller->registerJavascript(
+            'blockwishlistVendors',
+            'modules/' . $this->name . '/public/vendors.js',
+            [
+              'priority' => 190,
+            ]
+        );
     }
 
     /**
@@ -179,6 +200,48 @@ class BlockWishList extends Module
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/product/add-button.tpl');
+    }
+
+    public function hookActionProductDelete(array $params)
+    {
+        if (!isset($params['id_product'])) {
+            return;
+        }
+
+        WishList::removeProductFromWishlist($params['id_product']);
+        Statistics::removeProductFromStatistics($params['id_product']);
+    }
+
+    public function hookActionProductAttributeDelete(array $params)
+    {
+        if (!isset($params['id_product']) || !isset($params['id_product_attribute'])) {
+            return;
+        }
+
+        // Remove all attributes from a product
+        if (!empty($params['deleteAllAttributes'])) {
+            $this->hookActionProductDelete($params);
+
+            return;
+        }
+
+        WishList::removeProductFromWishlist($params['id_product'], $params['id_product_attribute']);
+        Statistics::removeProductFromStatistics($params['id_product'], $params['id_product_attribute']);
+    }
+
+    public function hookActionAttributeDelete(array $params)
+    {
+        if (!isset($params['id_attribute'])) {
+            return;
+        }
+
+        WishList::removeProductFromWishlist(null, $params['id_product_attribute']);
+        Statistics::removeProductFromStatistics(null, $params['id_product_attribute']);
+    }
+
+    public function hookDeleteProductAttribute(array $params)
+    {
+        $this->hookActionProductAttributeDelete($params);
     }
 
     /**
@@ -233,17 +296,18 @@ class BlockWishList extends Module
     }
 
     /**
-     * This hook adds additional elements in the head section of your pages (head section of html)
+     * This hook adds additional elements in the footer section of your pages
      *
      * @param array $params
      *
      * @return string
      */
-    public function hookDisplayHeader(array $params)
+    public function hookDisplayFooter(array $params)
     {
         $this->smarty->assign([
             'context' => $this->context->controller->php_self,
             'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
+            'deleteListUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteWishlist']),
             'createUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),
             'deleteProductUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
             'addUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToWishlist']),

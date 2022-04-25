@@ -16,7 +16,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  *}
-{extends file='page.tpl'}
+{extends file='customer/page.tpl'}
 
 {block name='page_header_container'}
 {/block}
@@ -32,17 +32,14 @@
     data-add-text="{$newWishlistCTA}"
   ></div>
 
-  {include file="module:blockwishlist/views/templates/components/modals/create.tpl" url=$createUrl}
-  {include file="module:blockwishlist/views/templates/components/modals/delete.tpl" listUrl=$deleteListUrl productUrl=$deleteProductUrl}
   {include file="module:blockwishlist/views/templates/components/modals/share.tpl" url=$shareUrl}
   {include file="module:blockwishlist/views/templates/components/modals/rename.tpl" url=$renameUrl}
-  {include file="module:blockwishlist/views/templates/components/toast.tpl"}
 {/block}
 
 
 {block name='page_footer_container'}
   <div class="wishlist-footer-links">
-    <a href="{$link->getPageLink('my-account', true)|escape:'html'}"><i class="material-icons">chevron_left</i>{l s='Return to your account' d='Modules.Blockwishlist.Shop'}</a>
-    <a href="{$urls.base_url}"><i class="material-icons">home</i>{l s='Home' d='Shop.Theme.Global'}</a>
+    <a href="{$link->getPageLink('my-account', true)|escape:'html'}" class="text-primary"><i class="material-icons">chevron_left</i>{l s='Return to your account' d='Modules.Blockwishlist.Shop'}</a>
+    <a href="{$urls.base_url}" class="text-primary"><i class="material-icons">home</i>{l s='Home' d='Shop.Theme.Global'}</a>
   </div>
 {/block}
