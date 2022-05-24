@@ -158,7 +158,8 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         if (Group::isFeatureActive()) {
             $groups = FrontController::getCurrentCustomerGroups();
             $sqlGroups = false === empty($groups) ? 'IN (' . implode(',', $groups) . ')' : '=' . (int) Group::getCurrent()->id;
-            $querySearch->leftJoin('category_group', 'cg', 'cp.`id_category` = cg.`id_category` AND cg.`id_group`' . $sqlGroups);
+            $querySearch->where('cp.id_category in (SELECT cg.`id_category` FROM `ps_category_group` `cg` where cp.`id_category` = cg.`id_category` AND cg.`id_group` '.$sqlGroups.')');
+
         }
 
         $querySearch->where('wp.id_wishlist = ' . (int) $this->wishList->id);
