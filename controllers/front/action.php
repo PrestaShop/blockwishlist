@@ -125,7 +125,6 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
     private function createNewWishListAction($params)
     {
         if (isset($params['name'])) {
-
             if (!Validate::isGenericName($params['name'])) {
                 return $this->ajaxRender(
                     json_encode([
@@ -177,7 +176,6 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
     private function renameWishListAction($params)
     {
         if (isset($params['idWishList'], $params['name'])) {
-
             if (!Validate::isGenericName($params['name'])) {
                 return $this->ajaxRender(
                     json_encode([
