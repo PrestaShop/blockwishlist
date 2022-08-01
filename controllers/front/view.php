@@ -85,7 +85,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
                 [],
                 'Modules.Blockwishlist.Shop'
             );
-            $this->setTemplate('errors/forbidden');
+            $this->template = 'module:blockwishlist/views/templates/errors/forbidden.tpl';
 
             return;
         }

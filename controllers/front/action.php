@@ -125,6 +125,18 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
     private function createNewWishListAction($params)
     {
         if (isset($params['name'])) {
+            if (!Validate::isGenericName($params['name'])) {
+                return $this->ajaxRender(
+                    json_encode([
+                        'success' => false,
+                        'message' => $this->trans('The list name is invalid.', [], 'Modules.Blockwishlist.Shop'),
+                        'datas' => [
+                            'name' => $params['name'],
+                        ],
+                    ])
+                );
+            }
+
             $wishlist = new WishList();
             $wishlist->name = $params['name'];
             $wishlist->id_shop_group = $this->context->shop->id_shop_group;
@@ -164,6 +176,19 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
     private function renameWishListAction($params)
     {
         if (isset($params['idWishList'], $params['name'])) {
+            if (!Validate::isGenericName($params['name'])) {
+                return $this->ajaxRender(
+                    json_encode([
+                        'success' => false,
+                        'message' => $this->trans('The list name is invalid', [], 'Modules.Blockwishlist.Shop'),
+                        'datas' => [
+                            'name' => $params['name'],
+                            'id_whishlist' => $params['idWishList'],
+                        ],
+                    ])
+                );
+            }
+
             $wishlist = new WishList($params['idWishList']);
             // Exit if not owner of the wishlist
             $this->assertWriteAccess($wishlist);
