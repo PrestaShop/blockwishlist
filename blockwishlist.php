@@ -235,8 +235,8 @@ class BlockWishList extends Module
             return;
         }
 
-        WishList::removeProductFromWishlist(null, $params['id_product_attribute']);
-        Statistics::removeProductFromStatistics(null, $params['id_product_attribute']);
+        WishList::removeProductFromWishlist(null, $params['id_attribute']);
+        Statistics::removeProductFromStatistics(null, $params['id_attribute']);
     }
 
     public function hookDeleteProductAttribute(array $params)
