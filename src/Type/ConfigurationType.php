@@ -36,7 +36,14 @@ class ConfigurationType extends AbstractType
                 'type' => TextType::class,
                 'constraints' => [
                     new DefaultLanguage(),
-                ],         
+                ],
+                'options' => [
+                    'constraints' => [
+                        new Length([
+                            'max' => 180,
+                        ]),
+                    ],
+                ]
             ])
             ->add('CreateButtonLabel', TranslatableType::class, [
                 // we'll have text area that is translatable
@@ -44,13 +51,27 @@ class ConfigurationType extends AbstractType
                 'constraints' => [
                     new DefaultLanguage(),
                 ],
-             ])
+                'options' => [
+                    'constraints' => [
+                        new Length([
+                            'max' => 180,
+                        ]),
+                    ],
+                ]
+            ])
             ->add('WishlistPageName', TranslatableType::class, [
                 // we'll have text area that is translatable
                 'type' => TextType::class,
                 'constraints' => [
                     new DefaultLanguage(),
                 ],
+                'options' => [
+                    'constraints' => [
+                        new Length([
+                            'max' => 180,
+                        ]),
+                    ],
+                ]
             ]);
     }
 }
