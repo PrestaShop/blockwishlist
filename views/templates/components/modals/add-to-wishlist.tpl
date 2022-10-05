@@ -34,7 +34,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            {l s='Add to wishlist' d='Modules.Blockwishlist.Shop'}
+            {$defaultWishlistTitle}
           </h5>
           <button
             type="button"
@@ -68,7 +68,7 @@
     </div>
   </div>
 
-  <div 
+  <div
     class="modal-backdrop fade"
     {literal}
       :class="{in: !isHidden}"
