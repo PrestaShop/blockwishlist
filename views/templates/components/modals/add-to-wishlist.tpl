@@ -34,7 +34,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            {$defaultWishlistTitle}
+            {$wishlistsTitlePage}
           </h5>
           <button
             type="button"
