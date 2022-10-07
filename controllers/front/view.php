@@ -20,6 +20,7 @@
 
 use PrestaShop\Module\BlockWishList\Access\CustomerAccess;
 use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
+use PrestaShop\Module\BlockWishList\Utils\ProductDeduplication;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
@@ -252,6 +253,8 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
                 'q' => $result->getEncodedFacets(),
             ]),
         ];
+
+        $searchVariables['products'] = ProductDeduplication::deduplicateSameProducts($products);
 
         Hook::exec('filterProductSearch', ['searchVariables' => &$searchVariables]);
         Hook::exec('actionProductSearchAfter', $searchVariables);
