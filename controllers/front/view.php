@@ -78,16 +78,14 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         parent::init();
 
         if (false === $this->customerAccess->hasReadAccessToWishlist($this->wishlist)) {
-            header('HTTP/1.1 403 Forbidden');
-            header('Status: 403 Forbidden');
-            $this->errors[] = $this->trans(
-                'You do not have access to this wishlist.',
-                [],
-                'Modules.Blockwishlist.Shop'
-            );
-            $this->template = 'module:blockwishlist/views/templates/errors/forbidden.tpl';
-
-            return;
+            $this->errors = [
+                $this->trans(
+                    'You do not have access to this wishlist.',
+                    [],
+                    'Modules.Blockwishlist.Shop'
+                ),
+            ];
+            $this->redirectWithNotifications('index.php');
         }
 
         $this->context->smarty->assign(
