@@ -72,7 +72,7 @@ class BlockWishList extends Module
     {
         $this->name = 'blockwishlist';
         $this->tab = 'front_office_features';
-        $this->version = '2.1.2';
+        $this->version = '2.2.0';
         $this->author = 'PrestaShop';
         $this->need_instance = 0;
 
@@ -81,7 +81,7 @@ class BlockWishList extends Module
         $this->displayName = $this->trans('Wishlist', [], 'Modules.Blockwishlist.Admin');
         $this->description = $this->trans('Allow customers to create wishlists to save their favorite products for later.', [], 'Modules.Blockwishlist.Admin');
         $this->ps_versions_compliancy = [
-            'min' => '1.7.6.0',
+            'min' => '8.0.0',
             'max' => _PS_VERSION_,
         ];
     }
