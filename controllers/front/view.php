@@ -22,7 +22,7 @@ use PrestaShop\Module\BlockWishList\Access\CustomerAccess;
 use PrestaShop\Module\BlockWishList\Search\WishListProductSearchProvider;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
-use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrdersCollection;
 
 /**
  * View the content of a personal wishlist
@@ -165,7 +165,7 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
         return new WishListProductSearchProvider(
             Db::getInstance(),
             $this->wishlist,
-            new SortOrderFactory($this->getTranslator()),
+            new SortOrdersCollection($this->getTranslator()),
             $this->getTranslator()
         );
     }

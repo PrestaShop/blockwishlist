@@ -26,10 +26,10 @@ use Db;
 use DbQuery;
 use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
+use PrestaShop\PrestaShop\Adapter\Presenter\Product\ProductPresenter;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
 use PrestaShop\PrestaShop\Core\Localization\Locale;
-use PrestaShop\PrestaShop\Core\Product\ProductPresenter;
 use ProductAssembler;
 use ProductPresenterFactory;
 
@@ -86,8 +86,6 @@ class StatisticsCalculator
                 $dateStart = (new DateTime('now'))->modify('-1 day')->format('Y-m-d H:i:s');
             break;
             case 'allTime':
-                $dateStart = null;
-            break;
             default:
                 $dateStart = null;
             break;
