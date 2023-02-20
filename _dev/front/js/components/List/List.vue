@@ -326,7 +326,7 @@
           letter-spacing: 0;
           line-height: 1.375rem;
           margin-bottom: 0;
-          max-width: 80%;
+          max-width: 70%;
           word-wrap: break-word;
 
           span {
