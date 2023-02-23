@@ -118,7 +118,6 @@
 
         &-footer {
           text-align: left;
-          padding: 0.75rem 1.25rem;
         }
       }
     }

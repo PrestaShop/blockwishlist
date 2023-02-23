@@ -34,8 +34,8 @@
         class="sort-by-row"
         v-if="products.datas"
       >
-        <span class="col-sm-3 col-md-3 hidden-sm-down sort-by">{{ filter }}</span>
-        <div class="col-sm-9 col-xs-8 col-md-9 products-sort-order dropdown">
+        <span class="hidden-sm-down col-sm-3 col-md-3 sort-by">{{ filter }}</span>
+        <div class="col-xs-12 col-sm-9 col-md-9 products-sort-order dropdown">
           <button
             class="btn-unstyle select-title"
             rel="nofollow"
@@ -346,6 +346,7 @@
 
           .sort-by-row {
             width: 100%;
+            min-width: 16.00rem;
           }
         }
 

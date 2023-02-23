@@ -31,10 +31,10 @@ use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchProviderInterface;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchResult;
 use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
-use PrestaShop\PrestaShop\Core\Product\Search\SortOrderFactory;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrdersCollection;
 use Product;
 use Shop;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Validate;
 use WishList;
 
@@ -54,9 +54,9 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
     private $wishList;
 
     /**
-     * @var SortOrderFactory
+     * @var SortOrdersCollection
      */
-    private $sortOrderFactory;
+    private $sortOrdersCollection;
 
     /**
      * @var TranslatorInterface the translator
@@ -70,12 +70,12 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
     public function __construct(
         Db $db,
         WishList $wishList,
-        SortOrderFactory $sortOrderFactory,
+        SortOrdersCollection $sortOrdersCollection,
         TranslatorInterface $translator
     ) {
         $this->db = $db;
         $this->wishList = $wishList;
-        $this->sortOrderFactory = $sortOrderFactory;
+        $this->sortOrdersCollection = $sortOrdersCollection;
         $this->translator = $translator;
     }
 
@@ -92,7 +92,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
         $result = new ProductSearchResult();
         $result->setProducts($this->getProductsOrCount($context, $query, 'products'));
         $result->setTotalProductsCount($this->getProductsOrCount($context, $query, 'count'));
-        $sortOrders = $this->sortOrderFactory->getDefaultSortOrders();
+        $sortOrders = $this->sortOrdersCollection->getDefaults();
         $sortOrders[] = (new SortOrder('wishlist_product', 'id_wishlist_product', 'DESC'))->setLabel($this->translator->trans('Last added', [], 'Modules.Blockwishlist.Shop'));
         $result->setAvailableSortOrders($sortOrders);
 
@@ -136,7 +136,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 $querySearch->select('product_attribute_shop.minimal_quantity AS product_attribute_minimal_quantity, IFNULL(product_attribute_shop.`id_product_attribute`,0) AS id_product_attribute');
             }
         } else {
-            $querySearch->select('COUNT(wp.id_product)');
+            $querySearch->select('COUNT(DISTINCT wp.id_product)');
         }
 
         $querySearch->from('product', 'p');
@@ -173,6 +173,8 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 $querySearch->orderBy($sortOrder . ' ' . $sortWay);
             }
             $querySearch->limit((int) $query->getResultsPerPage(), ((int) $query->getPage() - 1) * (int) $query->getResultsPerPage());
+            $querySearch->groupBy('p.id_product');
+
             $products = $this->db->executeS($querySearch);
 
             if (empty($products)) {
