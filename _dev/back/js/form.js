@@ -17,6 +17,10 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-import TranslatableInput from '@PSJs/components/translatable-input';
+const {$} = window;
 
-new TranslatableInput();
+$(() => {
+  window.prestashop.component.initComponents([
+    'TranslatableInput',
+  ]);
+});
