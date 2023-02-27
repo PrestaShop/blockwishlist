@@ -232,6 +232,7 @@
           margin-bottom: 0;
           line-height: 1rem;
           padding: 0 2.5rem;
+          word-wrap: break-word;
         }
       }
     }
