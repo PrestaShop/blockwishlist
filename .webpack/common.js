@@ -113,7 +113,7 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               presets: [['env', {useBuiltIns: 'usage', modules: false}]],
-              plugins: ['transform-object-rest-spread', 'transform-runtime'],
+              plugins: ['@babel/plugin-transform-runtime', '@babel/preset-env'],              
             },
           },
         ],
