@@ -284,7 +284,7 @@
 
         &-right {
           position: relative;
-          white-space: nowrap
+          white-space: nowrap;
 
           > button {
             transition: 0.25s ease-out;
@@ -326,7 +326,7 @@
           letter-spacing: 0;
           line-height: 1.375rem;
           margin-bottom: 0;
-          word-break: break-word
+          word-break: break-word;
 
           span {
             color: #7a7a7a;
