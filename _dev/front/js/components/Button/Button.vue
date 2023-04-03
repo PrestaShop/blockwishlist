@@ -71,6 +71,7 @@
       return {
         isChecked: this.checked === 'true',
         idList: this.listId,
+        idProductAttribute: this.productAttributeId,
       };
     },
     methods: {
@@ -169,7 +170,7 @@
             '.product-quantity input#quantity_wanted',
           );
 
-          this.productAttributeId = parseInt(args.id_product_attribute, 10);
+          this.idProductAttribute = parseInt(args.id_product_attribute, 10);
 
           // eslint-disable-next-line
           const itemsFiltered = productsAlreadyTagged.filter(
