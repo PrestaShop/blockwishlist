@@ -63,7 +63,7 @@
     "jsdom-global": "^3.0.2",
     "loader-utils": "^1.4.2",
     "mini-css-extract-plugin": "^1.0.0",
-    "mocha": "^7.1.2",
+    "mocha": "^10.2.0",
     "mochapack": "^2.1.4",
     "node-sass": "^6.0.1",
     "path": "^0.12.7",
