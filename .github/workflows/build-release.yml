@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.0.0
+        uses: actions/checkout@v3
 
       - name: Clone PrestaShop for core dependencies
         run: |
@@ -19,7 +19,7 @@ jobs:
           cd blockwishlist
 
       - name: Install Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 14.x
 
@@ -50,10 +50,10 @@ jobs:
         run: ~/.composer/vendor/bin/autoindex
 
       - name: Create & upload artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}
-          path: ../
+          path: ${{ github.workspace }}
 
   update_release_draft:
     runs-on: ubuntu-latest
@@ -61,7 +61,7 @@ jobs:
     if: github.event_name == 'push' && github.event.ref == 'refs/heads/master'
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: ${{ github.event.repository.name }}
 
@@ -88,7 +88,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to GitHub Release
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
