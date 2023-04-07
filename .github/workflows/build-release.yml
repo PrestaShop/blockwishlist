@@ -54,7 +54,7 @@ jobs:
         with:
           name: ${{ github.event.repository.name }}
           path: /home/runner/work/blockwishlist/
-
+      - run: echo "This workspace path:" ${{ github.workspace }}
   update_release_draft:
     runs-on: ubuntu-latest
     needs: [deploy]
