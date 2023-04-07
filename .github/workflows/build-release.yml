@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}
-          path: ${{ github.workspace }}
+          path: ${{ github.event.repository.name }}
 
   update_release_draft:
     runs-on: ubuntu-latest
