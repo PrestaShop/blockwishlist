@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}
-          path: /home/runner/work/blockwishlist/
+          path: ${{ github.workspace }}
       - run: echo "This workspace path:" ${{ github.workspace }}
   update_release_draft:
     runs-on: ubuntu-latest
