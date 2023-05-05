@@ -1,1 +1,19 @@
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
 .wishlist-stats .card-text{width:100%;padding:10px 30px}.wishlist-stats .wishlist-stats-topbar{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-wrap:wrap;flex-wrap:wrap;margin-bottom:20px}.wishlist-stats .wishlist-stats-topbar .btn-group{border:1px solid #b7ced3;border-radius:3px}.wishlist-stats .wishlist-stats-topbar .btn-group button{color:#363a41;font-size:14px;letter-spacing:0;line-height:19px;background:none;font-weight:500;-webkit-transition:.25s ease-out;transition:.25s ease-out}.wishlist-stats .wishlist-stats-topbar .btn-group button:not(:last-child){border-right:1px solid #b7ced3}.wishlist-stats .wishlist-stats-topbar .btn-group button:hover,.wishlist-stats .wishlist-stats-topbar .btn-group button.active{background-color:#25b9d7;color:#fff}.wishlist-stats .wishlist-stats-topbar .refresh{color:#6c868e;font-size:14px;font-weight:bold;letter-spacing:0;line-height:19px;border:1px solid #6c868e;border-radius:4px;-webkit-transition:.25s ease-out;transition:.25s ease-out;background:none}.wishlist-stats .wishlist-stats-topbar .refresh:hover{background:#6c868e;color:#fff}.wishlist-stats .wishlist-tab{display:none}.wishlist-stats .wishlist-tab.active{display:block}.wishlist-stats .wishlist-tab .column-image img{max-width:50px}.wishlist-stats .wishlist-tab .column-conversionRate{font-weight:bold}
