@@ -1,15 +1,18 @@
 name: JS tests
 on: [push, pull_request]
 jobs:
-  js-linter:
-    name: JS linter
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.0.0
-
-      - name: lint js dependencies
-        uses: PrestaShopCorp/github-action-lint-js/14@master
-        with:
-          cmd: yarn
-          path: .
+    js-linter:
+        name: JS linter
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-versions: [ '14', '16' ]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3.1.0
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-versions }}
+            - run: npm install
+            - name: Lint
+              run: npm run lint
