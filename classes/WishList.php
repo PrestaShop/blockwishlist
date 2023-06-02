@@ -251,6 +251,25 @@ class WishList extends ObjectModel
     }
 
     /**
+     * @return void
+     *
+     * @throws PrestaShopDatabaseException
+     */
+    public static function removeNonExistingProductAttributesFromWishlist()
+    {
+        $dbQuery = new DbQuery();
+        $dbQuery->select('wp.id_product_attribute');
+        $dbQuery->from('wishlist_product', 'wp');
+        $dbQuery->leftJoin('product_attribute', 'pa', 'wp.id_product_attribute = pa.id_product_attribute');
+        $dbQuery->where('pa.id_product_attribute IS NULL');
+        $productAttributes = Db::getInstance()->executeS($dbQuery);
+
+        foreach ($productAttributes as $productAttribute) {
+            self::removeProductFromWishlist(null, (int) $productAttribute['id_product_attribute']);
+        }
+    }
+
+    /**
      * Update product to wishlist
      *
      * @param int $id_wishlist

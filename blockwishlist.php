@@ -155,8 +155,8 @@ class BlockWishList extends Module
             'blockwishlistController',
             'modules/' . $this->name . '/public/wishlist.css',
             [
-              'media' => 'all',
-              'priority' => 100,
+                'media' => 'all',
+                'priority' => 100,
             ]
         );
 
@@ -164,7 +164,7 @@ class BlockWishList extends Module
             'blockwishlistController',
             'modules/' . $this->name . '/public/product.bundle.js',
             [
-              'priority' => 100,
+                'priority' => 100,
             ]
         );
 
@@ -172,7 +172,7 @@ class BlockWishList extends Module
             'blockwishlistGraphql',
             'modules/' . $this->name . '/public/graphql.js',
             [
-              'priority' => 190,
+                'priority' => 190,
             ]
         );
 
@@ -180,7 +180,7 @@ class BlockWishList extends Module
             'blockwishlistVendors',
             'modules/' . $this->name . '/public/vendors.js',
             [
-              'priority' => 190,
+                'priority' => 190,
             ]
         );
     }
@@ -195,8 +195,8 @@ class BlockWishList extends Module
     public function hookDisplayProductActions(array $params)
     {
         $this->smarty->assign([
-          'blockwishlist' => $this->displayName,
-          'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
+            'blockwishlist' => $this->displayName,
+            'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteProductFromWishlist']),
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/product/add-button.tpl');
@@ -235,9 +235,10 @@ class BlockWishList extends Module
             return;
         }
 
-        WishList::removeProductFromWishlist(null, $params['id_product_attribute']);
-        Statistics::removeProductFromStatistics(null, $params['id_product_attribute']);
+        WishList::removeNonExistingProductAttributesFromWishlist();
+        Statistics::removeNonExistingProductAttributesFromStatistics();
     }
+
 
     public function hookDeleteProductAttribute(array $params)
     {
