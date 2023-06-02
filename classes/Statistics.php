@@ -72,7 +72,7 @@ class Statistics extends ObjectModel
         );
     }
 
-    /***
+    /**
      * @return void
      */
     public static function removeNonExistingProductAttributesFromStatistics()
