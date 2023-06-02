@@ -252,8 +252,6 @@ class WishList extends ObjectModel
 
     /**
      * @return void
-     *
-     * @throws PrestaShopDatabaseException
      */
     public static function removeNonExistingProductAttributesFromWishlist()
     {

@@ -73,7 +73,7 @@ class Statistics extends ObjectModel
     }
 
     /***
-     * @throws PrestaShopDatabaseException
+     * @return void
      */
     public static function removeNonExistingProductAttributesFromStatistics()
     {
