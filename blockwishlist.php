@@ -235,7 +235,7 @@ class BlockWishList extends Module
             return;
         }
 
-        /**
+        /*
          * Because we don't know which product attributes were related to deleted attribute
          * since they are already gone from database, we just remove any leftovers.
          */
