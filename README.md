@@ -4,6 +4,10 @@
 
 Adds a block containing the customer's wishlists.
 
+## Compatibility
+
+PrestaShop: `8.0.0` or later
+
 ## Multistore compatibility
 
 This module is compatible with the multistore :heavy_check_mark: <br/>
