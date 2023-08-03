@@ -15,6 +15,15 @@ It can be configured differently from one store to another.<br/>
 It can be configured quickly in the same way on all stores thanks to the all shops context or the group of shops.<br/>
 It can be activated on one store and deactivated on another
 
+## How to test
+
+Link to specs : https://docs.prestashop-project.org/functional-documentation/functional-documentation/ux-ui/back-office/improve/modules/wishlist-module
+
+- Configuration Tab
+Edit wording and check in FO that the wording is updated
+- Statistics Tab
+Add multiple products to your wishlist, update the page, see that the Statistics are well updated
+
 ## Reporting issues
 
 You can report issues with this module in the main PrestaShop repository. [Click here to report an issue][report-issue]. 
