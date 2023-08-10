@@ -235,8 +235,12 @@ class BlockWishList extends Module
             return;
         }
 
-        WishList::removeProductFromWishlist(null, $params['id_product_attribute']);
-        Statistics::removeProductFromStatistics(null, $params['id_product_attribute']);
+        /*
+         * Because we don't know which product attributes were related to deleted attribute
+         * since they are already gone from database, we just remove any leftovers.
+         */
+        WishList::removeNonExistingProductAttributesFromWishlist();
+        Statistics::removeNonExistingProductAttributesFromStatistics();
     }
 
     public function hookDeleteProductAttribute(array $params)

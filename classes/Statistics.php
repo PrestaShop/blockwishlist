@@ -71,4 +71,21 @@ class Statistics extends ObjectModel
             . ($id_product_attribute ? ' id_product_attribute = ' . (int) $id_product_attribute : '')
         );
     }
+
+    /**
+     * @return void
+     */
+    public static function removeNonExistingProductAttributesFromStatistics()
+    {
+        $dbQuery = new DbQuery();
+        $dbQuery->select('bws.id_product_attribute');
+        $dbQuery->from('blockwishlist_statistics', 'bws');
+        $dbQuery->leftJoin('product_attribute', 'pa', 'bws.id_product_attribute = pa.id_product_attribute');
+        $dbQuery->where('pa.id_product_attribute IS NULL');
+        $productAttributes = Db::getInstance()->executeS($dbQuery);
+
+        foreach ($productAttributes as $productAttribute) {
+            self::removeProductFromStatistics(null, (int) $productAttribute['id_product_attribute']);
+        }
+    }
 }
