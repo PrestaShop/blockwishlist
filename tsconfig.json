@@ -9,10 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "baseUrl": "./",
-    "typeRoots": ["js/types", "node_modules/@types"],
-    "paths": {
-      "@PSJs/*": ["../../admin-dev/themes/new-theme/js/*"]
-    }
+    "typeRoots": ["js/types", "node_modules/@types"]
   },
   "ts-node": {
     "compilerOptions": {

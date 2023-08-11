@@ -12,7 +12,7 @@
     ],
     "config": {
         "platform": {
-            "php": "7.2.0"
+            "php": "7.2.5"
         },
         "preferred-install": "dist",
         "classmap-authoritative": true,
@@ -21,7 +21,7 @@
         "prepend-autoloader": false
     },
     "require-dev": {
-        "prestashop/php-dev-tools": "~3.0"
+        "prestashop/php-dev-tools": "^4.3"
     },
     "autoload": {
         "psr-4": {
@@ -37,5 +37,6 @@
         "set-license-header": [
             "@php ./vendor/bin/header-stamp --license=\"assets/afl.txt\" --exclude=\".github,.webpack,node_modules,vendor\""
         ]
-    }
+    },
+    "author": "PrestaShop"
 }
