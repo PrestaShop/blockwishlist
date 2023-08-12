@@ -80,10 +80,10 @@
 </template>
 
 <script>
+  import {ContentLoader} from 'vue-content-loader';
   import getLists from '@graphqlFiles/queries/getlists';
   import addtolist from '@graphqlFiles/mutations/addtolist';
   import EventBus from '@components/EventBus';
-  import {ContentLoader} from 'vue-content-loader';
 
   /**
    * The role of this component is to render a list

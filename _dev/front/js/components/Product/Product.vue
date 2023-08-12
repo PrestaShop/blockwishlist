@@ -166,10 +166,10 @@
 </template>
 
 <script>
-  import EventBus from '@components/EventBus';
-  import headers from '@constants/headers';
   import prestashop from 'prestashop';
   import wishlistAddProductToCartUrl from 'wishlistAddProductToCartUrl';
+  import EventBus from '@components/EventBus';
+  import headers from '@constants/headers';
 
   export default {
     name: 'Product',

@@ -17,8 +17,8 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *-->
 <script>
-  import EventBus from '@components/EventBus';
   import prestashop from 'prestashop';
+  import EventBus from '@components/EventBus';
 
   /**
    * This component display a modal where you can redirect to login page

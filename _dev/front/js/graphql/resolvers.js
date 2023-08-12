@@ -17,9 +17,9 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
+import GraphQLJSON, {GraphQLJSONObject} from 'graphql-type-json';
 import EventBus from '@components/EventBus';
 import headers from '@constants/headers';
-import GraphQLJSON, {GraphQLJSONObject} from 'graphql-type-json';
 
 /**
  * Resolvers linked to schemas definitions

@@ -129,9 +129,9 @@
 
 <script>
   import {ContentLoader} from 'vue-content-loader';
-  import EventBus from '@components/EventBus';
   import wishlistUrl from 'wishlistUrl';
   import vClickOutside from 'v-click-outside';
+  import EventBus from '@components/EventBus';
 
   /**
    * Dumb component to display the list of Wishlist on a page

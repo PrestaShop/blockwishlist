@@ -138,9 +138,9 @@
 </template>
 
 <script>
+  import {ContentLoader} from 'vue-content-loader';
   import Product from '@components/Product/Product';
   import getProducts from '@graphqlFiles/queries/getproducts';
-  import {ContentLoader} from 'vue-content-loader';
   import EventBus from '@components/EventBus';
 
   /**

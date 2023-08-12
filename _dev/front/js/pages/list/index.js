@@ -17,8 +17,8 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-import initVueButtons from '@components/Button';
 import removeFromWishlistUrl from 'removeFromWishlistUrl';
+import initVueButtons from '@components/Button';
 
 const initButtons = () => {
   const products = document.querySelectorAll('.js-product-miniature');

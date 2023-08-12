@@ -34,8 +34,8 @@
 </template>
 
 <script>
-  import removeFromList from '@graphqlFiles/mutations/removeFromList';
   import prestashop from 'prestashop';
+  import removeFromList from '@graphqlFiles/mutations/removeFromList';
   import EventBus from '@components/EventBus';
 
   export default {
