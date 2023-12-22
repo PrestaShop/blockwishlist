@@ -2,6 +2,7 @@ services:
   # Controller
   PrestaShop\Module\BlockWishList\Controller\WishlistConfigurationAdminController:
     public: true
+    autowire: true
     class: PrestaShop\Module\BlockWishList\Controller\WishlistConfigurationAdminController
     arguments:
       - '@doctrine.cache.provider'
