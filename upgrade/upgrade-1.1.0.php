@@ -26,7 +26,7 @@ if (!defined('_PS_VERSION_')) {
  *
  * @return bool
  */
-function upgrade_module_1_1($module)
+function upgrade_module_1_1_0($module)
 {
     $result = true;
     $list_fields = Db::getInstance()->executeS('SHOW FIELDS FROM `' . _DB_PREFIX_ . 'wishlist`');
