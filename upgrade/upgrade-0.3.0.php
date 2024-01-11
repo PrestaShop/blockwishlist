@@ -26,7 +26,7 @@ if (!defined('_PS_VERSION_')) {
  *
  * @return bool
  */
-function upgrade_module_0_3($module)
+function upgrade_module_0_3_0($module)
 {
     return $module->registerHook('displayProductListFunctionalButtons')
         && $module->registerHook('top');
