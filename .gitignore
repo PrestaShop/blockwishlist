@@ -17,5 +17,6 @@ node_modules
 .DS_Store
 
 ## UI Tests
+/tests/UI/.env
 /tests/UI/node_modules/
 /tests/UI/reports/
