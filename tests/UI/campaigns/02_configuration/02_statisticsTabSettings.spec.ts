@@ -1,14 +1,14 @@
 
 // Import utils
-//import testContext from '@prestashop-core/ui-testing/dist/utils/testContext';
+import {testContext, dashboardPage, loginPage} from '@prestashop-core/ui-testing/dist';
 
 // Import commonTests
 //import loginCommon from '@prestashop-core/ui-testing/dist/common/BO/loginBO';
 
 // Import pages
 // Import BO pages
-import dashboardPage from '@prestashop-core/ui-testing/dist/pages/BO/dashboard';
-import loginPage from '@prestashop-core/ui-testing/dist/pages/BO/login';
+//import dashboardPage from '@prestashop-core/ui-testing/dist/pages/BO/dashboard';
+//import loginPage from '@prestashop-core/ui-testing/dist/pages/BO/login';
 /*
 import {moduleManager as moduleManagerPage} from '@pages/BO/modules/moduleManager';
 import blockwishlistPage from '@pages/BO/modules/blockwishlist';
@@ -26,17 +26,19 @@ import { test, expect } from '@playwright/test';
 
 const baseContext: string = 'modules_blockwishlist_configuration_statisticsTabSettings';
 
-test.describe('Wishlist module - Statistics tab settings', () => {
-  test('Check the Back Office: should login in BO', async ({ page }) => {
+test('Wishlist module - Statistics tab settings', async ({ page }) => {
+  await test.step('should login in BO', async () => {
+    await testContent.addContextItem(test.info(), 'testIdentifier', 'loginBO', baseContext);
+
     await loginPage.goTo(page, global.BO.URL);
-    await loginPage.successLogin(page, email, password);
+    await loginPage.successLogin(page, global.BO.EMAIL, global.BO.PASSWD);
 
     const pageTitle = await dashboardPage.getPageTitle(page);
     expect(pageTitle).toContain(dashboardPage.pageTitle);
   });
 
-  test('should go to \'Modules > Module Manager\' page', async ({ page }) => {
-    //await testContext.addContextItem(test.info(), 'testIdentifier', 'goToModuleManagerPage', baseContext);
+  await test.step('should go to \'Modules > Module Manager\' page', async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'goToModuleManagerPage', baseContext);
 
     await dashboardPage.goToSubMenu(
       page,
