@@ -12,14 +12,13 @@
       "allowJs": true,
       "downlevelIteration": true,
       "baseUrl": "./",
-      "paths": {
-      },
+      "paths": {},
       "typeRoots": [
         "node_modules/@types"
       ],
       "skipLibCheck": true,
       "noEmit": true
     },
-    "include": ["campaigns/**/*"],
+    "include": ["types/global.d.ts", "campaigns/**/*"],
     "exclude": ["node_modules"]
   }

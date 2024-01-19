@@ -1,14 +1,16 @@
-
-// Import utils
-import {testContext, dashboardPage, loginPage} from '@prestashop-core/ui-testing/dist';
+import {
+  // Import utils
+  testContext,
+  // Import BO pages
+  boDashboardPage,
+  boLoginPage,
+} from '@prestashop-core/ui-testing';
 
 // Import commonTests
 //import loginCommon from '@prestashop-core/ui-testing/dist/common/BO/loginBO';
 
 // Import pages
 // Import BO pages
-//import dashboardPage from '@prestashop-core/ui-testing/dist/pages/BO/dashboard';
-//import loginPage from '@prestashop-core/ui-testing/dist/pages/BO/login';
 /*
 import {moduleManager as moduleManagerPage} from '@pages/BO/modules/moduleManager';
 import blockwishlistPage from '@pages/BO/modules/blockwishlist';
@@ -28,22 +30,22 @@ const baseContext: string = 'modules_blockwishlist_configuration_statisticsTabSe
 
 test('Wishlist module - Statistics tab settings', async ({ page }) => {
   await test.step('should login in BO', async () => {
-    await testContent.addContextItem(test.info(), 'testIdentifier', 'loginBO', baseContext);
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'loginBO', baseContext);
 
-    await loginPage.goTo(page, global.BO.URL);
-    await loginPage.successLogin(page, global.BO.EMAIL, global.BO.PASSWD);
+    await boLoginPage.goTo(page, global.BO.URL);
+    await boLoginPage.successLogin(page, global.BO.EMAIL, global.BO.PASSWD);
 
-    const pageTitle = await dashboardPage.getPageTitle(page);
-    expect(pageTitle).toContain(dashboardPage.pageTitle);
+    const pageTitle = await boDashboardPage.getPageTitle(page);
+    expect(pageTitle).toContain(boDashboardPage.pageTitle);
   });
 
   await test.step('should go to \'Modules > Module Manager\' page', async () => {
     await testContext.addContextItem(test.info(), 'testIdentifier', 'goToModuleManagerPage', baseContext);
 
-    await dashboardPage.goToSubMenu(
+    await boDashboardPage.goToSubMenu(
       page,
-      dashboardPage.modulesParentLink,
-      dashboardPage.moduleManagerLink,
+      boDashboardPage.modulesParentLink,
+      boDashboardPage.moduleManagerLink,
     );
     /*
     await moduleManagerPage.closeSfToolBar(page);
