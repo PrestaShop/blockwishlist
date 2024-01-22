@@ -5,6 +5,7 @@ jobs:
     name: UI Tests
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         ps-version:
           - '8.0.5' 
