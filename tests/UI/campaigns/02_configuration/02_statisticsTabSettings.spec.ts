@@ -4,31 +4,24 @@ import {
   // Import BO pages
   boDashboardPage,
   boLoginPage,
+  boModuleManagerPage,
+  // Import FO pages
+  foCategoryPage,
+  foHomePage,
+  foLoginPage,
+  // Import modules
+  modBlockwishlistBoMain,
+  modBlockwishlistBoStatistics,
+  // Import data
+  dataCustomers,
+  dataModules,
 } from '@prestashop-core/ui-testing';
-
-// Import commonTests
-//import loginCommon from '@prestashop-core/ui-testing/dist/common/BO/loginBO';
-
-// Import pages
-// Import BO pages
-/*
-import {moduleManager as moduleManagerPage} from '@pages/BO/modules/moduleManager';
-import blockwishlistPage from '@pages/BO/modules/blockwishlist';
-import blockwishlistStatisticsPage from '@pages/BO/modules/blockwishlist/statistics';
-// Import FO pages
-import categoryPage from '@pages/FO/category';
-import {homePage} from '@pages/FO/home';
-import {loginPage as foLoginPage} from '@pages/FO/login';
-
-// Import data
-import Customers from '@data/demo/customers';
-import Modules from '@data/demo/modules';*/
 
 import { test, expect } from '@playwright/test';
 
 const baseContext: string = 'modules_blockwishlist_configuration_statisticsTabSettings';
 
-test('Wishlist module - Statistics tab settings', async ({ page }) => {
+test('Wishlist module - Statistics tab settings', async ({ page, context }) => {
   await test.step('should login in BO', async () => {
     await testContext.addContextItem(test.info(), 'testIdentifier', 'loginBO', baseContext);
 
@@ -47,127 +40,124 @@ test('Wishlist module - Statistics tab settings', async ({ page }) => {
       boDashboardPage.modulesParentLink,
       boDashboardPage.moduleManagerLink,
     );
-    /*
-    await moduleManagerPage.closeSfToolBar(page);
+    await boModuleManagerPage.closeSfToolBar(page);
 
-    const pageTitle = await moduleManagerPage.getPageTitle(page);
-    expect(pageTitle).to.contains(moduleManagerPage.pageTitle);*/
+    const pageTitle = await boModuleManagerPage.getPageTitle(page);
+    expect(pageTitle).toContain(boModuleManagerPage.pageTitle);
   });
-/*
-    test(`should search the module ${Modules.blockwishlist.name}`, async ({ page }) => {
-      await testContext.addContextItem(this, 'testIdentifier', 'searchModule', baseContext);
 
-      const isModuleVisible = await moduleManagerPage.searchModule(page, Modules.blockwishlist);
-      expect(isModuleVisible).to.eq(true);
-    });
+  await test.step(`should search the module ${dataModules.blockwishlist.name}`, async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'searchModule', baseContext);
 
-    test(`should go to the configuration page of the module '${Modules.blockwishlist.name}'`, async ({ page }) => {
-      await testContext.addContextItem(this, 'testIdentifier', 'goToConfigurationPage', baseContext);
-
-      await moduleManagerPage.goToConfigurationPage(page, Modules.blockwishlist.tag);
-
-      const pageTitle = await blockwishlistPage.getPageTitle(page);
-      expect(pageTitle).to.eq(blockwishlistPage.pageTitle);
-
-      const isConfigurationTabActive = await blockwishlistPage.isTabActive(page, 'Configuration');
-      expect(isConfigurationTabActive).to.eq(true);
-
-      const isStatisticsTabActive = await blockwishlistPage.isTabActive(page, 'Statistics');
-      expect(isStatisticsTabActive).to.eq(false);
-    });
-
-    test('should go on Statistics Tab', async ({ page }) => {
-      await testContext.addContextItem(this, 'testIdentifier', 'goToStatisticsTab', baseContext);
-
-      await blockwishlistPage.goToStatisticsTab(page);
-
-      const pageTitle = await blockwishlistStatisticsPage.getPageTitle(page);
-      expect(pageTitle).to.eq(blockwishlistStatisticsPage.pageTitle);
-
-      const noRecordsFoundText = await blockwishlistStatisticsPage.getTextForEmptyTable(page);
-      expect(noRecordsFoundText).to.contains('warning No records found');
-    });
+    const isModuleVisible = await boModuleManagerPage.searchModule(page, dataModules.blockwishlist);
+    expect(isModuleVisible).toEqual(true);
   });
-  describe('Go to the FO and add to favorites some products', async () => {
-    test('should go to the FO', async ({ page }) => {
-      await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
-      page = await blockwishlistStatisticsPage.viewMyShop(page);
-      await homePage.changeLanguage(page, 'en');
+  await test.step(`should go to the configuration page of the module '${dataModules.blockwishlist.name}'`, async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'goToConfigurationPage', baseContext);
 
-      const isHomePage = await homePage.isHomePage(page);
-      expect(isHomePage).to.eq(true);
-    });
+    await boModuleManagerPage.goToConfigurationPage(page, dataModules.blockwishlist.tag);
 
-    test('should go to login page', async ({ page }) => {
-      await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPage', baseContext);
+    const pageTitle = await modBlockwishlistBoMain.getPageTitle(page);
+    expect(pageTitle).toEqual(modBlockwishlistBoMain.pageTitle);
 
-      await homePage.goToLoginPage(page);
+    const isConfigurationTabActive = await modBlockwishlistBoMain.isTabActive(page, 'Configuration');
+    expect(isConfigurationTabActive).toEqual(true);
 
-      const pageTitle = await foLoginPage.getPageTitle(page);
-      expect(pageTitle, 'Fail to open FO login page').to.contains(foLoginPage.pageTitle);
-    });
+    const isStatisticsTabActive = await modBlockwishlistBoMain.isTabActive(page, 'Statistics');
+    expect(isStatisticsTabActive).toEqual(false);
+  });
+  
+  await test.step('should go on Statistics Tab', async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'goToStatisticsTab', baseContext);
 
-    test('should sign in with default customer', async ({ page }) => {
-      await testContext.addContextItem(this, 'testIdentifier', 'sighInFo', baseContext);
+    await modBlockwishlistBoMain.goToStatisticsTab(page);
 
-      await foLoginPage.customerLogin(page, Customers.johnDoe);
+    const pageTitle = await modBlockwishlistBoStatistics.getPageTitle(page);
+    expect(pageTitle).toEqual(modBlockwishlistBoStatistics.pageTitle);
 
-      const isCustomerConnected = await foLoginPage.isCustomerConnected(page);
-      expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
-    });
+    const noRecordsFoundText = await modBlockwishlistBoStatistics.getTextForEmptyTable(page);
+    expect(noRecordsFoundText).toContain('warning No records found');
+  });
 
-    test('should go to all products page', async ({ page }) => {
-      await testContext.addContextItem(this, 'testIdentifier', 'goToAllProducts', baseContext);
+  await test.step('should go to the FO', async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'goToFO', baseContext);
 
-      await homePage.goToAllProductsPage(page);
+    page = await modBlockwishlistBoStatistics.viewMyShop(page);
+    await foHomePage.changeLanguage(page, 'en');
 
-      const isCategoryPageVisible = await categoryPage.isCategoryPage(page);
-      expect(isCategoryPageVisible).to.eq(true);
-    });
+    const isHomePage = await foHomePage.isHomePage(page);
+    expect(isHomePage).toEqual(true);
+  });
+
+  await test.step('should go to login page', async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'goToLoginPage', baseContext);
+
+    await foHomePage.goToLoginPage(page);
+
+    const pageTitle = await foLoginPage.getPageTitle(page);
+    expect(pageTitle, 'Fail to open FO login page').toContain(foLoginPage.pageTitle);
+  });
+
+  await test.step('should sign in with default customer', async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'sighInFo', baseContext);
+
+    await foLoginPage.customerLogin(page, dataCustomers.johnDoe);
+
+    const isCustomerConnected = await foLoginPage.isCustomerConnected(page);
+    expect(isCustomerConnected, 'Customer is not connected').toEqual(true);
+  });
+
+  await test.step('should go to all products page', async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'goToAllProducts', baseContext);
+
+    await foHomePage.goToAllProductsPage(page);
+
+    const isCategoryPageVisible = await foCategoryPage.isCategoryPage(page);
+    expect(isCategoryPageVisible).toEqual(true);
+  });
 
     for (let idxProduct: number = 1; idxProduct <= 3; idxProduct++) {
       // eslint-disable-next-line no-loop-func
-      test(`should add product #${idxProduct} to wishlist`, async ({ page }) => {
-        await testContext.addContextItem(this, 'testIdentifier', `addToFavorite${idxProduct}`, baseContext);
+      await test.step(`should add product #${idxProduct} to wishlist`, async () => {
+        await testContext.addContextItem(test.info(), 'testIdentifier', `addToFavorite${idxProduct}`, baseContext);
 
-        const textResult = await categoryPage.addToWishList(page, idxProduct);
-        expect(textResult).to.be.eq(categoryPage.messageAddedToWishlist);
+        const textResult = await foCategoryPage.addToWishList(page, idxProduct);
+        expect(textResult).toEqual(foCategoryPage.messageAddedToWishlist);
 
-        const isAddedToWishlist = await categoryPage.isAddedToWishlist(page, idxProduct);
-        expect(isAddedToWishlist).to.eq(true);
+        const isAddedToWishlist = await foCategoryPage.isAddedToWishlist(page, idxProduct);
+        expect(isAddedToWishlist).toEqual(true);
       });
     }
 
-    test('should logout', async ({ page }) => {
-      await testContext.addContextItem(this, 'testIdentifier', 'foLogout', baseContext);
+  await test.step('should logout', async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'foLogout', baseContext);
 
-      await categoryPage.logout(page);
+    await foCategoryPage.logout(page);
 
-      const isCustomerConnected = await homePage.isCustomerConnected(page);
-      expect(isCustomerConnected).to.eq(false);
-    });
+    const isCustomerConnected = await foHomePage.isCustomerConnected(page);
+    expect(isCustomerConnected).toEqual(false);
   });
-  describe('Return to BO and check statistics', async () => {
-    test('should go to BO', async ({ page }) => {
-      await testContext.addContextItem(this, 'testIdentifier', 'goToBoBack', baseContext);
+  
+  await test.step('should go to BO', async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'goToBoBack', baseContext);
 
-      page = await homePage.closePage(browserContext, page, 0);
+    page = await foHomePage.closePage(context, page, 0);
 
-      const pageTitle = await blockwishlistStatisticsPage.getPageTitle(page);
-      expect(pageTitle).to.contains(blockwishlistStatisticsPage.pageTitle);
-    });
-    // @todo : https://github.com/PrestaShop/PrestaShop/issues/33374
-    test('should click on the refresh button', async ({ page }) => {
-      await testContext.addContextItem(this, 'testIdentifier', 'clickOnRefreshButton', baseContext);
+    const pageTitle = await modBlockwishlistBoStatistics.getPageTitle(page);
+    expect(pageTitle).toContain(modBlockwishlistBoStatistics.pageTitle);
+  });
 
-      test.skip();
+  // @todo : https://github.com/PrestaShop/PrestaShop/issues/33374
+  await test.step('should click on the refresh button', async () => {
+    await testContext.addContextItem(test.info(), 'testIdentifier', 'clickOnRefreshButton', baseContext);
 
-      await blockwishlistStatisticsPage.refreshStatistics(page);
+    test.skip(true, 'https://github.com/PrestaShop/PrestaShop/issues/33374');
 
-      // Check statistics
-      const pageTitle = await blockwishlistStatisticsPage.getPageTitle(page);
-      expect(pageTitle).to.contains(blockwishlistStatisticsPage.pageTitle);
-    });
-  });*/
+    await modBlockwishlistBoStatistics.refreshStatistics(page);
+
+    // Check statistics
+    const pageTitle = await modBlockwishlistBoStatistics.getPageTitle(page);
+    expect(pageTitle).toContain(modBlockwishlistBoStatistics.pageTitle);
+  });
 });
