@@ -35,7 +35,7 @@ jobs:
         working-directory: tests/UI/
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium --with-deps
         working-directory: tests/UI/
 
       - name: Run Playwright tests
