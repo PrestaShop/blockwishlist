@@ -1,12 +1,14 @@
+version: '3.7'
+
 services:
   prestashop:
     image: prestashop/prestashop-flashlight:${PS_VERSION}
     container_name: prestashop
-    depends_on:
-      mysql:
-        condition: service_healthy
+    depends_on: 
+      - mysql
     environment:
       - DEBUG_MODE=true
+      - PS_DOMAIN=localhost:8000
     volumes:
       - type: bind
         # Local Path 
@@ -15,7 +17,6 @@ services:
         target: /var/www/html/modules/blockwishlist
     ports:
       - 8000:80
-
   mysql:
     image: mariadb:lts
     container_name: prestashop-mysql

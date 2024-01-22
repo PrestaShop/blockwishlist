@@ -4,7 +4,7 @@ import path from 'path';
 
 function loadGlobal(): void  {
   global.FO = {
-    URL: process.env.URL_FO || 'http://localhost/prestashop/',
+    URL: process.env.URL_FO || 'http://localhost:8000/',
   };
 
   /*
@@ -14,8 +14,8 @@ function loadGlobal(): void  {
 
   global.BO = {
     URL: process.env.URL_BO || `${global.FO.URL}admin-dev/`,
-    EMAIL: process.env.LOGIN || 'demo@prestashop.com',
-    PASSWD: process.env.PASSWD || 'Correct Horse Battery Staple',
+    EMAIL: process.env.LOGIN || 'admin@prestashop.com',
+    PASSWD: process.env.PASSWD || 'prestashop',
     FIRSTNAME: process.env.FIRSTNAME || 'Marc',
     LASTNAME: process.env.LASTNAME || 'Beier',
   };
@@ -63,14 +63,6 @@ function loadGlobal(): void  {
     smtpPort: parseInt(process.env.SMTP_PORT ?? '1025', 10),
     smtpServer: process.env.SMTP_SERVER || 'localhost',
     silent: true,
-  };
-
-  global.keycloakConfig = {
-    keycloakExternalUrl: process.env.KEYCLOAK_URL_EXTERNAL || 'http://127.0.0.1:8003',
-    keycloakInternalUrl: process.env.KEYCLOAK_URL_INTERNAL || 'http://keycloak:8080',
-    keycloakAdminUser: process.env.KEYCLOAK_ADMIN_USER || 'admin',
-    keycloakAdminPass: process.env.KEYCLOAK_ADMIN_PASS || 'admin',
-    keycloakClientId: process.env.KEYCLOAK_CLIENT_ID || 'KEYCLOAK_CLIENT_ID',
   };
 }
 
