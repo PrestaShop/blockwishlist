@@ -82,16 +82,16 @@ loadGlobal();
 export default defineConfig({
   testDir: './',
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   retries: 0,
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
+    ['list', { printSteps: true }],
     ['json', { outputFolder: 'reports' }],
     ['html', { outputFolder: 'reports' }],
-    [ './reporters/mochawesome.js', { outputJSON: true, reportDir: 'reports'} ]
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
