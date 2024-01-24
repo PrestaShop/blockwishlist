@@ -4,7 +4,7 @@ import path from 'path';
 
 function loadGlobal(): void  {
   global.FO = {
-    URL: process.env.URL_FO || 'http://localhost:8000/',
+    URL: process.env.URL_FO || 'http://localhost/',
   };
 
   /*
