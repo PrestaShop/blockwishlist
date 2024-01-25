@@ -81,7 +81,7 @@ loadGlobal();
  */
 export default defineConfig({
   testDir: './',
-  /* Run tests in files in parallel */
+  /* Run tests in files in serial */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -90,17 +90,11 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['list', { printSteps: true }],
-    ['json', { outputFolder: 'reports' }],
+    ['json', { outputFile: 'report.json' }],
     ['html', { outputFolder: 'reports' }],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-
     /* Capture screenshot after each test failure */
     screenshot: 'only-on-failure',
   },
