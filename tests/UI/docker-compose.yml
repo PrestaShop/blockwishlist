@@ -14,7 +14,8 @@ services:
       - PS_INSTALL_AUTO=1
       - PS_FOLDER_ADMIN=admin-dev
       - PS_FOLDER_INSTALL=install-dev
-      - ADMIN_MAIL=admin@prestashop.com
+      - PS_USE_DOCKER_MAILDEV=0
+      - ADMIN_MAIL=demo@prestashop.com
       - ADMIN_PASSWD=prestashop
       - DB_SERVER=mysql
       - DB_USER=prestashop

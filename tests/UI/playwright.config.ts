@@ -14,7 +14,7 @@ function loadGlobal(): void  {
 
   global.BO = {
     URL: process.env.URL_BO || `${global.FO.URL}admin-dev/`,
-    EMAIL: process.env.LOGIN || 'admin@prestashop.com',
+    EMAIL: process.env.LOGIN || 'demo@prestashop.com',
     PASSWD: process.env.PASSWD || 'prestashop',
     FIRSTNAME: process.env.FIRSTNAME || 'Marc',
     LASTNAME: process.env.LASTNAME || 'Beier',
