@@ -1,5 +1,17 @@
 name: UI Tests
-on: [push, pull_request]
+on:
+  ## Check each PR
+  push:
+  pull_request:
+  ## Manual execution on branch
+  workflow_dispatch:
+  ## Nightly
+  ### Needs secrets
+  #### GC_PROJECT_ID
+  #### GC_SERVICE_KEY
+  #### NIGHTLY_TOKEN
+  schedule:
+    - cron: '0 0 * * *'
 jobs:
   ui_test:
     name: UI Tests
@@ -25,26 +37,64 @@ jobs:
         run: npm install && npm run build
 
       - name: Start containers
+        working-directory: tests/UI/
         run: |
           docker-compose -f "docker-compose.yml" up -d --build
           while ! nc -z localhost 80; do sleep 1; done;
-        working-directory: tests/UI/
       
       - name: Install dependencies
-        run: npm ci
         working-directory: tests/UI/
+        run: npm ci
 
       - name: Install Playwright Browsers
-        run: npx playwright install chromium --with-deps
         working-directory: tests/UI/
+        run: npx playwright install chromium --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test
         working-directory: tests/UI/
+        run: npx playwright test
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
-          path: tests/UI/reports/
+          path: 
+            tests/UI/reports/
+            tests/UI/report.json
           retention-days: 30
+
+      # Nightly : Rename file
+      - name: "Nightly : Rename file"
+        working-directory: tests/UI/
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          mkdir -p nightly
+          REPORT_NAME="blockwishlist_$(date +%Y-%m-%d)-${{ env.PS_VERSION }}"
+          mv report.json nightly/${REPORT_NAME}.json
+
+      # Nightly : Auth GCP
+      - name: "Nightly : Auth GCP"
+        uses: google-github-actions/auth@v1
+        if: ${{ github.event_name == 'schedule' }}
+        with:
+          credentials_json: ${{ secrets.GC_SERVICE_KEY }}
+          project_id: ${{ secrets.GC_PROJECT_ID }}
+
+      # Nightly : Setup GCP
+      - name: "Nightly : Setup GCP"
+        uses: google-github-actions/setup-gcloud@v1
+        if: ${{ github.event_name == 'schedule' }}
+
+      # Nightly : Upload to Google Cloud Storage (GCS)
+      - name: "Nightly : Upload to Google Cloud Storage (GCS)"
+        working-directory: tests/UI/
+        if: ${{ github.event_name == 'schedule' }}
+        run: gsutil cp -r "nightly/**" gs://prestashop-core-nightly/reports
+
+      # Nightly : Push Report
+      - name: "Nightly : Push Report"
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          REPORT_NAME="blockwishlist_$(date +%Y-%m-%d)-${{ env.PS_VERSION }}"
+          curl -v "https://api-nightly.prestashop-project.org/import/report/playwright?token=${{ secrets.NIGHTLY_TOKEN }}&filename=${REPORT_NAME}.json"
