@@ -119,7 +119,7 @@
           'btn-secondary': product.customizable,
           'btn-primary': !product.customizable
         }"
-        :disabled="!product.customizable && (isDisabled || forceDisable)"
+        :disabled="isDisabled || forceDisable"
         @click="
           product.add_to_cart_url || product.customizable
             ? addToCartAction()
@@ -235,7 +235,7 @@
           return false;
         }
 
-        if (this.product.customizable === '1') {
+        if (this.product.customizable) {
           return false;
         }
 
@@ -271,7 +271,7 @@
         });
       },
       async addToCartAction() {
-        if (this.product.add_to_cart_url && this.product.customizable !== '1') {
+        if (this.product.add_to_cart_url && !this.product.customizable) {
           try {
             this.forceDisable = true;
             const datas = new FormData();
