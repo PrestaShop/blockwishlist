@@ -54,14 +54,20 @@ jobs:
         working-directory: tests/UI/
         run: npx playwright test
 
+      - name: Export Docker errors
+        working-directory: tests/UI/
+        if: always()
+        run: docker-compose logs --no-color >& docker-compose.log
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
-          path: 
+          name: playwright-report-${{ env.PS_VERSION }}
+          path: |
             tests/UI/reports/
             tests/UI/report.json
+            tests/UI/docker-compose.log
           retention-days: 30
 
       # Nightly : Rename file
