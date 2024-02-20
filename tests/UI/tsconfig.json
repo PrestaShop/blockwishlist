@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "module": "es2022",
+    "target": "es2017",
+    "strict": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "downlevelIteration": true,
+    "baseUrl": "./",
+    "paths": {},
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["types/global.d.ts", "campaigns/**/*"],
+  "exclude": ["node_modules"]
+}

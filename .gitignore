@@ -15,3 +15,9 @@ node_modules
 
 # mac
 .DS_Store
+
+## UI Tests
+/tests/UI/.env
+/tests/UI/node_modules/
+/tests/UI/report.json
+/tests/UI/reports/
