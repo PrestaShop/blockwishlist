@@ -21,7 +21,7 @@ jobs:
       matrix:
         ps-version:
           - '8.0.5' 
-          - '8.1.3'
+          - '8.1.4'
           - 'nightly'
     env:
       PS_VERSION: ${{ matrix.ps-version }}
