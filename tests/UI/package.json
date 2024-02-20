@@ -10,7 +10,6 @@
     "@playwright/test": "^1.40.1",
     "@prestashop-core/ui-testing": "^0.0.6",
     "@types/node": "^20.11.5",
-    "pwmochawesome": "^1.1.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {
