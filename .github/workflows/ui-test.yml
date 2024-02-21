@@ -12,6 +12,10 @@ on:
   #### NIGHTLY_TOKEN
   schedule:
     - cron: '0 0 * * *'
+
+permissions:
+  contents: write
+
 jobs:
   ui_test:
     name: UI Tests
