@@ -14,7 +14,8 @@ on:
     - cron: '0 0 * * *'
 
 permissions:
-  contents: write
+  contents: 'read'
+  id-token: 'write'
 
 jobs:
   ui_test:
@@ -37,7 +38,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.1.0
 
-      - uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: 14
 
@@ -81,7 +83,7 @@ jobs:
       # Nightly : Rename file
       - name: "Nightly : Rename file"
         working-directory: tests/UI/
-        if: ${{ github.event_name == 'schedule' }}
+        #if: ${{ github.event_name == 'schedule' }}
         run: |
           mkdir -p nightly
           REPORT_NAME="blockwishlist_$(date +%Y-%m-%d)-${{ env.PS_VERSION }}"
@@ -90,7 +92,7 @@ jobs:
       # Nightly : Auth GCP
       - name: "Nightly : Auth GCP"
         uses: google-github-actions/auth@v1
-        if: ${{ github.event_name == 'schedule' }}
+        #if: ${{ github.event_name == 'schedule' }}
         with:
           credentials_json: ${{ secrets.GC_SERVICE_KEY }}
           project_id: ${{ secrets.GC_PROJECT_ID }}
@@ -98,17 +100,17 @@ jobs:
       # Nightly : Setup GCP
       - name: "Nightly : Setup GCP"
         uses: google-github-actions/setup-gcloud@v1
-        if: ${{ github.event_name == 'schedule' }}
+        #if: ${{ github.event_name == 'schedule' }}
 
       # Nightly : Upload to Google Cloud Storage (GCS)
       - name: "Nightly : Upload to Google Cloud Storage (GCS)"
         working-directory: tests/UI/
-        if: ${{ github.event_name == 'schedule' }}
+        #if: ${{ github.event_name == 'schedule' }}
         run: gsutil cp -r "nightly/**" gs://prestashop-core-nightly/reports
 
       # Nightly : Push Report
       - name: "Nightly : Push Report"
-        if: ${{ github.event_name == 'schedule' }}
+        #if: ${{ github.event_name == 'schedule' }}
         run: |
           REPORT_NAME="blockwishlist_$(date +%Y-%m-%d)-${{ env.PS_VERSION }}"
           curl -v "https://api-nightly.prestashop-project.org/import/report/playwright?token=${{ secrets.NIGHTLY_TOKEN }}&filename=${REPORT_NAME}.json"
