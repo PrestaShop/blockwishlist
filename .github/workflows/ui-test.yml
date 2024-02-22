@@ -13,31 +13,33 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
-permissions:
-  contents: write
+env:
+  CAMPAIGN: 'blockwishlist'
 
 jobs:
   ui_test:
     name: UI Tests
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
         include:
-          - ps-version: '8.0.5'
-            php-version: '8.1'
-          - ps-version: '8.1.4'
-            php-version: '8.1'
-          - ps-version: 'nightly'
-            php-version: '8.2'
-    env:
-      PS_VERSION: ${{ matrix.ps-version }}
-      PHP_VERSION: ${{ matrix.php-version }}
+          - PS_VERSION: '8.0.5'
+            PHP_VERSION: '8.1'
+          - PS_VERSION: '8.1.4'
+            PHP_VERSION: '8.1'
+          - PS_VERSION: 'nightly'
+            PHP_VERSION: '8.2'
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: 14
 
@@ -46,6 +48,9 @@ jobs:
 
       - name: Start containers
         working-directory: tests/UI/
+        env:
+          PS_VERSION: ${{ matrix.PS_VERSION }}
+          PHP_VERSION: ${{ matrix.PHP_VERSION }}
         run: |
           docker-compose -f "docker-compose.yml" up -d --build
           bash -c 'while [[ "$(curl -L -s -o /dev/null -w %{http_code} http://localhost/en/)" != "200" ]]; do sleep 5; done'
@@ -62,53 +67,85 @@ jobs:
         working-directory: tests/UI/
         run: npx playwright test
 
+      - name: Upload artifact report
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.PS_VERSION }}
+          path: tests/UI/report.json
+
       - name: Export Docker errors
         working-directory: tests/UI/
         if: always()
         run: docker-compose logs --no-color >& docker-compose.log
 
-      - name: Upload artifact
+      - name: Upload artifact logs
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-${{ env.PS_VERSION }}
+          name: playwright-logs-${{ matrix.PS_VERSION }}
           path: |
             tests/UI/reports/
-            tests/UI/report.json
             tests/UI/docker-compose.log
-          retention-days: 30
 
-      # Nightly : Rename file
+  nightly:
+    name: Nightly Report
+    if: ${{ github.event_name == 'schedule' }}
+    needs:
+      - ui_test
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - PS_VERSION: '8.0.5'
+            PHP_VERSION: '8.1'
+          - PS_VERSION: '8.1.4'
+            PHP_VERSION: '8.1'
+          - PS_VERSION: 'nightly'
+            PHP_VERSION: '8.2'
+
+    env:
+      PS_VERSION: ${{ matrix.PS_VERSION }}
+      PHP_VERSION: ${{ matrix.PHP_VERSION }}
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download report
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.PS_VERSION }}
+          path: tests/UI/report.json
+
       - name: "Nightly : Rename file"
         working-directory: tests/UI/
-        if: ${{ github.event_name == 'schedule' }}
         run: |
           mkdir -p nightly
-          REPORT_NAME="blockwishlist_$(date +%Y-%m-%d)-${{ env.PS_VERSION }}"
+          REPORT_NAME="${{ env.CAMPAIGN }}_$(date +%Y-%m-%d)-${{ matrix.PS_VERSION }}"
           mv report.json nightly/${REPORT_NAME}.json
 
-      # Nightly : Auth GCP
       - name: "Nightly : Auth GCP"
         uses: google-github-actions/auth@v1
-        if: ${{ github.event_name == 'schedule' }}
         with:
           credentials_json: ${{ secrets.GC_SERVICE_KEY }}
           project_id: ${{ secrets.GC_PROJECT_ID }}
 
-      # Nightly : Setup GCP
       - name: "Nightly : Setup GCP"
         uses: google-github-actions/setup-gcloud@v1
-        if: ${{ github.event_name == 'schedule' }}
 
-      # Nightly : Upload to Google Cloud Storage (GCS)
       - name: "Nightly : Upload to Google Cloud Storage (GCS)"
         working-directory: tests/UI/
-        if: ${{ github.event_name == 'schedule' }}
         run: gsutil cp -r "nightly/**" gs://prestashop-core-nightly/reports
 
-      # Nightly : Push Report
       - name: "Nightly : Push Report"
-        if: ${{ github.event_name == 'schedule' }}
         run: |
-          REPORT_NAME="blockwishlist_$(date +%Y-%m-%d)-${{ env.PS_VERSION }}"
-          curl -v "https://api-nightly.prestashop-project.org/import/report/playwright?token=${{ secrets.NIGHTLY_TOKEN }}&filename=${REPORT_NAME}.json"
+          REPORT_NAME="${{ env.CAMPAIGN }}_$(date +%Y-%m-%d)-${{ matrix.PS_VERSION }}"
+          curl -v "https://api-nightly.prestashop-project.org/import/report/playwright?token=${{ secrets.NIGHTLY_TOKEN }}&filename=${REPORT_NAME}.json&campaign=${{ env.CAMPAIGN }}&platform=chromium"
