@@ -123,7 +123,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: playwright-report-${{ matrix.PS_VERSION }}
-          path: tests/UI/report.json
+          path: tests/UI/
 
       - name: "Nightly : Rename file"
         working-directory: tests/UI/
