@@ -474,20 +474,6 @@
       &-addtocart {
         width: 100%;
         text-transform: inherit;
-        padding-left: 0.625rem;
-
-        &.btn-secondary {
-          background-color: #dddddd;
-
-          &:hover {
-            background-color: #dddddd;
-            opacity: 0.7;
-          }
-        }
-
-        i {
-          margin-top: -0.1875rem;
-        }
       }
     }
 
