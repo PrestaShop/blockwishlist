@@ -116,23 +116,23 @@
       <button
         class="btn wishlist-product-addtocart"
         :class="{
-          'btn-secondary': product.customizable === '1',
-          'btn-primary': product.customizable === '0'
+          'btn-secondary': product.customizable,
+          'btn-primary': !product.customizable
         }"
         :disabled="isDisabled || forceDisable"
         @click="
-          product.add_to_cart_url || product.customizable === '1'
+          product.add_to_cart_url || product.customizable
             ? addToCartAction()
             : null
         "
       >
         <i
           class="material-icons shopping-cart"
-          v-if="product.customizable === '0'"
+          v-if="!product.customizable"
         >
           shopping_cart
         </i>
-        {{ product.customizable === '1' ? customizeText : addToCart }}
+        {{ product.customizable ? customizeText : addToCart }}
       </button>
 
       <button
@@ -235,7 +235,7 @@
           return false;
         }
 
-        if (this.product.customizable === '1') {
+        if (this.product.customizable) {
           return false;
         }
 
@@ -271,7 +271,7 @@
         });
       },
       async addToCartAction() {
-        if (this.product.add_to_cart_url && this.product.customizable !== '1') {
+        if (this.product.add_to_cart_url && !this.product.customizable) {
           try {
             this.forceDisable = true;
             const datas = new FormData();
