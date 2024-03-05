@@ -65,17 +65,3 @@
     },
   };
 </script>
-
-<style lang="scss" type="text/scss">
-  .wishlist {
-    &-login {
-      .wishlist-modal {
-        z-index: 0;
-
-        &.show {
-          z-index: 1053;
-        }
-      }
-    }
-  }
-</style>
