@@ -27,7 +27,7 @@ jobs:
         include:
           - PS_VERSION: '8.0.5'
             PHP_VERSION: '8.1'
-          - PS_VERSION: '8.1.5'
+          - PS_VERSION: '8.1.6'
             PHP_VERSION: '8.1'
           - PS_VERSION: 'nightly'
             PHP_VERSION: '8.2'
