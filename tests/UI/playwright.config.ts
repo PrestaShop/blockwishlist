@@ -64,6 +64,15 @@ function loadGlobal(): void  {
     smtpServer: process.env.SMTP_SERVER || 'localhost',
     silent: true,
   };
+
+  global.keycloakConfig = {
+    keycloakExternalUrl: process.env.KEYCLOAK_URL_EXTERNAL || 'http://localhost:8003',
+    keycloakInternalUrl: process.env.KEYCLOAK_URL_INTERNAL || 'http://keycloak:8080',
+    keycloakAdminUser: process.env.KEYCLOAK_ADMIN_USER || 'admin',
+    keycloakAdminPass: process.env.KEYCLOAK_ADMIN_PASS || 'admin',
+    keycloakClientId: process.env.KEYCLOAK_CLIENT_ID || 'prestashop-keycloak',
+    keycloakClientSecret: process.env.KEYCLOAK_CLIENT_SECRET || 'O2kKN0fprCK2HWP6PS6reVbZThWf5LFw',
+  };
 }
 
 /**
