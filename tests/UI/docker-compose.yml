@@ -27,6 +27,11 @@ services:
         source: ../../
         # Mount Path
         target: /var/www/html/modules/blockwishlist
+      - type: bind
+        # Local Path 
+        source: ../../../blockwishlist.zip
+        # Mount Path
+        target: /var/www/html/module_blockwishlist.zip
     ports:
       - 80:80
   mysql:

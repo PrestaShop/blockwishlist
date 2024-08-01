@@ -49,6 +49,12 @@ jobs:
       - name: Build 
         run: npm install && npm run build
 
+      - name: Build ZIP
+        run: |
+          cd ..
+          zip -r ${{ github.event.repository.name }}.zip ${{ github.event.repository.name }}
+          cd ${{ github.event.repository.name }}
+
       - name: Start containers
         working-directory: tests/UI/
         env:
