@@ -71,7 +71,7 @@
       return {
         isChecked: this.checked === 'true',
         idList: this.listId,
-        idProductAttribute: this.idProductAttribute,
+        idProductAttribute: this.productAttributeId,
       };
     },
     methods: {
