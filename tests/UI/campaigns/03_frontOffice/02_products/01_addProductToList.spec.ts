@@ -395,14 +395,11 @@ test.describe('Wishlist module - Add a product to a list', async () => {
   });
 
   // @todo : https://github.com/PrestaShop/PrestaShop/issues/36496
-  // @todo : https://github.com/PrestaShop/PrestaShop/issues/36593
   test('should check the wishlist after adding a product with attributes', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'checkWishlist5', baseContext);
 
     const numProducts = await foClassicMyWishlistsViewPage.countProducts(page);
     expect(numProducts).toEqual(4);
-
-    await test.skip(true, 'https://github.com/PrestaShop/PrestaShop/issues/36593');
 
     // const nameProduct = await foClassicMyWishlistsViewPage.getProductName(page, 4);
     const nameProduct = await foClassicMyWishlistsViewPage.getProductName(page, 2);

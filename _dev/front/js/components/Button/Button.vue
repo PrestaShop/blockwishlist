@@ -102,7 +102,7 @@
           EventBus.$emit('showAddToWishList', {
             detail: {
               productId: this.productId,
-              productAttributeId: parseInt(this.productAttributeId, 10),
+              productAttributeId: parseInt(this.idProductAttribute, 10),
               forceOpen: true,
               quantity: quantity ? parseInt(quantity.value, 10) : 0,
             },
@@ -113,7 +113,7 @@
             variables: {
               productId: this.productId,
               url: this.url,
-              productAttributeId: this.productAttributeId,
+              productAttributeId: this.idProductAttribute,
               listId: this.idList ? this.idList : this.listId,
             },
           });
@@ -140,7 +140,7 @@
       EventBus.$on('addedToWishlist', (event) => {
         if (
           event.detail.productId === this.productId
-          && parseInt(event.detail.productAttributeId, 10) === this.productAttributeId
+          && parseInt(event.detail.productAttributeId, 10) === this.idProductAttribute
         ) {
           this.isChecked = true;
           this.idList = event.detail.listId;
@@ -150,7 +150,7 @@
       // eslint-disable-next-line
       const items = productsAlreadyTagged.filter(
         (e) => parseInt(e.id_product, 10) === this.productId
-          && parseInt(e.id_product_attribute, 10) === this.productAttributeId,
+          && parseInt(e.id_product_attribute, 10) === this.idProductAttribute,
       );
 
       if (items.length > 0) {
@@ -176,7 +176,7 @@
           const itemsFiltered = productsAlreadyTagged.filter(
             (e) => parseInt(e.id_product, 10) === this.productId
               && e.quantity.toString() === quantity.value
-              && parseInt(e.id_product_attribute, 10) === this.productAttributeId,
+              && parseInt(e.id_product_attribute, 10) === this.idProductAttribute,
           );
 
           if (itemsFiltered.length > 0) {
