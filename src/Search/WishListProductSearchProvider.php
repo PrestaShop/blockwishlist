@@ -118,7 +118,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
             $querySearch->select('wp.quantity AS wishlist_quantity');
             $querySearch->select('product_shop.*');
             $querySearch->select('stock.out_of_stock, IFNULL(stock.quantity, 0) AS quantity');
-            $querySearch->select('pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`, pl.`meta_keywords`,
+            $querySearch->select('pl.`description`, pl.`description_short`, pl.`link_rewrite`, pl.`meta_description`,
             pl.`meta_title`, pl.`name`, pl.`available_now`, pl.`available_later`');
             $querySearch->select('image_shop.`id_image` AS id_image');
             $querySearch->select('il.`legend`');
