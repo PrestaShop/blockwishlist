@@ -40,11 +40,26 @@ test.describe('Wishlist module - Add a product to a list', async () => {
   let page: Page;
   let wishlistName: string;
 
-  test.beforeAll(async ({ browser }) => {
+  test.beforeAll(async ({ browser }, testInfo) => {
     browserContext = await browser.newContext();
-    page = await browserContext.newPage();
+    page = await browser.newPage({
+      recordVideo: {
+        dir: testInfo.outputPath('videos'),
+      }
+    });
   });
-  test.afterAll(async () => {
+  test.afterAll(async ({}, testInfo) => {
+    const videoPath = testInfo.outputPath('my-video.webm');
+    await Promise.all([
+      page.video()!.saveAs(videoPath),
+      page.close()
+    ]);
+    testInfo.attachments.push({
+      name: 'video',
+      path: videoPath,
+      contentType: 'video/webm'
+    });
+
     await page.close();
   });
 

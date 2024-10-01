@@ -20,7 +20,8 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Capture screenshot after each test failure */
-    screenshot: 'only-on-failure',
+    screenshot: 'on',
+    video: 'on',
   },
 
   /* Configure projects for major browsers */
