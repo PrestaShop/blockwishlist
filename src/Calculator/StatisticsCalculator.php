@@ -26,6 +26,7 @@ use Db;
 use DbQuery;
 use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
+use PrestaShop\PrestaShop\Adapter\Presenter\Product\ProductLazyArray;
 use PrestaShop\PrestaShop\Adapter\Presenter\Product\ProductPresenter;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
 use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
@@ -146,7 +147,9 @@ class StatisticsCalculator
                 $combination = implode(',', $combinationArr);
             }
 
-            $imgDetails = $this->getProductImage($productDetails);
+            $presentedProduct = $this->getPresentedProduct($productDetails);
+            $imgDetails = $this->getProductImage($presentedProduct);
+
             $stats[$idProductAndAttribute] = [
                 'position' => $position,
                 'count' => $count,
@@ -154,9 +157,9 @@ class StatisticsCalculator
                 'id_product_attribute' => $id_product_attribute,
                 'name' => $productDetails['name'],
                 'combination' => $combination,
-                'category_name' => $productDetails['category_name'],
+                'category_name' => $presentedProduct['category_name'],
                 'image_small_url' => $imgDetails['small']['url'],
-                'link' => $productDetails['link'],
+                'link' => $presentedProduct['link'],
                 'reference' => $productDetails['reference'],
                 'price' => $this->locale->formatPrice($productDetails['price'], $this->context->currency->iso_code),
                 'quantity' => $productDetails['quantity'],
@@ -167,20 +170,12 @@ class StatisticsCalculator
         }
     }
 
-    /**
-     * getProductImage
-     *
-     * @param array $productDetails
-     *
-     * @return array
-     */
-    public function getProductImage($productDetails)
+    private function getPresentedProduct($productDetails)
     {
-        $imgDetails = [];
-
         $presenterFactory = new ProductPresenterFactory($this->context);
         $presentationSettings = $presenterFactory->getPresentationSettings();
         $imageRetriever = new ImageRetriever($this->context->link);
+
         $presenter = new ProductPresenter(
             $imageRetriever,
             $this->context->link,
@@ -189,11 +184,23 @@ class StatisticsCalculator
             $this->context->getTranslator()
         );
 
-        $presentedProduct = $presenter->present(
+        return $presenter->present(
             $presentationSettings,
             $productDetails,
             $this->context->language
         );
+    }
+
+    /**
+     * getProductImage
+     *
+     * @param mixed|ProductLazyArray $presentedProduct
+     *
+     * @return array
+     */
+    public function getProductImage($presentedProduct)
+    {
+        $imgDetails = [];
 
         foreach ($presentedProduct as $key => $value) {
             if ($key == 'embedded_attributes') {
@@ -201,6 +208,7 @@ class StatisticsCalculator
             }
         }
         if (!$imgDetails) {
+            $imageRetriever = new ImageRetriever($this->context->link);
             $imgDetails = $imageRetriever->getNoPictureImage($this->context->language);
         }
 
