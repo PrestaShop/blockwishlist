@@ -22,6 +22,8 @@ import { test, expect, Page, BrowserContext } from '@playwright/test';
 const baseContext: string = 'modules_blockwishlist_configuration_statisticsTabSettings';
 
 test.describe('Wishlist module - Statistics tab settings', () => {
+  const numProducts: number = 3;
+
   let browserContext: BrowserContext;
   let page: Page;
 
@@ -129,7 +131,7 @@ test.describe('Wishlist module - Statistics tab settings', () => {
     expect(isCategoryPageVisible).toEqual(true);
   });
 
-    for (let idxProduct: number = 1; idxProduct <= 3; idxProduct++) {
+    for (let idxProduct: number = 1; idxProduct <= numProducts; idxProduct++) {
       // eslint-disable-next-line no-loop-func
       test(`should add product #${idxProduct} to wishlist`, async () => {
         await utilsTest.addContextItem(test.info(), 'testIdentifier', `addToFavorite${idxProduct}`, baseContext);
@@ -160,16 +162,15 @@ test.describe('Wishlist module - Statistics tab settings', () => {
     expect(pageTitle).toContain(modBlockwishlistBoStatistics.pageTitle);
   });
 
-  // @todo : https://github.com/PrestaShop/PrestaShop/issues/33374
   test('should click on the refresh button', async () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'clickOnRefreshButton', baseContext);
 
-    test.skip(true, 'https://github.com/PrestaShop/PrestaShop/issues/33374');
-
     await modBlockwishlistBoStatistics.refreshStatistics(page);
 
-    // Check statistics
     const pageTitle = await modBlockwishlistBoStatistics.getPageTitle(page);
     expect(pageTitle).toContain(modBlockwishlistBoStatistics.pageTitle);
+
+    const numProductsInTable = await modBlockwishlistBoStatistics.getNumProducts(page);
+    expect(numProductsInTable).toEqual(numProducts);
   });
 });
