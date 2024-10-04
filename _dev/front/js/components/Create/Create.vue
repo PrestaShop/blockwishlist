@@ -139,21 +139,3 @@
     },
   };
 </script>
-
-<style lang="scss" type="text/scss">
-  .wishlist {
-    &-create {
-      .wishlist-modal {
-        opacity: 0;
-        pointer-events: none;
-        z-index: 0;
-
-        &.show {
-          opacity: 1;
-          pointer-events: all;
-          z-index: 1053;
-        }
-      }
-    }
-  }
-</style>

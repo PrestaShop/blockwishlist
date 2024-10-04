@@ -26,8 +26,20 @@ if (!defined('_PS_VERSION_')) {
  *
  * @return bool
  */
-function upgrade_module_0_3($module)
+function upgrade_module_1_1_0($module)
 {
-    return $module->registerHook('displayProductListFunctionalButtons')
+    $result = true;
+    $list_fields = Db::getInstance()->executeS('SHOW FIELDS FROM `' . _DB_PREFIX_ . 'wishlist`');
+
+    if (is_array($list_fields)) {
+        foreach ($list_fields as $field) {
+            if ($field['Field'] === 'id_shop_group') {
+                $result = $result && (bool) Db::getInstance()->execute('ALTER TABLE `' . _DB_PREFIX_ . 'wishlist` CHANGE `id_group_shop` `id_shop_group` INT( 11 ) NOT NULL DEFAULT "1"');
+            }
+        }
+    }
+
+    return $result
+        && $module->registerHook('displayProductListFunctionalButtons')
         && $module->registerHook('top');
 }

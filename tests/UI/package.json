@@ -1,0 +1,13 @@
+{
+  "name": "blockwishlist_tests_ui",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@prestashop-core/ui-testing": "https://github.com/PrestaShop/ui-testing-library#main",
+    "dotenv": "^16.4.5"
+  }
+}

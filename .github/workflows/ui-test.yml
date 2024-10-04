@@ -1,0 +1,160 @@
+name: UI Tests
+on:
+  ## Check each PR
+  push:
+  pull_request:
+  ## Manual execution on branch
+  workflow_dispatch:
+  ## Nightly
+  ### Needs secrets
+  #### GC_PROJECT_ID
+  #### GC_SERVICE_KEY
+  #### NIGHTLY_TOKEN
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+  CAMPAIGN: 'blockwishlist'
+
+jobs:
+  ui_test:
+    name: UI Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - PS_VERSION: '8.0.5'
+            PHP_VERSION: '8.1'
+          - PS_VERSION: '8.1.7'
+            PHP_VERSION: '8.1'
+          - PS_VERSION: 'nightly'
+            PHP_VERSION: '8.2'
+
+    env:
+      PS_VERSION: ${{ matrix.PS_VERSION }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Build
+        run: npm install && npm run build
+
+      - name: Build ZIP
+        run: |
+          cd ..
+          zip -r ${{ github.event.repository.name }}.zip ${{ github.event.repository.name }}
+          cd ${{ github.event.repository.name }}
+
+      - name: Start containers
+        working-directory: tests/UI/
+        env:
+          PS_VERSION: ${{ matrix.PS_VERSION }}
+          PHP_VERSION: ${{ matrix.PHP_VERSION }}
+        run: |
+          docker compose -f "docker-compose.yml" up -d --build
+          bash -c 'while [[ "$(curl -L -s -o /dev/null -w %{http_code} http://localhost/en/)" != "200" ]]; do sleep 5; done'
+
+      - name: Install dependencies
+        working-directory: tests/UI/
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        working-directory: tests/UI/
+        run: npx playwright install chromium --with-deps
+
+      - name: Run Playwright tests
+        working-directory: tests/UI/
+        run: npx playwright test
+
+      - name: Upload artifact report
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.PS_VERSION }}
+          path: tests/UI/report.json
+
+      - name: Export Docker errors
+        working-directory: tests/UI/
+        if: always()
+        run: docker compose logs --no-color >& docker-compose.log
+
+      - name: Upload artifact logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-logs-${{ matrix.PS_VERSION }}
+          path: |
+            tests/UI/reports/
+            tests/UI/docker-compose.log
+
+  nightly:
+    name: Nightly Report
+    if: ${{ github.event_name == 'schedule' }}
+    needs:
+      - ui_test
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - PS_VERSION: '8.0.5'
+            PHP_VERSION: '8.1'
+          - PS_VERSION: '8.1.7'
+            PHP_VERSION: '8.1'
+          - PS_VERSION: 'nightly'
+            PHP_VERSION: '8.2'
+
+    env:
+      PS_VERSION: ${{ matrix.PS_VERSION }}
+      PHP_VERSION: ${{ matrix.PHP_VERSION }}
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download report
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: playwright-report-${{ matrix.PS_VERSION }}
+          path: tests/UI/
+
+      - name: "Nightly : Rename file"
+        working-directory: tests/UI/
+        run: |
+          mkdir -p nightly
+          REPORT_NAME="${{ env.CAMPAIGN }}_$(date +%Y-%m-%d)-${{ matrix.PS_VERSION }}"
+          mv report.json nightly/${REPORT_NAME}.json
+
+      - name: "Nightly : Auth GCP"
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GC_SERVICE_KEY }}
+          project_id: ${{ secrets.GC_PROJECT_ID }}
+
+      - name: "Nightly : Setup GCP"
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: "Nightly : Upload to Google Cloud Storage (GCS)"
+        working-directory: tests/UI/
+        run: gsutil cp -r "nightly/**" gs://prestashop-core-nightly/reports
+
+      - name: "Nightly : Push Report"
+        run: |
+          REPORT_NAME="${{ env.CAMPAIGN }}_$(date +%Y-%m-%d)-${{ matrix.PS_VERSION }}"
+          curl -v "https://api-nightly.prestashop-project.org/import/report/playwright?token=${{ secrets.NIGHTLY_TOKEN }}&filename=${REPORT_NAME}.json&campaign=${{ env.CAMPAIGN }}&platform=chromium"
