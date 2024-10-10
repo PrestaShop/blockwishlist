@@ -43,7 +43,6 @@ class BlockWishList extends Module
         'displayProductActions',
         'displayCustomerAccount',
         'displayFooter',
-        'displayAdminCustomers',
         'displayMyAccountBlock',
     ];
 
@@ -263,22 +262,6 @@ class BlockWishList extends Module
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayCustomerAccount.tpl');
-    }
-
-    /**
-     * This hook displays a new block on the admin customer page
-     *
-     * @param array $params
-     *
-     * @return string
-     */
-    public function hookDisplayAdminCustomers(array $params)
-    {
-        $this->smarty->assign([
-            'blockwishlist' => $this->displayName,
-        ]);
-
-        return $this->fetch('module:blockwishlist/views/templates/hook/displayAdminCustomers.tpl');
     }
 
     /**
