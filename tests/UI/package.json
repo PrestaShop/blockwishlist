@@ -8,6 +8,6 @@
   "license": "MIT",
   "devDependencies": {
     "@prestashop-core/ui-testing": "https://github.com/PrestaShop/ui-testing-library#main",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.5.0"
   }
 }
