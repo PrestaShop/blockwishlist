@@ -77,6 +77,13 @@ jobs:
 
       - name: Run Playwright tests
         working-directory: tests/UI/
+        env:
+          URL_FO: 'http://localhost/'
+          PASSWD: 'prestashop'
+          DB_SERVER: 'mysql'
+          DB_NAME: 'prestashop'
+          DB_USER: 'prestashop'
+          DB_PASSWD: 'prestashop'
         run: npx playwright test
 
       - name: Upload artifact report
