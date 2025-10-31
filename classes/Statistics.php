@@ -39,6 +39,8 @@ class Statistics extends ObjectModel
 
     /**
      * @see ObjectModel::$definition
+     *
+     * @var array<string, string|array<string, array<string, mixed>>>
      */
     public static $definition = [
         'table' => 'blockwishlist_statistics',

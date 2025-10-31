@@ -2,7 +2,7 @@ name: PHP tests
 on: [push, pull_request]
 jobs:
   php-linter:
-    name: PHP Syntax check 7.2 => 8.2
+    name: PHP Syntax check 7.2 => 8.4
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,6 +25,12 @@ jobs:
 
       - name: PHP syntax checker 8.2
         uses: prestashop/github-action-php-lint/8.2@master
+
+      - name: PHP syntax checker 8.3
+        uses: prestashop/github-action-php-lint/8.3@master
+
+      - name: PHP syntax checker 8.4
+        uses: prestashop/github-action-php-lint/8.4@master
 
   # Check the PHP code follow the coding standards
   php-cs-fixer:
@@ -56,33 +62,31 @@ jobs:
     name: PHPStan
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        presta-versions: ['8.0', 'latest']
+        include:
+          - prestashop-version: '8.0.x'
+            php-version: '7.4'
+          - prestashop-version: '8.1.x'
+            php-version: '7.4'
+          - prestashop-version: '8.2.x'
+            php-version: '7.4'
+          - prestashop-version: '9.0.x'
+            php-version: '8.1'
+          - prestashop-version: 'develop'
+            php-version: '8.1'
     steps:
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          php-version: '7.4'
-
-      - name: Checkout
-        uses: actions/checkout@v3.1.0
-
-      # Add vendor folder in cache to make next builds faster
-      - name: Cache vendor folder
-        uses: actions/cache@v3
+          path: ${{ github.event.repository.name }}
+      
+      - uses: PrestaShop/.github/.github/actions/php-ci/phpstan@master
         with:
-          path: vendor
-          key: php-${{ hashFiles('composer.lock') }}
-
-      # Add composer local folder in cache to make next builds faster
-      - name: Cache composer folder
-        uses: actions/cache@v3
-        with:
-          path: ~/.composer/cache
-          key: php-composer-cache
-
-      - run: composer install
-
-      # Docker images prestashop/prestashop may be used, even if the shop remains uninstalled
-      - name: Execute PHPStan on PrestaShop (Tag ${{ matrix.presta-versions }})
-        run: ./tests/phpstan.sh ${{ matrix.presta-versions }}
+          php-version: ${{ matrix.php-version }}
+          presta-version: ${{ matrix.prestashop-version }}
+          module-name: ${{ github.event.repository.name }}
+          phpstan-level: '5'
+          phpstan-config: 'tests/phpstan/phpstan-${{ matrix.prestashop-version }}.neon'
+          phpstan-version: '^0.12'
+          composer-version: '2.2.18'
