@@ -5,15 +5,16 @@ import {
   dataCustomers,
   dataModules,
   dataProducts,
-  foClassicHomePage,
-  foClassicLoginPage,
-  foClassicModalWishlistPage,
-  foClassicMyWishlistsViewPage,
-  foClassicProductPage,
-  foClassicSearchResultsPage,
+  foHomePage,
+  foLoginPage,
+  foModalWishlistPage,
+  foMyWishlistsViewPage,
+  foProductPage,
+  foSearchResultsPage,
   modBlockwishlistBoMain,
   utilsTest,
 } from '@prestashop-core/ui-testing';
+import semver from 'semver';
 
 import { test, expect, Page, BrowserContext } from '@playwright/test';
 
@@ -64,6 +65,16 @@ test.describe('Wishlist module - Reset module', () => {
     expect(isModuleVisible).toBeTruthy();
   });
 
+  // >= 9.1.x : Hummingbird is enabled, but blockwishlist is disabled
+  if (semver.gte(utilsTest.getPSVersion(), '9.1.0')) {
+    test(`should enable the module ${dataModules.blockwishlist.name}`, async () => {
+      await utilsTest.addContextItem(test.info(), 'testIdentifier', 'searchModule', baseContext);
+
+      const textResult = await boModuleManagerPage.setActionInModule(page, dataModules.blockwishlist, 'enable');
+      expect(textResult).toEqual(boModuleManagerPage.enableModuleSuccessMessage(dataModules.blockwishlist.tag));
+    });
+  }
+
   test('should display the reset modal and cancel it', async () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'resetModuleAndCancel', baseContext);
 
@@ -109,53 +120,53 @@ test.describe('Wishlist module - Reset module', () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'goToFo', baseContext);
 
     page = await modBlockwishlistBoMain.viewMyShop(page);
-    await foClassicHomePage.changeLanguage(page, 'en');
+    await foHomePage.changeLanguage(page, 'en');
 
-    const isHomePage = await foClassicHomePage.isHomePage(page);
+    const isHomePage = await foHomePage.isHomePage(page);
     expect(isHomePage).toBeTruthy();
   });
 
   test('should go to login page', async () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'goToLoginPageFO', baseContext);
 
-    await foClassicHomePage.goToLoginPage(page);
+    await foHomePage.goToLoginPage(page);
 
-    const pageTitle = await foClassicLoginPage.getPageTitle(page);
-    expect(pageTitle).toContain(foClassicLoginPage.pageTitle);
+    const pageTitle = await foLoginPage.getPageTitle(page);
+    expect(pageTitle).toContain(foLoginPage.pageTitle);
   });
 
   test('should sign in with default customer', async () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'sighInFO', baseContext);
 
-    await foClassicLoginPage.customerLogin(page, dataCustomers.johnDoe);
+    await foLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-    const isCustomerConnected = await foClassicLoginPage.isCustomerConnected(page);
+    const isCustomerConnected = await foLoginPage.isCustomerConnected(page);
     expect(isCustomerConnected).toBeTruthy();
   });
 
   test(`should search the product ${dataProducts.demo_3.name}`, async () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'searchProductDemo3', baseContext);
 
-    await foClassicMyWishlistsViewPage.searchProduct(page, dataProducts.demo_3.name);
-    await foClassicSearchResultsPage.goToProductPage(page, 1);
+    await foMyWishlistsViewPage.searchProduct(page, dataProducts.demo_3.name);
+    await foSearchResultsPage.goToProductPage(page, 1);
 
-    const pageTitle = await foClassicProductPage.getPageTitle(page);
+    const pageTitle = await foProductPage.getPageTitle(page);
     expect(pageTitle).toEqual(dataProducts.demo_3.name);
   });
 
   test('should add to the wishlist and get the label', async () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'addToWishlist1', baseContext);
 
-    await foClassicProductPage.clickAddToWishlistButton(page);
+    await foProductPage.clickAddToWishlistButton(page);
 
-    const textResult = await foClassicModalWishlistPage.getModalAddToCreateWislistLabel(page);
+    const textResult = await foModalWishlistPage.getModalAddToCreateWislistLabel(page);
     expect(textResult).toContain(labelButton);
   });
 
   test('should return to \'Modules > Module Manager\' page', async () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'goToModuleManagerPageForReset', baseContext);
 
-    page = await foClassicModalWishlistPage.changePage(browserContext, 0);
+    page = await foModalWishlistPage.changePage(browserContext, 0);
     await boDashboardPage.goToSubMenu(
       page,
       boDashboardPage.modulesParentLink,
@@ -185,10 +196,10 @@ test.describe('Wishlist module - Reset module', () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'addToWishlist2', baseContext);
 
     page = await boModuleManagerPage.changePage(browserContext, 1);
-    await foClassicProductPage.reloadPage(page);
-    await foClassicProductPage.clickAddToWishlistButton(page);
+    await foProductPage.reloadPage(page);
+    await foProductPage.clickAddToWishlistButton(page);
 
-    const textResult = await foClassicModalWishlistPage.getModalAddToCreateWislistLabel(page);
+    const textResult = await foModalWishlistPage.getModalAddToCreateWislistLabel(page);
     expect(textResult).toContain(modBlockwishlistBoMain.defaultValueCreateButtonLabel);
   });
 });
