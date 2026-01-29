@@ -104,6 +104,7 @@ jobs:
           name: playwright-logs-${{ matrix.PS_VERSION }}
           path: |
             tests/UI/reports/
+            tests/UI/test-results/
             tests/UI/docker-compose.log
 
   nightly:

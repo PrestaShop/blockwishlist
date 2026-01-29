@@ -1,12 +1,12 @@
 import {
   dataCustomers,
   dataModules,
-  foClassicHomePage,
-  foClassicLoginPage,
-  foClassicModalWishlistPage,
-  foClassicMyAccountPage,
-  foClassicMyWishlistsPage,
-  foClassicMyWishlistsViewPage,
+  foHomePage,
+  foLoginPage,
+  foModalWishlistPage,
+  foMyAccountPage,
+  foMyWishlistsPage,
+  foMyWishlistsViewPage,
   opsBOModules,
   utilsTest,
 } from '@prestashop-core/ui-testing';
@@ -35,156 +35,156 @@ test.describe('Wishlist module - Share a list', async () => {
   test('should open the shop page', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'goToShopFO', baseContext);
 
-    await foClassicHomePage.goTo(page, global.FO.URL);
+    await foHomePage.goTo(page, global.FO.URL);
 
-    const isHomePage = await foClassicHomePage.isHomePage(page);
+    const isHomePage = await foHomePage.isHomePage(page);
     expect(isHomePage).toEqual(true);
   });
 
   test('should go to login page', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'goToLoginFO', baseContext);
 
-    await foClassicHomePage.goToLoginPage(page);
+    await foHomePage.goToLoginPage(page);
 
-    const pageTitle = await foClassicLoginPage.getPageTitle(page);
-    expect(pageTitle).toContain(foClassicLoginPage.pageTitle);
+    const pageTitle = await foLoginPage.getPageTitle(page);
+    expect(pageTitle).toContain(foLoginPage.pageTitle);
   });
 
   test('should login', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'foLogin', baseContext);
 
-    await foClassicLoginPage.customerLogin(page, dataCustomers.johnDoe);
+    await foLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-    const isCustomerConnected = await foClassicLoginPage.isCustomerConnected(page);
+    const isCustomerConnected = await foLoginPage.isCustomerConnected(page);
     expect(isCustomerConnected).toEqual(true);
   });
 
   test('should go to "My Account" page', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'goToMyAccount1', baseContext);
 
-    await foClassicHomePage.goToMyAccountPage(page);
+    await foHomePage.goToMyAccountPage(page);
 
-    const pageTitle = await foClassicMyAccountPage.getPageTitle(page);
-    expect(pageTitle).toContain(foClassicMyAccountPage.pageTitle);
+    const pageTitle = await foMyAccountPage.getPageTitle(page);
+    expect(pageTitle).toContain(foMyAccountPage.pageTitle);
   });
 
   test('should go to "My Wishlists" page', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'goToMyWishlists1', baseContext);
 
-    await foClassicMyAccountPage.goToMyWishlistsPage(page);
+    await foMyAccountPage.goToMyWishlistsPage(page);
 
-    const pageTitle = await foClassicMyWishlistsPage.getPageTitle(page);
-    expect(pageTitle).toContain(foClassicMyWishlistsPage.pageTitle);
+    const pageTitle = await foMyWishlistsPage.getPageTitle(page);
+    expect(pageTitle).toContain(foMyWishlistsPage.pageTitle);
   });
 
   test('should click on the share icon and cancel the modal', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'clickShareAndCancel', baseContext);
 
-    await foClassicMyWishlistsPage.clickShareWishlistButton(page, 1);
+    await foMyWishlistsPage.clickShareWishlistButton(page, 1);
 
-    const hasModalShare = await foClassicModalWishlistPage.hasModalShare(page);
+    const hasModalShare = await foModalWishlistPage.hasModalShare(page);
     expect(hasModalShare).toEqual(true);
 
-    const isModalVisible = await foClassicModalWishlistPage.clickCancelOnModalShare(page);
+    const isModalVisible = await foModalWishlistPage.clickCancelOnModalShare(page);
     expect(isModalVisible).toEqual(false);
   });
 
   test('should click on the share icon and copy the text', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'clickShareAndCopyText', baseContext);
 
-    await foClassicMyWishlistsPage.clickShareWishlistButton(page, 1);
+    await foMyWishlistsPage.clickShareWishlistButton(page, 1);
 
-    const hasModalLogin = await foClassicModalWishlistPage.hasModalShare(page);
+    const hasModalLogin = await foModalWishlistPage.hasModalShare(page);
     expect(hasModalLogin).toEqual(true);
 
-    const textToast = await foClassicModalWishlistPage.clickShareOnModalShare(page);
-    expect(textToast).toEqual(foClassicModalWishlistPage.messageLinkSharedWishlist);
+    const textToast = await foModalWishlistPage.clickShareOnModalShare(page);
+    expect(textToast).toEqual(foModalWishlistPage.messageLinkSharedWishlist);
   });
 
   test('should click on the Create new list link and cancel', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'createNewListAndCancel', baseContext);
 
-    await foClassicMyWishlistsPage.clickCreateWishlistButton(page);
+    await foMyWishlistsPage.clickCreateWishlistButton(page);
 
-    const hasModalCreate = await foClassicModalWishlistPage.hasModalCreate(page);
+    const hasModalCreate = await foModalWishlistPage.hasModalCreate(page);
     expect(hasModalCreate).toEqual(true);
 
-    const isModalVisible = await foClassicModalWishlistPage.clickCancelOnModalCreate(page);
+    const isModalVisible = await foModalWishlistPage.clickCancelOnModalCreate(page);
     expect(isModalVisible).toEqual(false);
   });
 
   test('should click on the Create new list link and create it', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'createNewListAndCreate', baseContext);
 
-    await foClassicMyWishlistsPage.clickCreateWishlistButton(page);
+    await foMyWishlistsPage.clickCreateWishlistButton(page);
 
-    const hasModalCreate = await foClassicModalWishlistPage.hasModalCreate(page);
+    const hasModalCreate = await foModalWishlistPage.hasModalCreate(page);
     expect(hasModalCreate).toEqual(true);
 
-    await foClassicModalWishlistPage.setNameOnModalCreate(page, wishlistName);
+    await foModalWishlistPage.setNameOnModalCreate(page, wishlistName);
 
-    const textToast = await foClassicModalWishlistPage.clickCreateOnModalCreate(page);
-    expect(textToast).toEqual(foClassicModalWishlistPage.messageWishlistCreated);
+    const textToast = await foModalWishlistPage.clickCreateOnModalCreate(page);
+    expect(textToast).toEqual(foModalWishlistPage.messageWishlistCreated);
   });
 
   test('should click on the share icon (in dropdown) and cancel the modal', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'clickDropdownShareAndCancel', baseContext);
 
-    await foClassicMyWishlistsPage.clickShareWishlistButton(page, 2);
+    await foMyWishlistsPage.clickShareWishlistButton(page, 2);
 
-    const hasModalShare = await foClassicModalWishlistPage.hasModalShare(page);
+    const hasModalShare = await foModalWishlistPage.hasModalShare(page);
     expect(hasModalShare).toEqual(true);
 
-    const isModalVisible = await foClassicModalWishlistPage.clickCancelOnModalShare(page);
+    const isModalVisible = await foModalWishlistPage.clickCancelOnModalShare(page);
     expect(isModalVisible).toEqual(false);
   });
 
   test('should click on the share icon (in dropdown) and copy the text', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'clickDropdownShareAndCopyText', baseContext);
 
-    await foClassicMyWishlistsPage.clickShareWishlistButton(page, 2);
+    await foMyWishlistsPage.clickShareWishlistButton(page, 2);
 
-    const hasModalLogin = await foClassicModalWishlistPage.hasModalShare(page);
+    const hasModalLogin = await foModalWishlistPage.hasModalShare(page);
     expect(hasModalLogin).toEqual(true);
 
-    const textToast = await foClassicModalWishlistPage.clickShareOnModalShare(page);
-    expect(textToast).toEqual(foClassicModalWishlistPage.messageLinkSharedWishlist);
+    const textToast = await foModalWishlistPage.clickShareOnModalShare(page);
+    expect(textToast).toEqual(foModalWishlistPage.messageLinkSharedWishlist);
 
-    wishlistUrl = await foClassicMyWishlistsPage.getClipboardText(page);
+    wishlistUrl = await foMyWishlistsPage.getClipboardText(page);
     expect(wishlistUrl.length).toBeGreaterThan(0);
   });
 
   test('should go to the shared wishlist', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'goToSharedWishlistLogged', baseContext);
 
-    await foClassicMyWishlistsPage.goTo(page, wishlistUrl);
+    await foMyWishlistsPage.goTo(page, wishlistUrl);
 
-    const pageTitle = await foClassicMyWishlistsViewPage.getPageTitle(page);
+    const pageTitle = await foMyWishlistsViewPage.getPageTitle(page);
     expect(pageTitle).toContain(wishlistName);
 
-    const numProducts = await foClassicMyWishlistsViewPage.countProducts(page);
+    const numProducts = await foMyWishlistsViewPage.countProducts(page);
     expect(numProducts).toEqual(0);
   });
 
   test('should logout', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'logout', baseContext);
 
-    await foClassicMyWishlistsViewPage.logout(page);
-    await foClassicMyWishlistsViewPage.clickOnHeaderLink(page, 'Logo');
+    await foMyWishlistsViewPage.logout(page);
+    await foMyWishlistsViewPage.clickOnHeaderLink(page, 'Logo');
 
-    const isCustomerConnected = await foClassicLoginPage.isCustomerConnected(page);
+    const isCustomerConnected = await foLoginPage.isCustomerConnected(page);
     expect(isCustomerConnected).toEqual(false);
   });
 
   test('should return to the shared wishlist', async function () {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'goToSharedWishlistUnlogged', baseContext);
 
-    await foClassicLoginPage.goTo(page, wishlistUrl);
+    await foLoginPage.goTo(page, wishlistUrl);
 
-    const pageTitle = await foClassicMyWishlistsViewPage.getPageTitle(page);
+    const pageTitle = await foMyWishlistsViewPage.getPageTitle(page);
     expect(pageTitle).toContain(wishlistName);
 
-    const numProducts = await foClassicMyWishlistsViewPage.countProducts(page);
+    const numProducts = await foMyWishlistsViewPage.countProducts(page);
     expect(numProducts).toEqual(0);
   });
 

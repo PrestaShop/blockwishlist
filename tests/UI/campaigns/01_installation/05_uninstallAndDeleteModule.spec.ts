@@ -4,8 +4,8 @@ import {
   boModuleManagerPage,
   dataModules,
   dataProducts,
-  foClassicHomePage,
-  foClassicProductPage,
+  foHomePage,
+  foProductPage,
   utilsFile,
   utilsTest,
 } from '@prestashop-core/ui-testing';
@@ -92,18 +92,18 @@ test.describe('Wishlist module - Uninstall and delete module', () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'viewMyShop', baseContext);
 
     page = await boModuleManagerPage.viewMyShop(page);
-    await foClassicHomePage.changeLanguage(page, 'en');
+    await foHomePage.changeLanguage(page, 'en');
 
-    const isHomePage = await foClassicHomePage.isHomePage(page);
+    const isHomePage = await foHomePage.isHomePage(page);
     expect(isHomePage).toBeTruthy();
   });
 
   test('should go the product page', async () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'goToProductPage', baseContext);
 
-    await foClassicHomePage.goToProductPage(page, 1);
+    await foHomePage.goToProductPage(page, 1);
 
-    const productInformations = await foClassicProductPage.getProductInformation(page);
+    const productInformations = await foProductPage.getProductInformation(page);
     expect(productInformations.name).toEqual(dataProducts.demo_1.name);
   });
 
@@ -112,14 +112,14 @@ test.describe('Wishlist module - Uninstall and delete module', () => {
 
     test.skip(true, 'Can\'t be uninstalled as it is a volume in Docker');
 
-    const hasAddToWishlistButton = await foClassicProductPage.hasAddToWishlistButton(page);
+    const hasAddToWishlistButton = await foProductPage.hasAddToWishlistButton(page);
     expect(hasAddToWishlistButton).toBeFalsy();
   });
 
   test('should go back to Back Office', async () => {
     await utilsTest.addContextItem(test.info(), 'testIdentifier', 'returnToModulesManager', baseContext);
 
-    page = await foClassicProductPage.closePage(browserContext, page, 0);
+    page = await foProductPage.closePage(browserContext, page, 0);
 
     test.skip(true, 'Can\'t be uninstalled as it is a volume in Docker');
     await boDashboardPage.goToSubMenu(
