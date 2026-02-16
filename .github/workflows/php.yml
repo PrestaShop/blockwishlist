@@ -65,9 +65,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - prestashop-version: '8.0.x'
+          - prestashop-version: '8.0.5'
             php-version: '7.4'
-          - prestashop-version: '8.1.x'
+          - prestashop-version: '8.1.7'
             php-version: '7.4'
           - prestashop-version: '8.2.x'
             php-version: '7.4'
