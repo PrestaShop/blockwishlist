@@ -3,7 +3,9 @@ includes:
 
 parameters:
   ignoreErrors:
-    - '#Call to method registerJavascript\(\) on an unknown class PrestaShop\\PrestaShop\\Core\\Context\\LegacyControllerContext.#'
+    - '#Access to property \$php_self on an unknown class PrestaShop\\PrestaShop\\Core\\Context\\LegacyControllerContext.#'
+    - '#Call to method addC[Ss]+\(\) on an unknown class PrestaShop\\PrestaShop\\Core\\Context\\LegacyControllerContext.#'
+    - '#Call to method addJ[Ss]+\(\) on an unknown class PrestaShop\\PrestaShop\\Core\\Context\\LegacyControllerContext.#'
     - '#Method BlockWishListActionModuleFrontController\:\:addProductToCartAction\(\) is unused.#'
     - '#Method BlockWishListActionModuleFrontController\:\:addProductToWishListAction\(\) is unused.#'
     - '#Method BlockWishListActionModuleFrontController\:\:createNewWishListAction\(\) is unused.#'

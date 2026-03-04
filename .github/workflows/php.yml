@@ -71,7 +71,7 @@ jobs:
             php-version: '7.4'
           - prestashop-version: '8.2.x'
             php-version: '7.4'
-          - prestashop-version: '9.0.x'
+          - prestashop-version: '9.0.3'
             php-version: '8.1'
           - prestashop-version: 'develop'
             php-version: '8.1'
