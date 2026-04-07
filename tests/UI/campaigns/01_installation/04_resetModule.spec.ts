@@ -66,7 +66,7 @@ test.describe('Wishlist module - Reset module', () => {
   });
 
   // >= 9.1.x : Hummingbird is enabled, but blockwishlist is disabled
-  if (semver.gte(utilsTest.getPSVersion(), '9.1.0')) {
+  if (semver.gte(utilsTest.getPSVersion(), '9.2.0')) {
     test(`should enable the module ${dataModules.blockwishlist.name}`, async () => {
       await utilsTest.addContextItem(test.info(), 'testIdentifier', 'searchModule', baseContext);
 

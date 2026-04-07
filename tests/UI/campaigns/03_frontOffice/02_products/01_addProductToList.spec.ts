@@ -157,7 +157,7 @@ test.describe('Wishlist module - Add a product to a list', async () => {
     await foProductPage.setQuantityByArrowUpDown(
       page,
       5,
-      semver.gte(utilsTest.getPSVersion(), '9.1.0') ? 'increment' : 'up',
+      semver.gte(utilsTest.getPSVersion(), '9.2.0') ? 'increment' : 'up',
     );
   });
 
@@ -207,7 +207,7 @@ test.describe('Wishlist module - Add a product to a list', async () => {
     expect(nameProduct).toEqual(dataProducts.demo_3.name);
 
     // @todo : https://github.com/PrestaShop/hummingbird/issues/908
-    if (semver.lt(utilsTest.getPSVersion(), '9.1.0')) {
+    if (semver.lt(utilsTest.getPSVersion(), '9.2.0')) {
       const qtyProduct = await foMyWishlistsViewPage.getProductQuantity(page, 1);
       expect(qtyProduct).toEqual(5);
     }

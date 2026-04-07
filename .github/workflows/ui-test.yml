@@ -26,16 +26,29 @@ jobs:
       matrix:
         include:
           - PS_VERSION: '8.0.5'
+            PS_VERSION_DOCKER: '8.0.5'
             PHP_VERSION: '8.1'
+            PS_THEME_FO: 'classic'
           - PS_VERSION: '8.1.7'
+            PS_VERSION_DOCKER: '8.1.7'
             PHP_VERSION: '8.1'
-          - PS_VERSION: '9.0.x'
-            PHP_VERSION: '8.2'
+            PS_THEME_FO: 'classic'
+          - PS_VERSION: '9.0.3'
+            PS_VERSION_DOCKER: '9.0.3-3.0-classic'
+            PHP_VERSION: '8.4'
+            PS_THEME_FO: 'classic'
+          - PS_VERSION: '9.1.x'
+            PS_VERSION_DOCKER: '9.1.x'
+            PHP_VERSION: '8.4'
+            PS_THEME_FO: 'classic'
           - PS_VERSION: 'nightly'
-            PHP_VERSION: '8.2'
+            PS_VERSION_DOCKER: 'nightly'
+            PHP_VERSION: '8.4'
+            PS_THEME_FO: 'hummingbird'
 
     env:
       PS_VERSION: ${{ matrix.PS_VERSION }}
+      PS_THEME_FO: ${{ matrix.PS_THEME_FO }}
 
     steps:
       - name: Checkout
@@ -61,7 +74,7 @@ jobs:
         working-directory: tests/UI/
         timeout-minutes: 15
         env:
-          PS_VERSION: ${{ matrix.PS_VERSION }}
+          PS_VERSION: ${{ matrix.PS_VERSION_DOCKER }}
           PHP_VERSION: ${{ matrix.PHP_VERSION }}
         run: |
           docker compose -f "docker-compose.yml" up -d --build
@@ -122,10 +135,12 @@ jobs:
             PHP_VERSION: '8.1'
           - PS_VERSION: '8.1.7'
             PHP_VERSION: '8.1'
-          - PS_VERSION: '9.0.x'
-            PHP_VERSION: '8.2'
+          - PS_VERSION: '9.0.3'
+            PHP_VERSION: '8.4'
+          - PS_VERSION: '9.1.x'
+            PHP_VERSION: '8.4'
           - PS_VERSION: 'nightly'
-            PHP_VERSION: '8.2'
+            PHP_VERSION: '8.4'
 
     env:
       PS_VERSION: ${{ matrix.PS_VERSION }}
