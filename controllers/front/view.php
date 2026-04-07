@@ -111,13 +111,15 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
             return;
         }
 
-        $this->context->controller->registerJavascript(
-            'blockwishlistController',
-            'modules/blockwishlist/public/productslist.bundle.js',
-            [
-              'priority' => 200,
-            ]
-        );
+        if ($this->context->controller instanceof FrontController) {
+            $this->context->controller->registerJavascript(
+                'blockwishlistController',
+                'modules/blockwishlist/public/productslist.bundle.js',
+                [
+                'priority' => 200,
+                ]
+            );
+        }
 
         $this->doProductSearch(
             '../../../modules/blockwishlist/views/templates/pages/products-list.tpl',
