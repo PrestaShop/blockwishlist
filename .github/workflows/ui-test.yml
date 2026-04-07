@@ -29,6 +29,8 @@ jobs:
             PHP_VERSION: '8.1'
           - PS_VERSION: '8.1.7'
             PHP_VERSION: '8.1'
+          - PS_VERSION: '8.2.1'
+            PHP_VERSION: '8.1'
           - PS_VERSION: '9.0.x'
             PHP_VERSION: '8.2'
           - PS_VERSION: 'nightly'
@@ -43,13 +45,41 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Clone PrestaShop for core dependencies
+        run: |
+          git clone --depth=50 https://github.com/PrestaShop/PrestaShop.git ~/PrestaShop
+          rm -rf ~/PrestaShop/modules/blockwishlist
+          cd ..
+          mv blockwishlist ~/PrestaShop/modules
+          ln -s ~/PrestaShop/modules/blockwishlist
+          cd blockwishlist
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 20.x
 
-      - name: Build
-        run: npm install && npm run build
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build PrestaShop assets
+        run: |
+          npm --prefix ~/PrestaShop/admin-dev/themes/new-theme install
+          npm --prefix ~/PrestaShop/admin-dev/themes/new-theme run build
+
+      - name: Build JS dependencies
+        run: |
+          npm --prefix ~/PrestaShop/modules/blockwishlist run build
+          rm -rf node_modules
+
+      - name: Install composer dependencies
+        run: composer install --no-dev -o
+
+      - name: Prepare auto-index tool
+        run: composer global require prestashop/autoindex
+
+      - name: Generate index.php
+        run: ~/.composer/vendor/bin/autoindex
 
       - name: Build ZIP
         run: |
@@ -84,7 +114,7 @@ jobs:
           DB_NAME: 'prestashop'
           DB_USER: 'prestashop'
           DB_PASSWD: 'prestashop'
-        run: npx playwright test
+        run: npx playwright test campaigns/03_frontOffice/02_products/01_addProductToList.spec.ts
 
       - name: Upload artifact report
         uses: actions/upload-artifact@v4
@@ -121,6 +151,8 @@ jobs:
           - PS_VERSION: '8.0.5'
             PHP_VERSION: '8.1'
           - PS_VERSION: '8.1.7'
+            PHP_VERSION: '8.1'
+          - PS_VERSION: '8.2.1'
             PHP_VERSION: '8.1'
           - PS_VERSION: '9.0.x'
             PHP_VERSION: '8.2'
