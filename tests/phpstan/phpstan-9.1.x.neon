@@ -1,0 +1,18 @@
+includes:
+	- %currentWorkingDirectory%/tests/phpstan/phpstan.neon
+
+parameters:
+  ignoreErrors:
+    - '#Access to property \$php_self on an unknown class PrestaShop\\PrestaShop\\Core\\Context\\LegacyControllerContext.#'
+    - '#Call to method addC[Ss]+\(\) on an unknown class PrestaShop\\PrestaShop\\Core\\Context\\LegacyControllerContext.#'
+    - '#Call to method addJ[Ss]+\(\) on an unknown class PrestaShop\\PrestaShop\\Core\\Context\\LegacyControllerContext.#'
+    - '#Method BlockWishListActionModuleFrontController\:\:addProductToCartAction\(\) is unused.#'
+    - '#Method BlockWishListActionModuleFrontController\:\:addProductToWishListAction\(\) is unused.#'
+    - '#Method BlockWishListActionModuleFrontController\:\:createNewWishListAction\(\) is unused.#'
+    - '#Method BlockWishListActionModuleFrontController\:\:deleteProductFromWishListAction\(\) is unused.#'
+    - '#Method BlockWishListActionModuleFrontController\:\:deleteWishListAction\(\) is unused.#'
+    - '#Method BlockWishListActionModuleFrontController\:\:getAllWishListAction\(\) is unused.#'
+    - '#Method BlockWishListActionModuleFrontController\:\:getUrlByIdWishListAction\(\) is unused.#'
+    - '#Method BlockWishListActionModuleFrontController\:\:renameWishListAction\(\) is unused.#'
+    - '#Method BlockWishListActionModuleFrontController\:\:updateProductFromWishListAction\(\) is unused.#'
+    - '#Parameter \$request of method PrestaShop\\Module\\BlockWishList\\Controller\\WishlistConfigurationAdminController\:\:configurationAction\(\) has invalid type Symfony\\Component\\HttpFoundation\\Request.#'
