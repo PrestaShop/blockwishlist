@@ -525,7 +525,7 @@ class WishList extends ObjectModel
     public static function refreshWishList($id_wishlist)
     {
         $old_carts = Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS('
-        SELECT wp.id_product, wp.id_product_attribute, wpc.id_cart, UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(wpc.date_add) AS timecart
+        SELECT wp.id_product, wp.id_product_attribute, wpc.id_cart, ' . time() . ' - UNIX_TIMESTAMP(wpc.date_add) AS timecart
         FROM `' . _DB_PREFIX_ . 'wishlist_product_cart` wpc
         JOIN `' . _DB_PREFIX_ . 'wishlist_product` wp ON (wp.id_wishlist_product = wpc.id_wishlist_product)
         JOIN `' . _DB_PREFIX_ . 'cart` c ON  (c.id_cart = wpc.id_cart)
