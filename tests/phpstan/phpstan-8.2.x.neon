@@ -1,7 +1,0 @@
-includes:
-	- %currentWorkingDirectory%/tests/phpstan/phpstan.neon
-
-parameters:
-  ignoreErrors:
-    - '#Call to an undefined static method Attribute\:\:getAttributeMinimalQty\(\).#'
-    - '#Call to static method getAttributeMinimalQty\(\) on an unknown class ProductAttribute.#'
