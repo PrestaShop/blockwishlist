@@ -67,7 +67,7 @@ export default {
      * Get every lists from User
      */
     lists: async (root, {url}) => {
-      if (window.blockwishlistUserLogged === false) {
+      if (!prestashop.customer.is_logged) {
         return [];
       }
 
