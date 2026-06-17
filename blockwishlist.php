@@ -143,7 +143,9 @@ class BlockWishList extends Module
      */
     public function hookActionFrontControllerSetMedia(array $params)
     {
-        $productsTagged = true === $this->context->customer->isLogged()
+        $isCustomerLogged = (bool) $this->context->customer->isLogged();
+
+        $productsTagged = true === $isCustomerLogged
             ? WishList::getAllProductByCustomer($this->context->customer->id, $this->context->shop->id)
             : false;
 
@@ -156,6 +158,7 @@ class BlockWishList extends Module
             'wishlistUrl' => $this->context->link->getModuleLink('blockwishlist', 'view'),
             'wishlistAddProductToCartUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'addProductToCart']),
             'productsAlreadyTagged' => $productsTagged ?: [],
+            'blockwishlistUserLogged' => $isCustomerLogged,
         ]);
 
         if ($this->context->controller instanceof FrontController) {

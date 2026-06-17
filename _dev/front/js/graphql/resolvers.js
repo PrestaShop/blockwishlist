@@ -67,6 +67,10 @@ export default {
      * Get every lists from User
      */
     lists: async (root, {url}) => {
+      if (window.blockwishlistUserLogged === false) {
+        return [];
+      }
+
       const response = await fetch(url);
 
       const datas = await response.json();
