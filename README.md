@@ -6,7 +6,7 @@ Adds a block containing the customer's wishlists.
 
 ## Compatibility
 
-PrestaShop: `8.0.0` or later
+PrestaShop: `8.2.0` or later
 
 ## Multistore compatibility
 
@@ -40,5 +40,5 @@ This module is released under the [Academic Free License 3.0][AFL-3.0]
 
 [report-issue]: https://github.com/PrestaShop/PrestaShop/issues/new/choose
 [prestashop]: https://www.prestashop.com/
-[contribution-guidelines]: https://devdocs.prestashop.com/1.7/contribute/contribution-guidelines/project-modules/
+[contribution-guidelines]: https://devdocs.prestashop.com/8/contribute/contribution-guidelines/project-modules/
 [AFL-3.0]: https://opensource.org/licenses/AFL-3.0

@@ -81,7 +81,7 @@ class BlockWishList extends Module
         $this->displayName = $this->trans('Wishlist', [], 'Modules.Blockwishlist.Admin');
         $this->description = $this->trans('Allow customers to create wishlists to save their favorite products for later.', [], 'Modules.Blockwishlist.Admin');
         $this->ps_versions_compliancy = [
-            'min' => '8.0.0',
+            'min' => '8.2.0',
             'max' => _PS_VERSION_,
         ];
     }
@@ -137,7 +137,7 @@ class BlockWishList extends Module
     /**
      * Add asset for Shop Front Office
      *
-     * @see https://devdocs.prestashop.com/1.7/themes/getting-started/asset-management/#without-a-front-controller-module
+     * @see https://devdocs.prestashop.com/8/themes/getting-started/asset-management/#without-a-front-controller-module
      *
      * @param array $params
      */
