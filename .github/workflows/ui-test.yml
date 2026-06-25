@@ -25,14 +25,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - PS_VERSION: '8.0.5'
-            PS_VERSION_DOCKER: '8.0.5'
-            PHP_VERSION: '8.1'
-            PS_THEME_FO: 'classic'
-          - PS_VERSION: '8.1.7'
-            PS_VERSION_DOCKER: '8.1.7'
-            PHP_VERSION: '8.1'
-            PS_THEME_FO: 'classic'
           - PS_VERSION: '9.0.3'
             PS_VERSION_DOCKER: '9.0.3-3.0-classic'
             PHP_VERSION: '8.4'
@@ -131,10 +123,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - PS_VERSION: '8.0.5'
-            PHP_VERSION: '8.1'
-          - PS_VERSION: '8.1.7'
-            PHP_VERSION: '8.1'
           - PS_VERSION: '9.0.3'
             PHP_VERSION: '8.4'
           - PS_VERSION: '9.1.x'
