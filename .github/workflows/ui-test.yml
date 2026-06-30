@@ -164,7 +164,7 @@ jobs:
           project_id: ${{ secrets.GC_PROJECT_ID }}
 
       - name: "Nightly : Setup GCP"
-        uses: google-github-actions/setup-gcloud@v1
+        uses: google-github-actions/setup-gcloud@v3
 
       - name: "Nightly : Upload to Google Cloud Storage (GCS)"
         working-directory: tests/UI/
