@@ -55,7 +55,7 @@
         "eslint-plugin-html": "^6.0.0",
         "eslint-plugin-import": "^2.25.2",
         "eslint-plugin-vue": "^7.0.0",
-        "expect": "^26.1.0",
+        "expect": "^30.4.1",
         "exports-loader": "^1.0.0",
         "expose-loader": "^1.0.0",
         "file-loader": "^5.0",
