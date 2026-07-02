@@ -72,7 +72,7 @@ class BlockWishList extends Module
     {
         $this->name = 'blockwishlist';
         $this->tab = 'front_office_features';
-        $this->version = '3.0.2';
+        $this->version = '4.0.0';
         $this->author = 'PrestaShop';
         $this->need_instance = 0;
 
@@ -81,7 +81,7 @@ class BlockWishList extends Module
         $this->displayName = $this->trans('Wishlist', [], 'Modules.Blockwishlist.Admin');
         $this->description = $this->trans('Allow customers to create wishlists to save their favorite products for later.', [], 'Modules.Blockwishlist.Admin');
         $this->ps_versions_compliancy = [
-            'min' => '8.0.0',
+            'min' => '8.2.0',
             'max' => _PS_VERSION_,
         ];
     }
@@ -122,15 +122,22 @@ class BlockWishList extends Module
      */
     public function hookActionAdminControllerSetMedia(array $params)
     {
-        $this->context->controller->addCss($this->getPathUri() . 'public/backoffice.css');
+        $cssPath = $this->getPathUri() . 'public/backoffice.css';
+        $jsPath = $this->getPathUri() . 'public/vendors.js';
 
-        $this->context->controller->addJs($this->getPathUri() . 'public/vendors.js');
+        if (version_compare(_PS_VERSION_, '9.0.0', '>=')) {
+            $this->context->controller->addCSS($cssPath);
+            $this->context->controller->addJS($jsPath);
+        } else {
+            $this->context->controller->addCss($cssPath);
+            $this->context->controller->addJS($jsPath);
+        }
     }
 
     /**
      * Add asset for Shop Front Office
      *
-     * @see https://devdocs.prestashop.com/1.7/themes/getting-started/asset-management/#without-a-front-controller-module
+     * @see https://devdocs.prestashop.com/8/themes/getting-started/asset-management/#without-a-front-controller-module
      *
      * @param array $params
      */
@@ -151,38 +158,40 @@ class BlockWishList extends Module
             'productsAlreadyTagged' => $productsTagged ?: [],
         ]);
 
-        $this->context->controller->registerStylesheet(
-            'blockwishlistController',
-            'modules/' . $this->name . '/public/wishlist.css',
-            [
-              'media' => 'all',
-              'priority' => 100,
-            ]
-        );
+        if ($this->context->controller instanceof FrontController) {
+            $this->context->controller->registerStylesheet(
+                'blockwishlistController',
+                'modules/' . $this->name . '/public/wishlist.css',
+                [
+                'media' => 'all',
+                'priority' => 100,
+                ]
+            );
 
-        $this->context->controller->registerJavascript(
-            'blockwishlistController',
-            'modules/' . $this->name . '/public/product.bundle.js',
-            [
-              'priority' => 100,
-            ]
-        );
+            $this->context->controller->registerJavascript(
+                'blockwishlistController',
+                'modules/' . $this->name . '/public/product.bundle.js',
+                [
+                'priority' => 100,
+                ]
+            );
 
-        $this->context->controller->registerJavascript(
-            'blockwishlistGraphql',
-            'modules/' . $this->name . '/public/graphql.js',
-            [
-              'priority' => 190,
-            ]
-        );
+            $this->context->controller->registerJavascript(
+                'blockwishlistGraphql',
+                'modules/' . $this->name . '/public/graphql.js',
+                [
+                'priority' => 190,
+                ]
+            );
 
-        $this->context->controller->registerJavascript(
-            'blockwishlistVendors',
-            'modules/' . $this->name . '/public/vendors.js',
-            [
-              'priority' => 190,
-            ]
-        );
+            $this->context->controller->registerJavascript(
+                'blockwishlistVendors',
+                'modules/' . $this->name . '/public/vendors.js',
+                [
+                'priority' => 190,
+                ]
+            );
+        }
     }
 
     /**
@@ -309,7 +318,7 @@ class BlockWishList extends Module
     public function hookDisplayFooter(array $params)
     {
         $this->smarty->assign([
-            'context' => $this->context->controller->php_self,
+            'context' => $this->context->controller instanceof Controller ? $this->context->controller->php_self : '',
             'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
             'deleteListUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'deleteWishlist']),
             'createUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'createNewWishlist']),

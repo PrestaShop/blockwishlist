@@ -20,10 +20,10 @@
         "apollo-link-http": "^1.5.16",
         "apollo-link-schema": "^1.2.4",
         "graphql": "^14.0.2",
-        "graphql-tag": "^2.10.3",
+        "graphql-tag": "^2.12.7",
         "graphql-tools": "^4.0.7",
         "graphql-type-json": "^0.3.1",
-        "sass": "^1.79.4",
+        "sass": "^1.101.0",
         "v-click-outside": "^3.0.1",
         "vue": "^2.6.11",
         "vue-apollo": "^3.0.3",
@@ -55,7 +55,7 @@
         "eslint-plugin-html": "^6.0.0",
         "eslint-plugin-import": "^2.25.2",
         "eslint-plugin-vue": "^7.0.0",
-        "expect": "^26.1.0",
+        "expect": "^30.4.1",
         "exports-loader": "^1.0.0",
         "expose-loader": "^1.0.0",
         "file-loader": "^5.0",
@@ -81,6 +81,9 @@
         "webpack-cli": "^4.3.1",
         "webpack-fix-style-only-entries": "^0.6.1",
         "webpack-merge": "^5.7.3"
+    },
+    "overrides": {
+        "@jridgewell/gen-mapping":"0.3.5"
     },
     "babel": {
         "presets": [

@@ -136,7 +136,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 $querySearch->select('product_attribute_shop.minimal_quantity AS product_attribute_minimal_quantity, IFNULL(product_attribute_shop.`id_product_attribute`,0) AS id_product_attribute');
             }
         } else {
-            $querySearch->select('COUNT(DISTINCT wp.id_product)');
+            $querySearch->select('COUNT(DISTINCT wp.id_product, wp.id_product_attribute)');
         }
 
         $querySearch->from('product', 'p');
@@ -173,7 +173,7 @@ class WishListProductSearchProvider implements ProductSearchProviderInterface
                 $querySearch->orderBy($sortOrder . ' ' . $sortWay);
             }
             $querySearch->limit((int) $query->getResultsPerPage(), ((int) $query->getPage() - 1) * (int) $query->getResultsPerPage());
-            $querySearch->groupBy('p.id_product');
+            $querySearch->groupBy('p.id_product, wp.id_product_attribute');
 
             $products = $this->db->executeS($querySearch);
 
