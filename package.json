@@ -21,7 +21,7 @@
         "apollo-link-schema": "^1.2.4",
         "graphql": "^14.0.2",
         "graphql-tag": "^2.10.3",
-        "graphql-tools": "^4.0.7",
+        "graphql-tools": "^9.0.29",
         "graphql-type-json": "^0.3.1",
         "sass": "^1.101.0",
         "v-click-outside": "^3.0.1",
