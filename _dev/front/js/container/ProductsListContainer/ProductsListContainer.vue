@@ -51,7 +51,7 @@
             <a
               rel="nofollow"
               @click="changeSelectedSort(sort)"
-              class="select-list"
+              class="dropdown-item select-list"
               :key="key"
               v-for="(sort, key) in productList"
             >
