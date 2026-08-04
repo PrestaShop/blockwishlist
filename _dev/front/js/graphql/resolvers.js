@@ -20,6 +20,7 @@
 import EventBus from '@components/EventBus';
 import headers from '@constants/headers';
 import GraphQLJSON, {GraphQLJSONObject} from 'graphql-type-json';
+import prestashop from 'prestashop';
 
 /**
  * Resolvers linked to schemas definitions
