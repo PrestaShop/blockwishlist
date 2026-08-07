@@ -30,7 +30,7 @@ jobs:
             PHP_VERSION: '8.4'
             PS_THEME_FO: 'classic'
           - PS_VERSION: '9.1.4'
-            PS_VERSION_DOCKER: '9.1.4'
+            PS_VERSION_DOCKER: '9.1.4-5.0-classic'
             PHP_VERSION: '8.4'
             PS_THEME_FO: 'classic'
           - PS_VERSION: '9.2.x'
