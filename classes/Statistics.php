@@ -66,12 +66,17 @@ class Statistics extends ObjectModel
             return false;
         }
 
-        return Db::getInstance()->delete(
-            'blockwishlist_statistics',
-            ($id_product ? 'id_product = ' . (int) $id_product : '')
+        $where = ($id_product ? 'id_product = ' . (int) $id_product : '')
             . ($id_product && $id_product_attribute ? ' AND ' : '')
-            . ($id_product_attribute ? ' id_product_attribute = ' . (int) $id_product_attribute : '')
-        );
+            . ($id_product_attribute ? ' id_product_attribute = ' . (int) $id_product_attribute : '');
+
+        // Never run an unconstrained DELETE: a falsy identifier (e.g. id_product_attribute = 0 for a
+        // simple product) would otherwise build an empty WHERE clause and wipe the whole table.
+        if ('' === $where) {
+            return false;
+        }
+
+        return Db::getInstance()->delete('blockwishlist_statistics', $where);
     }
 
     /**
@@ -83,6 +88,9 @@ class Statistics extends ObjectModel
         $dbQuery->select('bws.id_product_attribute');
         $dbQuery->from('blockwishlist_statistics', 'bws');
         $dbQuery->leftJoin('product_attribute', 'pa', 'bws.id_product_attribute = pa.id_product_attribute');
+        // Only real combinations (> 0) can be orphaned. Simple products use id_product_attribute = 0,
+        // which never matches a product_attribute row and must not be treated as an orphan.
+        $dbQuery->where('bws.id_product_attribute > 0');
         $dbQuery->where('pa.id_product_attribute IS NULL');
         $productAttributes = Db::getInstance()->executeS($dbQuery);
 

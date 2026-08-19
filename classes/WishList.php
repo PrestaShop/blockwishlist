@@ -244,12 +244,17 @@ class WishList extends ObjectModel
             return false;
         }
 
-        return Db::getInstance()->delete(
-            'wishlist_product',
-            ($id_product ? 'id_product = ' . (int) $id_product : '')
+        $where = ($id_product ? 'id_product = ' . (int) $id_product : '')
             . ($id_product && $id_product_attribute ? ' AND ' : '')
-            . ($id_product_attribute ? ' id_product_attribute = ' . (int) $id_product_attribute : '')
-        );
+            . ($id_product_attribute ? ' id_product_attribute = ' . (int) $id_product_attribute : '');
+
+        // Never run an unconstrained DELETE: a falsy identifier (e.g. id_product_attribute = 0 for a
+        // simple product) would otherwise build an empty WHERE clause and wipe the whole table.
+        if ('' === $where) {
+            return false;
+        }
+
+        return Db::getInstance()->delete('wishlist_product', $where);
     }
 
     /**
@@ -261,6 +266,9 @@ class WishList extends ObjectModel
         $dbQuery->select('wp.id_product_attribute');
         $dbQuery->from('wishlist_product', 'wp');
         $dbQuery->leftJoin('product_attribute', 'pa', 'wp.id_product_attribute = pa.id_product_attribute');
+        // Only real combinations (> 0) can be orphaned. Simple products use id_product_attribute = 0,
+        // which never matches a product_attribute row and must not be treated as an orphan.
+        $dbQuery->where('wp.id_product_attribute > 0');
         $dbQuery->where('pa.id_product_attribute IS NULL');
         $productAttributes = Db::getInstance()->executeS($dbQuery);
 
