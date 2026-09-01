@@ -148,13 +148,11 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
     protected function getProductSearchQuery()
     {
         $query = new ProductSearchQuery();
-        $query->setSortOrder(
-            new SortOrder(
-                'product',
-                Tools::getProductsOrder('by'),
-                Tools::getProductsOrder('way')
-            )
-        );
+        // The page advertises "Last added" as its sort and offers no other one, so that is what it has to
+        // apply by default. Falling back to the catalogue order (PS_PRODUCTS_ORDER_BY, position on a stock
+        // install) ordered the wishlist by where each product sits in its default category instead, which
+        // is unrelated to when it was added.
+        $query->setSortOrder(new SortOrder('wishlist_product', 'id_wishlist_product', 'DESC'));
 
         return $query;
     }
