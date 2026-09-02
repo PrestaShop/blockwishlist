@@ -36,7 +36,38 @@ export default {
         headers: headers.products,
       });
 
-      const datas = await response.json();
+      /**
+       * The view controller redirects when the list can no longer be shown: to the 404 controller once it
+       * has been deleted, to the home page once it is no longer readable by this visitor. fetch follows
+       * both, so the body here is a 404 payload or a home page, never the expected one. Reading pagination
+       * off it throws, and the page carries on describing a list that is gone. Send the browser to the
+       * request again so the shop renders whichever of the two it meant to.
+       */
+      if (response.redirected) {
+        window.location.reload();
+
+        return {datas: null};
+      }
+
+      /**
+       * Anything else unexpected - a server error, a body that is not the product payload - must not throw
+       * either, but it is not a reason to navigate away.
+       */
+      if (!response.ok) {
+        return {datas: null};
+      }
+
+      let datas = null;
+
+      try {
+        datas = await response.json();
+      } catch (error) {
+        return {datas: null};
+      }
+
+      if (!datas || !datas.pagination) {
+        return {datas: null};
+      }
 
       EventBus.$emit('paginate', {
         detail: {
