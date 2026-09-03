@@ -283,8 +283,17 @@ class BlockWishList extends Module
      */
     public function hookDisplayAdminCustomers(array $params)
     {
+        $wishlists = [];
+
+        if (!empty($params['id_customer'])) {
+            // The query scopes itself to the current shop, or shop group, so the block shows the
+            // wishlists that belong to the context the employee is looking at.
+            $wishlists = WishList::getAllWishlistsByIdCustomer((int) $params['id_customer']) ?: [];
+        }
+
         $this->smarty->assign([
             'blockwishlist' => $this->displayName,
+            'wishlists' => $wishlists,
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/displayAdminCustomers.tpl');
