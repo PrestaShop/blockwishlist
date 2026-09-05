@@ -116,23 +116,25 @@
       <button
         class="btn wishlist-product-addtocart"
         :class="{
-          'btn-secondary': product.customizable,
-          'btn-primary': !product.customizable
+          'btn-secondary': product.customization_required,
+          'btn-primary': !product.customization_required
         }"
         :disabled="isDisabled || forceDisable"
         @click="
-          product.add_to_cart_url || product.customizable
+          product.add_to_cart_url || product.customization_required
             ? addToCartAction()
             : null
         "
       >
         <i
           class="material-icons shopping-cart"
-          v-if="!product.customizable"
+          v-if="!product.customization_required"
         >
           shopping_cart
         </i>
-        {{ product.customizable ? customizeText : addToCart }}
+        <!-- customization_required, not customizable: a product whose customization fields are all
+             optional can be added to the cart directly, which is the rule the cart itself applies -->
+        {{ product.customization_required ? customizeText : addToCart }}
       </button>
 
       <button
@@ -235,7 +237,7 @@
           return false;
         }
 
-        if (this.product.customizable) {
+        if (this.product.customization_required) {
           return false;
         }
 
@@ -271,7 +273,7 @@
         });
       },
       async addToCartAction() {
-        if (this.product.add_to_cart_url && !this.product.customizable) {
+        if (this.product.add_to_cart_url && !this.product.customization_required) {
           try {
             this.forceDisable = true;
             const datas = new FormData();
