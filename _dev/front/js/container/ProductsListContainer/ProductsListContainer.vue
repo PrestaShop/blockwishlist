@@ -40,6 +40,7 @@
             class="btn-unstyle select-title"
             rel="nofollow"
             data-toggle="dropdown"
+            data-bs-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
@@ -50,7 +51,7 @@
             <a
               rel="nofollow"
               @click="changeSelectedSort(sort)"
-              class="select-list"
+              class="dropdown-item select-list"
               :key="key"
               v-for="(sort, key) in productList"
             >
