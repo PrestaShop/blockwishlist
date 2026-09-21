@@ -22,10 +22,34 @@
     <h3 class="card-header">
       <i class="material-icons">remove_red_eye</i>
       {$blockwishlist|escape:'html':'UTF-8'}
-      <span class="badge badge-primary rounded">0</span>
+      <span class="badge badge-primary rounded">{$wishlists|@count}</span>
     </h3>
     <div class="card-body">
-      {$blockwishlist|escape:'html':'UTF-8'}
+      {if $wishlists}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>{l s='Name' d='Modules.Blockwishlist.Admin'}</th>
+              <th class="text-right">{l s='Products' d='Modules.Blockwishlist.Admin'}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {foreach from=$wishlists item=wishlist}
+              <tr>
+                <td>
+                  {$wishlist.name|escape:'html':'UTF-8'}
+                  {if $wishlist.default}
+                    <span class="badge badge-secondary rounded">{l s='Default' d='Modules.Blockwishlist.Admin'}</span>
+                  {/if}
+                </td>
+                <td class="text-right">{$wishlist.nbProducts|intval}</td>
+              </tr>
+            {/foreach}
+          </tbody>
+        </table>
+      {else}
+        <p class="mb-0">{l s='This customer has no wishlist.' d='Modules.Blockwishlist.Admin'}</p>
+      {/if}
     </div>
   </div>
 </div>
