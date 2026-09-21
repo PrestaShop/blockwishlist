@@ -43,6 +43,7 @@ class BlockWishList extends Module
         'displayProductActions',
         'displayCustomerAccount',
         'displayFooter',
+        'displayNav2',
         'displayAdminCustomers',
         'displayMyAccountBlock',
     ];
@@ -306,6 +307,24 @@ class BlockWishList extends Module
         ]);
 
         return $this->fetch('module:blockwishlist/views/templates/hook/account/myaccount-block.tpl');
+    }
+
+    /**
+     * Displays a shortcut to the customer's wishlists in the header, beside the account and cart
+     * shortcuts both default themes already place on this hook.
+     *
+     * @param array $params
+     *
+     * @return string
+     */
+    public function hookDisplayNav2(array $params)
+    {
+        $this->smarty->assign([
+            'url' => $this->context->link->getModuleLink('blockwishlist', 'lists'),
+            'wishlistsTitlePage' => Configuration::get('blockwishlist_WishlistPageName', $this->context->language->id),
+        ]);
+
+        return $this->fetch('module:blockwishlist/views/templates/hook/displayNav2.tpl');
     }
 
     /**
