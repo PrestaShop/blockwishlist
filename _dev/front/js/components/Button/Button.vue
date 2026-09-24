@@ -175,7 +175,7 @@
           // eslint-disable-next-line
           const itemsFiltered = productsAlreadyTagged.filter(
             (e) => parseInt(e.id_product, 10) === this.productId
-              && e.quantity.toString() === quantity.value
+              && (quantity ? e.quantity.toString() === quantity.value : true)
               && parseInt(e.id_product_attribute, 10) === this.idProductAttribute,
           );
 
