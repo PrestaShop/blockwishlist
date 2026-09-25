@@ -24,6 +24,8 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
 {
     public function postProcess()
     {
+        header('Content-Type: application/json');
+
         if (false === $this->context->customer->isLogged()) {
             $this->ajaxRender(
                 json_encode([
