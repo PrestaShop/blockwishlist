@@ -20,6 +20,7 @@
 import EventBus from '@components/EventBus';
 import headers from '@constants/headers';
 import GraphQLJSON, {GraphQLJSONObject} from 'graphql-type-json';
+import prestashop from 'prestashop';
 
 /**
  * Resolvers linked to schemas definitions
@@ -67,6 +68,10 @@ export default {
      * Get every lists from User
      */
     lists: async (root, {url}) => {
+      if (!prestashop.customer.is_logged) {
+        return [];
+      }
+
       const response = await fetch(url);
 
       const datas = await response.json();
