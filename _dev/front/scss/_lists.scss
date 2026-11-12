@@ -1,0 +1,186 @@
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
+@import 'variables';
+
+.wishlist-list-container {
+  .wishlist {
+    &-list {
+      margin-bottom: 0;
+
+      &-empty {
+        font-size: 1.875rem;
+        text-align: center;
+        padding: 1.875rem;
+        padding-bottom: 1.25rem;
+        font-weight: bold;
+        color: #000;
+      }
+
+      &-loader {
+        padding: 0 1.25rem;
+        width: 100%;
+      }
+
+      &-item {
+        &-default {
+          border-bottom: 1px solid #0000002e;
+        }
+
+        &:hover {
+          cursor: pointer;
+
+          .wishlist-list-item-title {
+            color: $blue;
+          }
+        }
+
+        &-link {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1.5rem 1.25rem;
+        }
+
+        .dropdown-menu {
+          right: 1.25rem;
+          left: inherit;
+          display: none;
+          flex-direction: column;
+
+          &.show {
+            display: flex;
+          }
+        }
+
+        &-right {
+          position: relative;
+          white-space: nowrap;
+
+          > button {
+            transition: 0.25s ease-out;
+
+            &:hover {
+              opacity: 0.6;
+            }
+
+            i {
+              color: #7a7a7a;
+            }
+          }
+
+          .dropdown-menu {
+            box-sizing: border-box;
+            border: 1px solid #e5e5e5;
+            border-radius: 0.25rem;
+            background-color: #ffffff;
+            box-shadow: 0.125rem 0.125rem 0.625rem 0 rgba(0, 0, 0, 0.2);
+            padding: 0;
+            overflow: hidden;
+
+            > button {
+              padding: 0.625rem 1.25rem;
+              transition: 0.2s ease-out;
+              text-align: left;
+
+              &:hover {
+                background-color: #f1f1f1;
+              }
+            }
+          }
+        }
+
+        &-title {
+          color: #232323;
+          font-size: 1rem;
+          font-weight: bold;
+          letter-spacing: 0;
+          line-height: 1.375rem;
+          margin-bottom: 0;
+          word-break: break-word;
+
+          span {
+            color: #7a7a7a;
+            font-size: 1rem;
+            letter-spacing: 0;
+            line-height: 1.375rem;
+            font-weight: normal;
+            margin-left: 0.3125rem;
+          }
+        }
+
+        button {
+          cursor: pointer;
+          border: none;
+          background: none;
+
+          &:focus {
+            outline: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.wishlist {
+  &-container {
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    @at-root #main & .card.page-content {
+      padding: 0;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  &-add-to-new {
+    cursor: pointer;
+    transition: 0.2s ease-out;
+    font-size: 0.875rem;
+    letter-spacing: 0;
+    line-height: 1rem;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    i {
+      margin-right: 0.3125rem;
+      vertical-align: middle;
+      margin-top: -0.125rem;
+      font-size: 1.25rem;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wishlist {
+    &-container {
+      .page-content.card {
+        box-shadow: 0.125rem 0.125rem 0.5rem 0 rgba(0, 0, 0, 0.2);
+        background-color: #fff;
+        margin-top: 1.25rem;
+      }
+    }
+  }
+}

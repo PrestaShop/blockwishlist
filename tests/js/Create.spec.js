@@ -16,25 +16,58 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-import Vue from 'vue';
-import {shallowMount, mount} from '@vue/test-utils';
-import Create from '@components/Create/Create.vue';
-import EventBus from '@components/EventBus';
+import initCreate from '@js/components/create';
+import EventBus from '@js/lib/event-bus';
+import loadTemplate from './utils/loadTemplate';
+import mockFetch, {flushPromises} from './utils/fetch';
 
-describe('Create.vue', () => {
-  it(`should'nt be hidden if it receive the event showCreateWishlist`, async () => {
-    const wrapper = shallowMount(Create);
+describe('Create', () => {
+  let root;
+  let input;
+  const submit = () => root.querySelector('form').dispatchEvent(new window.Event('submit', {cancelable: true}));
 
-    EventBus.$emit('showCreateWishlist');
-
-    expect(wrapper.vm.isHidden).toBe(false);
+  before(() => {
+    root = loadTemplate('front/modals/create', {createUrl: 'http://shop/action?action=createNewWishlist'});
+    input = root.querySelector('input[name="name"]');
+    initCreate(root);
   });
 
-  it('value should be empty if it receive the event addedToWishlist', async () => {
-    const wrapper = shallowMount(Create);
-
+  it('should open with an empty name when it receives the event showCreateWishlist', () => {
+    input.value = 'Previous name';
     EventBus.$emit('showCreateWishlist');
 
-    expect(wrapper.vm.value).toBe('');
+    expect(root.querySelector('.wishlist-modal').classList.contains('show')).toBe(true);
+    expect(input.value).toBe('');
+  });
+
+  it('should refuse an empty name', () => {
+    const requests = mockFetch({});
+    let toast = null;
+    EventBus.$on('showToast', (event) => {
+      toast = event.detail;
+    });
+
+    input.value = '   ';
+    submit();
+
+    expect(requests.length).toBe(0);
+    expect(toast).toEqual({type: 'error', message: 'List title is too short'});
+  });
+
+  it('should create the list, then reopen the list choice it was opened from', async () => {
+    const requests = mockFetch({success: true, message: 'The list has been properly created'});
+    let reopened = false;
+    EventBus.$on('showAddToWishList', () => {
+      reopened = true;
+    });
+
+    EventBus.$emit('showCreateWishlist', {detail: {fromAddToWishlist: true}});
+    input.value = 'Gifts & ideas';
+    submit();
+    await flushPromises();
+
+    expect(requests[0].url).toBe('http://shop/action?action=createNewWishlist&params[name]=Gifts%20%26%20ideas');
+    expect(root.querySelector('.wishlist-modal').classList.contains('show')).toBe(false);
+    expect(reopened).toBe(true);
   });
 });

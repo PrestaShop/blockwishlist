@@ -16,115 +16,67 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-import Vue from 'vue';
-import { shallowMount, mount } from '@vue/test-utils';
-import List from '@components/List/List.vue';
-import EventBus from '@components/EventBus';
+import initListsPage from '@js/pages/lists';
+import EventBus from '@js/lib/event-bus';
 
-const items = [
-  {
-    id_wishlist: 1,
-    nbProducts: 2,
-    name: 'Test of list number one',
-    listUrl: '#'
-  },
-  {
-    id_wishlist: 2,
-    nbProducts: 2,
-    name: 'Test of list 2',
-    listUrl: '#'
-  }
-];
+describe('Lists page', () => {
+  let events;
 
-describe('List.vue', () => {
-  it('should be loading if no items are provided', async () => {
-    const wrapper = shallowMount(List);
+  before(() => {
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="wishlist-container">
+        <a href="#" class="wishlist-add-to-new">New</a>
+        <div class="wishlist-list-container">
+          <ul class="wishlist-list">
+            <li class="wishlist-list-item" data-id="2" data-name="Gifts" data-share-url="http://shop/share">
+              <a class="wishlist-list-item-link" href="#">
+                <div class="wishlist-list-item-right">
+                  <button type="button" class="wishlist-list-item-actions"></button>
+                  <div class="dropdown-menu">
+                    <button type="button" class="js-wishlist-rename"></button>
+                    <button type="button" class="js-wishlist-share"></button>
+                  </div>
+                  <button type="button" class="js-wishlist-delete"></button>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    `);
+    initListsPage(document.querySelector('.wishlist-container'));
 
-    expect(wrapper.vm.loading).toBe(true);
+    events = [];
+    ['showCreateWishlist', 'showRenameWishlist', 'showShareWishlist', 'showDeleteWishlist'].forEach(
+      (name) => EventBus.$on(name, (event) => events.push({name, event})),
+    );
   });
 
-  it('should render a list of items if they are provided', async () => {
-    const wrapper = shallowMount(List, {
-      propsData: {
-        loading: false,
-        items
-      }
-    });
+  it('should toggle the actions of a list, and close them when clicking elsewhere', () => {
+    const menu = document.querySelector('.wishlist-list-item .dropdown-menu');
 
-    expect(wrapper.vm.loading).toBe(false);
+    document.querySelector('.wishlist-list-item-actions').click();
+    expect(menu.classList.contains('show')).toBe(true);
 
-    expect(wrapper.find('ul li').exists()).toBe(true);
-    expect(wrapper.findAll('li')).toHaveLength(2);
+    document.body.click();
+    expect(menu.classList.contains('show')).toBe(false);
   });
 
-  it('should open links popup', async () => {
-    const wrapper = mount(List, {
-      propsData: {
-        loading: false,
-        items
-      }
-    });
+  it('should send the list to the modals', () => {
+    document.querySelector('.js-wishlist-rename').click();
+    document.querySelector('.js-wishlist-share').click();
+    document.querySelector('.js-wishlist-delete').click();
 
-    expect(wrapper.vm.loading).toBe(false);
-
-    const lists = wrapper.findAll('li');
-
-    lists.wrappers.forEach(list => {
-      list.find('.wishlist-list-item-actions').trigger('click');
-    });
-
-    expect(wrapper.vm.activeDropdowns.length).toBe(1);
+    expect(events.map(({name, event}) => [name, event.detail])).toEqual([
+      ['showRenameWishlist', {listId: 2, title: 'Gifts'}],
+      ['showShareWishlist', {listId: 2, shareUrl: 'http://shop/share'}],
+      ['showDeleteWishlist', {listId: 2, listName: 'Gifts'}],
+    ]);
   });
 
-  it('should click on share and open share modal', async () => {
-    EventBus.$on('showShareWishlist', e => {
-      expect(e.detail.listId).toBe(1);
-    });
+  it('should open the creation of a list', () => {
+    document.querySelector('.wishlist-add-to-new').click();
 
-    const wrapper = mount(List, {
-      propsData: {
-        loading: false,
-        items,
-        listId: 1
-      }
-    });
-
-    expect(wrapper.vm.loading).toBe(false);
-
-    const list = wrapper.find('li:first-child');
-
-    list.find('.wishlist-list-item-actions').trigger('click');
-    await Vue.nextTick();
-
-    list.find('.dropdown-menu button:last-child').trigger('click');
-    await Vue.nextTick();
-
-    expect(wrapper.vm.activeDropdowns.length).toBe(1);
-  });
-
-  it('should click on rename and open rename modal', async () => {
-    EventBus.$on('showRenameWishlist', e => {
-      expect(e.detail.listId).toBe(1);
-    });
-
-    const wrapper = mount(List, {
-      propsData: {
-        loading: false,
-        items,
-        listId: 1
-      }
-    });
-
-    expect(wrapper.vm.loading).toBe(false);
-
-    const list = wrapper.find('li:first-child');
-
-    list.find('.wishlist-list-item-actions').trigger('click');
-    await Vue.nextTick();
-
-    list.find('.dropdown-menu button:first-child').trigger('click');
-    await Vue.nextTick();
-
-    expect(wrapper.vm.activeDropdowns.length).toBe(1);
+    expect(events.pop().name).toBe('showCreateWishlist');
   });
 });

@@ -16,44 +16,65 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-import Vue from 'vue';
-import {shallowMount} from '@vue/test-utils';
-import Button from '@components/Button/Button.vue';
-import EventBus from '@components/EventBus';
+import initHearts from '@js/components/button';
+import EventBus from '@js/lib/event-bus';
+import loadTemplate from './utils/loadTemplate';
 
-describe('Button.vue', () => {
-  it('should stay unchecked if user is not logged in', async () => {
-    const wrapper = shallowMount(Button);
+describe('Button', () => {
+  let events;
 
-    expect(wrapper.vm.isChecked).toBe(false);
+  before(() => {
+    const template = document.createElement('template');
+    template.classList.add('js-wishlist-button-template');
+    template.content.append(loadTemplate('front/button'));
+    document.body.append(template);
+    document.body.insertAdjacentHTML('beforeend', `
+      <article class="js-product-miniature" data-id-product="1" data-id-product-attribute="2">
+        <div class="thumbnail-container"></div>
+      </article>
+      <article class="js-product-miniature" data-id-product="5" data-id-product-attribute="0">
+        <div class="thumbnail-container"></div>
+      </article>
+    `);
+    window.productsAlreadyTagged.push({
+      id_product: '5', id_product_attribute: '0', id_wishlist: '7', quantity: '1',
+    });
 
-    wrapper.find('button').trigger('click');
-    await Vue.nextTick();
-    expect(wrapper.vm.isChecked).toBe(false);
+    initHearts();
+
+    events = [];
+    ['showLogin', 'showAddToWishList'].forEach((name) => EventBus.$on(name, (event) => events.push({name, event})));
   });
 
-  it('should be checked if it receive the event addedToWishlist', async () => {
-    const wrapper = shallowMount(Button, {
-      propsData: {
-        productId: 1
-      }
-    });
+  const heart = (productId) => document.querySelector(
+    `.js-product-miniature[data-id-product="${productId}"] .wishlist-button-add`,
+  );
 
-    EventBus.$emit('addedToWishlist', {
-      detail: {productId: 1, listId: 1}
-    });
-
-    expect(wrapper.vm.isChecked).toBe(true);
+  it('should add a heart to the product miniatures, filled when the product is in a list', () => {
+    expect(heart(1).textContent.trim()).toBe('favorite_border');
+    expect(heart(5).textContent.trim()).toBe('favorite');
   });
 
-  it('should be checked if we passe checked as a prop', async () => {
-    const wrapper = shallowMount(Button, {
-      propsData: {
-        productId: 1,
-        checked: 'true'
-      }
-    });
+  it('should ask the customer to sign in', () => {
+    heart(1).click();
 
-    expect(wrapper.vm.isChecked).toBe(true);
+    expect(events.pop().name).toBe('showLogin');
+  });
+
+  it('should open the list choice for the product', () => {
+    window.prestashop.customer.is_logged = true;
+    heart(1).click();
+
+    const {name, event} = events.pop();
+    expect(name).toBe('showAddToWishList');
+    expect(event.detail).toEqual({
+      productId: 1, productAttributeId: 2, forceOpen: true, quantity: 0,
+    });
+  });
+
+  it('should fill the heart once the product is added to a list', () => {
+    EventBus.$emit('addedToWishlist', {detail: {productId: 1, productAttributeId: 2, listId: 7}});
+
+    expect(heart(1).textContent.trim()).toBe('favorite');
   });
 });
