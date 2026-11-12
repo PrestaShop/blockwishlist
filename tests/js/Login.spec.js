@@ -16,17 +16,28 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-import Vue from 'vue';
-import {shallowMount, mount} from '@vue/test-utils';
-import Login from '@components/Login/Login.vue';
-import EventBus from '@components/EventBus';
+import initLogin from '@js/components/login';
+import EventBus from '@js/lib/event-bus';
+import loadTemplate from './utils/loadTemplate';
 
-describe('Login.vue', () => {
-  it(`should'nt be hidden if it receive the event showLogin`, async () => {
-    const wrapper = shallowMount(Login);
+describe('Login', () => {
+  let root;
 
+  before(() => {
+    root = loadTemplate('front/modals/login');
+    initLogin(root);
+  });
+
+  it('should open when it receives the event showLogin', () => {
     EventBus.$emit('showLogin');
 
-    expect(wrapper.vm.isHidden).toBe(false);
+    expect(root.querySelector('.wishlist-modal').classList.contains('show')).toBe(true);
+    expect(root.querySelector('.modal-backdrop').classList.contains('in')).toBe(true);
+  });
+
+  it('should close when clicking on the cancel button', () => {
+    root.querySelector('.modal-cancel').click();
+
+    expect(root.querySelector('.wishlist-modal').classList.contains('show')).toBe(false);
   });
 });

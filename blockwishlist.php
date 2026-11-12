@@ -122,16 +122,7 @@ class BlockWishList extends Module
      */
     public function hookActionAdminControllerSetMedia(array $params)
     {
-        $cssPath = $this->getPathUri() . 'public/backoffice.css';
-        $jsPath = $this->getPathUri() . 'public/vendors.js';
-
-        if (version_compare(_PS_VERSION_, '9.0.0', '>=')) {
-            $this->context->controller->addCSS($cssPath);
-            $this->context->controller->addJS($jsPath);
-        } else {
-            $this->context->controller->addCss($cssPath);
-            $this->context->controller->addJS($jsPath);
-        }
+        $this->context->controller->addCSS($this->getPathUri() . 'public/backoffice.css');
     }
 
     /**
@@ -170,28 +161,41 @@ class BlockWishList extends Module
 
             $this->context->controller->registerJavascript(
                 'blockwishlistController',
-                'modules/' . $this->name . '/public/product.bundle.js',
+                'modules/' . $this->name . '/public/wishlist.bundle.js',
                 [
                 'priority' => 100,
                 ]
             );
-
-            $this->context->controller->registerJavascript(
-                'blockwishlistGraphql',
-                'modules/' . $this->name . '/public/graphql.js',
-                [
-                'priority' => 190,
-                ]
-            );
-
-            $this->context->controller->registerJavascript(
-                'blockwishlistVendors',
-                'modules/' . $this->name . '/public/vendors.js',
-                [
-                'priority' => 190,
-                ]
-            );
         }
+    }
+
+    /**
+     * Get the wishlists of the current customer, creating the default one on first access
+     *
+     * @return array
+     */
+    public function getCustomerWishLists()
+    {
+        $wishlists = WishList::getAllWishListsByIdCustomer($this->context->customer->id);
+        if (empty($wishlists)) {
+            $wishlist = new WishList();
+            $wishlist->id_shop = $this->context->shop->id;
+            $wishlist->id_shop_group = $this->context->shop->id_shop_group;
+            $wishlist->id_customer = $this->context->customer->id;
+            $wishlist->name = Configuration::get('blockwishlist_WishlistDefaultTitle', $this->context->language->id);
+            $wishlist->token = WishList::generateToken($this->context->customer->id);
+            $wishlist->default = 1;
+            $wishlist->add();
+
+            $wishlists = WishList::getAllWishListsByIdCustomer($this->context->customer->id);
+        }
+
+        foreach ($wishlists as $key => $wishlist) {
+            $wishlists[$key]['shareUrl'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist['token']]);
+            $wishlists[$key]['listUrl'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['id_wishlist' => $wishlist['id_wishlist']]);
+        }
+
+        return $wishlists;
     }
 
     /**
@@ -328,6 +332,6 @@ class BlockWishList extends Module
             'wishlistsTitlePage' => Configuration::get('blockwishlist_WishlistPageName', $this->context->language->id),
         ]);
 
-        return $this->fetch('module:blockwishlist/views/templates/hook/displayHeader.tpl');
+        return $this->fetch('module:blockwishlist/views/templates/hook/displayFooter.tpl');
     }
 }

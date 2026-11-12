@@ -17,8 +17,8 @@ module.exports = {
   parserOptions: {
     parser: '@babel/eslint-parser',
   },
-  extends: ['prestashop', 'plugin:vue/strongly-recommended'],
-  plugins: ['import', 'vue'],
+  extends: ['prestashop'],
+  plugins: ['import'],
   rules: {
     'class-methods-use-this': 0,
     'func-names': 0,
@@ -37,15 +37,6 @@ module.exports = {
     ],
     'no-restricted-syntax': 0,
     'prefer-destructuring': ['error', {object: true, array: false}],
-    'vue/script-indent': [
-      'error',
-      2,
-      {
-        baseIndent: 1,
-        switchCase: 1,
-      },
-    ],
-    'vue/require-default-prop': 0,
   },
   settings: {
     'import/resolver': {
@@ -53,12 +44,4 @@ module.exports = {
       webpack: 'webpack.config.js',
     },
   },
-  overrides: [
-    {
-      files: ['*.vue'],
-      rules: {
-        indent: 0,
-      },
-    },
-  ],
 };

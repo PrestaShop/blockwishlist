@@ -25,7 +25,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 
@@ -39,33 +38,7 @@ module.exports = {
     wishlistUrl: 'wishlistUrl',
   },
   entry: {
-    button: ['./_dev/front/js/components/Button'],
-    create: './_dev/front/js/components/Create',
-    rename: './_dev/front/js/components/Rename',
-    addtowishlist: './_dev/front/js/components/AddToWishlist',
-    productslist: [
-      './_dev/front/js/container/ProductsListContainer',
-      './_dev/front/js/components/Pagination',
-      './_dev/front/js/components/Toast',
-      './_dev/front/js/components/Delete',
-    ],
-    wishlistcontainer: [
-      './_dev/front/js/container/WishlistContainer',
-      './_dev/front/js/components/Create',
-      './_dev/front/js/components/Delete',
-      './_dev/front/js/components/Toast',
-      './_dev/front/js/components/Share',
-      './_dev/front/js/components/Rename',
-    ],
-    wishlist: ['./_dev/front/scss/common.scss'],
-    product: [
-      './_dev/front/js/pages/list',
-      './_dev/front/js/components/Button',
-      './_dev/front/js/components/Toast',
-      './_dev/front/js/components/Login',
-      './_dev/front/js/components/Create',
-      './_dev/front/js/components/AddToWishlist',
-    ],
+    wishlist: ['./_dev/front/js', './_dev/front/scss/common.scss'],
     backoffice: [
       './_dev/back/js/backoffice.js',
       './_dev/back/scss/backoffice.scss',
@@ -81,21 +54,9 @@ module.exports = {
     chunkFilename: '[name].js',
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json', '.mjs', '.ts'],
+    extensions: ['.js', '.json', '.mjs'],
     alias: {
       '@js': path.resolve(__dirname, '../_dev/front/js'),
-      '@pages': path.resolve(__dirname, '../_dev/front/js/pages'),
-      '@graphqlFiles': path.resolve(__dirname, '../_dev/front/js/graphql'),
-      '@components': path.resolve(__dirname, '../_dev/front/js/components'),
-      '@containers': path.resolve(__dirname, '../_dev/front/js/container'),
-      '@constants': path.resolve(__dirname, '../_dev/front/js/constants'),
-      '@scss': path.resolve(__dirname, '../_dev/front/scss'),
-      '@PSJs': path.resolve(
-        __dirname,
-        '../../../admin-dev/themes/new-theme/js',
-      ),
-      '@node_modules': path.resolve(__dirname, '../node_modules'),
-      vue: 'vue/dist/vue.esm.js',
     },
   },
   module: {
@@ -107,7 +68,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        include: path.resolve(__dirname, '../_dev'),
+        include: path.resolve(__dirname, '../_dev/back'),
         use: [
           {
             loader: 'babel-loader',
@@ -119,17 +80,17 @@ module.exports = {
         ],
       },
       {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-      },
-      {
-        test: /\.ts?$/,
-        loader: 'ts-loader',
-        options: {
-          appendTsSuffixTo: [/\.vue$/],
-          onlyCompileBundledFiles: true,
-        },
-        exclude: /node_modules/,
+        // Supported browsers run the front office code without polyfill
+        test: /\.js$/,
+        include: path.resolve(__dirname, '../_dev/front'),
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [['@babel/preset-env', {targets: {esmodules: true}, bugfixes: true, modules: false}]],
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
@@ -166,34 +127,12 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.scss$/,
-        include: /js/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader'],
-      },
       // FILES
       {
         test: /.(jpg|png|woff2?|eot|otf|ttf|svg|gif)$/,
         loader: 'file-loader?name=[hash].[ext]',
       },
     ],
-  },
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        graphql: {
-          test: /[\\/]node_modules[\\/](graphql|graphql-tag|graphql-tools|graphql-type-json)[\\/]/,
-          name: 'graphql',
-          chunks: 'all',
-        },
-        vendors: {
-          // eslint-disable-next-line max-len
-          test: /[\\/]node_modules[\\/](core-js|apollo-utilities|apollo-client|apollo-link|apollo-cache-inmemory|apollo-link-http|apollo-link-schema|vue|vue-apollo)[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
-      },
-    },
   },
   plugins: [
     new FixStyleOnlyEntriesPlugin(),
@@ -207,6 +146,5 @@ module.exports = {
       $: 'jquery', // needed for jquery-ui
       jQuery: 'jquery',
     }),
-    new VueLoaderPlugin(),
   ],
 };

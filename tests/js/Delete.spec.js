@@ -16,22 +16,45 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-import {shallowMount} from '@vue/test-utils';
-import Delete from '@components/Delete/Delete.vue';
-import EventBus from '@components/EventBus';
+import initDelete from '@js/components/delete';
+import EventBus from '@js/lib/event-bus';
+import loadTemplate from './utils/loadTemplate';
+import mockFetch, {flushPromises} from './utils/fetch';
 
-describe('Delete.vue', () => {
-  it(`should'nt be hidden if it receive the event showDelete`, async () => {
-    const wrapper = shallowMount(Delete);
+describe('Delete', () => {
+  let root;
 
+  before(() => {
+    root = loadTemplate('front/modals/delete', {
+      deleteListUrl: 'http://shop/action?action=deleteWishlist',
+      deleteProductUrl: 'http://shop/action?action=deleteProductFromWishlist',
+    });
+    initDelete(root);
+  });
+
+  it('should confirm the removal of a product, with the name of its list', () => {
     EventBus.$emit('showDeleteWishlist', {
       detail: {
-        listId: 1,
-        productId: 1,
-        productAttributeId: 1
-      }
+        listId: 3, listName: 'Gifts', productId: 1, productAttributeId: 2,
+      },
     });
 
-    expect(wrapper.vm.isHidden).toBe(false);
+    expect(root.querySelector('.modal-title .js-wishlist-delete-product').hidden).toBe(false);
+    expect(root.querySelector('.modal-title .js-wishlist-delete-list').hidden).toBe(true);
+    expect(root.querySelector('.modal-text').textContent).toBe('The product will be removed from "Gifts".');
+  });
+
+  it('should confirm the deletion of a list', async () => {
+    const requests = mockFetch({success: true});
+    EventBus.$emit('showDeleteWishlist', {detail: {listId: 3, listName: 'Gifts'}});
+
+    expect(root.querySelector('.modal-body').hidden).toBe(true);
+    expect(root.querySelector('.modal-title .js-wishlist-delete-list').hidden).toBe(false);
+
+    root.querySelector('form').dispatchEvent(new window.Event('submit', {cancelable: true}));
+    await flushPromises();
+
+    expect(requests[0].url).toBe('http://shop/action?action=deleteWishlist&params[idWishList]=3');
+    expect(root.querySelector('.wishlist-modal').classList.contains('show')).toBe(false);
   });
 });
