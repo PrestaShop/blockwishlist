@@ -16,22 +16,32 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-import Vue from 'vue';
-import {shallowMount, mount} from '@vue/test-utils';
-import Rename from '@components/Rename/Rename.vue';
-import EventBus from '@components/EventBus';
+import initRename from '@js/components/rename';
+import EventBus from '@js/lib/event-bus';
+import loadTemplate from './utils/loadTemplate';
+import mockFetch, {flushPromises} from './utils/fetch';
 
-describe('Rename.vue', () => {
-  it(`should'nt be hidden if it receive the event showRenameWishlist`, async () => {
-    const wrapper = shallowMount(Rename);
+describe('Rename', () => {
+  let root;
 
-    EventBus.$emit('showRenameWishlist', {
-      detail: {
-        listId: 1,
-        title: 'Test of title'
-      }
-    });
+  before(() => {
+    root = loadTemplate('front/modals/rename', {renameUrl: 'http://shop/action?action=renameWishlist'});
+    initRename(root);
+  });
 
-    expect(wrapper.vm.isHidden).toBe(false);
+  it('should rename the list it receives', async () => {
+    const requests = mockFetch({success: true});
+    EventBus.$emit('showRenameWishlist', {detail: {listId: 4, title: 'Gifts'}});
+
+    const input = root.querySelector('input[name="name"]');
+    expect(input.value).toBe('Gifts');
+    expect(root.querySelector('.wishlist-modal').classList.contains('show')).toBe(true);
+
+    input.value = 'Ideas';
+    root.querySelector('form').dispatchEvent(new window.Event('submit', {cancelable: true}));
+    await flushPromises();
+
+    expect(requests[0].url).toBe('http://shop/action?action=renameWishlist&params[name]=Ideas&params[idWishList]=4');
+    expect(root.querySelector('.wishlist-modal').classList.contains('show')).toBe(false);
   });
 });

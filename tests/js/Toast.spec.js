@@ -16,51 +16,31 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-import Vue from 'vue';
-import {shallowMount, mount} from '@vue/test-utils';
-import Toast from '@components/Toast/Toast.vue';
-import EventBus from '@components/EventBus';
+import initToast from '@js/components/toast';
+import EventBus from '@js/lib/event-bus';
+import loadTemplate from './utils/loadTemplate';
 
-describe('Toast.vue', () => {
-  it(`should'nt be hidden if it receive the event showToast`, async () => {
-    const wrapper = shallowMount(Toast);
+describe('Toast', () => {
+  let toast;
 
-    EventBus.$emit('showToast', {
-      detail: {
-        message: 'Test of message'
-      }
-    });
-
-    expect(wrapper.vm.active).toBe(true);
+  before(() => {
+    toast = loadTemplate('front/toast');
+    initToast(toast);
   });
 
-  it(`should have a custom message`, async () => {
-    const wrapper = shallowMount(Toast);
+  it('should display the message it receives', () => {
+    EventBus.$emit('showToast', {detail: {type: 'error', message: 'Something went wrong'}});
 
-    EventBus.$emit('showToast', {
-      detail: {
-        message: 'custom'
-      }
-    });
-
-    expect(wrapper.vm.text).toBe('custom');
+    expect(toast.classList.contains('isActive')).toBe(true);
+    expect(toast.classList.contains('error')).toBe(true);
+    expect(toast.querySelector('.wishlist-toast-text').textContent).toBe('Something went wrong');
   });
 
-  it(`should be hidden after 2.5s`, function(done) {
-    const wrapper = shallowMount(Toast);
-    this.timeout(4000);
+  it('should translate the message named after one of its data attributes', () => {
+    EventBus.$emit('showToast', {detail: {type: 'success', message: 'copyText'}});
 
-    EventBus.$emit('showToast', {
-      detail: {
-        message: 'Test of message'
-      }
-    });
-
-    expect(wrapper.vm.active).toBe(true);
-
-    setTimeout(() => {
-      expect(wrapper.vm.active).toBe(false);
-      done();
-    }, 3000);
+    expect(toast.classList.contains('error')).toBe(false);
+    expect(toast.classList.contains('success')).toBe(true);
+    expect(toast.querySelector('.wishlist-toast-text').textContent).toBe('Share link copied!');
   });
 });

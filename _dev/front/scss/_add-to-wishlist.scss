@@ -1,0 +1,88 @@
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
+@import 'variables';
+
+.wishlist-add-to {
+  .wishlist-add-to-new i {
+    color: $blue;
+  }
+
+  .modal {
+    &-body {
+      padding: 0;
+    }
+
+    &-footer {
+      text-align: left;
+    }
+  }
+}
+
+.wishlist-chooselist {
+  .wishlist {
+    &-list {
+      max-height: 55vh;
+      overflow-y: auto;
+      border-top: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+      margin: 0;
+
+      &-empty {
+        font-size: 30;
+        text-align: center;
+        padding: 30px;
+        padding-bottom: 1.25rem;
+        font-weight: bold;
+        color: #000;
+      }
+
+      & .wishlist-list-item {
+        padding: 0.875rem 0;
+        transition: 0.25s ease-out;
+        cursor: pointer;
+        margin-bottom: 0;
+
+        &:hover {
+          background: lighten($blue, 45%);
+        }
+
+        p {
+          font-size: 0.875rem;
+          letter-spacing: 0;
+          color: #232323;
+          margin-bottom: 0;
+          line-height: 1rem;
+          padding: 0 2.5rem;
+        }
+      }
+    }
+  }
+}
+
+.wishlist-list-loader {
+  padding: 0.75rem 1.25rem;
+
+  span {
+    display: block;
+    height: 0.6875rem;
+    margin-bottom: 0.8125rem;
+    border-radius: 0.1875rem;
+    background-color: #f3f3f3;
+  }
+}

@@ -17,10 +17,23 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 require('jsdom-global')();
+
+global.MutationObserver = window.MutationObserver;
+global.DOMParser = window.DOMParser;
+
 global.productsAlreadyTagged = [];
-global.window.prestashop = {
+global.prestashop = {
   customer: {
-    is_logged: false
-  }
+    is_logged: false,
+  },
+  urls: {},
+  emit() {},
+  on() {},
 };
-global.expect = require('expect');
+global.removeFromWishlistUrl = 'http://shop/remove?action=deleteProductFromWishlist';
+global.wishlistAddProductToCartUrl = 'http://shop/action?action=addProductToCart';
+global.window.prestashop = global.prestashop;
+global.window.productsAlreadyTagged = global.productsAlreadyTagged;
+global.window.removeFromWishlistUrl = global.removeFromWishlistUrl;
+global.window.wishlistAddProductToCartUrl = global.wishlistAddProductToCartUrl;
+global.expect = require('expect').expect;
