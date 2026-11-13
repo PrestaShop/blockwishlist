@@ -115,7 +115,7 @@ jobs:
           phpstan-level: '5'
           phpstan-config: tests/php/phpstan/phpstan-${{ matrix.presta_version }}.neon
 
-  # Run PHPStan against the module (PHP 8.1 – 8.5)
+  # Run PHPStan against the module (PHP 8.1 – 8.5, 8.4 max for PS 9.1.5 and 9.2.x)
   phpstan:
     name: PHPStan (PHP 8.1 - 8.5)
     runs-on: ubuntu-latest
@@ -123,6 +123,17 @@ jobs:
       matrix:
         presta_version: ['9.1.5', '9.2.x', 'develop']
         php_version: ['8.1', '8.5']
+        # The PHPStan shipped with PS 9.1.5 and 9.2.x does not know PHP 8.5 (phpVersion max 80499)
+        exclude:
+          - presta_version: '9.1.5'
+            php_version: '8.5'
+          - presta_version: '9.2.x'
+            php_version: '8.5'
+        include:
+          - presta_version: '9.1.5'
+            php_version: '8.4'
+          - presta_version: '9.2.x'
+            php_version: '8.4'
       fail-fast: false
     env:
       PHPRC: ${{ github.workspace }}/${{ github.event.repository.name }}/.phpstan-php-ini
