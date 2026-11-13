@@ -151,7 +151,7 @@ jobs:
           fetch-depth: 0
 
       - name: Download report
-        uses: actions/download-artifact@v8.0.1
+        uses: actions/download-artifact@v8.0.2
         with:
           name: playwright-report-${{ matrix.PS_VERSION }}
           path: tests/UI/
