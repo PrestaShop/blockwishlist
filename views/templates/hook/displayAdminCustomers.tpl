@@ -17,15 +17,34 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 
-<div class="col">
-  <div class="card">
-    <h3 class="card-header">
-      <i class="material-icons">remove_red_eye</i>
-      {$blockwishlist|escape:'html':'UTF-8'}
-      <span class="badge badge-primary rounded">0</span>
-    </h3>
-    <div class="card-body">
-      {$blockwishlist|escape:'html':'UTF-8'}
+{if $wishlists|count > 0}
+  <div class="col">
+    <div class="card d-print-none">
+      <div class="card-header">
+        <i class="material-icons">remove_red_eye</i>
+        {$blockwishlist|escape:'html':'UTF-8'}
+        <span class="badge badge-primary rounded">{$wishlists|count}</span>
+      </div>
+
+      <div class="card-body">
+        <table class="table" id="customer-wishlist-list">
+          <thead>
+            <tr>
+              <th scope="col">{l s='Name' d='Modules.Blockwishlist.Admin'}</th>
+              <th scope="col">{l s='Products' d='Modules.Blockwishlist.Admin'}</th>
+              <th scope="col">{l s='Actions' d='Modules.Blockwishlist.Admin'}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {foreach from=$wishlists item=wishlist}
+              <tr>
+                <td>{$wishlist.name|escape:'html':'UTF-8'}</td>
+                <td>{$wishlist.nbProducts}</td>
+                <td><a href="{$wishlist.shareUrl}" target="_blank">{l s='View' d='Modules.Blockwishlist.Admin'}</a></td>
+            {/foreach}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
+{/if}

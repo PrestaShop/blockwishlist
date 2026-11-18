@@ -283,7 +283,16 @@ class BlockWishList extends Module
      */
     public function hookDisplayAdminCustomers(array $params)
     {
+        $id_customer = $params['id_customer'];
+        $wishlists = WishList::getAllWishListsByIdCustomer($id_customer);
+
+        foreach ($wishlists as $key => $wishlist) {
+            $wishlists[$key]['shareUrl'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist['token']]);
+            $wishlists[$key]['listUrl'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['id_wishlist' => $wishlist['id_wishlist']]);
+        }
+
         $this->smarty->assign([
+            'wishlists' => $wishlists,
             'blockwishlist' => $this->displayName,
         ]);
 
