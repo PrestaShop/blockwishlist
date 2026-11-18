@@ -17,7 +17,7 @@ const prodConfig = () => merge(common, {
         sourceMap: true,
         terserOptions: {
           output: {
-            comments: /@license/i,
+            comments: /^!/,
           },
         },
         extractComments: false,
@@ -25,6 +25,14 @@ const prodConfig = () => merge(common, {
     ],
   },
   plugins: [
+    // The license is written once per bundle, instead of once per source file
+    new webpack.BannerPlugin({
+      banner: [
+        'Copyright since 2007 PrestaShop SA and Contributors',
+        'PrestaShop is an International Registered Trademark & Property of PrestaShop SA',
+        '@license https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0',
+      ].join('\n'),
+    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),

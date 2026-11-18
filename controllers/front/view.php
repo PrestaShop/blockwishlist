@@ -111,23 +111,30 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
             return;
         }
 
-        if ($this->context->controller instanceof FrontController) {
-            $this->context->controller->registerJavascript(
-                'blockwishlistController',
-                'modules/blockwishlist/public/productslist.bundle.js',
-                [
-                'priority' => 200,
-                ]
-            );
-        }
-
         $this->doProductSearch(
-            '../../../modules/blockwishlist/views/templates/pages/products-list.tpl',
+            'module:blockwishlist/views/templates/front/pages/products-list.tpl',
             [
                 'entity' => 'wishlist_product',
                 'id_wishlist' => $this->wishlist->id,
             ]
         );
+    }
+
+    /**
+     * The theme template finder only resolves theme templates: a `module:` path is kept as is,
+     * so that a theme can override the module template, as for a ModuleFrontController.
+     *
+     * {@inheritdoc}
+     */
+    public function setTemplate($template, $params = [], $locale = null)
+    {
+        if (strpos($template, 'module:') === 0) {
+            $this->template = $template;
+
+            return;
+        }
+
+        parent::setTemplate($template, $params, $locale);
     }
 
     /**
@@ -177,7 +184,14 @@ class BlockWishlistViewModuleFrontController extends ProductListingFrontControll
      */
     protected function getAjaxProductSearchVariables()
     {
-        parent::getAjaxProductSearchVariables();
+        return $this->getProductSearchVariables();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getProductSearchVariables()
+    {
         $context = parent::getProductSearchContext();
         $query = $this->getProductSearchQuery();
         $provider = $this->getDefaultProductSearchProvider();

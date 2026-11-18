@@ -24,13 +24,18 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
      */
     public $auth = true;
 
+    /**
+     * @var BlockWishList
+     */
+    public $module;
+
     public function initContent()
     {
         parent::initContent();
 
         $this->context->smarty->assign(
           [
-              'url' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'getAllWishlist']),
+              'wishlists' => $this->module->getCustomerWishLists(),
               'renameUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'renameWishlist']),
               'shareUrl' => $this->context->link->getModuleLink('blockwishlist', 'action', ['action' => 'getUrlByIdWishlist']),
               'accountLink' => '#',
@@ -39,17 +44,7 @@ class BlockWishlistListsModuleFrontController extends ModuleFrontController
           ]
         );
 
-        if ($this->context->controller instanceof FrontController) {
-            $this->context->controller->registerJavascript(
-              'blockwishlistController',
-              'modules/blockwishlist/public/wishlistcontainer.bundle.js',
-              [
-                'priority' => 200,
-              ]
-            );
-        }
-
-        $this->setTemplate('module:blockwishlist/views/templates/pages/lists.tpl');
+        $this->setTemplate('module:blockwishlist/views/templates/front/pages/lists.tpl');
     }
 
     public function getBreadcrumbLinks()
