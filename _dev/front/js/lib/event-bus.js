@@ -18,21 +18,59 @@
  */
 import prestashop from 'prestashop';
 
-const listeners = {};
+let listeners = {};
 
 /**
  * Lets the wishlist components, and the theme or other modules, communicate.
- * Exposed as window.WishlistEventBus, with the same methods as the previous Vue instance.
+ * Exposed as window.WishlistEventBus, it behaves like the Vue 2 instance it replaces:
+ * $on, $once, $off and $emit, with arrays of events and chaining.
  */
 const EventBus = {
   $on(event, callback) {
-    listeners[event] = [...(listeners[event] || []), callback];
+    if (Array.isArray(event)) {
+      event.forEach((name) => EventBus.$on(name, callback));
+    } else {
+      listeners[event] = [...(listeners[event] || []), callback];
+    }
+
+    return EventBus;
+  },
+  $once(event, callback) {
+    const listener = (...args) => {
+      EventBus.$off(event, listener);
+      callback(...args);
+    };
+    // Lets $off remove it with the original callback
+    listener.fn = callback;
+
+    return EventBus.$on(event, listener);
   },
   $off(event, callback) {
-    listeners[event] = (listeners[event] || []).filter((listener) => listener !== callback);
+    if (event === undefined) {
+      listeners = {};
+    } else if (Array.isArray(event)) {
+      event.forEach((name) => EventBus.$off(name, callback));
+    } else if (callback === undefined) {
+      delete listeners[event];
+    } else {
+      listeners[event] = (listeners[event] || []).filter(
+        (listener) => listener !== callback && listener.fn !== callback,
+      );
+    }
+
+    return EventBus;
   },
   $emit(event, ...args) {
-    (listeners[event] || []).forEach((listener) => listener(...args));
+    // Copied, so a listener removed while emitting doesn't skip the next one
+    [...(listeners[event] || [])].forEach((listener) => {
+      try {
+        listener(...args);
+      } catch (error) {
+        console.error(`Error in a "${event}" listener of WishlistEventBus`, error);
+      }
+    });
+
+    return EventBus;
   },
 };
 
