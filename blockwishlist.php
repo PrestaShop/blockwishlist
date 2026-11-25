@@ -125,13 +125,8 @@ class BlockWishList extends Module
         $cssPath = $this->getPathUri() . 'public/backoffice.css';
         $jsPath = $this->getPathUri() . 'public/vendors.js';
 
-        if (version_compare(_PS_VERSION_, '9.0.0', '>=')) {
-            $this->context->controller->addCSS($cssPath);
-            $this->context->controller->addJS($jsPath);
-        } else {
-            $this->context->controller->addCss($cssPath);
-            $this->context->controller->addJS($jsPath);
-        }
+        $this->context->controller->addCSS($cssPath);
+        $this->context->controller->addJS($jsPath);
     }
 
     /**
