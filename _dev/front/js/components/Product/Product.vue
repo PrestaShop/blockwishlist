@@ -81,7 +81,7 @@
         <div class="wishlist-product-combinations">
           <p class="wishlist-product-combinations-text">
             <template v-for="(attribute, key, index) of product.attributes">
-              {{ attribute.group }} : {{ attribute.name }}
+              {{ attribute.public_group }} : {{ attribute.name }}
               <span
                 :key="key"
                 v-if="index <= Object.keys(product.attributes).length - 1"
