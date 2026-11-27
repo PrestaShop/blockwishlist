@@ -22,11 +22,11 @@
 {/block}
 
 {block name='page_content_container'}
-  <div class="wishlist-container">
+  <div class="wishlist-container" data-ps-component="wishlist-lists-page">
     <div class="wishlist-container-header">
       <h1>{$wishlistsTitlePage}</h1>
 
-      <a href="#" class="wishlist-add-to-new text-primary">
+      <a href="#" class="wishlist-add-to-new text-primary" data-ps-action="wishlist-create-list">
         <i class="material-icons">add_circle_outline</i>
         {$newWishlistCTA}
       </a>

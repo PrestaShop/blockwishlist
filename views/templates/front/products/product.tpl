@@ -29,6 +29,7 @@
 
 <div
   class="wishlist-product"
+  data-ps-ref="wishlist-product"
   data-id-product="{$product.id_product}"
   data-id-product-attribute="{$product.id_product_attribute}"
   data-id-customization="{$product.id_customization}"
@@ -101,6 +102,7 @@
     <button
       type="button"
       class="btn wishlist-product-addtocart {if $product.customizable}btn-secondary{else}btn-primary{/if}"
+      data-ps-action="wishlist-add-to-cart"
       {if $isDisabled}disabled{/if}
     >
       {if $product.customizable}
@@ -112,7 +114,7 @@
     </button>
 
     {if !$isGuest}
-      <button type="button" class="wishlist-button-add">
+      <button type="button" class="wishlist-button-add" data-ps-action="wishlist-remove-product">
         <i class="material-icons">delete</i>
       </button>
     {/if}

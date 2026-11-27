@@ -20,9 +20,10 @@ import prestashop from 'prestashop';
 import wishlistAddProductToCartUrl from 'wishlistAddProductToCartUrl';
 import EventBus from '../lib/event-bus';
 import refresh from '../lib/refresh';
+import selectors from '../lib/selectors';
 
 const getList = (product) => {
-  const {listId, listName} = product.closest('.wishlist-products-container').dataset;
+  const {listId, listName} = product.closest(selectors.components.products).dataset;
 
   return {listId: parseInt(listId, 10), listName};
 };
@@ -88,13 +89,13 @@ const addToCart = async (product, button) => {
  */
 export default function initProductsListPage() {
   document.addEventListener('click', (event) => {
-    const product = event.target.closest('.wishlist-products-container .wishlist-product');
+    const product = event.target.closest(`${selectors.components.products} ${selectors.products.product}`);
 
     if (!product) {
       return;
     }
 
-    const addToCartButton = event.target.closest('.wishlist-product-addtocart');
+    const addToCartButton = event.target.closest(selectors.products.addToCart);
 
     if (addToCartButton) {
       addToCart(product, addToCartButton);
@@ -102,7 +103,7 @@ export default function initProductsListPage() {
       return;
     }
 
-    if (event.target.closest('.wishlist-product-bottom .wishlist-button-add')) {
+    if (event.target.closest(selectors.products.remove)) {
       EventBus.$emit('showDeleteWishlist', {
         detail: {
           ...getList(product),
@@ -113,5 +114,5 @@ export default function initProductsListPage() {
     }
   });
 
-  EventBus.$on('refetchList', () => refresh('.wishlist-products-container'));
+  EventBus.$on('refetchList', () => refresh(selectors.products.area));
 }

@@ -16,6 +16,6 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
-<button type="button" class="wishlist-button-add{if !empty($isProduct)} wishlist-button-product{/if}">
-  <i class="material-icons">favorite_border</i>
+<button type="button" class="wishlist-button-add{if !empty($isProduct)} wishlist-button-product{/if}" data-ps-action="wishlist-toggle-product">
+  <i class="material-icons" data-ps-ref="wishlist-button-icon">favorite_border</i>
 </button>

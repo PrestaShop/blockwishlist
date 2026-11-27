@@ -21,30 +21,29 @@ import EventBus from '@js/lib/event-bus';
 
 describe('Lists page', () => {
   let events;
+  const action = (name) => document.querySelector(`[data-ps-action="${name}"]`);
 
   before(() => {
     document.body.insertAdjacentHTML('beforeend', `
-      <div class="wishlist-container">
-        <a href="#" class="wishlist-add-to-new">New</a>
-        <div class="wishlist-list-container">
-          <ul class="wishlist-list">
-            <li class="wishlist-list-item" data-id="2" data-name="Gifts" data-share-url="http://shop/share">
-              <a class="wishlist-list-item-link" href="#">
-                <div class="wishlist-list-item-right">
-                  <button type="button" class="wishlist-list-item-actions"></button>
-                  <div class="dropdown-menu">
-                    <button type="button" class="js-wishlist-rename"></button>
-                    <button type="button" class="js-wishlist-share"></button>
-                  </div>
-                  <button type="button" class="js-wishlist-delete"></button>
+      <div data-ps-component="wishlist-lists-page">
+        <a href="#" data-ps-action="wishlist-create-list">New</a>
+        <div data-ps-target="wishlist-lists">
+          <ul>
+            <li data-ps-ref="wishlist-list-item" data-id="2" data-name="Gifts" data-share-url="http://shop/share">
+              <a href="#">
+                <button type="button" data-ps-action="wishlist-toggle-menu"></button>
+                <div data-ps-ref="wishlist-list-menu">
+                  <button type="button" data-ps-action="wishlist-rename"></button>
+                  <button type="button" data-ps-action="wishlist-share"></button>
                 </div>
+                <button type="button" data-ps-action="wishlist-delete"></button>
               </a>
             </li>
           </ul>
         </div>
       </div>
     `);
-    initListsPage(document.querySelector('.wishlist-container'));
+    initListsPage(document.querySelector('[data-ps-component="wishlist-lists-page"]'));
 
     events = [];
     ['showCreateWishlist', 'showRenameWishlist', 'showShareWishlist', 'showDeleteWishlist'].forEach(
@@ -53,9 +52,9 @@ describe('Lists page', () => {
   });
 
   it('should toggle the actions of a list, and close them when clicking elsewhere', () => {
-    const menu = document.querySelector('.wishlist-list-item .dropdown-menu');
+    const menu = document.querySelector('[data-ps-ref="wishlist-list-menu"]');
 
-    document.querySelector('.wishlist-list-item-actions').click();
+    action('wishlist-toggle-menu').click();
     expect(menu.classList.contains('show')).toBe(true);
 
     document.body.click();
@@ -63,9 +62,9 @@ describe('Lists page', () => {
   });
 
   it('should send the list to the modals', () => {
-    document.querySelector('.js-wishlist-rename').click();
-    document.querySelector('.js-wishlist-share').click();
-    document.querySelector('.js-wishlist-delete').click();
+    action('wishlist-rename').click();
+    action('wishlist-share').click();
+    action('wishlist-delete').click();
 
     expect(events.map(({name, event}) => [name, event.detail])).toEqual([
       ['showRenameWishlist', {listId: 2, title: 'Gifts'}],
@@ -75,7 +74,7 @@ describe('Lists page', () => {
   });
 
   it('should open the creation of a list', () => {
-    document.querySelector('.wishlist-add-to-new').click();
+    action('wishlist-create-list').click();
 
     expect(events.pop().name).toBe('showCreateWishlist');
   });

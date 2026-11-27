@@ -20,8 +20,9 @@ import prestashop from 'prestashop';
 import removeFromWishlistUrl from 'removeFromWishlistUrl';
 import {removeFromList} from '../api';
 import EventBus, {notify} from '../lib/event-bus';
+import selectors from '../lib/selectors';
 
-const getQuantityInput = () => document.querySelector('.product-quantity input#quantity_wanted');
+const getQuantityInput = () => document.querySelector(selectors.theme.quantity);
 
 const getData = (container) => ({
   productId: parseInt(container.dataset.productId, 10),
@@ -31,11 +32,11 @@ const getData = (container) => ({
 /**
  * Fill the heart when the product is in a list
  *
- * @param {HTMLElement} container The .wishlist-button element
+ * @param {HTMLElement} container The wishlist-button component
  * @param {Number|null} listId The list containing the product
  */
 const setChecked = (container, listId) => {
-  const icon = container.querySelector('.wishlist-button-add .material-icons');
+  const icon = container.querySelector(selectors.button.icon);
   container.dataset.listId = listId || '';
 
   if (icon) {
@@ -58,25 +59,26 @@ const findTaggedList = ({productId, productAttributeId}, quantity = null) => {
  * the ones of the miniatures, and the one rendered by the displayProductActions hook
  */
 const initButtons = () => {
-  const template = document.querySelector('.js-wishlist-button-template');
+  const template = document.querySelector(selectors.button.template);
 
-  document.querySelectorAll('.js-product-miniature').forEach((product) => {
-    const thumbnail = product.querySelector('.thumbnail-container');
+  document.querySelectorAll(selectors.theme.miniature).forEach((product) => {
+    const thumbnail = product.querySelector(selectors.theme.miniatureThumbnail);
 
-    if (!thumbnail || thumbnail.querySelector('.wishlist-button')) {
+    if (!thumbnail || thumbnail.querySelector(selectors.components.button)) {
       return;
     }
 
     const container = document.createElement('div');
     container.classList.add('wishlist-button');
+    container.dataset.psComponent = 'wishlist-button';
     container.dataset.productId = product.dataset.idProduct;
     container.dataset.productAttributeId = product.dataset.idProductAttribute;
     container.dataset.url = removeFromWishlistUrl;
     thumbnail.append(container);
   });
 
-  document.querySelectorAll('.wishlist-button:not([data-initialized])').forEach((container) => {
-    if (!container.querySelector('.wishlist-button-add') && template) {
+  document.querySelectorAll(`${selectors.components.button}:not([data-initialized])`).forEach((container) => {
+    if (!container.querySelector(selectors.button.toggle) && template) {
       container.append(template.content.cloneNode(true));
     }
 
@@ -122,16 +124,16 @@ export default function initHearts() {
   initButtons();
 
   document.addEventListener('click', (event) => {
-    const button = event.target.closest('.wishlist-button .wishlist-button-add');
+    const button = event.target.closest(`${selectors.components.button} ${selectors.button.toggle}`);
 
     if (button) {
       event.preventDefault();
-      toggleProduct(button.closest('.wishlist-button'));
+      toggleProduct(button.closest(selectors.components.button));
     }
   });
 
   EventBus.$on('addedToWishlist', (event) => {
-    document.querySelectorAll('.wishlist-button').forEach((container) => {
+    document.querySelectorAll(selectors.components.button).forEach((container) => {
       const {productId, productAttributeId} = getData(container);
 
       if (
@@ -143,7 +145,7 @@ export default function initHearts() {
     });
   });
 
-  const productButtons = () => document.querySelectorAll('.wishlist-button[data-is-product="true"]');
+  const productButtons = () => document.querySelectorAll(`${selectors.components.button}[data-is-product="true"]`);
 
   prestashop.on('updateProduct', ({eventType}) => {
     if (eventType === 'updatedProductQuantity') {
@@ -162,7 +164,7 @@ export default function initHearts() {
   });
 
   const observer = new MutationObserver(initButtons);
-  document.querySelectorAll('#products, .featured-products').forEach((list) => {
+  document.querySelectorAll(selectors.theme.miniatureLists).forEach((list) => {
     observer.observe(list, {attributes: false, childList: true});
   });
 }

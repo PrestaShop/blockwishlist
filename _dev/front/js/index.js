@@ -26,16 +26,17 @@ import initShare from './components/share';
 import initToast from './components/toast';
 import initListsPage from './pages/lists';
 import initProductsListPage from './pages/products-list';
+import selectors from './lib/selectors';
 
 const components = {
-  '.wishlist-add-to': initAddToWishlist,
-  '.wishlist-create': initCreate,
-  '.wishlist-delete': initDelete,
-  '.wishlist-login': initLogin,
-  '.wishlist-rename': initRename,
-  '.wishlist-share': initShare,
-  '.wishlist-toast': initToast,
-  '.wishlist-container': initListsPage,
+  [selectors.components.addToWishlist]: initAddToWishlist,
+  [selectors.components.create]: initCreate,
+  [selectors.components.delete]: initDelete,
+  [selectors.components.login]: initLogin,
+  [selectors.components.rename]: initRename,
+  [selectors.components.share]: initShare,
+  [selectors.components.toast]: initToast,
+  [selectors.components.lists]: initListsPage,
 };
 
 Object.entries(components).forEach(([selector, init]) => {
@@ -46,7 +47,7 @@ Object.entries(components).forEach(([selector, init]) => {
   }
 });
 
-if (document.querySelector('.wishlist-products-container')) {
+if (document.querySelector(selectors.components.products)) {
   initProductsListPage();
 }
 

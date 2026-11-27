@@ -25,7 +25,7 @@ describe('Button', () => {
 
   before(() => {
     const template = document.createElement('template');
-    template.classList.add('js-wishlist-button-template');
+    template.dataset.psRef = 'wishlist-button-template';
     template.content.append(loadTemplate('front/button'));
     document.body.append(template);
     document.body.insertAdjacentHTML('beforeend', `

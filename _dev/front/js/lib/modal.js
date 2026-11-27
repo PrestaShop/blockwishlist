@@ -16,6 +16,8 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
+import selectors from './selectors';
+
 const openedModals = new Set();
 
 document.addEventListener('keydown', (event) => {
@@ -26,7 +28,7 @@ document.addEventListener('keydown', (event) => {
   }
 
   // Themes may render the actions of a modal as [role="button"] elements, which browsers don't activate
-  const button = event.target.closest('.wishlist-modal [role="button"]');
+  const button = event.target.closest(`${selectors.modal.dialog} [role="button"]`);
 
   if (button && (event.key === 'Enter' || event.key === ' ')) {
     event.preventDefault();
@@ -35,16 +37,16 @@ document.addEventListener('keydown', (event) => {
 });
 
 /**
- * Handle the opening of a wishlist modal: the theme only has to keep the .wishlist-modal
- * and .modal-backdrop elements, and the data-dismiss="modal" attribute on the closing buttons
+ * Handle the opening of a wishlist modal: the theme only has to keep the data-ps-ref attributes
+ * of the modal and its backdrop, and the data-ps-action attribute of the closing buttons
  *
  * @param {HTMLElement} root The element containing the modal
  *
  * @returns {Object}
  */
 export default function createModal(root) {
-  const element = root.querySelector('.wishlist-modal');
-  const backdrop = root.querySelector('.modal-backdrop');
+  const element = root.querySelector(selectors.modal.dialog);
+  const backdrop = root.querySelector(selectors.modal.backdrop);
 
   const modal = {
     isOpen: () => element.classList.contains('show'),
@@ -67,7 +69,7 @@ export default function createModal(root) {
   };
 
   root.addEventListener('click', (event) => {
-    if (event.target.closest('[data-dismiss="modal"]')) {
+    if (event.target.closest(selectors.modal.close)) {
       event.preventDefault();
       modal.close();
     }

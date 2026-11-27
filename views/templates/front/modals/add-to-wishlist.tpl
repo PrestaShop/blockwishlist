@@ -18,44 +18,45 @@
  *}
 <div
   class="wishlist-add-to"
+  data-ps-component="wishlist-add-to-wishlist"
   data-url="{$url}"
   data-add-url="{$addUrl}"
 >
-  <div class="wishlist-modal modal fade" tabindex="-1" role="dialog" aria-modal="true">
+  <div class="wishlist-modal modal fade" data-ps-ref="wishlist-modal" tabindex="-1" role="dialog" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{$wishlistsTitlePage}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="{l s='Close' d='Shop.Theme.Global'}">
+          <button type="button" class="close" data-dismiss="modal" data-ps-action="wishlist-close-modal" aria-label="{l s='Close' d='Shop.Theme.Global'}">
             <span aria-hidden="true">×</span>
           </button>
         </div>
 
         <div class="modal-body">
           <div class="wishlist-chooselist">
-            <ul class="wishlist-list"></ul>
+            <ul class="wishlist-list" data-ps-ref="wishlist-lists"></ul>
 
-            <div class="wishlist-list-loader" hidden>
+            <div class="wishlist-list-loader" data-ps-ref="wishlist-lists-loader" hidden>
               <span></span>
               <span></span>
               <span></span>
               <span></span>
             </div>
 
-            <p class="wishlist-list-empty" hidden>
+            <p class="wishlist-list-empty" data-ps-ref="wishlist-lists-empty" hidden>
               {l s='No list found.' d='Modules.Blockwishlist.Shop'}
             </p>
 
-            <template class="js-wishlist-list-item-template">
-              <li class="wishlist-list-item" role="button" tabindex="0">
-                <p class="js-wishlist-list-item-name"></p>
+            <template data-ps-ref="wishlist-list-item-template">
+              <li class="wishlist-list-item" data-ps-ref="wishlist-list-item" role="button" tabindex="0">
+                <p data-ps-ref="wishlist-list-item-name"></p>
               </li>
             </template>
           </div>
         </div>
 
         <div class="modal-footer">
-          <a href="#" class="wishlist-add-to-new text-primary">
+          <a href="#" class="wishlist-add-to-new text-primary" data-ps-action="wishlist-create-list">
             <i class="material-icons">add_circle_outline</i> {$newWishlistCTA}
           </a>
         </div>
@@ -63,5 +64,5 @@
     </div>
   </div>
 
-  <div class="modal-backdrop fade"></div>
+  <div class="modal-backdrop fade" data-ps-ref="wishlist-modal-backdrop"></div>
 </div>

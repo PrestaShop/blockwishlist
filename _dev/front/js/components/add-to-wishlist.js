@@ -19,6 +19,7 @@
 import {addToList, getLists} from '../api';
 import EventBus, {notify} from '../lib/event-bus';
 import createModal from '../lib/modal';
+import selectors from '../lib/selectors';
 
 /**
  * Let the customer choose the list to add a product to.
@@ -28,10 +29,10 @@ import createModal from '../lib/modal';
  */
 export default function initAddToWishlist(root) {
   const modal = createModal(root);
-  const list = root.querySelector('.wishlist-list');
-  const loader = root.querySelector('.wishlist-list-loader');
-  const empty = root.querySelector('.wishlist-list-empty');
-  const itemTemplate = root.querySelector('.js-wishlist-list-item-template');
+  const list = root.querySelector(selectors.addToWishlist.lists);
+  const loader = root.querySelector(selectors.addToWishlist.loader);
+  const empty = root.querySelector(selectors.addToWishlist.empty);
+  const itemTemplate = root.querySelector(selectors.addToWishlist.itemTemplate);
   const product = {
     productId: 0,
     productAttributeId: 0,
@@ -42,7 +43,7 @@ export default function initAddToWishlist(root) {
   const renderItem = (wishlist) => {
     const item = itemTemplate.content.firstElementChild.cloneNode(true);
     item.dataset.id = wishlist.id_wishlist;
-    item.querySelector('.js-wishlist-list-item-name').textContent = wishlist.name;
+    item.querySelector(selectors.addToWishlist.itemName).textContent = wishlist.name;
 
     return item;
   };
@@ -87,7 +88,7 @@ export default function initAddToWishlist(root) {
   });
 
   list.addEventListener('click', async (event) => {
-    const item = event.target.closest('.wishlist-list-item');
+    const item = event.target.closest(selectors.addToWishlist.item);
 
     if (!item) {
       return;
@@ -107,7 +108,7 @@ export default function initAddToWishlist(root) {
     });
   });
 
-  root.querySelector('.wishlist-add-to-new').addEventListener('click', (event) => {
+  root.querySelector(selectors.createList).addEventListener('click', (event) => {
     event.preventDefault();
     modal.close();
     EventBus.$emit('showCreateWishlist', {

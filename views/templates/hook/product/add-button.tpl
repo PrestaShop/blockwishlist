@@ -18,6 +18,7 @@
  *}
 <div
   class="wishlist-button"
+  data-ps-component="wishlist-button"
   data-url="{$url}"
   data-product-id="{$product.id}"
   data-product-attribute-id="{$product.id_product_attribute}"

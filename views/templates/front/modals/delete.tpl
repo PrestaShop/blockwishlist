@@ -18,37 +18,38 @@
  *}
 <div
   class="wishlist-delete"
+  data-ps-component="wishlist-delete"
   data-delete-list-url="{$deleteListUrl}"
   data-delete-product-url="{$deleteProductUrl}"
 >
-  <div class="wishlist-modal modal fade" tabindex="-1" role="dialog" aria-modal="true">
+  <div class="wishlist-modal modal fade" data-ps-ref="wishlist-modal" tabindex="-1" role="dialog" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <form class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            <span class="js-wishlist-delete-product">{l s='Remove product from wishlist' d='Modules.Blockwishlist.Shop'}</span>
-            <span class="js-wishlist-delete-list">{l s='Delete wishlist' d='Modules.Blockwishlist.Shop'}</span>
+            <span data-ps-ref="wishlist-delete-product">{l s='Remove product from wishlist' d='Modules.Blockwishlist.Shop'}</span>
+            <span data-ps-ref="wishlist-delete-list">{l s='Delete wishlist' d='Modules.Blockwishlist.Shop'}</span>
           </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="{l s='Close' d='Shop.Theme.Global'}">
+          <button type="button" class="close" data-dismiss="modal" data-ps-action="wishlist-close-modal" aria-label="{l s='Close' d='Shop.Theme.Global'}">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body js-wishlist-delete-product">
+        <div class="modal-body" data-ps-ref="wishlist-delete-product">
           {* %nameofthewishlist% is replaced by the name of the list *}
-          <p class="modal-text">{l s='The product will be removed from "%nameofthewishlist%".' d='Modules.Blockwishlist.Shop'}</p>
+          <p class="modal-text" data-ps-ref="wishlist-delete-message">{l s='The product will be removed from "%nameofthewishlist%".' d='Modules.Blockwishlist.Shop'}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="modal-cancel btn btn-secondary" data-dismiss="modal">
+          <button type="button" class="modal-cancel btn btn-secondary" data-dismiss="modal" data-ps-action="wishlist-close-modal">
             {l s='Cancel' d='Modules.Blockwishlist.Shop'}
           </button>
           <button type="submit" class="btn btn-primary">
-            <span class="js-wishlist-delete-product">{l s='Remove' d='Modules.Blockwishlist.Shop'}</span>
-            <span class="js-wishlist-delete-list">{l s='Delete' d='Modules.Blockwishlist.Shop'}</span>
+            <span data-ps-ref="wishlist-delete-product">{l s='Remove' d='Modules.Blockwishlist.Shop'}</span>
+            <span data-ps-ref="wishlist-delete-list">{l s='Delete' d='Modules.Blockwishlist.Shop'}</span>
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <div class="modal-backdrop fade"></div>
+  <div class="modal-backdrop fade" data-ps-ref="wishlist-modal-backdrop"></div>
 </div>

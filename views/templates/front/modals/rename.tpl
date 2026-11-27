@@ -18,14 +18,15 @@
  *}
 <div
   class="wishlist-rename"
+  data-ps-component="wishlist-rename"
   data-url="{$renameUrl}"
 >
-  <div class="wishlist-modal modal fade" tabindex="-1" role="dialog" aria-modal="true">
+  <div class="wishlist-modal modal fade" data-ps-ref="wishlist-modal" tabindex="-1" role="dialog" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <form class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{l s='Rename wishlist' d='Modules.Blockwishlist.Shop'}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="{l s='Close' d='Shop.Theme.Global'}">
+          <button type="button" class="close" data-dismiss="modal" data-ps-action="wishlist-close-modal" aria-label="{l s='Close' d='Shop.Theme.Global'}">
             <span aria-hidden="true">×</span>
           </button>
         </div>
@@ -42,7 +43,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="modal-cancel btn btn-secondary" data-dismiss="modal">
+          <button type="button" class="modal-cancel btn btn-secondary" data-dismiss="modal" data-ps-action="wishlist-close-modal">
             {l s='Cancel' d='Modules.Blockwishlist.Shop'}
           </button>
           <button type="submit" class="btn btn-primary">
@@ -53,5 +54,5 @@
     </div>
   </div>
 
-  <div class="modal-backdrop fade"></div>
+  <div class="modal-backdrop fade" data-ps-ref="wishlist-modal-backdrop"></div>
 </div>

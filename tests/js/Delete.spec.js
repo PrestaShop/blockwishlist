@@ -39,8 +39,8 @@ describe('Delete', () => {
       },
     });
 
-    expect(root.querySelector('.modal-title .js-wishlist-delete-product').hidden).toBe(false);
-    expect(root.querySelector('.modal-title .js-wishlist-delete-list').hidden).toBe(true);
+    expect(root.querySelector('.modal-title [data-ps-ref="wishlist-delete-product"]').hidden).toBe(false);
+    expect(root.querySelector('.modal-title [data-ps-ref="wishlist-delete-list"]').hidden).toBe(true);
     expect(root.querySelector('.modal-text').textContent).toBe('The product will be removed from "Gifts".');
   });
 
@@ -49,7 +49,7 @@ describe('Delete', () => {
     EventBus.$emit('showDeleteWishlist', {detail: {listId: 3, listName: 'Gifts'}});
 
     expect(root.querySelector('.modal-body').hidden).toBe(true);
-    expect(root.querySelector('.modal-title .js-wishlist-delete-list').hidden).toBe(false);
+    expect(root.querySelector('.modal-title [data-ps-ref="wishlist-delete-list"]').hidden).toBe(false);
 
     root.querySelector('form').dispatchEvent(new window.Event('submit', {cancelable: true}));
     await flushPromises();

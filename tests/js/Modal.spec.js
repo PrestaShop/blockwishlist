@@ -32,15 +32,15 @@ describe('Modal', () => {
 
   before(() => {
     document.body.insertAdjacentHTML('beforeend', `
-      <div class="js-modal-test">
-        <div class="wishlist-modal modal fade">
-          <div role="button" class="wishlist-add-to-new">New list</div>
-          <button type="button" data-dismiss="modal">Close</button>
+      <div id="modal-test">
+        <div class="modal fade" data-ps-ref="wishlist-modal">
+          <div role="button">New list</div>
+          <button type="button" data-ps-action="wishlist-close-modal">Close</button>
         </div>
-        <div class="modal-backdrop fade"></div>
+        <div class="modal-backdrop fade" data-ps-ref="wishlist-modal-backdrop"></div>
       </div>
     `);
-    root = document.querySelector('.js-modal-test');
+    root = document.querySelector('#modal-test');
     modal = createModal(root);
     root.querySelector('[role="button"]').addEventListener('click', () => {
       clicks += 1;

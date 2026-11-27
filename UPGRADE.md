@@ -29,7 +29,20 @@ An override of a former template is no longer used: the module template is rende
 
 The other templates (`hook/product/add-button.tpl`, `hook/displayCustomerAccount.tpl`, `hook/account/myaccount-block.tpl`, `hook/displayAdminCustomers.tpl`, `errors/forbidden.tpl`) keep their path.
 
-The script relies on the `js-*` classes and `data-*` attributes of these templates: keep them in an override.
+### Hooks of the script
+
+The script doesn't rely on the classes of the templates, so an override can restyle them freely. It finds its elements through `data-ps-*` attributes, following the conventions of the themes (PrestaShop/hummingbird#934), and reads the other `data-*` attributes (`data-url`, `data-id`, `data-product-id`...): keep both in an override.
+
+| Attribute | Role | Values |
+|---|---|---|
+| `data-ps-component` | Root of a component | `wishlist-add-to-wishlist`, `wishlist-button`, `wishlist-create`, `wishlist-delete`, `wishlist-lists-page`, `wishlist-login`, `wishlist-products-page`, `wishlist-rename`, `wishlist-share`, `wishlist-toast` |
+| `data-ps-ref` | Element read or updated by the script | `wishlist-modal`, `wishlist-modal-backdrop`, `wishlist-lists`, `wishlist-lists-loader`, `wishlist-lists-empty`, `wishlist-list-item-template`, `wishlist-list-item`, `wishlist-list-item-name`, `wishlist-list-menu`, `wishlist-button-template`, `wishlist-button-icon`, `wishlist-delete-message`, `wishlist-delete-product`, `wishlist-delete-list`, `wishlist-product`, `wishlist-toast-text` |
+| `data-ps-action` | Element triggering an action on click | `wishlist-close-modal`, `wishlist-create-list`, `wishlist-toggle-product`, `wishlist-toggle-menu`, `wishlist-rename`, `wishlist-share`, `wishlist-delete`, `wishlist-add-to-cart`, `wishlist-remove-product` |
+| `data-ps-target` | Area reloaded after a change | `wishlist-lists`, `wishlist-products` |
+
+The full list of selectors is in `_dev/front/js/lib/selectors.js`. The script still adds the `show` class to an opened modal or menu, and the `isActive` class and the message type to the toast, for the styles.
+
+The heart is added to the product miniatures rendered with the `js-product-miniature` class and a `.thumbnail-container` element, as in the themes.
 
 ### JavaScript assets
 

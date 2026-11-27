@@ -17,6 +17,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 import EventBus from '../lib/event-bus';
+import selectors from '../lib/selectors';
 
 /**
  * Display the messages sent with the showToast event.
@@ -25,7 +26,7 @@ import EventBus from '../lib/event-bus';
  * @param {HTMLElement} toast
  */
 export default function initToast(toast) {
-  const text = toast.querySelector('.wishlist-toast-text');
+  const text = toast.querySelector(selectors.toast.text);
   let timeout = null;
   let type = 'basic';
 

@@ -32,7 +32,7 @@
               <a
                 rel="{if $page.type === 'previous'}prev{elseif $page.type === 'next'}next{else}nofollow{/if}"
                 href="{$page.url}"
-                class="js-wishlist-search-link{if $page.type === 'previous'} previous{elseif $page.type === 'next'} next{/if}{if !$page.clickable} disabled{/if}"
+                class="wishlist-pagination-link{if $page.type === 'previous'} previous{elseif $page.type === 'next'} next{/if}{if !$page.clickable} disabled{/if}"
               >
                 {if $page.type === 'previous'}
                   <i class="material-icons">keyboard_arrow_left</i>{l s='Previous' d='Modules.Blockwishlist.Shop'}

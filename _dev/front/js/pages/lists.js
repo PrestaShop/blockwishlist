@@ -18,27 +18,28 @@
  */
 import EventBus from '../lib/event-bus';
 import refresh from '../lib/refresh';
+import selectors from '../lib/selectors';
 
-const closeDropdowns = () => {
-  document.querySelectorAll('.wishlist-list-item .dropdown-menu.show').forEach((menu) => {
+const closeMenus = () => {
+  document.querySelectorAll(`${selectors.lists.menu}.show`).forEach((menu) => {
     menu.classList.remove('show');
   });
 };
 
 const actions = {
-  'wishlist-list-item-actions': (item) => {
-    const menu = item.querySelector('.dropdown-menu');
+  'wishlist-toggle-menu': (item) => {
+    const menu = item.querySelector(selectors.lists.menu);
     const isOpen = menu.classList.contains('show');
-    closeDropdowns();
+    closeMenus();
     menu.classList.toggle('show', !isOpen);
   },
-  'js-wishlist-rename': (item) => EventBus.$emit('showRenameWishlist', {
+  'wishlist-rename': (item) => EventBus.$emit('showRenameWishlist', {
     detail: {listId: parseInt(item.dataset.id, 10), title: item.dataset.name},
   }),
-  'js-wishlist-share': (item) => EventBus.$emit('showShareWishlist', {
+  'wishlist-share': (item) => EventBus.$emit('showShareWishlist', {
     detail: {listId: parseInt(item.dataset.id, 10), shareUrl: item.dataset.shareUrl},
   }),
-  'js-wishlist-delete': (item) => EventBus.$emit('showDeleteWishlist', {
+  'wishlist-delete': (item) => EventBus.$emit('showDeleteWishlist', {
     detail: {listId: parseInt(item.dataset.id, 10), listName: item.dataset.name},
   }),
 };
@@ -50,29 +51,30 @@ const actions = {
  */
 export default function initListsPage(container) {
   document.addEventListener('click', (event) => {
-    const button = event.target.closest('.wishlist-list-item button');
+    const button = event.target.closest(`${selectors.lists.item} ${selectors.lists.action}`);
 
     if (!button) {
-      closeDropdowns();
+      closeMenus();
 
       return;
     }
 
+    // The actions are rendered inside the link to the list
     event.preventDefault();
-    const action = Object.keys(actions).find((name) => button.classList.contains(name));
+    const {psAction} = button.dataset;
 
-    if (action !== 'wishlist-list-item-actions') {
-      closeDropdowns();
+    if (psAction !== 'wishlist-toggle-menu') {
+      closeMenus();
     }
-    if (action) {
-      actions[action](button.closest('.wishlist-list-item'));
+    if (actions[psAction]) {
+      actions[psAction](button.closest(selectors.lists.item));
     }
   });
 
-  container.querySelector('.wishlist-add-to-new').addEventListener('click', (event) => {
+  container.querySelector(selectors.createList).addEventListener('click', (event) => {
     event.preventDefault();
     EventBus.$emit('showCreateWishlist');
   });
 
-  EventBus.$on('refetchList', () => refresh('.wishlist-list-container'));
+  EventBus.$on('refetchList', () => refresh(selectors.lists.area));
 }

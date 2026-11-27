@@ -25,6 +25,8 @@
   {* Reloaded from the page after each change made to the list *}
   <div
     class="wishlist-products-container"
+    data-ps-component="wishlist-products-page"
+    data-ps-target="wishlist-products"
     data-list-id="{$id}"
     data-list-name="{$wishlistName}"
   >

@@ -19,6 +19,7 @@
 import {deleteList, removeFromList} from '../api';
 import EventBus, {notify} from '../lib/event-bus';
 import createModal from '../lib/modal';
+import selectors from '../lib/selectors';
 
 /**
  * Confirm the deletion of a list, or the removal of a product from a list
@@ -28,17 +29,17 @@ import createModal from '../lib/modal';
 export default function initDelete(root) {
   const modal = createModal(root);
   const form = root.querySelector('form');
-  const message = root.querySelector('.modal-text');
+  const message = root.querySelector(selectors.delete.message);
   let target = {};
 
   EventBus.$on('showDeleteWishlist', (event) => {
     target = event.detail;
     const isProduct = Boolean(target.productId);
 
-    root.querySelectorAll('.js-wishlist-delete-product').forEach((element) => {
+    root.querySelectorAll(selectors.delete.product).forEach((element) => {
       element.hidden = !isProduct;
     });
-    root.querySelectorAll('.js-wishlist-delete-list').forEach((element) => {
+    root.querySelectorAll(selectors.delete.list).forEach((element) => {
       element.hidden = isProduct;
     });
 

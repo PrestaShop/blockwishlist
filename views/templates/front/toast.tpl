@@ -18,6 +18,7 @@
  *}
 <div
   class="wishlist-toast"
+  data-ps-component="wishlist-toast"
   data-rename-wishlist-text="{l s='Wishlist name modified!' d='Modules.Blockwishlist.Shop'}"
   data-added-wishlist-text="{l s='Product added to wishlist!' d='Modules.Blockwishlist.Shop'}"
   data-create-wishlist-text="{l s='Wishlist created!' d='Modules.Blockwishlist.Shop'}"
@@ -25,5 +26,5 @@
   data-copy-text="{l s='Share link copied!' d='Modules.Blockwishlist.Shop'}"
   data-delete-product-text="{l s='Product deleted!' d='Modules.Blockwishlist.Shop'}"
 >
-  <p class="wishlist-toast-text"></p>
+  <p class="wishlist-toast-text" data-ps-ref="wishlist-toast-text"></p>
 </div>

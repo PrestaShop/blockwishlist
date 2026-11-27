@@ -24,6 +24,6 @@
 {include file="module:blockwishlist/views/templates/front/modals/login.tpl"}
 {include file="module:blockwishlist/views/templates/front/toast.tpl"}
 
-<template class="js-wishlist-button-template">
+<template data-ps-ref="wishlist-button-template">
   {include file="module:blockwishlist/views/templates/front/button.tpl"}
 </template>
