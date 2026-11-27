@@ -22,6 +22,11 @@ use PrestaShop\Module\BlockWishList\Access\CustomerAccess;
 
 class BlockWishListActionModuleFrontController extends ModuleFrontController
 {
+    /**
+     * @var BlockWishList
+     */
+    public $module;
+
     public function postProcess()
     {
         if (false === $this->context->customer->isLogged()) {
@@ -326,24 +331,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
 
     private function getAllWishListAction()
     {
-        $infos = WishList::getAllWishListsByIdCustomer($this->context->customer->id);
-        if (empty($infos)) {
-            $wishlist = new WishList();
-            $wishlist->id_shop = $this->context->shop->id;
-            $wishlist->id_shop_group = $this->context->shop->id_shop_group;
-            $wishlist->id_customer = $this->context->customer->id;
-            $wishlist->name = Configuration::get('blockwishlist_WishlistDefaultTitle', $this->context->language->id);
-            $wishlist->token = $this->generateWishListToken();
-            $wishlist->default = 1;
-            $wishlist->add();
-
-            $infos = WishList::getAllWishListsByIdCustomer($this->context->customer->id);
-        }
-
-        foreach ($infos as $key => $wishlist) {
-            $infos[$key]['shareUrl'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['token' => $wishlist['token']]);
-            $infos[$key]['listUrl'] = $this->context->link->getModuleLink('blockwishlist', 'view', ['id_wishlist' => $wishlist['id_wishlist']]);
-        }
+        $infos = $this->module->getCustomerWishLists();
 
         if (false === empty($infos)) {
             return $this->ajaxRender(
@@ -358,7 +346,7 @@ class BlockWishListActionModuleFrontController extends ModuleFrontController
 
     private function generateWishListToken()
     {
-        return strtoupper(substr(sha1(uniqid((string) rand(), true) . _COOKIE_KEY_ . $this->context->customer->id), 0, 16));
+        return WishList::generateToken($this->context->customer->id);
     }
 
     private function ajaxRenderMissingParams()

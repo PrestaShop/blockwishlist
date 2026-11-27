@@ -25,7 +25,7 @@ class WishList extends ObjectModel
     /** @var int Customer ID */
     public $id_customer;
 
-    /** @var int Token */
+    /** @var string Token */
     public $token;
 
     /** @var string Name */
@@ -65,6 +65,18 @@ class WishList extends ObjectModel
             'default' => ['type' => self::TYPE_BOOL, 'validate' => 'isBool'],
         ],
     ];
+
+    /**
+     * Generate the token used to share a wishlist
+     *
+     * @param int $id_customer
+     *
+     * @return string
+     */
+    public static function generateToken($id_customer)
+    {
+        return strtoupper(substr(sha1(uniqid((string) rand(), true) . _COOKIE_KEY_ . $id_customer), 0, 16));
+    }
 
     /**
      * Get Customers having a wishlist
